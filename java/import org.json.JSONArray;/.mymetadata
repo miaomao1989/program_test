@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="import org.json.JSONArray;"
+  id="myeclipse.1390726628342"
+  context-root="/import org.json.JSONArray;"
+  j2ee-spec="5.0"
+  archive="import org.json.JSONArray;.war">
+  <attributes>
+    <attribute name="webrootdir" value="WebRoot" />
+  </attributes>
+</project-module>
+

@@ -1,0 +1,3 @@
+\docmentclass{article}
+\usepackage{CJK,graphicx}
+\graphicspath{./}

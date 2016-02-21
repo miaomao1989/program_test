@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<!-- saved from url=(0055)http://developer.baidu.com/map/webservice-geocoding.htm -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <title>Geocoding API- 百度地图Web服务API</title>
+    <meta name="keywords" content="地理编码,反地理编码,逆地理编码,地址解析,反地址解析,Geocoding API,Geocoding">
+    <meta name="description" content="Geocoding API 是一类简单的HTTP接口，用于提供从地址到经纬度坐标或者从经纬度坐标到地址的转换服务，用户可以使用C# 、C++、Java等开发语言发送HTTP请求且接收JSON、XML的返回数据。">
+    <script type="text/javascript" src="./Geocoding API- 百度地图Web服务API_files/mapnav.js"></script>
+    <link rel="stylesheet" href="./Geocoding API- 百度地图Web服务API_files/mapi.css" type="text/css" media="screen">
+	 <script type="text/javascript" src="./Geocoding API- 百度地图Web服务API_files/jquery-1.7.2.min.js"></script>
+	 <script type="text/javascript" src="./Geocoding API- 百度地图Web服务API_files/menu.js"></script>
+	 <script type="text/javascript" src="./Geocoding API- 百度地图Web服务API_files/mapi.js"></script>
+	 <script type="text/javascript" src="./Geocoding API- 百度地图Web服务API_files/geocoder.js"></script><style type="text/css"></style><style type="text/css"></style>
+	 <script type="text/javascript" src="./Geocoding API- 百度地图Web服务API_files/rgeocoder.js"></script>
+	 
+<style>
+.mmenu a { text-indent:29px;}
+.mmenu .on3 a{background-position: 15px 17px;}
+</style>
+<script src="./Geocoding API- 百度地图Web服务API_files/guide.js" type="text/javascript" charset="utf-8"></script></head>
+<body>
+<script type="text/javascript">
+mnav({
+    one_nav:"mapnav_product",
+    two_nav:"mapnav_web"
+});
+</script><div id="header"><div id="top_main">
+<a href="http://developer.baidu.com/map/"><img class="logo" width="256px" height="52px" src="./Geocoding API- 百度地图Web服务API_files/logo.png"></a>
+<div id="nav">
+<div id="logins">
+<ul class="user-nav">
+<li class="user-nav-item " id="user-state-li" style="">
+<a id="userName">justinxia001</a><label>l</label>
+<ul class="username-dropdown" style="visibility: hidden;">
+<li><a target="_top" href="http://passport.baidu.com/center" class="bd-cloud-dropdown-link">帐号设置</a></li>
+<li><a target="_top" href="http://passport.baidu.com/?logout&u=http://developer.baidu.com/map/webservice-geocoding.htm" id="logout">退出</a></li>
+<div class="clear"></div>
+</ul>
+<div class="clear"></div>
+</li>
+<li class="user-nav-item">
+<a target="_blank" href="http://lbsyun.baidu.com/">LBS开放平台</a><label>l</label>
+</li>
+<li class="user-nav-item">
+<a target="_blank" href="http://developer.baidu.com/">百度开放云</a>
+</li>
+<li id="login-reg-li" class="user-nav-item" style="display: none;">
+<label id="dot-line">l</label><a id="login" href="" target="_top">登录</a>
+<a id="register" href="" target="_top">注册</a>
+</li>
+<div class="clear"></div>
+</ul>
+</div>
+<div class="clear"></div>
+<ul class="navul">
+<li>
+<a id="mapnav_home" href="http://developer.baidu.com/map/">首页</a>
+</li>
+<li class="nav-item">
+<a id="mapnav_product" href="http://developer.baidu.com/map/lbs-cloud.htm" class=" nav_on">API <span class="tri_span"></span></a>
+<div id="homeTab1" class="homeTab"><ul>
+<li><a href="http://developer.baidu.com/map/lbs-cloud.htm">LBS.云</a></li>
+<li><a href="http://developer.baidu.com/map/jshome.htm">JavaScript API</a> | <a href="http://developer.baidu.com/map/flash.htm">Flash API</a></li>
+<li><a href="http://developer.baidu.com/map/sdk-android.htm">Android SDK</a> | <a href="http://developer.baidu.com/map/sdk-ios.htm">iOS SDK</a> | <a href="http://developer.baidu.com/map/geosdk.htm">定位 SDK</a></li>
+<li><a href="http://developer.baidu.com/map/webservice.htm">Web服务 API</a> | <a href="http://developer.baidu.com/map/staticimg.htm">静态图 API</a> | <a href="http://developer.baidu.com/map/carhome.htm">车联网 API</a> | <a href="http://developer.baidu.com/map/uri.htm">URI API</a></li>
+<div class="clear"></div>
+</ul>
+</div>
+</li>
+<li class="nav-item">
+<a id="mapnav_tool" target="_blank" href="http://api.map.baidu.com/lbsapi/creatmap/index.html">工具<span class="tri_span"></span></a>
+<div class="homeTab">
+<ul>
+<li><a target="_blank" href="http://api.map.baidu.com/lbsapi/creatmap/index.html">地图生成器</a></li>
+<li><a target="_blank" href="http://api.map.baidu.com/lbsapi/getpoint/index.html">坐标拾取工具</a></li>
+<li><a target="_blank" href="http://api.map.baidu.com/mapCard/">地图名片</a></li>
+<li><a target="_blank" href="http://api.map.baidu.com/lbsapi/tuan/index.html">团购插件</a></li>
+<li><a target="_blank" href="http://developer.baidu.com/map/move.htm">零成本搬家工具</a></li>
+<div class="clear"></div>
+</ul>
+</div>
+</li>
+<li>
+<a id="mapnav_news" href="http://lbsyun.baidu.com/news">新闻</a>
+</li>
+<li class="nav-item">
+<a id="mapnav_support" href="http://developer.baidu.com/map/question.htm">支持<span class="tri_span"></span></a>
+<div class="homeTab">
+<ul>
+<li>
+<a href="javascript:openGuide();" onclick="_addStatNew(" lbsapi_guanwang",{operate:="" guanwang_productclick})"="">产品指引</a> | <a href="http://developer.baidu.com/map/question.htm">常见问题</a> | <a href="http://developer.baidu.com/map/devRes.htm">开发资源</a>
+</li>
+<li>
+<a href="http://developer.baidu.com/map/help_index.html">咨询求助</a> | <a href="http://developer.baidu.com/map/suggest_index.html">意见反馈</a> | <a href="http://developer.baidu.com/map/contact.htm">联系我们</a>
+</li>
+<div class="clear"></div>
+</ul>
+</div>
+</li>
+<li>
+<a id="mapnav_bbs" target="_blank" href="http://bbs.lbsyun.baidu.com/">论坛</a>
+</li>
+<li class="nav-item">
+<a id="mapnav_success" href="http://developer.baidu.com/map/case.htm" class="a_success">成功案例<span class="tri_span"></span></a>
+<div class="homeTab"><ul>
+<li style="width:250px"><a href="http://developer.baidu.com/map/case.htm">房产类</a></li>
+<li style="width:250px"><a href="http://developer.baidu.com/map/case-more.htm">更多案例</a></li>
+<div class="clear"></div>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="clear"></div>
+<div id="headTop">
+<div id="headeTop_main">
+<ul id="mapnav_tool_two">
+<li id="mapnav_creatmap"><a href="http://api.map.baidu.com/lbsapi/creatmap/index.html">地图生成器</a><b>|</b></li>
+<li id="mapnav_getpoint"><a href="http://api.map.baidu.com/lbsapi/getpoint/index.html">坐标拾取工具</a><b>|</b></li>
+<li id="mapnav_mapcard"><a href="http://api.map.baidu.com/mapCard/">地图名片</a><b>|</b></li>
+<li id="mapnav_tuan"><a href="http://api.map.baidu.com/lbsapi/tuan/index.html">团购插件</a><b>|</b></li>
+<li id="mapnav_move"><a href="http://developer.baidu.com/map/move.htm">零成本搬家</a></li></ul>
+<ul id="mapnav_support_two">
+<li id="mapnav_creatmap"><a href="javascript:openGuide();" onclick="_addStatNew(lbsapi_guanwang,{operate: guanwang_productclick})">产品指引</a><b>|</b></li>
+<li id="mapnav_question"><a href="http://developer.baidu.com/map/question.htm">常见问题</a><b>|</b></li>
+<li id="mapnav_devRes"><a href="http://developer.baidu.com/map/devRes.htm">开发资源</a><b>|</b></li>
+<li id="mapnav_help"><a href="http://developer.baidu.com/map/help_index.html">咨询求助</a><b>|</b></li>
+<li id="mapnav_suggest"><a href="http://developer.baidu.com/map/suggest_index.html">意见反馈</a><b>|</b></li>
+<li id="mapnav_contact"><a href="http://developer.baidu.com/map/contact.htm">联系我们</a></li>
+</ul>
+<ul id="mapnav_success_two">
+<li id="mapnav_houseProperty"><a href="http://developer.baidu.com/map/case.htm">房产类</a><b>|</b></li>
+<li id="mapnav_more_case"><a href="http://developer.baidu.com/map/case-more.htm">更多案例</a><b></b></li>
+</ul>
+<ul id="mapnav_product_two" style="display: block;">
+<li id="mapnav_yun"><a href="http://developer.baidu.com/map/lbs-cloud.htm">LBS.云</a><b>|</b></li>
+<li id="mapnav_javascript"><a class="Top_two" href="http://developer.baidu.com/map/jshome.htm">JavaScript API</a></li>
+<li id="mapnav_flash"><a href="http://developer.baidu.com/map/flash.htm">Flash API</a><b>|</b></li>
+<li>
+<ul>
+<li id="mapnav_and"><a href="http://developer.baidu.com/map/sdk-android.htm" class="Top_two">Android SDK</a></li>
+<li id="mapnav_ios"><a href="http://developer.baidu.com/map/sdk-ios.htm" class="Top_two">iOS SDK</a></li>
+<li id="mapnav_geo"><a href="http://developer.baidu.com/map/geosdk.htm">定位SDK</a><b>|</b></li>
+</ul>
+</li>
+<li>
+<ul>
+<li id="mapnav_web" class="nav-item  Top_on"><a href="http://developer.baidu.com/map/webservice.htm" class="Top_two_triangle">Web服务API</a>
+<div class="homeTab webTab">
+<ul>
+<li><a href="http://developer.baidu.com/map/webservice-placeapi.htm">Place API</a></li>
+<li><a href="http://developer.baidu.com/map/place-suggestion-api.htm">Place suggestion API</a></li>
+<li><a href="./Geocoding API- 百度地图Web服务API_files/Geocoding API- 百度地图Web服务API.htm">Geocoding API</a></li>
+<li><a href="http://developer.baidu.com/map/direction-api.htm">Direction API</a></li>
+<li><a href="http://developer.baidu.com/map/route-matrix-api.htm">Route Matrix API</a></li>
+<li><a href="http://developer.baidu.com/map/ip-location-api.htm">IP定位 API</a></li>
+<div class="clear"></div>
+</ul>
+</div>
+</li>
+<li id="mapnav_static"><a href="http://developer.baidu.com/map/staticimg.htm" class="Top_two">静态图API</a></li>
+<li id="mapnav_car"><a href="http://developer.baidu.com/map/carhome.htm" class="Top_two">车联网API</a></li>
+<li id="mapnav_uri"><a href="http://developer.baidu.com/map/uri.htm">URI API</a></li>
+</ul>
+</li>
+</ul>
+</div><!--end of headTop_main-->
+</div><!-- end of headTop --></div><div class="clear"></div><script src="./Geocoding API- 百度地图Web服务API_files/login.js"></script>
+<div class="mbody">
+    <div class="mbread clearfix">
+        <a href="http://developer.baidu.com/map/webservice-geocoding.htm#">您当前的位置</a>：<a href="http://developer.baidu.com/map/webservice.htm">Web服务API</a>&gt;<a href="http://developer.baidu.com/map/geocoding-api.htm">Geocoding API</a>
+    </div>
+    <div class="mwrapper clearfix">
+        <div class="mmenu">
+        <script type="text/javascript">
+					addMenu_web();
+					addClass_on3('webmenu_3');
+				</script><ul><li id="webmenu_6" class="mm16"><a href="http://developer.baidu.com/map/webservice.htm">概述</a></li><li id="webmenu_1" class="mm12"><a href="http://lbsyun.baidu.com/apiconsole/key?application=key" target="_blank">获取密钥</a></li><li id="webmenu_2" class="mm13"><a href="http://developer.baidu.com/map/webservice-placeapi.htm">Place API</a></li><li id="webmenu_8" class="mm18"><a href="http://developer.baidu.com/map/place-suggestion-api.htm">Place suggestion API</a></li><li id="webmenu_3" class="mm14 on3"><a href="./Geocoding API- 百度地图Web服务API_files/Geocoding API- 百度地图Web服务API.htm">Geocoding API</a></li><li id="webmenu_4" class="mm15"><a href="http://developer.baidu.com/map/direction-api.htm">Direction API</a></li><li id="webmenu_9" class="mm17"><a href="http://developer.baidu.com/map/route-matrix-api.htm">Route Matrix API<img src="./Geocoding API- 百度地图Web服务API_files/new.png"></a></li><li id="webmenu_7" class="mm17"><a href="http://developer.baidu.com/map/ip-location-api.htm">IP定位 API</a></li><li id="webmenu_5" class="mm16"><a href="http://developer.baidu.com/map/service-update.htm">更新日志</a></li></ul>
+        </div>
+        <div class="mcontainer">
+            <h1>Geocoding API v2.0</h1>
+            <div class="mcatalog">
+            	<ol>
+                    <li class="mcatalog_odd_item"><a href="http://developer.baidu.com/map/webservice-geocoding.htm#.E4.BB.80.E4.B9.88.E6.98.AFGeocoding.EF.BC.9F">1.什么是Geocoding？</a></li>
+                    <li class="mcatalog_even_item"><a href="http://developer.baidu.com/map/webservice-geocoding.htm#Geocoding_API.E6.9C.89.E5.93.AA.E4.BA.9B.E5.8A.9F.E8.83.BD.EF.BC.9F">2.功能介绍</a></li>
+                    <li class="mcatalog_even_item"><a href="http://developer.baidu.com/map/webservice-geocoding.htm#.E5.A6.82.E4.BD.95.E4.BD.BF.E7.94.A8">3.使用说明</a></li>
+                    <li class="mcatalog_odd_item"><a href="http://developer.baidu.com/map/webservice-geocoding.htm#.E6.9C.8D.E5.8A.A1.E5.9C.B0.E5.9D.80">4.服务地址</a></li>
+                    <li class="mcatalog_even_item"><a href="http://developer.baidu.com/map/webservice-geocoding.htm#.E6.8E.A5.E5.8F.A3.E5.8F.82.E6.95.B0">5.通用接口参数</a></li>
+                    <li class="mcatalog_even_item"><a href="http://developer.baidu.com/map/webservice-geocoding.htm#.E6.8E.A5.E5.8F.A3.E5.8F.82.E6.95.B6">6.地理编码服务</a></li>
+                    <li class="mcatalog_odd_item"><a href="http://developer.baidu.com/map/webservice-geocoding.htm#.E8.BF.94.E5.9B.9E.E6.95.B0.E6.8D.AE.E8.AF.B4.E6.98.8E">7.逆地理编码服务</a></li>
+                    <li class="mcatalog_odd_item"><a href="http://developer.baidu.com/map/webservice-geocoding.htm#.E6.8E.A5.E5.8F.A3.E7.A4.BA.E4.BE.8A">8.返回码状态表</a></li>
+                    <li class="mcatalog_even_item"><a href="http://developer.baidu.com/map/webservice-geocoding.htm#.E6.8E.A5.E5.8F.A3.E7.A4.BA.E4.BE.8B">9.升级说明</a></li>
+                </ol>
+            </div>
+            <div class="mcontent">
+			<p><a href="http://developer.baidu.com/map/geocoding-api.htm">Geocoding APIv1.0 访问入口</a></p>
+            <h2 id=".E4.BB.80.E4.B9.88.E6.98.AFGeocoding.EF.BC.9F">1.什么是Geocoding？</h2>
+            <p>Geocoding API 是一类简单的HTTP接口，用于提供从地址到经纬度坐标或者从经纬度坐标到地址的转换服务，用户可以使用C# 、C++、Java等开发语言发送HTTP请求且接收JSON、XML的返回数据。</p>
+            <img src="./Geocoding API- 百度地图Web服务API_files/geocoding.png" style="margin-left:150px;">
+            <h2 id="Geocoding_API.E6.9C.89.E5.93.AA.E4.BA.9B.E5.8A.9F.E8.83.BD.EF.BC.9F">2.功能介绍</h2>
+            <p>Geocoding API包括地址解析和逆地址解析功能。</p>
+            <ul><li>地理编码：即地址解析，由详细到街道的结构化地址得到百度经纬度信息，且支持名胜古迹、标志性建筑名称直接解析返回百度经纬度。例如：“北京市海淀区中关村南大街27号”地址解析的结果是“lng:116.31985,lat:39.959836”，“百度大厦”地址解析的结果是“lng:116.30815,lat:40.056885”</li>
+            <li>逆地理编码，即逆地址解析，由百度经纬度信息得到结构化地址信息。例如：“lat:31.325152,lng:120.558957”逆地址解析的结果是“江苏省苏州市虎丘区塔园路318号”。</li>
+            </ul>
+            <h2 id=".E5.A6.82.E4.BD.95.E4.BD.BF.E7.94.A8">3.如何使用</h2>
+			<p>百度地图Geocoding API是一套免费对外开放的API，无使用次数限制。使用方法：</p>
+			<p>第一步：申请ak（即<a href="http://lbsyun.baidu.com/apiconsole/key?application=key" target="_blank">获取密钥</a>），若无百度账号则首先需要<a href="https://passport.baidu.com/v2/?reg&tpl=pp&u=http%3A%2F%2Flbsyun.baidu.com%2Fapiconsole%2Fkey%3Fapplication%3Dkey" target="_blank">注册百度账号</a>。</p>
+			<p>第二步，拼写发送http请求的url，注意需使用第一步申请的ak。</p>
+			<p>第三步，接收http请求返回的数据（支持json和xml格式）。</p>
+			<p><b>Hello, World</b></p>
+			<p>以下是一个关于地理编码的简单示例。发送一个地址是“百度大厦”的请求，返回该地址对应的地理坐标。发送请求的url如下：</p>
+			<pre><a href="http://api.map.baidu.com/geocoder/v2/?address=%E7%99%BE%E5%BA%A6%E5%A4%A7%E5%8E%A6&output=json&ak=E4805d16520de693a3fe707cdc962045&callback=showLocation" target="_blank">http://api.map.baidu.com/geocoder/v2/?address=百度大厦&amp;output=json&amp;ak=E4805d16520de693a3fe707cdc962045&amp;callback=showLocation</a></pre>
+			<p><b>结果说明：</b>点击上述请求url，返回地址“百度大厦”解析的json格式的数据。</p>
+            <h2 id=".E6.9C.8D.E5.8A.A1.E5.9C.B0.E5.9D.80">4.服务地址</h2>
+            <p>百度地图Geocoding API服务地址：</p>
+			<pre><a href="http://api.map.baidu.com/geocoder/v2/" target="_blank">http://api.map.baidu.com/geocoder/v2/</a></pre>
+			<p>组成说明：</p>
+			<ul>
+			<li>域名：<a href="http://api.map.baidu.com/" target="_blank">http://api.map.baidu.com</a></li>
+			<li>服务名：geocoder</li>
+			<li>服务版本号：较之前版本，v2版本新增参数。</li>
+
+            <h2 id=".E6.8E.A5.E5.8F.A3.E5.8F.82.E6.95.B0">5.通用接口参数</h2>
+            <table class="mplacetable">
+                <tbody><tr>
+                <th width="96px">参数</th><th width="70px">是否必须</th><th width="60px">默认值</th><th width="220px">格式举例</th><th width="255px">含义
+                </th></tr>
+                <tr>
+                <td class="mcode">output
+                </td><td>否
+                </td><td>xml
+                </td><td>json或xml
+                </td><td>输出格式为json或者xml
+                </td></tr>
+                <tr>
+                <td class="mcode">ak
+                </td><td>是
+                </td><td>无
+                </td><td>E4805d16520de693a3fe707cdc962045
+                </td><td>用户申请注册的key，自v2开始参数修改为“ak”，之前版本参数为“key”
+                </td></tr>
+                <tr>
+                <td class="mcode">callback
+                </td><td>否
+                </td><td>无
+                </td><td>callback=showLocation(JavaScript函数名)
+                </td><td>将json格式的返回值通过callback函数返回以实现jsonp功能
+                </td></tr>
+                </tbody></table>
+				<h2 id=".E6.8E.A5.E5.8F.A3.E5.8F.82.E6.95.B6">6.地理编码服务</h2>
+				<p><b>地理编码专属请求参数：</b></p>
+                <table class="mplacetable">
+				<tbody><tr>
+                <th width="96px">参数</th><th width="70px">是否必须</th><th width="60px">默认值</th><th width="220px">格式举例</th><th width="255px">含义
+                </th></tr>
+				<tr>
+                <td class="mcode">address
+                </td><td>是
+                </td><td>无
+                </td><td>北京市海淀区上地十街10号
+                </td><td>根据指定地址进行坐标的反定向解析
+                </td></tr>
+                <tr>
+                <td class="mcode">city
+                </td><td>否
+                </td><td>“北京市”
+                </td><td>“广州市”
+                </td><td>地址所在的城市名
+                </td></tr>
+				</tbody></table>
+				<p>对于address字段可能会出现中文或其它一些特殊字符（如：空格），对于类似的字符要进行编码处理，编码成 UTF-8 字符的二字符十六进制值，凡是不在下表中的字符都要进行编码。</p>
+                <table class="mplacetable">
+                    <tbody><tr>
+                    <th width="74px">字符集合</th><th width="500px;">字符
+                    </th></tr>
+                    <tr>
+                    <td>URL非保留字
+                    </td><td class="mcode">a b c d e f g h i j k l m n o p q r s t u v w x y z A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 0 1 2 3 4 5 6 7 8 9 - _ . ~
+                    </td></tr>
+                    <tr>
+                    <td>URL保留字
+                    </td><td class="mcode">! * ' ( )&nbsp;;&nbsp;: @ &amp; = + $ , /&nbsp;?&nbsp;% # [ ]
+                    </td></tr></tbody></table>
+                <p>附注：</p>
+                <p>(1)  javascript中一般采用encodeURIComponent函数对特殊字符进行编码。</p>
+                <p>(2)  Java中可以使用函数URLEncoder.encode对特殊字符进行编码。</p>
+                <p>(3)  C#中可以使用函数HttpUtility.UrlEncode对特殊字符进行编码。</p>
+                <p>(4)  php中可以使用函数urlencode对特殊字符进行编码。</p>
+				<p><b>地理编码示例</b></p>
+				<p>
+					以下是关于地理编码参数使用方法的示例。发送请求显示结果的JavaScript代码<a href="./Geocoding API- 百度地图Web服务API_files/geocoder.js" target="_blank">此处查看</a>。
+				</p>
+ 
+				<div style="border: solid 1px #CCC; padding: 5px;margin-bottom:5px;">
+					<h2>地理编码示例</h2>
+					<table class="mplacetable">
+						<thead>
+							<tr>
+								<th>
+									参数
+								</th>
+								<th>
+									值
+								</th>
+								<th>
+									说明
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									<b>address:</b>
+								</td>
+								<td colspan="1" padding="5px">
+									<input style="width: 100%;" type="text" id="location" name="location" value="百度大厦">
+								</td>
+								   <td>
+								   该参数是地理编码的必填项，可以输入三种样式的值，分别是：<br>
+									 •	标准的地址信息，如北京市海淀区上地十街十号;<br>
+									 •	名胜古迹、标志性建筑物，如天安门，百度大厦;<br>
+									 •  支持 “*路与*路交叉口”描述方式，如北一环路和阜阳路的交叉路口
+									 <br>
+								  注意：后两种方式并不总是有返回结果，只有当地址库中存在该地址描述时才有返回。
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<b>City:</b>
+								</td>
+							   <td colspan="1" padding="5px">
+									<input style="width: 100%;" type="text" id="cityname" name="cityname" value="北京市">
+								</td>
+								   <td>
+								   该参数是可选项，用于指定上述地址所在的城市，当多个城市都有上述地址时，该参数起到过滤作用。
+								</td>
+							</tr>
+							<!--
+							<tr>
+								<td>
+									<nobr>
+										<b>Output ：</b>
+									</nobr>
+								</td>
+								<td>
+									<select onchange="showOptionsURL('');" id="outFormat" name="outFormat">
+										<option value="json">JSON</option>
+										<option value="xml">XML</option>
+									</select>
+								</td>
+								<td>
+									默认是 JSON 。
+								</td>
+							</tr>
+							-->
+						   
+						</tbody>
+					</table>
+					<p>
+						<button id="testOptions" onclick="doOptions();">
+							运行
+						</button>
+						(结果显示如下)
+					</p>
+					<p class="code" id="optionsSampleUrl"></p>
+					<div id="optionsNarrative">
+					</div>
+				</div>
+
+				
+				<p><b>地理编码返回结果字段</b></p>
+				<table class="mplacetable">
+                <tbody>
+                <tr>
+                    <th colspan="2" width="80">名称</th>
+                    <th width="80">类型</th>
+                    <th>说明</th>
+                </tr>
+				<tr>
+                    <td colspan="2">status</td>
+                    <td>Int</td>
+                    <td>返回结果状态值， 成功返回0，其他值请查看<a href="http://developer.baidu.com/map/webservice-geocoding.htm#.E6.8E.A5.E5.8F.A3.E7.A4.BA.E4.BE.8A">附录</a>。</td>
+				</tr>
+				<tr>
+                    <td colspan="2">location</td>
+                    <td>object</td>
+                    <td>经纬度坐标</td>
+				</tr>
+				<tr>
+                    <td rowspan="2"></td>
+                    <td>lat</td>
+                    <td>float</td>
+                    <td>纬度值</td>
+				</tr>
+				<tr>
+                    <td>lng</td>
+                    <td>float</td>
+                    <td>经度值</td>
+				</tr>
+				<tr>
+                    <td colspan="2">precise</td>
+                    <td>Int</td>
+                    <td>位置的附加信息，是否精确查找。1为精确查找，0为不精确。</td>
+				</tr>
+				<tr>
+                    <td colspan="2">confidence</td>
+                    <td>Int</td>
+                    <td>可信度</td>
+				</tr>
+				<tr>
+                    <td colspan="2">level</td>
+                    <td>string</td>
+                    <td>地址类型</td>
+				</tr>
+				</tbody>
+				</table>
+            
+            <p><b>json格式的返回值</b></p>
+            <pre>//带回调函数的返回格式  
+showLocation&amp;&amp;showLocation( 
+{
+    status: 0,
+    result: 
+    {
+        location: 
+        {
+            lng: 116.30814954222,
+            lat: 40.056885091681
+        },
+        precise: 1,
+        confidence: 80,
+        level: "商务大厦"
+    }
+}
+)
+
+//不带回调函数的返回值
+{
+    status: 0,
+    result: 
+    {
+        location: 
+        {
+            lng: 116.30814954222,
+            lat: 40.056885091681
+        },
+    precise: 1,
+    confidence: 80,
+    level: "商务大厦"
+    }
+}</pre>
+
+            <p><b>xml格式的返回值</b></p>
+            <pre>&lt;GeocoderSearchResponse&gt;
+    &lt;status&gt;0&lt;/status&gt;
+    &lt;result&gt;
+        &lt;location&gt;
+            &lt;lat&gt;40.056885091681&lt;/lat&gt;
+            &lt;lng&gt;116.30814954222&lt;/lng&gt;
+        &lt;/location&gt;
+        &lt;precise&gt;1&lt;/precise&gt;
+        &lt;confidence&gt;80&lt;/confidence&gt;    
+        &lt;level&gt;商务大厦&lt;/level&gt;
+    &lt;/result&gt;
+&lt;/GeocoderSearchResponse&gt;</pre>
+	<p><b>特别说明：</b></p>
+	<p>若解析status字段为OK，但结果内容为空，原因分析及可尝试方法：</p>
+	<ul>
+	<li>地址库里无此数据，本次结果为空</li>
+	<li>加入city字段重新解析</li>
+	<li>将过于详细或简单的地址更改至省市区县街道重新解析</li>
+	</ul>
+
+		<h2 id=".E8.BF.94.E5.9B.9E.E6.95.B0.E6.8D.AE.E8.AF.B4.E6.98.8E">7.逆地理编码</h2>
+				<p><b>逆地理编码专属请求参数：</b></p>
+                <table class="mplacetable">
+				<tbody><tr>
+                <th width="96px">参数</th><th width="70px">是否必须</th><th width="60px">默认值</th><th width="220px">格式举例</th><th width="255px">含义
+                </th></tr>
+				<tr>
+                <td class="mcode">coordtype
+                </td><td>否
+                </td><td>bd09ll 
+                </td><td>bd09ll 百度经纬度坐标
+                </td><td>坐标的类型，目前支持的坐标类型包括：bd09ll（百度经纬度坐标）、gcj02ll（国测局经纬度坐标）、wgs84ll（ GPS经纬度）
+                </td></tr>
+                <tr>
+                <td class="mcode">location
+                </td><td>是
+                </td><td>无
+                </td><td>38.76623,116.43213<br>lat&lt;纬度&gt;,lng&lt;经度&gt;
+                </td><td>根据经纬度坐标获取地址
+                </td></tr>
+                <tr>
+                <td class="mcode">pois
+                </td><td>否
+                </td><td>0
+                </td><td>0
+                </td><td>是否显示指定位置周边的poi，0为不显示，1为显示。当值为1时，显示周边100米内的poi。
+                </td></tr>
+				</tbody></table>
+				
+				<p>
+				   以下是关于逆地理编码参数使用方法的示例。发送请求显示结果的JavaScript代码<a href="./Geocoding API- 百度地图Web服务API_files/rgeocoder.js" target="_blank">此处查看</a>。
+				</p>
+				<div style="border: solid 1px #CCC; padding: 5px;margin-bottom:5px;">
+					<h2>逆地理编码示例</h2>
+				
+					<table class="mplacetable">
+						<thead>
+							<tr>
+								<th>
+									参数
+								</th>
+								<th>
+									值
+								</th>
+							</tr>
+						</thead>
+						<tbody><tr>
+							<td>
+								<b>Latitude:</b>
+							</td>
+							<td>
+								<input type="text" id="lat" name="lat" value="39.983424">
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<b>Longitude:</b>
+							</td>
+							<td>
+								<input type="text" id="lng" name="lng" value="116.322987">
+							</td>
+						</tr>
+						<tr>
+							<td>
+							<b>pois(是否显示周边100米内poi):</b> 
+							</td>
+							<td>
+							<select onchange="showReverseURL();" id="showPois" name="showPois">
+								<option value="0">不显示</option>
+								<option value="1">显示</option>
+							</select>
+							</td>
+						</tr>
+						<!--
+						<tr>
+							<td>
+							<b>output:</b> 
+							</td>
+							<td>
+							<select onchange="showReverseURL();" id="reverseFormat" name="reverseFormat">
+								<option value="json">JSON</option>
+								<option value="xml">XML</option>
+							</select>
+							</td>
+						</tr>
+						-->
+					</tbody></table>
+					<p><button id="btnReverse" onclick="doReverse();">运行</button>
+					(结果显示如下)</p>
+					<p class="code" id="reverseSampleUrl"></p>
+					<div id="reverseNarrative"></div>
+				</div>
+
+				
+				
+				<p><b>状态字段：</b></p>
+				<table class="mplacetable">
+                <tbody>
+                <tr>
+                    <th width="80">名称</th>
+                    <th width="80">类型</th>
+                    <th>说明</th>
+                </tr>
+				<tr>
+                    <td>status</td>
+                    <td>constant</td>
+                    <td>返回结果状态值， 成功返回0，其他值请查看<a href="http://developer.baidu.com/map/webservice-geocoding.htm#.E6.8E.A5.E5.8F.A3.E7.A4.BA.E4.BE.8A">附录</a>。</td>
+				</tr>
+				<tr>
+                    <td rowspan="2">location</td>
+                    <td>lat</td>
+                    <td>纬度坐标</td>
+				</tr>
+				<tr>
+                    <td>lng</td>
+                    <td>经度坐标</td>
+				</tr>
+				<tr>
+                    <td>formatted_address</td>
+                    <td colspan="2">结构化地址信息</td>
+				</tr>
+				<tr>
+                    <td>business</td>
+                    <td colspan="2">所在商圈信息，如 "人民大学,中关村,苏州街"</td>
+				</tr>
+				<tr>
+                    <td rowspan="5">addressComponent</td>
+                    <td>city</td>
+                    <td>城市名</td>
+				</tr>
+				<tr>
+                    <td>district</td>
+                    <td>区县名</td>
+				</tr>
+				<tr>
+                    <td>province</td>
+                    <td>省名</td>
+				</tr>
+				<tr>
+                    <td>street</td>
+                    <td>街道名</td>
+				</tr>
+				<tr>
+                    <td>street_number</td>
+                    <td>街道门牌号</td>
+				</tr>
+				<tr>
+                    <td rowspan="9">pois（周边poi数组）</td>
+                    <td>addr</td>
+                    <td>地址信息</td>
+				</tr>
+				<tr>
+                    <td>cp</td>
+                    <td>数据来源</td>
+				</tr>
+				<tr>
+                    <td>distance</td>
+                    <td>离坐标点距离</td>
+				</tr>
+				<tr>
+                    <td>name</td>
+                    <td>poi名称</td>
+				</tr>
+				<tr>
+                    <td>poiType</td>
+                    <td>poi类型，如’ 办公大厦,商务大厦’</td>
+				</tr>
+				<tr>
+                    <td>point</td>
+                    <td>poi坐标{x,y}</td>
+				</tr>
+				<tr>
+                    <td>tel</td>
+                    <td>电话</td>
+				</tr>
+				<tr>
+                    <td>uid</td>
+                    <td>poi唯一标识</td>
+				</tr>
+				<tr>
+                    <td>zip</td>
+                    <td>邮编</td>
+				</tr>
+				</tbody>
+				</table>
+				<p><b>json示例：</b></p>
+				<pre><a href="http://api.map.baidu.com/geocoder/v2/?ak=E4805d16520de693a3fe707cdc962045&callback=renderReverse&location=39.983424,116.322987&output=json&pois=1" target="_blank">http://api.map.baidu.com/geocoder/v2/?ak=E4805d16520de693a3fe707cdc962045&amp;callback=renderReverse&amp;location=39.983424,116.322987&amp;output=json&amp;pois=1</a></pre>
+				<p><b>xml示例：</b></p>
+				<pre><a href="http://api.map.baidu.com/geocoder/v2/?ak=E4805d16520de693a3fe707cdc962045&callback=renderReverse&location=39.983424,116.322987&output=xml&pois=1" target="_blank">http://api.map.baidu.com/geocoder/v2/?ak=E4805d16520de693a3fe707cdc962045&amp;callback=renderReverse&amp;location=39.983424,116.322987&amp;output=xml&amp;pois=1</a></pre>
+				<p><b>特别说明：</b></p>
+				<p>1.因为Geocoding和反Geocoding使用的门址数据以及算法都不是一样的，所以会出现不能一一对应的现象。</p>
+				<p>2.逆地址解析location参数传入的参数格式是(纬度lat，经度lng)。</p>
+			<h2 id=".E6.8E.A5.E5.8F.A3.E7.A4.BA.E4.BE.8A">8.返回码状态表</h2>
+			<table class="mplacetable">
+				<tbody><tr><th>返回码</th><th>定义</th></tr>
+				<tr><td>0</td><td>正常</td></tr>
+				<tr><td>1</td><td>服务器内部错误</td></tr>
+				<tr><td>2</td><td>请求参数非法</td></tr>
+				<tr><td>3</td><td>权限校验失败</td></tr>
+				<tr><td>4</td><td>配额校验失败</td></tr>
+				<tr><td>5</td><td>ak不存在或者非法</td></tr>
+				<tr><td>101</td><td>服务禁用</td></tr>
+				<tr><td>102</td><td>不通过白名单或者安全码不对</td></tr>
+				<tr><td>2xx</td><td>无权限</td></tr>
+				<tr><td>3xx</td><td>配额错误</td></tr>
+			</tbody></table>
+			<h2 id=".E6.8E.A5.E5.8F.A3.E7.A4.BA.E4.BE.8B">9.升级说明</h2>
+				<ul>
+				<li>v2版本较之v1版本，功能更新详见<a href="http://developer.baidu.com/map/service-update.htm#2013.E5.B9.B406.E6.9C.8827.E6.97.A1">更新日志</a>。若需查看v1文档，请点击目录 “<a href="http://developer.baidu.com/map/geocoding-api.htm">Geocoding APIv1.0</a>”。</li>
+				<li>若v1版本升级至v2版本，地理/逆地理编码的请求url，参数：新增版本号“v2”，修改“key”为“ak”。v2不兼容v1版本的key，若需升级，请重新<a href="http://lbsyun.baidu.com/apiconsole/key?application=key" target="_blank">获取密钥</a>。</li>
+				</ul>
+        </ul></div>
+        </div>
+    </div>
+    <div class="mwrappend clearfix">&nbsp;</div><div class="copyright clearfix"><p>©2014 Baidu<a href="http://www.baidu.com/duty/">使用百度前必读</a><a target="_blank" href="http://www.miibeian.gov.cn/">京ICP证030173号</a><img src="./Geocoding API- 百度地图Web服务API_files/gs.gif"></p></div></div>
+
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F5650c092812f8659cdfe23eeb42024ef' type='text/javascript'%3E%3C/script%3E"));
+</script><script src="./Geocoding API- 百度地图Web服务API_files/h.js" type="text/javascript"></script>
+
+<div id="guideMask" style="width: 1030px; height: 5707px;"></div><div id="guideContainer" style="left: 145.5px; top: -21.5px;"><div class="guide_title"><span>亲爱的访客：<span class="high">免费！</span>木有商业版，木有收费版... 全国人民用的都一样!</span><div class="guide_close" onclick="closeGuide()"></div></div><div class="guide_content"><div id="guide_arrow"></div><div class="title">我是...</div><div class="item"><div class="item_left"><div class="guide_icon"><div class="programmer"></div></div><div class="guide_text"><div class="text_title">程序猿</div><div class="text_link"><a onclick="_addStat(&#39;apidoc_guide1&#39;)" href="http://developer.baidu.com/map/jshome.htm" target="_blank">Web程序猿</a><a onclick="_addStat(&#39;apidoc_guide2&#39;)" href="http://developer.baidu.com/map/sdk-android.htm" target="_blank">Android程序猿</a><a onclick="_addStat(&#39;apidoc_guide3&#39;)" href="http://developer.baidu.com/map/sdk-ios.htm" target="_blank">iOS程序猿</a><br><a onclick="_addStat(&#39;apidoc_guide4&#39;)" href="http://developer.baidu.com/map/webservice.htm" target="_blank">C#/C++/Java程序猿</a></div></div></div><div class="item_right"><div class="guide_icon"><div class="factory"></div></div><div class="guide_text"><div class="text_title">厂商</div><div class="text_link"><a onclick="_addStat(&#39;apidoc_guide5&#39;)" href="http://developer.baidu.com/map/carhome.htm" target="_blank">汽车厂商（车联网服务）</a><br><a onclick="_addStat(&#39;apidoc_guide6&#39;)" href="mailto:mapapi@baidu.com" onmouseover="openTip(&#39;hardwareTip&#39;)" onmouseout="closeTip(&#39;hardwareTip&#39;)">硬件制造厂商（手机、Pad等）</a>        <div id="hardwareTip" class="popTip"><span>地图需求的商业合作请发送邮件至mapapi@baidu.com</span></div></div></div></div></div><div class="dashline dashline_margin_bottom"><div class="dashline_left"></div></div><div class="item"><div class="item_left"><div class="guide_icon"><div class="xiaobai"></div></div><div class="guide_text"><div class="text_title">开发小白</div><div class="text_tip"><span>老板催得紧，不会开发，咋办呀？<br>这里一样潇洒用地图。</span></div><div class="text_link"><a onclick="_addStat(&#39;apidoc_guide7&#39;)" href="http://developer.baidu.com/map/tool.htm" target="_blank">立即进入</a></div></div></div></div><div class="solidline"></div><div class="title">我要...</div><div class="item item_short"><div class="item_left"><div class="guide_icon"><div class="position"></div></div><div class="guide_text"><div class="text_title">我要定位</div><div class="text_link link_zIndex"><a onclick="_addStat(&#39;apidoc_guide8&#39;)" href="http://developer.baidu.com/map/geosdk-android.htm" target="_blank">Android定位</a><a onclick="_addStat(&#39;apidoc_guide9&#39;)" href="http://developer.baidu.com/map/geosdk-symbian.htm" target="_blank">Symbian定位</a><a onclick="_addStat(&#39;apidoc_guide10&#39;)" href="javascript:void(0)" onmouseover="openTip(&#39;iosTip&#39;)" onmouseout="closeTip(&#39;iosTip&#39;)">iOS定位</a><div id="iosTip" class="popTip"><span>请使用iOS系统自带的定位功能。为啥我木有？去问乔布斯哈！</span></div></div></div></div><div class="item_right"><div class="guide_icon"><div class="process"></div></div><div class="guide_text"><div class="text_title">我要管理我的数据</div><div class="text_tip"><span>LBS云：帮您存、查、地图展示！</span></div><div class="text_link"><a onclick="_addStat(&#39;apidoc_guide11&#39;)" href="http://developer.baidu.com/map/lbs-cloud.htm" target="_blank">立即进入</a></div></div></div></div><div class="dashline dashline_margin_bottom"><div class="dashline_left"></div><div class="dashline_right"></div></div><div class="item"><div class="item_left"><div class="guide_icon"><div class="callbaidu"></div></div><div class="guide_text"><div class="text_title">我要调用百度地图</div><div class="text_tip"><span>从今以后这不再是梦！看位置、查公交<br>一键分享都变得那么简单！</span></div><div class="text_link"><a onclick="_addStat(&#39;apidoc_guide12&#39;)" href="http://developer.baidu.com/map/uri.htm" target="_blank">立即进入</a></div></div></div><div class="item_right"><div class="guide_icon"><div class="baidupoi"></div></div><div class="guide_text"><div class="text_title">我要搜索百度POI数据</div><div class="text_tip"><span>北京的购物中心、宾馆...<br>周边的餐馆、电影院...还有详情可以看！</span></div><div class="text_link"><a onclick="_addStat(&#39;apidoc_guide13&#39;)" href="http://developer.baidu.com/map/webservice-placeapi.htm" target="_blank">立即进入</a></div></div></div></div><div class="dashline dashline_margin_vertical"><div class="dashline_left"></div></div><div class="item"><div class="item_left"><div class="guide_icon"><div class="coord"></div></div><div class="guide_text"><div class="text_title">我要坐标 我要地址</div><div class="text_tip"><span>坐标与地址间的解析，Geocoding帮您搞定！</span></div><div class="text_link"><a onclick="_addStat(&#39;apidoc_guide14&#39;)" href="./Geocoding API- 百度地图Web服务API_files/Geocoding API- 百度地图Web服务API.htm" target="_blank">立即进入</a></div></div></div><div class="item_right"><div class="more_problem"><a onclick="_addStat(&#39;apidoc_guide15&#39;)" href="http://developer.baidu.com/map/question.htm" target="_blank">更多问题...</a></div></div></div></div></div><div class="gf-con"><div class="gf-plugin" id="gf_to_top"><a href="javascript:void(0)">返回顶部</a></div><div class="gf-plugin" id="gf_guide"><a href="javascript:openGuide();" onclick="_addStatNew(&#39;lbsapi_guanwang&#39;,{&#39;operate&#39;: &#39;guanwang_productclick&#39;})">产品指引</a></div><div class="gf-plugin" id="gf_for_help"><a href="http://developer.baidu.com/map/help_index.html" onclick="_addStatNew(&#39;lbsapi_guanwang&#39;,{&#39;operate&#39;: &#39;guanwang_helpclick&#39;})">咨询求助</a></div><div class="gf-plugin" id="gf_suggestion"><a href="http://developer.baidu.com/map/suggest_index.html" onclick="_addStatNew(&#39;lbsapi_guanwang&#39;,{&#39;operate&#39;: &#39;guanwang_feedbackclick&#39;})">意见反馈</a></div></div></body></html>

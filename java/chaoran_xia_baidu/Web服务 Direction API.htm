@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<!-- saved from url=(0048)http://developer.baidu.com/map/direction-api.htm -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>Web服务 Direction API</title>
+<script type="text/javascript" src="./Web服务 Direction API_files/mapnav.js"></script>
+<link rel="stylesheet" href="./Web服务 Direction API_files/mapi.css" type="text/css" media="screen">
+<script type="text/javascript" src="./Web服务 Direction API_files/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="./Web服务 Direction API_files/menu.js"></script>
+<script type="text/javascript" src="./Web服务 Direction API_files/mapi.js"></script>
+<style>
+.mmenu a { text-indent:29px;}
+.mmenu .on3 a{background-position: 15px 17px;}
+</style>
+<style type="text/css"></style><style type="text/css"></style><script src="./Web服务 Direction API_files/guide.js" type="text/javascript" charset="utf-8"></script></head>
+<body>
+<script type="text/javascript">
+mnav({
+    one_nav:"mapnav_product",
+    two_nav:"mapnav_web"
+});
+</script><div id="header"><div id="top_main">
+<a href="http://developer.baidu.com/map/"><img class="logo" width="256px" height="52px" src="./Web服务 Direction API_files/logo.png"></a>
+<div id="nav">
+<div id="logins">
+<ul class="user-nav">
+<li class="user-nav-item " id="user-state-li" style="">
+<a id="userName">justinxia001</a><label>l</label>
+<ul class="username-dropdown" style="visibility: hidden;">
+<li><a target="_top" href="http://passport.baidu.com/center" class="bd-cloud-dropdown-link">帐号设置</a></li>
+<li><a target="_top" href="http://passport.baidu.com/?logout&u=http://developer.baidu.com/map/direction-api.htm" id="logout">退出</a></li>
+<div class="clear"></div>
+</ul>
+<div class="clear"></div>
+</li>
+<li class="user-nav-item">
+<a target="_blank" href="http://lbsyun.baidu.com/">LBS开放平台</a><label>l</label>
+</li>
+<li class="user-nav-item">
+<a target="_blank" href="http://developer.baidu.com/">百度开放云</a>
+</li>
+<li id="login-reg-li" class="user-nav-item" style="display: none;">
+<label id="dot-line">l</label><a id="login" href="" target="_top">登录</a>
+<a id="register" href="" target="_top">注册</a>
+</li>
+<div class="clear"></div>
+</ul>
+</div>
+<div class="clear"></div>
+<ul class="navul">
+<li>
+<a id="mapnav_home" href="http://developer.baidu.com/map/">首页</a>
+</li>
+<li class="nav-item">
+<a id="mapnav_product" href="http://developer.baidu.com/map/lbs-cloud.htm" class=" nav_on">API <span class="tri_span"></span></a>
+<div id="homeTab1" class="homeTab"><ul>
+<li><a href="http://developer.baidu.com/map/lbs-cloud.htm">LBS.云</a></li>
+<li><a href="http://developer.baidu.com/map/jshome.htm">JavaScript API</a> | <a href="http://developer.baidu.com/map/flash.htm">Flash API</a></li>
+<li><a href="http://developer.baidu.com/map/sdk-android.htm">Android SDK</a> | <a href="http://developer.baidu.com/map/sdk-ios.htm">iOS SDK</a> | <a href="http://developer.baidu.com/map/geosdk.htm">定位 SDK</a></li>
+<li><a href="http://developer.baidu.com/map/webservice.htm">Web服务 API</a> | <a href="http://developer.baidu.com/map/staticimg.htm">静态图 API</a> | <a href="http://developer.baidu.com/map/carhome.htm">车联网 API</a> | <a href="http://developer.baidu.com/map/uri.htm">URI API</a></li>
+<div class="clear"></div>
+</ul>
+</div>
+</li>
+<li class="nav-item">
+<a id="mapnav_tool" target="_blank" href="http://api.map.baidu.com/lbsapi/creatmap/index.html">工具<span class="tri_span"></span></a>
+<div class="homeTab">
+<ul>
+<li><a target="_blank" href="http://api.map.baidu.com/lbsapi/creatmap/index.html">地图生成器</a></li>
+<li><a target="_blank" href="http://api.map.baidu.com/lbsapi/getpoint/index.html">坐标拾取工具</a></li>
+<li><a target="_blank" href="http://api.map.baidu.com/mapCard/">地图名片</a></li>
+<li><a target="_blank" href="http://api.map.baidu.com/lbsapi/tuan/index.html">团购插件</a></li>
+<li><a target="_blank" href="http://developer.baidu.com/map/move.htm">零成本搬家工具</a></li>
+<div class="clear"></div>
+</ul>
+</div>
+</li>
+<li>
+<a id="mapnav_news" href="http://lbsyun.baidu.com/news">新闻</a>
+</li>
+<li class="nav-item">
+<a id="mapnav_support" href="http://developer.baidu.com/map/question.htm">支持<span class="tri_span"></span></a>
+<div class="homeTab">
+<ul>
+<li>
+<a href="javascript:openGuide();" onclick="_addStatNew(" lbsapi_guanwang",{operate:="" guanwang_productclick})"="">产品指引</a> | <a href="http://developer.baidu.com/map/question.htm">常见问题</a> | <a href="http://developer.baidu.com/map/devRes.htm">开发资源</a>
+</li>
+<li>
+<a href="http://developer.baidu.com/map/help_index.html">咨询求助</a> | <a href="http://developer.baidu.com/map/suggest_index.html">意见反馈</a> | <a href="http://developer.baidu.com/map/contact.htm">联系我们</a>
+</li>
+<div class="clear"></div>
+</ul>
+</div>
+</li>
+<li>
+<a id="mapnav_bbs" target="_blank" href="http://bbs.lbsyun.baidu.com/">论坛</a>
+</li>
+<li class="nav-item">
+<a id="mapnav_success" href="http://developer.baidu.com/map/case.htm" class="a_success">成功案例<span class="tri_span"></span></a>
+<div class="homeTab"><ul>
+<li style="width:250px"><a href="http://developer.baidu.com/map/case.htm">房产类</a></li>
+<li style="width:250px"><a href="http://developer.baidu.com/map/case-more.htm">更多案例</a></li>
+<div class="clear"></div>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="clear"></div>
+<div id="headTop">
+<div id="headeTop_main">
+<ul id="mapnav_tool_two">
+<li id="mapnav_creatmap"><a href="http://api.map.baidu.com/lbsapi/creatmap/index.html">地图生成器</a><b>|</b></li>
+<li id="mapnav_getpoint"><a href="http://api.map.baidu.com/lbsapi/getpoint/index.html">坐标拾取工具</a><b>|</b></li>
+<li id="mapnav_mapcard"><a href="http://api.map.baidu.com/mapCard/">地图名片</a><b>|</b></li>
+<li id="mapnav_tuan"><a href="http://api.map.baidu.com/lbsapi/tuan/index.html">团购插件</a><b>|</b></li>
+<li id="mapnav_move"><a href="http://developer.baidu.com/map/move.htm">零成本搬家</a></li></ul>
+<ul id="mapnav_support_two">
+<li id="mapnav_creatmap"><a href="javascript:openGuide();" onclick="_addStatNew(lbsapi_guanwang,{operate: guanwang_productclick})">产品指引</a><b>|</b></li>
+<li id="mapnav_question"><a href="http://developer.baidu.com/map/question.htm">常见问题</a><b>|</b></li>
+<li id="mapnav_devRes"><a href="http://developer.baidu.com/map/devRes.htm">开发资源</a><b>|</b></li>
+<li id="mapnav_help"><a href="http://developer.baidu.com/map/help_index.html">咨询求助</a><b>|</b></li>
+<li id="mapnav_suggest"><a href="http://developer.baidu.com/map/suggest_index.html">意见反馈</a><b>|</b></li>
+<li id="mapnav_contact"><a href="http://developer.baidu.com/map/contact.htm">联系我们</a></li>
+</ul>
+<ul id="mapnav_success_two">
+<li id="mapnav_houseProperty"><a href="http://developer.baidu.com/map/case.htm">房产类</a><b>|</b></li>
+<li id="mapnav_more_case"><a href="http://developer.baidu.com/map/case-more.htm">更多案例</a><b></b></li>
+</ul>
+<ul id="mapnav_product_two" style="display: block;">
+<li id="mapnav_yun"><a href="http://developer.baidu.com/map/lbs-cloud.htm">LBS.云</a><b>|</b></li>
+<li id="mapnav_javascript"><a class="Top_two" href="http://developer.baidu.com/map/jshome.htm">JavaScript API</a></li>
+<li id="mapnav_flash"><a href="http://developer.baidu.com/map/flash.htm">Flash API</a><b>|</b></li>
+<li>
+<ul>
+<li id="mapnav_and"><a href="http://developer.baidu.com/map/sdk-android.htm" class="Top_two">Android SDK</a></li>
+<li id="mapnav_ios"><a href="http://developer.baidu.com/map/sdk-ios.htm" class="Top_two">iOS SDK</a></li>
+<li id="mapnav_geo"><a href="http://developer.baidu.com/map/geosdk.htm">定位SDK</a><b>|</b></li>
+</ul>
+</li>
+<li>
+<ul>
+<li id="mapnav_web" class="nav-item  Top_on"><a href="http://developer.baidu.com/map/webservice.htm" class="Top_two_triangle">Web服务API</a>
+<div class="homeTab webTab">
+<ul>
+<li><a href="http://developer.baidu.com/map/webservice-placeapi.htm">Place API</a></li>
+<li><a href="http://developer.baidu.com/map/place-suggestion-api.htm">Place suggestion API</a></li>
+<li><a href="http://developer.baidu.com/map/webservice-geocoding.htm">Geocoding API</a></li>
+<li><a href="./Web服务 Direction API_files/Web服务 Direction API.htm">Direction API</a></li>
+<li><a href="http://developer.baidu.com/map/route-matrix-api.htm">Route Matrix API</a></li>
+<li><a href="http://developer.baidu.com/map/ip-location-api.htm">IP定位 API</a></li>
+<div class="clear"></div>
+</ul>
+</div>
+</li>
+<li id="mapnav_static"><a href="http://developer.baidu.com/map/staticimg.htm" class="Top_two">静态图API</a></li>
+<li id="mapnav_car"><a href="http://developer.baidu.com/map/carhome.htm" class="Top_two">车联网API</a></li>
+<li id="mapnav_uri"><a href="http://developer.baidu.com/map/uri.htm">URI API</a></li>
+</ul>
+</li>
+</ul>
+</div><!--end of headTop_main-->
+</div><!-- end of headTop --></div><div class="clear"></div><script src="./Web服务 Direction API_files/login.js"></script>
+<div class="mbody">
+  <div class="mbread clearfix"> <a href="http://developer.baidu.com/map/direction-api.htm#">您当前的位置</a>：<a href="http://developer.baidu.com/map/webservice.htm">Web服务API</a>&gt;<a href="./Web服务 Direction API_files/Web服务 Direction API.htm">Direction API</a> </div>
+  <div class="mwrapper clearfix">
+    <div class="mmenu"> 
+      <script type="text/javascript">
+					addMenu_web();
+					addClass_on3('webmenu_4');
+				</script><ul><li id="webmenu_6" class="mm16"><a href="http://developer.baidu.com/map/webservice.htm">概述</a></li><li id="webmenu_1" class="mm12"><a href="http://lbsyun.baidu.com/apiconsole/key?application=key" target="_blank">获取密钥</a></li><li id="webmenu_2" class="mm13"><a href="http://developer.baidu.com/map/webservice-placeapi.htm">Place API</a></li><li id="webmenu_8" class="mm18"><a href="http://developer.baidu.com/map/place-suggestion-api.htm">Place suggestion API</a></li><li id="webmenu_3" class="mm14"><a href="http://developer.baidu.com/map/webservice-geocoding.htm">Geocoding API</a></li><li id="webmenu_4" class="mm15 on3"><a href="./Web服务 Direction API_files/Web服务 Direction API.htm">Direction API</a></li><li id="webmenu_9" class="mm17"><a href="http://developer.baidu.com/map/route-matrix-api.htm">Route Matrix API<img src="./Web服务 Direction API_files/new.png"></a></li><li id="webmenu_7" class="mm17"><a href="http://developer.baidu.com/map/ip-location-api.htm">IP定位 API</a></li><li id="webmenu_5" class="mm16"><a href="http://developer.baidu.com/map/service-update.htm">更新日志</a></li></ul> 
+    </div>
+    <div class="mcontainer">
+      <h1>Direction API v1.0</h1>
+      <div class="mcatalog">
+      <ol>
+        <ol class="mcsub-menu">
+          <li><a href="http://developer.baidu.com/map/direction-api.htm#place1">1.产品介绍</a></li>
+          <li><a href="http://developer.baidu.com/map/direction-api.htm#place2">2.功能介绍</a></li>
+          <li><a href="http://developer.baidu.com/map/direction-api.htm#place3">3.适用场景</a></li>
+          <li><a href="http://developer.baidu.com/map/direction-api.htm#place4">4.使用限制</a></li>
+          <li><a href="http://developer.baidu.com/map/direction-api.htm#place5">5.使用方法</a></li>
+          <li><a href="http://developer.baidu.com/map/direction-api.htm#place6">6.服务地址</a></li>
+          <li><a href="http://developer.baidu.com/map/direction-api.htm#place7">7.请求接口参数</a></li>
+          <li><a href="http://developer.baidu.com/map/direction-api.htm#place8">8.返回值说明</a></li>
+          <ol class="mcsub-menu"><li><a href="http://developer.baidu.com/map/direction-api.htm#place8_1">8.1驾车—起/终点唯一检索模式返回值说明</a></li><li><a href="http://developer.baidu.com/map/direction-api.htm#place8_2">8.2驾车—起/终点模糊检索返回值说明</a></li><li><a href="http://developer.baidu.com/map/direction-api.htm#place8_3">8.3公交—起/终点唯一检索模式返回值说明</a></li><li><a href="http://developer.baidu.com/map/direction-api.htm#place8_4">8.4公交—起/终点模糊检索模式返回值说明</a></li><li><a href="http://developer.baidu.com/map/direction-api.htm#place8_5">8.5步行—起/终点唯一检索模式返回值说明</a></li><li><a href="http://developer.baidu.com/map/direction-api.htm#place8_6">8.6步行—起/终点模糊检索模式返回值说明</a></li>
+          </ol>
+          <li><a href="http://developer.baidu.com/map/direction-api.htm#place9">9.更新日志</a></li>
+        </ol>
+        </ol>
+      </div>
+      <div class="mcontent">
+        <h2 id="place1">1 产品介绍</h2>
+        <p>Direction API是一套以http形式提供的公交、驾车、步行查询检索接口，返回xml或json格式的检索数据，可用于实现开发线路规划功能。</p>
+        <p> 该套API免费对外开放，您需先<a target="_blank" href="http://lbsyun.baidu.com/apiconsole/key">申请密钥（ak）</a>，1个ak支持10万次/天。 </p>
+        <h2 id="place2">2 功能介绍</h2>
+        <p>根据起/终点名称或经纬度，提供公交、驾车、步行数据检索服务，且根据检索条件不同，返回两种模式检索结果：</p>
+        <ul>
+          <li><b>起/终点唯一的检索模式：</b>即给定的起/终点关键字对应唯一POI点时，可直接返回检索数据</li>
+          <li><b>起/终点模糊的检索模式：</b>即给定的起/终点关键字将对应多个POI点时，返回起终点选择页面，待选择确认唯一起/终点，返回检索数据；</li>
+        </ul>
+        <h2 id="place3">3 适用场景</h2>
+        <ul>
+          <li>非JavaScript 语言或无需展现地图的场景下，进行线路查询，如以线路结果页形式展现换乘方案</li>
+        </ul>
+        <p align="center"><img src="./Web服务 Direction API_files/direction_1.jpg"></p>
+        <ul>
+          <li>根据线路数据，自行开发线路导航</li>
+        </ul>
+        <h2 id="place4">4 使用限制</h2>
+        <p>1个ak支持10万次/天查询。</p>
+        <h2 id="place5">5 使用方法</h2>
+        <p>第一步，<a target="_blank" href="http://lbsyun.baidu.com/apiconsole/key?application=key">申请密钥（ak）</a> ，作为访问服务的依据；</p>
+        <p>第二步，拼写发送http请求的url，注意需使用第一步申请的ak；</p>
+        <p>第三步，接收http请求返回的数据（json或xml格式），根据<a href="http://developer.baidu.com/map/direction-api.htm#place8">返回值说明</a>解析数据。</p>
+        <p><b>简单示例：</b></p>
+        <pre><a target="_blank" href="http://api.map.baidu.com/direction/v1?mode=driving&origin=%E6%B8%85%E5%8D%8E%E5%A4%A7%E5%AD%A6&destination=%E5%8C%97%E4%BA%AC%E5%A4%A7%E5%AD%A6&origin_region=%E5%8C%97%E4%BA%AC&destination_region=%E5%8C%97%E4%BA%AC&output=json&ak=E4805d16520de693a3fe707cdc962045">http://api.map.baidu.com/direction/v1?mode=driving&amp;origin=清华大学&amp;destination=北京大学&amp;origin_region<br>=北京&amp;destination_region=北京&amp;output=json&amp;ak=E4805d16520de693a3fe707cdc962045</a></pre>
+        <p>说明：mode（driving）是导航模式，origin（清华大学）是起点名称，destination（北京大学）是终点名称，origin_region（北京）指定起始点城市，destination_region（北京）指定终点城市，output（json）用于指定返回数据的格式；ak是开发者请求数据的标识。</p>
+        <h2 id="place6">6 服务地址</h2>
+        <pre>http://api.map.baidu.com/direction/v1</pre>
+        <p>组成说明：</p>
+        <ul>
+          <li>域名：http://api.map.baidu.com</li>
+          <li>服务名：direction</li>
+          <li>服务版本号：当前版本为v1</li>
+        </ul>
+        <h2 id="place7">7 请求接口参数</h2>
+        <table class="mplacetable">
+          <tbody><tr>
+            <th>参数</th>
+            <th width="100">是否必须</th>
+            <th>格式举例</th>
+            <th>参数含义</th>
+          </tr>
+          <tr>
+            <td>origin</td>
+            <td>必选</td>
+            <td>名称：百度大厦<br>
+              经纬度：40.056878, 116.30815<br>
+              名称+经纬度：百度大厦|40.056878,116.30815 </td>
+            <td>起点名称或经纬度，或者可同时提供名称和经纬度，此时经纬度优先级高，将作为导航依据，名称只负责展示。</td>
+          </tr>
+          <tr>
+            <td>destination</td>
+            <td>必选</td>
+            <td>名称：天安门<br>
+              经纬度：39.915285, 116.403857<br>
+              名称+经纬度：百度大厦|40.056878,116.30815 </td>
+            <td>起点名称或经纬度，或者可同时提供名称和经纬度，此时经纬度优先级高，将作为导航依据，名称只负责展示。</td>
+          </tr>
+          <tr>
+            <td>mode</td>
+            <td>选填，默认为driving</td>
+            <td>driving(驾车模式)</td>
+            <td>导航模式，包括：driving（驾车）、walking（步行）、transit（公交）</td>
+          </tr>
+          <tr>
+            <td>region</td>
+            <td>必填</td>
+            <td>北京</td>
+            <td>公交、步行导航时该参数必填。</td>
+          </tr>
+          <tr>
+            <td>origin_region</td>
+            <td>必填</td>
+            <td>北京</td>
+            <td>起始点所在城市，驾车导航时必填。</td>
+          </tr>
+          <tr>
+            <td>destination_region</td>
+            <td>必填</td>
+            <td>北京</td>
+            <td>终点所在城市，驾车导航时必填。</td>
+          </tr>
+          <tr>
+            <td>output</td>
+            <td>选填，默认为xml</td>
+            <td>json</td>
+            <td>表示输出类型，可设置为xml或json，默认为xml。</td>
+          </tr>
+          <tr>
+            <td>coord_type</td>
+            <td>选填，默认为bd09ll</td>
+            <td>gcj02(国测局坐标，如google，soso地图均采用该坐标)</td>
+            <td>坐标类型，可选参数，默认为bd09ll。允许的值为：bd09ll（百度经纬度坐标）、bd09mc（百度摩卡托坐标）、gcj02（国测局加密坐标）、wgs84（gps设备获取的坐标）。</td>
+          </tr>
+          <tr>
+            <td>waypoints</td>
+            <td>选填</td>
+            <td>奎科科技大厦|西单</td>
+            <td>途经点集合，包括一个或多个用竖线字符 "|" 分隔的地址名称或经纬度。</td>
+          </tr>
+          <tr>
+            <td>tactics</td>
+            <td>选填</td>
+            <td>11</td>
+            <td>导航策略。导航路线类型，10，不走高速；11、最少时间；12、最短路径。</td>
+          </tr>
+          <tr>
+            <td>ak</td>
+            <td>必填</td>
+            <td>E4805d16520de693a3fe707cdc962045</td>
+            <td>用户的访问权限</td>
+          </tr>
+          <tr>
+            <td>sn</td>
+            <td>选填</td>
+            <td>&nbsp;</td>
+            <td>用户的权限签名</td>
+          </tr>
+           <tr>
+            <td>timestamp</td>
+            <td>sn存在时必填</td>
+            <td>&nbsp;</td>
+            <td>时间戳，与sn配合使用。</td>
+          </tr>  
+        </tbody></table>
+         <h2 id="place8">8 返回值说明</h2>
+         <p>status: 包含请求返回结果的接口状态信息。</p>
+         <p>routes：包含一组从起点到目的地的线路数据（包含路段标识、线路距离、线路起终点经纬度等信息）</p>
+        <b id="place8_1">8.1 驾车—起/终点唯一检索模式返回值说明</b>
+        <table class="mplacetable">
+        <tbody><tr><th colspan="5">返回值参数名称（response）</th><th width="220px">参数含义</th><th>备注</th></tr>
+        <tr><td colspan="5">status</td><td>状态码</td><td>0：成功<br>2：参数错误<br>5：权限或配额校验失败</td></tr>
+        <tr><td colspan="5">message</td><td>状态码对应的信息</td><td>例如 message："ok"</td></tr>
+        <tr><td colspan="5">type</td><td>返回数据类型</td><td>1：起终点是模糊的，此时给出的是选择页面<br>2：起终点都是明确的，直跳</td></tr>
+        <tr><td colspan="5">info</td><td>版权信息</td><td>&nbsp;</td></tr>
+        <tr><td colspan="5">result</td><td>返回的结果</td><td>&nbsp;</td></tr>
+        <tr><td rowspan="34">mode=driving<br>type=2</td><td rowspan="17">routes</td><td colspan="3">distance</td><td>方案距离</td><td>单位：米</td></tr>
+        <tr><td colspan="3">duration</td><td>线路耗时</td><td>单位：秒</td></tr>
+        <tr><td rowspan="13">steps</td><td colspan="2">area</td><td>标示该路段是否在城市内部,取值如下:<br>0：不在城市内部<br>1：在城市内部</td><td>目前为 0 </td></tr>
+        <tr><td colspan="2">direction</td><td>进入道路的角度</td><td style=" word-break:break-all;">枚举值，返回值在0-11之间的一个值，共12个枚举值，以30度递进，即每个值代表角度范围为30度；其中返回"0"代表345度到15度，以此类推，返回"11"代表315度到345度"；分别代表的含义是：0-[345°-15°]；1-[15°-45°]；2-[45°-75°]；3-[75°-105°]；4-[105°-135°]；5-[135°-165°]；6-[165°-195°]；7-[195°-225°]；8-[225°-255°]；9-[255°-285°]；10-[285°-315°]；11-[315°-345°]</td></tr>
+                <tr><td colspan="2">distance</td><td>路段距离</td><td>单位：米</td></tr>
+                 <tr><td colspan="2">duration</td><td>路段耗时</td><td>单位：秒</td></tr>
+                  <tr><td colspan="2">instruction</td><td>路段描述</td><td>&nbsp;</td></tr>
+                  <tr><td colspan="2">path</td><td>路段位置坐标描述</td><td>如"116.30815169816,40.057096534337" </td></tr>
+                  <tr><td colspan="2">pois</td><td>途径兴趣点poi信息</td><td>&nbsp;</td></tr>
+                  <tr><td colspan="2">type</td><td>路段等级类别</td><td>枚举值，返回在0-9之间的一个值，共10个枚举值；分别代表的含义是：0-高速公路；1-城市高速路；2-国道；3-省道；4-县道；5-乡镇村道；6-其他道路；7-九级路；8-航线；9-行人道路 </td></tr>
+                  <tr><td colspan="2">turn</td><td>机动转向点，包括基准八个方向、环岛、分歧等</td><td>枚举值，返回0-16之间的一个值，共17个枚举值；分别代表的含义是：0-无效；1-直行；2-右前方转弯；3-右转；4-右后方转弯；5-掉头；6-左后方转弯；7-左转；8-左前方转弯；9-左侧；10-右侧；11-分歧-左；12-分歧中央；13-分歧右；14-环岛；15-进渡口；16-出渡口</td></tr>
+                  <tr><td rowspan="2">stepOrigin<br>Location</td><td>lng</td><td>路段起点经度</td><td>&nbsp;</td></tr>
+                  <tr><td>lat</td><td>路段起点纬度</td><td>&nbsp;</td></tr>
+                  <tr><td rowspan="2">stepDestin<br>ationLocation</td><td>lng</td><td>路段终点经度</td><td>&nbsp;</td></tr>
+                  <tr><td>lat</td><td>路段终点纬度</td><td>&nbsp;</td></tr>
+        <tr><td>originLocation</td><td colspan="3">起点经纬度坐标</td><td>&nbsp;</td></tr>
+        <tr><td>destinationLoc<br>ation</td><td colspan="3">终点经纬度坐标</td><td>&nbsp;</td></tr>
+               <tr><td rowspan="5">origin</td><td>area_id</td><td colspan="3">起点所在城市代码</td><td>如：北京 131</td></tr>		
+       <tr><td>cname</td><td colspan="3">城市名称</td><td>&nbsp;</td></tr>
+       <tr><td>uid</td><td colspan="3">起点的id </td><td>&nbsp;</td></tr>
+       <tr><td>wd</td><td colspan="3">起点的搜索关键字</td><td>&nbsp;</td></tr>
+       <tr><td>originPt</td><td colspan="3">起点经纬度</td><td>&nbsp;</td></tr>
+               <tr><td rowspan="5">destination</td><td>area_id</td><td colspan="3">终点所在城市代码</td><td>&nbsp;</td></tr>  			
+       <tr><td>cname</td><td colspan="3">终点城市名称</td><td>&nbsp;</td></tr>
+       <tr><td>uid</td><td colspan="3">终点id </td><td>&nbsp;</td></tr>
+       <tr><td>wd</td><td colspan="3">终点的搜索关键字</td><td>&nbsp;</td></tr>
+       <tr><td>destinationPt</td><td colspan="3">终点经纬度坐标</td><td>&nbsp;</td></tr>
+ <tr><td rowspan="7">taxi</td><td rowspan="4">detail</td><td>desc</td><td colspan="2">描述</td><td>&nbsp;</td></tr>
+       			<tr><td>km_price</td><td colspan="2"> 每公里价格</td><td>&nbsp;</td></tr>
+                <tr><td>start_price</td><td colspan="2"> 起步价</td><td>&nbsp;</td></tr>
+                <tr><td>total_price</td><td colspan="2"> 总价格</td><td>&nbsp;</td></tr>
+       <tr><td>distance</td><td colspan="3">起终点之间距离</td><td>&nbsp;</td></tr>
+       <tr><td>duration</td><td colspan="3">起终点方案耗时</td><td>&nbsp;</td></tr>
+       <tr><td>remark</td><td colspan="3">详细信息</td><td>&nbsp;</td></tr>
+        </tbody></table>
+        <p><b>示例</b></p>
+        <pre><a target="_blank" href="http://api.map.baidu.com/direction/v1?mode=driving&origin=%E4%B8%8A%E5%9C%B0%E4%BA%94%E8%A1%97&destination=%E5%8C%97%E4%BA%AC%E5%A4%A7%E5%AD%A6&origin_region=%E5%8C%97%E4%BA%AC&destination_region=%E5%8C%97%E4%BA%AC&output=json&ak=E4805d16520de693a3fe707cdc962045">http://api.map.baidu.com/direction/v1?mode=driving&amp;origin=上地五街&amp;destination=北京大学&amp;origin_region<br>=北京&amp;destination_region=北京&amp;output=json&amp;ak=E4805d16520de693a3fe707cdc962045</a></pre>
+       <b id="place8_2">8.2 驾车—起/终点模糊检索返回值说明</b>
+                <table class="mplacetable">
+        <tbody><tr><th colspan="5">返回值参数名称（response）</th><th width="220px">参数含义</th><th>备注</th></tr>
+        <tr><td colspan="5">status</td><td>状态码</td><td>0：成功<br>2：参数错误<br>5：权限或配额校验失败</td></tr>
+        <tr><td colspan="5">message</td><td>状态码对应的信息</td><td>例如 message："ok"</td></tr>
+        <tr><td colspan="5">type</td><td>返回数据类型</td><td>1：起终点是模糊的，此时给出的是选择页面<br>2：起终点都是明确的，直跳</td></tr>
+        <tr><td colspan="5">info</td><td>版权信息</td><td>&nbsp;</td></tr>
+        <tr><td colspan="5">result</td><td>返回的结果</td><td>&nbsp;</td></tr>
+        <tr><td rowspan="21">mode=driving<br>type=1</td><td rowspan="3">originInfo</td><td colspan="3">area_id</td><td>起点的城市代码</td><td>&nbsp;</td></tr> 
+       			<tr><td colspan="3">wd</td><td>起点的搜索关键字</td><td>&nbsp;</td></tr>
+       <tr><td colspan="3">uid</td><td>起点的位置id</td><td>&nbsp;</td></tr>
+       
+       <tr><td rowspan="3">destinationInfo</td><td colspan="3">area_id</td><td>终点的城市代码 </td><td>&nbsp;</td></tr>
+       <tr><td colspan="3">wd</td><td>终点的搜索关键字</td><td>&nbsp;</td></tr>
+       <tr><td colspan="3">uid</td><td>终点的位置id</td><td>&nbsp;</td></tr>
+        <tr><td rowspan="7">origin</td><td colspan="3">cityName</td><td>起点所在城市名称 </td><td>&nbsp;</td></tr>
+         <tr><td rowspan="6">content</td><td colspan="2">name</td><td>起点模糊匹配的地点名称</td><td>&nbsp;</td></tr>  
+         <tr><td colspan="2">address</td><td>起点模糊匹配的地点的地址</td><td>&nbsp;</td></tr>   
+         <tr><td colspan="2">uid</td><td>起点模糊匹配的地点的id</td><td>&nbsp;</td></tr>   
+         <tr><td colspan="2">telephone</td><td>起点模糊匹配的地点的电话</td><td>&nbsp;</td></tr>  
+         <tr><td rowspan="2">location</td><td>lng</td><td>经度坐标</td><td>&nbsp;</td></tr>   
+           <tr> <td>lat</td><td>纬度坐标</td><td>&nbsp;</td></tr> 
+        <tr><td rowspan="7">destination</td><td colspan="3">cityName</td><td>终点所在城市名称 </td><td>&nbsp;</td></tr>
+         <tr><td rowspan="6">content</td><td colspan="2">name</td><td>终点模糊匹配的地点名称</td><td>&nbsp;</td></tr>  
+         <tr><td colspan="2">address</td><td>终点模糊匹配的地点的地址 </td><td>&nbsp;</td></tr>   
+         <tr><td colspan="2">uid</td><td>终点模糊匹配的地点的id</td><td>&nbsp;</td></tr>   
+         <tr><td colspan="2">telephone</td><td>终点模糊匹配的地点的电话</td><td>&nbsp;</td></tr>  
+         <tr><td rowspan="2">location</td><td>lng</td><td>经度坐标</td><td>&nbsp;</td></tr>   
+           <tr> <td>lat</td><td>纬度坐标</td><td>&nbsp;</td></tr>          
+        </tbody></table>
+  <p><b>示例</b></p> 
+  <p></p><pre><a target="_blank" href="http://api.map.baidu.com/direction/v1?mode=driving&origin=%E4%BA%BA%E5%A4%A7&destination=%E5%8C%97%E4%BA%AC%E5%A4%A7%E5%AD%A6&origin_region=%E5%8C%97%E4%BA%AC&destination_region=%E5%8C%97%E4%BA%AC&output=json&ak=E4805d16520de693a3fe707cdc962045">http://api.map.baidu.com/direction/v1?mode=driving&amp;origin=人大&amp;destination=北京大学&amp;origin_region=北<br>京&amp;destination_region=北京&amp;output=json&amp;ak=E4805d16520de693a3fe707cdc962045</a></pre><p></p>     
+    <b id="place8_3">8.3 公交—起/终点唯一检索模式返回值说明</b>
+      <table class="mplacetable">
+              <tbody><tr><th colspan="6">返回值参数名称（response）</th><th width="220px">参数含义</th><th>备注</th></tr>
+        <tr><td colspan="6">status</td><td>状态码</td><td>0：成功<br>2：参数错误<br>5：权限或配额校验失败</td></tr>
+        <tr><td colspan="6">message</td><td>状态码对应的信息</td><td>例如 message："ok"</td></tr>
+        <tr><td colspan="6">type</td><td>返回数据类型</td><td>1：起终点是模糊的，此时给出的是选择页面<br>2：起终点都是明确的，直跳</td></tr>
+        <tr><td colspan="6">info</td><td>相应信息</td><td>&nbsp;</td></tr>
+        <tr><td colspan="6">result</td><td>返回的结果</td><td>&nbsp;</td></tr>
+        <tr><td rowspan="34">mode=transit<br>type=2</td><td rowspan="25">routes</td><td rowspan="25">scheme</td><td colspan="3">distance</td><td>方案距离</td><td>单位：米</td></tr> 
+        <tr><td colspan="3">duration</td><td>线路耗时</td><td>单位：秒</td></tr> 
+        <tr><td rowspan="21">steps</td><td colspan="2">distance</td><td>路段距离</td><td>单位：米</td></tr>
+       	<tr><td colspan="2">duration</td><td>路段耗时</td><td>单位：秒</td></tr>	
+        <tr><td colspan="2">path</td><td>路段位置坐标描述</td><td>&nbsp;</td></tr>
+        <tr><td colspan="2">type</td><td>路段类型</td><td>&nbsp;</td></tr>
+        <tr><td rowspan="2">stepOriginLocation</td><td>lng</td><td>路段起点经度</td><td>&nbsp;</td></tr>
+            <tr><td>lat</td><td>路段起点纬度</td><td>&nbsp;</td></tr>
+        <tr><td rowspan="2">stepDestinationLocation</td><td>lng</td><td>路段终点经度</td><td>&nbsp;</td></tr>
+            <tr><td>lat</td><td>路段终点纬度</td><td>&nbsp;</td></tr>
+        <tr><td colspan="2">stepInstruction</td><td>路段说明</td><td>&nbsp;</td></tr>
+         <tr><td rowspan="12">vehicle</td><td>end_name</td><td>公交线路终点名称</td><td>&nbsp;</td></tr>
+          <tr><td>end_name</td><td>公交线路终点名称</td><td>&nbsp;</td></tr>
+          <tr><td>end_time</td><td>公交线路的末班车时间</td><td>&nbsp;</td></tr>
+          <tr><td>end_uid</td><td>公交线路终点id</td><td>&nbsp;</td></tr>
+          <tr><td>name</td><td>公交线路名称</td><td>&nbsp;</td></tr>
+          <tr><td>start_time</td><td>公交线路首班车时间</td><td>&nbsp;</td></tr>
+          <tr><td>start_uid</td><td>公交线路起点id</td><td>&nbsp;</td></tr>
+           <tr><td>stop_num</td><td>路段经过的站点数量</td><td>&nbsp;</td></tr>
+            <tr><td>total_price</td><td>价格</td><td>&nbsp;</td></tr>
+             <tr><td>type</td><td>公交线路类型</td><td>&nbsp;</td></tr>
+              <tr><td>uid</td><td>公交线路id</td><td>&nbsp;</td></tr>
+               <tr><td>zone_price</td><td>区间价</td><td>&nbsp;</td></tr>
+                <tr><td colspan="3">originLocation</td><td>起点经纬度坐标</td><td>&nbsp;</td></tr>
+             <tr><td colspan="3">destinationLocation</td><td>终点经纬度坐标</td><td>&nbsp;</td></tr>
+             <tr><td colspan="4">origin</td><td>originPt</td><td>起点经纬度</td><td>&nbsp;</td></tr>
+             <tr><td colspan="4">destination</td><td>destinationPt</td><td>终点经纬度坐标</td><td>&nbsp;</td></tr>
+             <tr><td colspan="2" rowspan="8">taxi</td><td rowspan="4" colspan="2">detail</td><td>desc</td><td>描述</td><td>&nbsp;</td></tr>
+             <tr><td>km_price</td><td>每公里价格</td><td>&nbsp;</td></tr>
+             <tr><td>start_price</td><td>起步价</td><td>&nbsp;</td></tr>
+             <tr><td>total_price</td><td>总价格</td><td>&nbsp;</td></tr>
+             <tr><td colspan="3">distance</td><td>起终点之间距离</td><td>&nbsp;</td></tr>
+             <tr><td colspan="3">duration</td><td>起终点方案耗时</td><td>&nbsp;</td></tr>
+             <tr><td colspan="3">remark</td><td>详细信息</td><td>&nbsp;</td></tr>            	
+      </tbody></table>   
+       <p><b>示例：</b></p> 
+       <p></p><pre><a target="_blank" href="http://api.map.baidu.com/direction/v1?mode=transit&origin=%E4%B8%8A%E5%9C%B0%E4%BA%94%E8%A1%97&destination=%E5%8C%97%E4%BA%AC%E5%A4%A7%E5%AD%A6&region=%E5%8C%97%E4%BA%AC&output=json&ak=E4805d16520de693a3fe707cdc962045">http://api.map.baidu.com/direction/v1?mode=transit&amp;origin=上地五街&amp;destination=北京大学&amp;region=北京&amp;<br>output=json&amp;ak=E4805d16520de693a3fe707cdc962045</a></pre><p></p>
+       <b id="place8_4">8.4 公交—起/终点模糊检索模式返回值说明</b>
+           <table class="mplacetable">
+        <tbody><tr><th colspan="3">返回值参数名称（response）</th><th width="220px">参数含义</th><th>备注</th></tr>
+        <tr><td colspan="3">status</td><td>状态码</td><td>0：成功<br>2：参数错误<br>5：权限或配额校验失败</td></tr>
+        <tr><td colspan="3">message</td><td>状态码对应的信息</td><td>例如 message："ok"</td></tr>
+        <tr><td colspan="3">type</td><td>返回数据类型</td><td>1：起终点是模糊的，此时给出的是选择页面<br>2：起终点都是明确的，直跳</td></tr>
+        <tr><td colspan="3">info</td><td>相应信息</td><td>&nbsp;</td></tr>
+        <tr><td colspan="3">result</td><td>返回的结果</td><td>&nbsp;</td></tr>
+        <tr><td rowspan="3">originInfo</td><td colspan="2">wd</td><td>起点的搜索关键字</td><td>&nbsp;</td></tr>
+        <tr><td rowspan="2">city</td><td>cname</td><td>起点所在城市名称</td><td>&nbsp;</td></tr>
+        <tr><td>code</td><td>起点所在城市代码</td><td>&nbsp;</td></tr>
+        <tr><td rowspan="3">destinationInfo</td><td colspan="2">wd</td><td>终点的搜索关键字</td><td>&nbsp;</td></tr>
+        <tr><td rowspan="2">city</td><td>cname</td><td>终点所在城市名称</td><td>&nbsp;</td></tr>
+        <tr><td>code</td><td>终点所在城市代码</td><td>&nbsp;</td></tr>
+        <tr><td rowspan="5">origin</td><td colspan="2">name</td><td>模糊匹配起点名称</td><td>&nbsp;</td></tr>
+        <tr><td colspan="2">address</td><td>模糊匹配起点地址</td><td>&nbsp;</td></tr>
+        <tr><td colspan="2">uid</td><td>模糊匹配起点的id</td><td>&nbsp;</td></tr>
+        <tr><td rowspan="2">location</td><td>lng</td><td>模糊匹配起点经度</td><td>&nbsp;</td></tr>
+         <tr><td>lat</td><td>模糊匹配起点纬度</td><td>&nbsp;</td></tr>
+        <tr><td rowspan="5">destination</td><td colspan="2">name</td><td>模糊匹配终点名称</td><td>&nbsp;</td></tr>
+        <tr><td colspan="2">address</td><td>模糊匹配终点地址</td><td>&nbsp;</td></tr>
+        <tr><td colspan="2">uid</td><td>模糊匹配终点的id</td><td>&nbsp;</td></tr>
+        <tr><td rowspan="2">location</td><td>lng</td><td>模糊匹配终点经度</td><td>&nbsp;</td></tr>
+         <tr><td>lat</td><td>模糊匹配终点纬度</td><td>&nbsp;</td></tr>  
+        </tbody></table>
+ <p><b>示例：</b></p>      
+ <p></p><pre><a target="_blank" href="http://api.map.baidu.com/direction/v1?mode=transit&origin=%E4%BA%BA%E5%A4%A7&destination=%E5%8C%97%E4%BA%AC%E5%A4%A7%E5%AD%A6&region=%E5%8C%97%E4%BA%AC&output=json&ak=E4805d16520de693a3fe707cdc962045">http://api.map.baidu.com/direction/v1?mode=transit&amp;origin=人大&amp;destination=北京大学&amp;region=北京&amp;outpu<br>t=json&amp;ak=E4805d16520de693a3fe707cdc962045</a></pre><p></p>
+ <b id="place8_5">8.5 步行—起/终点唯一检索模式返回值说明</b>
+     <table class="mplacetable">
+        <tbody><tr><th colspan="5">返回值参数名称（response）</th><th width="220px">参数含义</th><th>备注</th></tr>
+        <tr><td colspan="5">status</td><td>状态码</td><td>0：成功<br>2：参数错误<br>5：权限或配额校验失败</td></tr>
+        <tr><td colspan="5">message</td><td>状态码对应的信息</td><td>例如 message："ok"</td></tr>
+        <tr><td colspan="5">type</td><td>返回数据类型</td><td>1：起终点是模糊的，此时给出的是选择页面<br>2：起终点都是明确的，直跳</td></tr>
+        <tr><td colspan="5">info</td><td>版权信息</td><td>&nbsp;</td></tr>
+        <tr><td colspan="5">result</td><td>返回的结果</td><td>&nbsp;</td></tr>
+<tr><td rowspan="36">mode=walking<br>type=2</td><td rowspan="17">routes</td><td colspan="3">distance</td><td>方案距离</td><td>单位：米</td></tr>
+        <tr><td colspan="3">duration</td><td>线路耗时</td><td>单位：秒</td></tr>
+        <tr><td rowspan="13">steps</td><td colspan="2">area</td><td>标示该路段是否在城市内部,取值如下:<br>0：不在城市内部<br>1：在城市内部</td><td>目前为 0 </td></tr>
+        <tr><td colspan="2">direction</td><td>保存进入当前道路的方向角</td><td>&nbsp;</td></tr>
+                <tr><td colspan="2">distance</td><td>路段距离</td><td>单位：米</td></tr>
+                 <tr><td colspan="2">duration</td><td>路段耗时</td><td>单位：秒</td></tr>
+                  <tr><td colspan="2">instruction</td><td>路段描述</td><td>&nbsp;</td></tr>
+                  <tr><td colspan="2">path</td><td>路段位置坐标描述</td><td>&nbsp;</td></tr>
+                  <tr><td colspan="2">pois</td><td>途径兴趣点poi信息</td><td>&nbsp;</td></tr>
+                  <tr><td colspan="2">type</td><td>路段类型</td><td>&nbsp;</td></tr>
+                  <tr><td colspan="2">turn</td><td>机动转向点。</td><td>基准八方向、环岛、分歧</td></tr>
+                  <tr><td rowspan="2">stepOrigin<br>Location</td><td>lng</td><td>路段起点经度</td><td>&nbsp;</td></tr>
+                  <tr><td>lat</td><td>路段起点纬度</td><td>&nbsp;</td></tr>
+                  <tr><td rowspan="2">stepDestin<br>ationLocation</td><td>lng</td><td>路段终点经度</td><td>&nbsp;</td></tr>
+                  <tr><td>lat</td><td>路段终点纬度</td><td>&nbsp;</td></tr>
+        <tr><td>originLocation</td><td colspan="3">起点经纬度坐标</td><td>&nbsp;</td></tr>
+        <tr><td>destinationLoc<br>ation</td><td colspan="3">终点经纬度坐标</td><td>&nbsp;</td></tr>
+               <tr><td rowspan="5">origin</td><td>area_id</td><td colspan="3">起点所在城市代码</td><td>如：北京 131</td></tr>
+       <tr><td>cname</td><td colspan="3">城市名称</td><td>&nbsp;</td></tr>
+       <tr><td>uid</td><td colspan="3">起点的id </td><td>&nbsp;</td></tr>
+       <tr><td>wd</td><td colspan="3">起点的搜索关键字</td><td>&nbsp;</td></tr>
+       <tr><td>originPt</td><td colspan="3">起点经纬度</td><td>&nbsp;</td></tr>
+               <tr><td rowspan="5">destination</td><td>area_id</td><td colspan="3">终点所在城市代码</td><td>&nbsp;</td></tr>
+       			
+       <tr><td>cname</td><td colspan="3">终点城市名称</td><td>&nbsp;</td></tr>
+       <tr><td>uid</td><td colspan="3">终点id </td><td>&nbsp;</td></tr>
+       <tr><td>wd</td><td colspan="3">终点的搜索关键字</td><td>&nbsp;</td></tr>
+       <tr><td>destinationPt</td><td colspan="3">终点经纬度坐标</td><td>&nbsp;</td></tr>
+ <tr><td rowspan="7">taxi</td><td rowspan="4">detail</td><td>desc</td><td colspan="2">描述</td><td>&nbsp;</td></tr>
+       			<tr><td>km_price</td><td colspan="2"> 每公里价格</td><td>&nbsp;</td></tr>
+                <tr><td>start_price</td><td colspan="2"> 起步价</td><td>&nbsp;</td></tr>
+                <tr><td>total_price</td><td colspan="2"> 总价格</td><td>&nbsp;</td></tr>
+       <tr><td>distance</td><td colspan="3">起终点之间距离</td><td>&nbsp;</td></tr>
+       <tr><td>duration</td><td colspan="3">起终点方案耗时</td><td>&nbsp;</td></tr>
+       <tr><td>remark</td><td colspan="3">详细信息</td><td>&nbsp;</td></tr>
+        </tbody></table>
+        <p><b>示例：</b></p>
+        <p></p><pre><a target="_blank" href="http://api.map.baidu.com/direction/v1?mode=walking&origin=%E4%B8%8A%E5%9C%B0%E4%BA%94%E8%A1%97&destination=%E5%8C%97%E4%BA%AC%E5%A4%A7%E5%AD%A6&region=%E5%8C%97%E4%BA%AC&output=json&ak=E4805d16520de693a3fe707cdc962045">http://api.map.baidu.com/direction/v1?mode=walking&amp;origin=上地五街&amp;destination=北京大学&amp;region=北京&amp;<br>output=json&amp;ak=E4805d16520de693a3fe707cdc962045</a></pre><p></p>
+        
+       <b id="place8_6">8.6 步行—起/终点模糊检索模式返回值说明</b>
+        <table class="mplacetable">
+        <tbody><tr><th colspan="5">返回值参数名称（response）</th><th width="220px">参数含义</th><th>备注</th></tr>
+        <tr><td colspan="5">status</td><td>状态码</td><td>0：成功<br>2：参数错误<br>5：权限或配额校验失败</td></tr>
+        <tr><td colspan="5">message</td><td>状态码对应的信息</td><td>例如 message："ok"</td></tr>
+        <tr><td colspan="5">type</td><td>返回数据类型</td><td>1：起终点是模糊的，此时给出的是选择页面<br>2：起终点都是明确的，直跳</td></tr>
+        <tr><td colspan="5">info</td><td>相应信息</td><td>&nbsp;</td></tr>
+        <tr><td colspan="5">result</td><td>返回的结果</td><td>&nbsp;</td></tr>
+        <tr><td rowspan="22">mode=driving<br>type=1</td><td rowspan="3">originInfo</td><td colspan="3">area_id</td><td>起点的城市代码</td><td>&nbsp;</td></tr> 
+       			<tr><td colspan="3">wd</td><td>起点的搜索关键字</td><td>&nbsp;</td></tr>
+       <tr><td colspan="3">uid</td><td>起点的位置id</td><td>&nbsp;</td></tr>
+       
+       <tr><td rowspan="3">destinationInfo</td><td colspan="3">area_id</td><td>终点的城市代码 </td><td>&nbsp;</td></tr>
+       <tr><td colspan="3">wd</td><td>终点的搜索关键字</td><td>&nbsp;</td></tr>
+       <tr><td colspan="3">uid</td><td>终点的位置id</td><td>&nbsp;</td></tr>
+        <tr><td rowspan="7">origin</td><td colspan="3">cityName</td><td>起点所在城市名称 </td><td>&nbsp;</td></tr>
+         <tr><td rowspan="6">content</td><td colspan="2">name</td><td>起点模糊匹配的地点名称</td><td>&nbsp;</td></tr>  
+         <tr><td colspan="2">address</td><td>起点模糊匹配的地点的地址</td><td>&nbsp;</td></tr>   
+         <tr><td colspan="2">uid</td><td>起点模糊匹配的地点的id</td><td>&nbsp;</td></tr>   
+         <tr><td colspan="2">telephone</td><td>起点模糊匹配的地点的电话</td><td>&nbsp;</td></tr>  
+         <tr><td rowspan="2">location</td><td>lng</td><td>经度坐标</td><td>&nbsp;</td></tr>   
+           <tr> <td>lat</td><td>纬度坐标</td><td>&nbsp;</td></tr> 
+        <tr><td rowspan="7">destination</td><td colspan="3">cityName</td><td>终点所在城市名称 </td><td>&nbsp;</td></tr>
+         <tr><td rowspan="6">content</td><td colspan="2">name</td><td>终点模糊匹配的地点名称</td><td>&nbsp;</td></tr>  
+         <tr><td colspan="2">address</td><td>终点模糊匹配的地点的地址 </td><td>&nbsp;</td></tr>   
+         <tr><td colspan="2">uid</td><td>终点模糊匹配的地点的id</td><td>&nbsp;</td></tr>   
+         <tr><td colspan="2">telephone</td><td>终点模糊匹配的地点的电话</td><td>&nbsp;</td></tr>  
+         <tr><td rowspan="2">location</td><td>lng</td><td>经度坐标</td><td>&nbsp;</td></tr>   
+           <tr> <td>lat</td><td>纬度坐标</td><td>&nbsp;</td></tr>          
+        </tbody></table>
+        <b>示例：</b>
+        <p></p><pre><a target="_blank" href="http://api.map.baidu.com/direction/v1?mode=walking&origin=%E4%BA%BA%E5%A4%A7&destination=%E5%8C%97%E4%BA%AC%E5%A4%A7%E5%AD%A6&region=%E5%8C%97%E4%BA%AC&output=json&ak=E4805d16520de693a3fe707cdc962045">http://api.map.baidu.com/direction/v1?mode=walking&amp;origin=人大&amp;destination=北京大学&amp;region=北京&amp;outpu<br>t=json&amp;ak=E4805d16520de693a3fe707cdc962045</a></pre><p></p>
+        <h2 id="place9">9 更新日志</h2>
+        <p>2013年7月11日Direction APIv1.0产品上线：开放公交、驾车、步行换乘方案的线路数据。</p>
+      </div>
+    </div>
+  </div>
+  <div class="mwrappend clearfix">&nbsp;</div>
+  <div class="copyright clearfix">
+    <p>©2014 Baidu<a href="http://www.baidu.com/duty/">使用百度前必读</a><a target="_blank" href="http://www.miibeian.gov.cn/">京ICP证030173号</a><img src="./Web服务 Direction API_files/gs.gif"></p>
+  </div>
+</div>
+
+
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F5650c092812f8659cdfe23eeb42024ef' type='text/javascript'%3E%3C/script%3E"));
+</script><script src="./Web服务 Direction API_files/h.js" type="text/javascript"></script>
+
+<div id="guideMask" style="width: 1030px; height: 11944px;"></div><div id="guideContainer" style="left: 145.5px; top: -21.5px;"><div class="guide_title"><span>亲爱的访客：<span class="high">免费！</span>木有商业版，木有收费版... 全国人民用的都一样!</span><div class="guide_close" onclick="closeGuide()"></div></div><div class="guide_content"><div id="guide_arrow"></div><div class="title">我是...</div><div class="item"><div class="item_left"><div class="guide_icon"><div class="programmer"></div></div><div class="guide_text"><div class="text_title">程序猿</div><div class="text_link"><a onclick="_addStat(&#39;apidoc_guide1&#39;)" href="http://developer.baidu.com/map/jshome.htm" target="_blank">Web程序猿</a><a onclick="_addStat(&#39;apidoc_guide2&#39;)" href="http://developer.baidu.com/map/sdk-android.htm" target="_blank">Android程序猿</a><a onclick="_addStat(&#39;apidoc_guide3&#39;)" href="http://developer.baidu.com/map/sdk-ios.htm" target="_blank">iOS程序猿</a><br><a onclick="_addStat(&#39;apidoc_guide4&#39;)" href="http://developer.baidu.com/map/webservice.htm" target="_blank">C#/C++/Java程序猿</a></div></div></div><div class="item_right"><div class="guide_icon"><div class="factory"></div></div><div class="guide_text"><div class="text_title">厂商</div><div class="text_link"><a onclick="_addStat(&#39;apidoc_guide5&#39;)" href="http://developer.baidu.com/map/carhome.htm" target="_blank">汽车厂商（车联网服务）</a><br><a onclick="_addStat(&#39;apidoc_guide6&#39;)" href="mailto:mapapi@baidu.com" onmouseover="openTip(&#39;hardwareTip&#39;)" onmouseout="closeTip(&#39;hardwareTip&#39;)">硬件制造厂商（手机、Pad等）</a>        <div id="hardwareTip" class="popTip"><span>地图需求的商业合作请发送邮件至mapapi@baidu.com</span></div></div></div></div></div><div class="dashline dashline_margin_bottom"><div class="dashline_left"></div></div><div class="item"><div class="item_left"><div class="guide_icon"><div class="xiaobai"></div></div><div class="guide_text"><div class="text_title">开发小白</div><div class="text_tip"><span>老板催得紧，不会开发，咋办呀？<br>这里一样潇洒用地图。</span></div><div class="text_link"><a onclick="_addStat(&#39;apidoc_guide7&#39;)" href="http://developer.baidu.com/map/tool.htm" target="_blank">立即进入</a></div></div></div></div><div class="solidline"></div><div class="title">我要...</div><div class="item item_short"><div class="item_left"><div class="guide_icon"><div class="position"></div></div><div class="guide_text"><div class="text_title">我要定位</div><div class="text_link link_zIndex"><a onclick="_addStat(&#39;apidoc_guide8&#39;)" href="http://developer.baidu.com/map/geosdk-android.htm" target="_blank">Android定位</a><a onclick="_addStat(&#39;apidoc_guide9&#39;)" href="http://developer.baidu.com/map/geosdk-symbian.htm" target="_blank">Symbian定位</a><a onclick="_addStat(&#39;apidoc_guide10&#39;)" href="javascript:void(0)" onmouseover="openTip(&#39;iosTip&#39;)" onmouseout="closeTip(&#39;iosTip&#39;)">iOS定位</a><div id="iosTip" class="popTip"><span>请使用iOS系统自带的定位功能。为啥我木有？去问乔布斯哈！</span></div></div></div></div><div class="item_right"><div class="guide_icon"><div class="process"></div></div><div class="guide_text"><div class="text_title">我要管理我的数据</div><div class="text_tip"><span>LBS云：帮您存、查、地图展示！</span></div><div class="text_link"><a onclick="_addStat(&#39;apidoc_guide11&#39;)" href="http://developer.baidu.com/map/lbs-cloud.htm" target="_blank">立即进入</a></div></div></div></div><div class="dashline dashline_margin_bottom"><div class="dashline_left"></div><div class="dashline_right"></div></div><div class="item"><div class="item_left"><div class="guide_icon"><div class="callbaidu"></div></div><div class="guide_text"><div class="text_title">我要调用百度地图</div><div class="text_tip"><span>从今以后这不再是梦！看位置、查公交<br>一键分享都变得那么简单！</span></div><div class="text_link"><a onclick="_addStat(&#39;apidoc_guide12&#39;)" href="http://developer.baidu.com/map/uri.htm" target="_blank">立即进入</a></div></div></div><div class="item_right"><div class="guide_icon"><div class="baidupoi"></div></div><div class="guide_text"><div class="text_title">我要搜索百度POI数据</div><div class="text_tip"><span>北京的购物中心、宾馆...<br>周边的餐馆、电影院...还有详情可以看！</span></div><div class="text_link"><a onclick="_addStat(&#39;apidoc_guide13&#39;)" href="http://developer.baidu.com/map/webservice-placeapi.htm" target="_blank">立即进入</a></div></div></div></div><div class="dashline dashline_margin_vertical"><div class="dashline_left"></div></div><div class="item"><div class="item_left"><div class="guide_icon"><div class="coord"></div></div><div class="guide_text"><div class="text_title">我要坐标 我要地址</div><div class="text_tip"><span>坐标与地址间的解析，Geocoding帮您搞定！</span></div><div class="text_link"><a onclick="_addStat(&#39;apidoc_guide14&#39;)" href="http://developer.baidu.com/map/webservice-geocoding.htm" target="_blank">立即进入</a></div></div></div><div class="item_right"><div class="more_problem"><a onclick="_addStat(&#39;apidoc_guide15&#39;)" href="http://developer.baidu.com/map/question.htm" target="_blank">更多问题...</a></div></div></div></div></div><div class="gf-con"><div class="gf-plugin" id="gf_to_top"><a href="javascript:void(0)">返回顶部</a></div><div class="gf-plugin" id="gf_guide"><a href="javascript:openGuide();" onclick="_addStatNew(&#39;lbsapi_guanwang&#39;,{&#39;operate&#39;: &#39;guanwang_productclick&#39;})">产品指引</a></div><div class="gf-plugin" id="gf_for_help"><a href="http://developer.baidu.com/map/help_index.html" onclick="_addStatNew(&#39;lbsapi_guanwang&#39;,{&#39;operate&#39;: &#39;guanwang_helpclick&#39;})">咨询求助</a></div><div class="gf-plugin" id="gf_suggestion"><a href="http://developer.baidu.com/map/suggest_index.html" onclick="_addStatNew(&#39;lbsapi_guanwang&#39;,{&#39;operate&#39;: &#39;guanwang_feedbackclick&#39;})">意见反馈</a></div></div></body></html>

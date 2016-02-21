@@ -1,0 +1,14 @@
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdftex 2013.1.11)  11 JAN 2013 00:08
+entering extended mode
+**F:/latexPractise/test5
+(F:/latexPractise/test5.tex
+! Undefined control sequence.
+l.1 \documentclass
+                  {article}
+? 
+! Emergency stop.
+l.1 \documentclass
+                  {article}
+End of file on the terminal!
+
+!  ==> Fatal error occurred, no output PDF file produced!

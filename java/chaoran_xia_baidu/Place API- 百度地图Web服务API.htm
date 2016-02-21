@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<!-- saved from url=(0054)http://developer.baidu.com/map/webservice-placeapi.htm -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <title>Place API- 百度地图Web服务API</title>
+    <meta name="keywords" content="Place API、Place、矩形检索、周边检索、城市关键字检索、百度地图API">
+    <meta name="description" content="Place API 是一类简单的HTTP接口，用于返回查询某个区域的某类POI数据，且提供单个POI的详情查询服务，用户可以使用C#、C++、Java等开发语言发送HTTP请求且接收json、xml的数据。">
+
+	<script type="text/javascript" src="./Place API- 百度地图Web服务API_files/mapnav.js"></script>
+    <link rel="stylesheet" href="./Place API- 百度地图Web服务API_files/mapi.css" type="text/css" media="screen">
+	 <script type="text/javascript" src="./Place API- 百度地图Web服务API_files/jquery-1.7.2.min.js"></script>
+	 <script type="text/javascript" src="./Place API- 百度地图Web服务API_files/menu.js"></script>
+	 <script type="text/javascript" src="./Place API- 百度地图Web服务API_files/mapi.js"></script>
+	 <script type="text/javascript" src="./Place API- 百度地图Web服务API_files/placeapi.js"></script><style type="text/css"></style><style type="text/css"></style>
+	 
+<style>
+.mmenu a { text-indent:29px;}
+.mmenu .on3 a{background-position: 15px 17px;}
+</style>
+<script src="./Place API- 百度地图Web服务API_files/guide.js" type="text/javascript" charset="utf-8"></script></head>
+<body>
+<script type="text/javascript">
+mnav({
+    one_nav:"mapnav_product",
+    two_nav:"mapnav_web"
+});
+
+</script><div id="header"><div id="top_main">
+<a href="http://developer.baidu.com/map/"><img class="logo" width="256px" height="52px" src="./Place API- 百度地图Web服务API_files/logo.png"></a>
+<div id="nav">
+<div id="logins">
+<ul class="user-nav">
+<li class="user-nav-item " id="user-state-li" style="">
+<a id="userName">justinxia001</a><label>l</label>
+<ul class="username-dropdown" style="visibility: hidden;">
+<li><a target="_top" href="http://passport.baidu.com/center" class="bd-cloud-dropdown-link">帐号设置</a></li>
+<li><a target="_top" href="http://passport.baidu.com/?logout&u=http://developer.baidu.com/map/webservice-placeapi.htm" id="logout">退出</a></li>
+<div class="clear"></div>
+</ul>
+<div class="clear"></div>
+</li>
+<li class="user-nav-item">
+<a target="_blank" href="http://lbsyun.baidu.com/">LBS开放平台</a><label>l</label>
+</li>
+<li class="user-nav-item">
+<a target="_blank" href="http://developer.baidu.com/">百度开放云</a>
+</li>
+<li id="login-reg-li" class="user-nav-item" style="display: none;">
+<label id="dot-line">l</label><a id="login" href="" target="_top">登录</a>
+<a id="register" href="" target="_top">注册</a>
+</li>
+<div class="clear"></div>
+</ul>
+</div>
+<div class="clear"></div>
+<ul class="navul">
+<li>
+<a id="mapnav_home" href="http://developer.baidu.com/map/">首页</a>
+</li>
+<li class="nav-item">
+<a id="mapnav_product" href="http://developer.baidu.com/map/lbs-cloud.htm" class=" nav_on">API <span class="tri_span"></span></a>
+<div id="homeTab1" class="homeTab"><ul>
+<li><a href="http://developer.baidu.com/map/lbs-cloud.htm">LBS.云</a></li>
+<li><a href="http://developer.baidu.com/map/jshome.htm">JavaScript API</a> | <a href="http://developer.baidu.com/map/flash.htm">Flash API</a></li>
+<li><a href="http://developer.baidu.com/map/sdk-android.htm">Android SDK</a> | <a href="http://developer.baidu.com/map/sdk-ios.htm">iOS SDK</a> | <a href="http://developer.baidu.com/map/geosdk.htm">定位 SDK</a></li>
+<li><a href="http://developer.baidu.com/map/webservice.htm">Web服务 API</a> | <a href="http://developer.baidu.com/map/staticimg.htm">静态图 API</a> | <a href="http://developer.baidu.com/map/carhome.htm">车联网 API</a> | <a href="http://developer.baidu.com/map/uri.htm">URI API</a></li>
+<div class="clear"></div>
+</ul>
+</div>
+</li>
+<li class="nav-item">
+<a id="mapnav_tool" target="_blank" href="http://api.map.baidu.com/lbsapi/creatmap/index.html">工具<span class="tri_span"></span></a>
+<div class="homeTab">
+<ul>
+<li><a target="_blank" href="http://api.map.baidu.com/lbsapi/creatmap/index.html">地图生成器</a></li>
+<li><a target="_blank" href="http://api.map.baidu.com/lbsapi/getpoint/index.html">坐标拾取工具</a></li>
+<li><a target="_blank" href="http://api.map.baidu.com/mapCard/">地图名片</a></li>
+<li><a target="_blank" href="http://api.map.baidu.com/lbsapi/tuan/index.html">团购插件</a></li>
+<li><a target="_blank" href="http://developer.baidu.com/map/move.htm">零成本搬家工具</a></li>
+<div class="clear"></div>
+</ul>
+</div>
+</li>
+<li>
+<a id="mapnav_news" href="http://lbsyun.baidu.com/news">新闻</a>
+</li>
+<li class="nav-item">
+<a id="mapnav_support" href="http://developer.baidu.com/map/question.htm">支持<span class="tri_span"></span></a>
+<div class="homeTab">
+<ul>
+<li>
+<a href="javascript:openGuide();" onclick="_addStatNew(" lbsapi_guanwang",{operate:="" guanwang_productclick})"="">产品指引</a> | <a href="http://developer.baidu.com/map/question.htm">常见问题</a> | <a href="http://developer.baidu.com/map/devRes.htm">开发资源</a>
+</li>
+<li>
+<a href="http://developer.baidu.com/map/help_index.html">咨询求助</a> | <a href="http://developer.baidu.com/map/suggest_index.html">意见反馈</a> | <a href="http://developer.baidu.com/map/contact.htm">联系我们</a>
+</li>
+<div class="clear"></div>
+</ul>
+</div>
+</li>
+<li>
+<a id="mapnav_bbs" target="_blank" href="http://bbs.lbsyun.baidu.com/">论坛</a>
+</li>
+<li class="nav-item">
+<a id="mapnav_success" href="http://developer.baidu.com/map/case.htm" class="a_success">成功案例<span class="tri_span"></span></a>
+<div class="homeTab"><ul>
+<li style="width:250px"><a href="http://developer.baidu.com/map/case.htm">房产类</a></li>
+<li style="width:250px"><a href="http://developer.baidu.com/map/case-more.htm">更多案例</a></li>
+<div class="clear"></div>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="clear"></div>
+<div id="headTop">
+<div id="headeTop_main">
+<ul id="mapnav_tool_two">
+<li id="mapnav_creatmap"><a href="http://api.map.baidu.com/lbsapi/creatmap/index.html">地图生成器</a><b>|</b></li>
+<li id="mapnav_getpoint"><a href="http://api.map.baidu.com/lbsapi/getpoint/index.html">坐标拾取工具</a><b>|</b></li>
+<li id="mapnav_mapcard"><a href="http://api.map.baidu.com/mapCard/">地图名片</a><b>|</b></li>
+<li id="mapnav_tuan"><a href="http://api.map.baidu.com/lbsapi/tuan/index.html">团购插件</a><b>|</b></li>
+<li id="mapnav_move"><a href="http://developer.baidu.com/map/move.htm">零成本搬家</a></li></ul>
+<ul id="mapnav_support_two">
+<li id="mapnav_creatmap"><a href="javascript:openGuide();" onclick="_addStatNew(lbsapi_guanwang,{operate: guanwang_productclick})">产品指引</a><b>|</b></li>
+<li id="mapnav_question"><a href="http://developer.baidu.com/map/question.htm">常见问题</a><b>|</b></li>
+<li id="mapnav_devRes"><a href="http://developer.baidu.com/map/devRes.htm">开发资源</a><b>|</b></li>
+<li id="mapnav_help"><a href="http://developer.baidu.com/map/help_index.html">咨询求助</a><b>|</b></li>
+<li id="mapnav_suggest"><a href="http://developer.baidu.com/map/suggest_index.html">意见反馈</a><b>|</b></li>
+<li id="mapnav_contact"><a href="http://developer.baidu.com/map/contact.htm">联系我们</a></li>
+</ul>
+<ul id="mapnav_success_two">
+<li id="mapnav_houseProperty"><a href="http://developer.baidu.com/map/case.htm">房产类</a><b>|</b></li>
+<li id="mapnav_more_case"><a href="http://developer.baidu.com/map/case-more.htm">更多案例</a><b></b></li>
+</ul>
+<ul id="mapnav_product_two" style="display: block;">
+<li id="mapnav_yun"><a href="http://developer.baidu.com/map/lbs-cloud.htm">LBS.云</a><b>|</b></li>
+<li id="mapnav_javascript"><a class="Top_two" href="http://developer.baidu.com/map/jshome.htm">JavaScript API</a></li>
+<li id="mapnav_flash"><a href="http://developer.baidu.com/map/flash.htm">Flash API</a><b>|</b></li>
+<li>
+<ul>
+<li id="mapnav_and"><a href="http://developer.baidu.com/map/sdk-android.htm" class="Top_two">Android SDK</a></li>
+<li id="mapnav_ios"><a href="http://developer.baidu.com/map/sdk-ios.htm" class="Top_two">iOS SDK</a></li>
+<li id="mapnav_geo"><a href="http://developer.baidu.com/map/geosdk.htm">定位SDK</a><b>|</b></li>
+</ul>
+</li>
+<li>
+<ul>
+<li id="mapnav_web" class="nav-item  Top_on"><a href="http://developer.baidu.com/map/webservice.htm" class="Top_two_triangle">Web服务API</a>
+<div class="homeTab webTab">
+<ul>
+<li><a href="./Place API- 百度地图Web服务API_files/Place API- 百度地图Web服务API.htm">Place API</a></li>
+<li><a href="http://developer.baidu.com/map/place-suggestion-api.htm">Place suggestion API</a></li>
+<li><a href="http://developer.baidu.com/map/webservice-geocoding.htm">Geocoding API</a></li>
+<li><a href="http://developer.baidu.com/map/direction-api.htm">Direction API</a></li>
+<li><a href="http://developer.baidu.com/map/route-matrix-api.htm">Route Matrix API</a></li>
+<li><a href="http://developer.baidu.com/map/ip-location-api.htm">IP定位 API</a></li>
+<div class="clear"></div>
+</ul>
+</div>
+</li>
+<li id="mapnav_static"><a href="http://developer.baidu.com/map/staticimg.htm" class="Top_two">静态图API</a></li>
+<li id="mapnav_car"><a href="http://developer.baidu.com/map/carhome.htm" class="Top_two">车联网API</a></li>
+<li id="mapnav_uri"><a href="http://developer.baidu.com/map/uri.htm">URI API</a></li>
+</ul>
+</li>
+</ul>
+</div><!--end of headTop_main-->
+</div><!-- end of headTop --></div><div class="clear"></div><script src="./Place API- 百度地图Web服务API_files/login.js"></script>
+<div class="mbody">
+    <div class="mbread clearfix">
+        <a href="http://developer.baidu.com/map/webservice-placeapi.htm#">您当前的位置</a>：<a href="http://developer.baidu.com/map/webservice.htm">Web服务API</a>&gt;<a href="http://developer.baidu.com/map/place-api.htm">Place API</a>
+    </div>
+    <div class="mwrapper clearfix">
+        <div class="mmenu" style="position: fixed; top: 0px;">
+        <script type="text/javascript">
+					addMenu_web();
+					addClass_on3('webmenu_2');
+				</script><ul><li id="webmenu_6" class="mm16"><a href="http://developer.baidu.com/map/webservice.htm">概述</a></li><li id="webmenu_1" class="mm12"><a href="http://lbsyun.baidu.com/apiconsole/key?application=key" target="_blank">获取密钥</a></li><li id="webmenu_2" class="mm13 on3"><a href="./Place API- 百度地图Web服务API_files/Place API- 百度地图Web服务API.htm">Place API</a></li><li id="webmenu_8" class="mm18"><a href="http://developer.baidu.com/map/place-suggestion-api.htm">Place suggestion API</a></li><li id="webmenu_3" class="mm14"><a href="http://developer.baidu.com/map/webservice-geocoding.htm">Geocoding API</a></li><li id="webmenu_4" class="mm15"><a href="http://developer.baidu.com/map/direction-api.htm">Direction API</a></li><li id="webmenu_9" class="mm17"><a href="http://developer.baidu.com/map/route-matrix-api.htm">Route Matrix API<img src="./Place API- 百度地图Web服务API_files/new.png"></a></li><li id="webmenu_7" class="mm17"><a href="http://developer.baidu.com/map/ip-location-api.htm">IP定位 API</a></li><li id="webmenu_5" class="mm16"><a href="http://developer.baidu.com/map/service-update.htm">更新日志</a></li></ul>
+        </div>
+        <div class="mcontainer">
+            <h1>Place API v2.0</h1>
+            <div class="mcatalog placelink">
+            	<ol>
+                    <li class="mcatalog_odd_item_placeapi"><a href="http://developer.baidu.com/map/webservice-placeapi.htm#.E4.BB.80.E4.B9.88.E6.98.AFGeocoding.EF.BC.9F">1. 什么是 Place API？</a></li>
+                    <li class="mcatalog_even_item_placeapi"><a href="http://developer.baidu.com/map/webservice-placeapi.htm#Geocoding_API.E6.9C.89.E5.93.AA.E4.BA.9B.E5.8A.9F.E8.83.BD.EF.BC.9F">2. 功能介绍</a></li>
+                    <li class="mcatalog_even_item_placeapi"><a href="http://developer.baidu.com/map/webservice-placeapi.htm#.E5.A6.82.E4.BD.95.E4.BD.BF.E7.94.A8">3. 使用说明</a></li>
+                    <li class="mcatalog_odd_item_placeapi"><a href="http://developer.baidu.com/map/webservice-placeapi.htm#.E6.9C.8D.E5.8A.A1.E5.9C.B0.E5.9D.80">4. Place服务地址</a></li>
+                    <li class="mcatalog_even_item_placeapi"><a href="http://developer.baidu.com/map/webservice-placeapi.htm#.E6.8E.A5.E5.8F.A3.E5.8F.82.E6.95.B0">5. Place区域检索POI服务</a> &nbsp;<a href="http://developer.baidu.com/map/webservice-placeapi.htm#.E6.8E.A5.E5.8F.A3.E5.8F.82.E6.95.B1">5.1 Place区域检索通用接口参数 </a>&nbsp; <a href="http://developer.baidu.com/map/webservice-placeapi.htm#.E6.8E.A5.E5.8F.A3.E5.8F.82.E6.95.B2">5.2 Place区域检索方法示例 </a> &nbsp; <a href="http://developer.baidu.com/map/webservice-placeapi.htm#.E6.8E.A5.E5.8F.A3.E5.8F.82.E6.95.B3">5.3 Place区域检索示例方法</a></li>
+                    <li class="mcatalog_even_item_placeapi"><a href="http://developer.baidu.com/map/webservice-placeapi.htm#.E6.8E.A5.E5.8F.A3.E5.8F.82.E6.95.B7">6. Place详情检索服务</a></li>
+                    <li class="mcatalog_odd_item_placeapi"><a href="http://developer.baidu.com/map/webservice-placeapi.htm#.E8.BF.94.E5.9B.9E.E6.95.B0.E6.8D.AE.E8.AF.B4.E6.98.8E">7. Place团购检索服务</a>&nbsp;<a href="http://developer.baidu.com/map/webservice-placeapi.htm#.E8.BF.94.E5.9B.9E.E6.95.B0.E6.8D.AE.E8.AF.B4.E6.98.8F">7.1 区域团购信息检索服务</a>&nbsp;<a href="http://developer.baidu.com/map/webservice-placeapi.htm#.E8.BF.94.E5.9B.9E.E6.95.B0.E6.8D.AE.E8.AF.B4.E6.98.8G">7.2 商家团购详情查询</a></li>
+                    <li class="mcatalog_odd_item_placeapi"><a href="http://developer.baidu.com/map/webservice-placeapi.htm#.E6.8E.A5.E5.8F.A3.E7.A4.BA.E4.BE.8A">8. 状态码附录</a></li>
+                    <li class="mcatalog_even_item_placeapi"><a href="http://developer.baidu.com/map/webservice-placeapi.htm#.E6.8E.A5.E5.8F.A3.E7.A4.BA.E4.BE.8B">9. 升级说明</a></li>
+                </ol>
+            </div>
+            <div class="mcontent">
+			<p class="placelink"><a href="http://developer.baidu.com/map/place-api.htm">Place APIv1.0 访问入口</a></p>
+            <h2 id=".E4.BB.80.E4.B9.88.E6.98.AFGeocoding.EF.BC.9F">1.什么是Place API？</h2>
+            <p>Place API 是一类简单的HTTP接口，用于返回查询某个区域的某类POI数据，且提供单个POI的详情查询服务，用户可以使用C#、C++、Java等开发语言发送HTTP请求且接收json、xml的数据。</p>
+            <h2 id="Geocoding_API.E6.9C.89.E5.93.AA.E4.BA.9B.E5.8A.9F.E8.83.BD.EF.BC.9F">2.功能介绍</h2>
+            <p>Place API 提供区域检索POI服务、POI详情服务与团购信息检索服务、商家团购详情查询。</p>
+            <p>1. 区域检索POI服务提供三种区域检索方法：</p>
+            <ul>
+			<li>城市内检索（对应JavaScriptAPI的Search方法）</li>
+            <li>矩形检索（对应JavaScript API的SearchInBound方法）</li>
+			<li>圆形区域检索（对应JavaScript的SearchNearBy方法）。</li>
+            </ul>
+			<p>2. POI详情服务提供查询单个POI的详情信息，如好评。</p>
+			<p>3. 团购信息检索服务提供三种区域检索方法：</p>
+		    <ul>
+			<li>城市内检索</li>
+            <li>矩形检索</li>
+			<li>圆形区域检索</li>
+            </ul>
+            <p>4. 商家团购详情查询。</p>
+			<p>用户可以使用C# 、C++、Java等开发语言发送HTTP请求且接收JSON、XML的返回数据。</p>
+            <h2 id=".E5.A6.82.E4.BD.95.E4.BD.BF.E7.94.A8">3.使用说明</h2>
+			<p>Place API 是一套免费使用的API接口，调用次数限制为10万次/天。</p>
+			<p>ak是API请求串的必填参数，请先<a href="http://lbsyun.baidu.com/apiconsole/key?application=key" target="_blank">获取密钥</a>，若无百度账号则首先需要<a href="https://passport.baidu.com/v2/?reg&tpl=pp&u=http%3A%2F%2Flbsyun.baidu.com%2Fapiconsole%2Fkey%3Fapplication%3Dkey" target="_blank">注册百度账号</a>。</p>
+			<p><b>Hello, World</b></p>
+			<p>以下是一个关于place API的简单示例，设置检索城市为北京，检索关键字为“饭店”，检索后返回10条数据。</p>
+			<pre><a href="http://api.map.baidu.com/place/v2/search?&q=%E9%A5%AD%E5%BA%97&region=%E5%8C%97%E4%BA%AC&output=json&ak=E4805d16520de693a3fe707cdc962045" target="_blank">http://api.map.baidu.com/place/v2/search?&amp;q=饭店&amp;region=北京&amp;output=json&amp;ak=E4805d16520de693a3fe707cdc962045</a></pre>
+			<p><b>结果说明：</b>点击上述请求url,返回符合检索条件的json格式的数据。</p>
+            <h2 id=".E6.9C.8D.E5.8A.A1.E5.9C.B0.E5.9D.80">4.Place服务地址</h2>
+            <p>百度地图Place API服务地址：</p>
+			<pre><a href="http://api.map.baidu.com/place/v2/search" target="_blank">http://api.map.baidu.com/place/v2/search</a>   //v2 place区域检索POI服务
+<a href="http://api.map.baidu.com/place/v2/detail" target="_blank">http://api.map.baidu.com/place/v2/detail</a>   //v2 POI详情服务
+<a href="http://api.map.baidu.com/place/v2/eventsearch" target="_blank">http://api.map.baidu.com/place/v2/eventsearch</a>   //v2 团购信息检索服务
+<a href="http://api.map.baidu.com/place/v2/eventdetail" target="_blank">http://api.map.baidu.com/place/v2/eventdetail</a>  //v2 商家团购信息查询</pre>
+			<p>组成说明：</p>
+			<ul>
+			<li>域名：<a href="http://api.map.baidu.com/" target="_blank">http://api.map.baidu.com</a></li>
+			<li>服务名：place</li>
+			<li>服务版本号：较之前版本，v2版本新增参数。</li>
+			<li>Place方法名：如search表示区域POI查询，detail表示POI详情，eventsearch为团购信息检索，eventdetail为商家团购详情查询。</li>
+			</ul>
+  			<h2 id=".E6.8E.A5.E5.8F.A3.E5.8F.82.E6.95.B0">5.Place区域检索POI服务</h2>
+            <b id=".E6.8E.A5.E5.8F.A3.E5.8F.82.E6.95.B1">&nbsp;5.1 Place区域检索通用接口参数</b>
+			<p>以下参数，适用于三种区域检索方法的Place API。</p>
+            <table class="mplacetable">
+                <tbody><tr>
+                <th width="96px">参数</th><th width="70px">是否必须</th><th width="60px">默认值</th><th width="220px">格式举例</th><th width="255px">含义
+                </th></tr>
+                <tr>
+                <td class="mcode">q(query)
+                </td><td>是
+                </td><td>无
+                </td><td>中关村、ATM、百度大厦
+                </td><td>检索关键字，周边检索和矩形区域内检索支持多个关键字并集检索，不同关键字间以$符号分隔，最多支持10个关键字检索。如:”银行$酒店”。
+                </td></tr>
+                <tr>
+                <td class="mcode">tag
+                </td><td>否
+                </td><td>无
+                </td><td>日式烧烤/铁板烧、朝外大街
+                </td><td>标签项，与q组合进行检索
+                </td></tr>
+                <tr>
+                <td class="mcode">output
+                </td><td>否
+                </td><td>xml
+                </td><td>json或xml
+                </td><td>输出格式为json或者xml
+                </td></tr>
+                <tr>
+                <td class="mcode">scope
+                </td><td>是
+                </td><td>1
+                </td><td>1、2
+                </td><td>检索结果详细程度。取值为1 或空，则返回基本信息；取值为2，返回检索POI详细信息
+                </td></tr>
+                <tr><td class="mcode">filter
+                </td><td>否
+                </td><td>无
+                </td><td style="word-break:break-all;">filter=industry_type:cater|sort_name:price|sort_rule:0|price_section:100,200|groupon:0|discount:0
+                </td><td>
+				检索过滤条件，当scope取值为2时，可以设置filter进行排序。<br>
+				<li><b>industry_type</b>：行业类型<br>注意：设置该字段可提高检索速度和过滤精度。<br>
+				industry_type取值如下：<br>
+				hotel:宾馆<br>
+				cater:餐饮<br>
+				life:生活娱乐<br>
+				</li>
+				<li><b>sort_name</b>：排序字段<br>取值根据industry_type字段的值而定。<br>
+				(1)industry_type为hotel时，sort_name取值：<br>
+				default:默认；<br>
+				price:价格<br>
+				total_score:好评<br>
+				level：星级<br>
+				health_score：卫生<br>
+				distance:距离排序，只有周边检索有效<br>
+				(2)industry_type取值cater时，sort_name取值：<br>
+				default：默认<br>
+				taste_rating：口味<br>
+				price：价格<br>
+				overall_rating：好评<br>
+				service_rating：服务<br>
+				distance:距离排序，只有周边检索有效<br>
+				(3)industry_type取值life时，sort_name取值：<br>
+				default：默认<br>
+				price：价格<br>
+				overall_rating：好评<br>
+				comment_num：服务<br>
+				distance：距离排序，只有周边检索有
+			</li>
+<li>
+<b>sort_rule</b>：排序规则，取值如下：0：从高到低，1：从低到高； 
+</li>
+<li>
+<b>price_section</b>：价格区间；
+</li>
+<li>
+<b>groupon</b>：是否有团购，1为有团购，0为无团购；
+</li>
+<li>
+<b>discount</b>：是否打折，1为有打折，0为无打折；<br>
+</li>
+                </td></tr>
+                <tr>
+                <td class="mcode">page_size
+                </td><td>否
+                </td><td>10
+                </td><td>10
+                </td><td>范围记录数量，默认为10条记录，最大返回20条。多关键字检索时，返回的记录数为关键字个数*page_size。
+                </td></tr>
+                <tr>
+                <td class="mcode">page_num
+                </td><td>否
+                </td><td>0
+                </td><td>0、1、2
+                </td><td>分页页码，默认为0,0代表第一页，1代表第二页，以此类推。
+                </td></tr>
+                <tr>
+                <td class="mcode">ak
+                </td><td>是
+                </td><td>无
+                </td><td>E4805d16520de693a3fe707cdc962045
+                </td><td>用户的访问密钥，必填项。v2之前该属性为key。
+                </td></tr>
+                <tr>
+                <td class="mcode">sn
+                </td><td>否
+                </td><td>无
+                </td><td>
+                </td><td>用户的权限签名。
+                </td></tr>
+                <tr><td class="mcode">timestamp
+                </td><td>否
+                </td><td>无
+                </td><td>
+                </td><td>设置sn后该值必填。
+                </td></tr>
+                </tbody></table>
+				<p id=".E6.8E.A5.E5.8F.A3.E5.8F.82.E6.95.B6"><b>编码说明：</b></p>
+				<p>对于query和region参数，因为这两个参数取值可以是中文或一些特殊字符（如：空格），举例：query可以取值“小吃”，region可以取值“北京”，为了避免提交到后台乱码，所以对于这2个参数值进行编码处理，编码成 UTF-8 字符的二字符十六进制值。 query和region参数取值时候，凡是不在下表中的字符都要进行编码。</p>
+                <table class="mplacetable">
+                    <tbody><tr>
+                    <th width="74px">字符集合</th><th width="500px;">字符
+                    </th></tr>
+                    <tr>
+                    <td>URL非保留字
+                    </td><td class="mcode">a b c d e f g h i j k l m n o p q r s t u v w x y z A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 0 1 2 3 4 5 6 7 8 9 - _ . ~
+                    </td></tr>
+                    <tr>
+                    <td>URL保留字
+                    </td><td class="mcode">! * ' ( )&nbsp;;&nbsp;: @ &amp; = + $ , /&nbsp;?&nbsp;% # [ ]
+                    </td></tr></tbody></table>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;如果query和region参数中使用URL保留字字符的字面意思，例如：query关键字取值为"?小吃"，检索关键字包含一个问号，此问号也必须进行编码，"?"的16进制编码为"%3F"，所以整个检索关键字"?小吃"编码后为"%3F%E5%B0%8F%E5%90%83"。</p>
+                <p>附注：</p>
+                <p>(1)  javascript中一般采用encodeURIComponent函数对特殊字符进行编码。</p>
+                <p>(2)  Java中可以使用函数URLEncoder.encode对特殊字符进行编码。</p>
+                <p>(3)  C#中可以使用函数HttpUtility.UrlEncode对特殊字符进行编码。</p>
+                <p>(4)  php中可以使用函数urlencode对特殊字符进行编码。</p>
+				
+				<b id=".E6.8E.A5.E5.8F.A3.E5.8F.82.E6.95.B2">5.2 Place检索示例：</b>
+				<div style="border: solid 1px #CCC; padding: 5px;margin-bottom:5px;">				
+					<select id="searchType">
+						<option value="region">城市内检索</option>
+						<option value="bounds">矩形区域检索</option>
+						<option value="location">圆形区域检索</option>
+					</select>
+					<table class="mplacetable">
+						<thead>
+							<tr>
+								<th>
+									参数
+								</th>
+								<th>
+									值
+								</th>
+								<th>
+									说明
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									<b>query:</b>
+								</td>
+							   <td colspan="1" padding="5px">
+									<input style="width: 100%;" type="text" id="query" value="银行">
+								</td>
+								   <td>
+								   检索关键字
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<b>scope:</b>
+								</td>
+							   <td colspan="1" padding="5px">
+									<select id="scope">
+										<option selected="selected" value="1">1</option>
+										<option value="2">2</option>
+									</select>
+								</td>
+								   <td>
+								   检索结果详细程度。取值为1 或空，则返回基本信息；取值为2，返回检索POI详细信息
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<b>page_size:</b>
+								</td>
+							   <td colspan="1" padding="5px">
+									<input style="width: 100%;" type="text" id="page_size" value="10">
+								</td>
+								   <td>
+								   返回记录数量，默认为10条记录，最大返回结果为20条。
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<b>page_num:</b>
+								</td>
+							   <td colspan="1" padding="5px">
+									<input style="width: 100%;" type="text" id="page_num" value="0">
+								</td>
+								   <td>
+								   分页页码，默认为0,0代表第一页，1代表第二页，以此类推。
+								</td>
+							</tr>
+							<tr id="regiontr">
+								<td>
+									<b>region:</b>
+								</td>
+								<td colspan="1" padding="5px">
+									<input style="width: 100%;" type="text" id="region" value="北京">
+								</td>
+								   <td>
+								   检索区域，如果取值为“全国”或某省份，则返回指定区域的POI。
+								</td>
+							</tr>
+							<tr id="boundstr" style="display:none;">
+								<td>
+									<b>bounds:</b>
+								</td>
+								<td colspan="1" padding="5px">
+									<input style="width:100%;" type="text" id="bounds" value="39.915,116.404,39.975,116.414">
+								</td>
+								   <td>
+								   检索矩形区域。
+								</td>
+							</tr>
+							<tr id="locationtr" style="display:none;">
+								<td>
+									<b>location:</b>
+								</td>
+								<td colspan="1" padding="5px">
+									<input style="width:100%;" type="text" id="location" value="39.915,116.404">
+								</td>
+								   <td>
+								   周边检索中心点，不支持多个点。
+								</td>
+							</tr>
+							<tr id="radiustr" style="display:none;">
+								<td>
+									<b>radius:</b>
+								</td>
+								<td colspan="1" padding="5px">
+									<input style="width:100%;" type="text" id="radius" value="2000">
+								</td>
+								   <td>
+								   周边检索半径，单位为米。
+								</td>
+							</tr>
+						   
+						</tbody>
+					</table>
+					<p>
+						<button id="testOptions" onclick="doOptions();">
+							运行
+						</button>
+						(结果显示如下)
+					</p>
+					<p class="code" id="optionsSampleUrl"></p>
+					<div id="optionsNarrative">
+					</div>
+					<pre id="queryResults" style="display:none;">					</pre>
+				</div>
+				
+				
+				<b id=".E6.8E.A5.E5.8F.A3.E5.8F.82.E6.95.B3">&nbsp;5.3 Place区域检索示例方法</b>
+				<p>Place API根据支持检索的区域类型，提供城市内、矩形、圆形三种检索方法，使用说明如下：</p>
+				<p><b>1）城市内检索请求参数</b></p>
+                <table class="mplacetable">
+				<tbody><tr>
+                <th width="96px">参数</th><th width="70px">是否必须</th><th width="60px">默认值</th><th width="220px">格式举例</th><th width="255px">含义
+                </th></tr>
+				<tr>
+                <td class="mcode">region
+                </td><td>是
+                </td><td>无
+                </td><td>北京、131、全国
+                </td><td>检索区域，如果取值为“全国”或某省份，则返回指定区域的POI。
+                </td></tr>
+				</tbody></table>
+				<p><b>城市检索示例（返回json数据）：</b></p>
+				<pre><a href="http://api.map.baidu.com/place/v2/search?&query=%E9%93%B6%E8%A1%8C&region=%E6%B5%8E%E5%8D%97&output=json&ak=E4805d16520de693a3fe707cdc962045" target="_blank">http://api.map.baidu.com/place/v2/search?&amp;query=%E9%93%B6%E8%A1%8C&amp;region=%E6%B5%8E%E5%8D%97&amp;output=json&amp;ak=E4805d16520de693a3fe707cdc962045</a></pre>
+				
+				<p><b>2）矩形区域检索参数</b></p>
+                <table class="mplacetable">
+				<tbody><tr>
+                <th width="96px">参数</th><th width="70px">是否必须</th><th width="60px">默认值</th><th width="220px">格式举例</th><th width="255px">含义
+                </th></tr>
+				<tr>
+                <td class="mcode">bounds(bds)
+                </td><td>是
+                </td><td>无
+                </td><td>38.76623,116.43213,39.54321,116.46773 lat,lng(左下角坐标),lat,lng(右上角坐标)
+                </td><td>检索矩形区域
+                </td></tr>
+				</tbody></table>
+				<p><b>矩形检索示例（返回json数据）: </b></p>
+				<pre><a href="http://api.map.baidu.com/place/v2/search?&query=%E9%93%B6%E8%A1%8C&bounds=39.915,116.404,39.975,116.414&output=json&ak=E4805d16520de693a3fe707cdc962045" target="_blank">http://api.map.baidu.com/place/v2/search?&amp;query=%E9%93%B6%E8%A1%8C&amp;bounds=39.915,116.404,39.975,116.414&amp;output=json&amp;ak=E4805d16520de693a3fe707cdc962045</a></pre>
+				
+				
+				
+				<p><b>3）圆形区域检索参数</b></p>
+                <table class="mplacetable">
+				<tbody><tr>
+                <th width="96px">参数</th><th width="70px">是否必须</th><th width="60px">默认值</th><th width="220px">格式举例</th><th width="255px">含义
+                </th></tr>
+				<tr>
+                <td class="mcode">location
+                </td><td>是
+                </td><td>无
+                </td><td>38.76623,116.43213 <br>lat&lt;纬度&gt;,lng&lt;经度&gt;
+                </td><td>周边检索中心点，不支持多个点
+                </td></tr>
+				<tr>
+                <td class="mcode">radius(r)
+                </td><td>否
+                </td><td>无
+                </td><td>2000
+                </td><td>周边检索半径，单位为米
+                </td></tr>
+				</tbody></table>
+				<p><b>圆形区域检索示例(返回xml数据)：</b></p>
+				<pre><a href="http://api.map.baidu.com/place/v2/search?&query=%E9%93%B6%E8%A1%8C&location=39.915,116.404&radius=2000&output=xml&ak=E4805d16520de693a3fe707cdc962045" target="_blank">http://api.map.baidu.com/place/v2/search?&amp;query=%E9%93%B6%E8%A1%8C&amp;location=39.915,116.404&amp;radius=2000&amp;output=xml&amp;ak=E4805d16520de693a3fe707cdc962045</a></pre>
+				
+				
+				<p><b id=".E6.9C.8D.E5.8A.A1.E5.9C.B0.E5.9D.81">4）Place API检索返回结果字段</b></p>
+				<p><b>状态字段</b></p>
+				<table class="mplacetable">
+                <tbody>
+                <tr>
+                    <th width="80">名称</th>
+                    <th width="80">类型</th>
+                    <th>说明</th>
+                </tr>
+				<tr>
+                    <td>status</td>
+                    <td>Int</td>
+                    <td>本次API访问状态，如果成功返回0，如果失败返回其他数字。</td>
+				</tr>
+				<tr>
+                    <td>message</td>
+                    <td>string</td>
+                    <td>对API访问状态值的英文说明，如果成功返回"ok"，并返回结果字段，如果失败返回错误说明。</td>
+				</tr>
+				<tr>
+                    <td>total</td>
+                    <td>int</td>
+                    <td>检索总数，用户请求中设置了page_num字段才会出现total字段。</td>
+				</tr>
+				</tbody>
+				</table>
+				
+				<p><b>结果字段（以结果集合里的一条数据为例，灰色表示扩展字段）：</b></p>
+				<table class="mplacetable">
+                <tbody>
+                <tr>
+                    <th colspan="2" width="80">名称</th>
+                    <th width="80">类型</th>
+                    <th>说明</th>
+                </tr>
+				<tr>
+                    <td colspan="2">name</td>
+                    <td>string</td>
+                    <td>poi名称</td>
+				</tr>
+				<tr>
+                    <td colspan="2">location</td>
+                    <td>object</td>
+                    <td>poi经纬度坐标</td>
+				</tr>
+				<tr>
+                    <td rowspan="2"></td>
+                    <td>lat</td>
+                    <td>float</td>
+                    <td>纬度值</td>
+				</tr>
+				<tr>
+                    <td>lng</td>
+                    <td>float</td>
+                    <td>经度值</td>
+				</tr>
+				<tr>
+                    <td colspan="2">address</td>
+                    <td>string</td>
+                    <td>poi地址信息</td>
+				</tr>
+				<tr>
+                    <td colspan="2">telephone</td>
+                    <td>string</td>
+                    <td>poi电话信息</td>
+				</tr>
+				<tr>
+                    <td colspan="2">uid</td>
+                    <td>string</td>
+                    <td>poi的唯一标示</td>
+				</tr>
+				
+				</tbody>
+				
+				<tbody style="background:#f8f8f8;">
+				<tr>
+                    <td colspan="2">detail_info</td>
+                    <td>object</td>
+                    <td>poi的扩展信息，仅当scope=2时，显示该字段，不同的poi类型，显示的detail_info字段不同。</td>
+				</tr>
+				<tr>
+                    <td rowspan="19"></td>
+                    <td>distance</td>
+                    <td>int32</td>
+                    <td>距离中心点的距离</td>
+				</tr>
+				<tr>
+                    <td>type</td>
+                    <td>string</td>
+                    <td>所属分类，如’hotel’、’cater’。</td>
+				</tr>
+				<tr>
+                    <td>tag</td>
+                    <td>string</td>
+                    <td>标签</td>
+				</tr>
+				<tr>
+                    <td>detail_url</td>
+                    <td>string</td>
+                    <td>poi的详情页</td>
+				</tr>
+				<tr>
+                    <td>price</td>
+                    <td>string</td>
+                    <td>poi商户的价格</td>
+				</tr>
+				<tr>
+                    <td>shop_hours</td>
+                    <td>string</td>
+                    <td>营业时间</td>
+				</tr>
+				<tr>
+                    <td>overall_rating</td>
+                    <td>string</td>
+                    <td>总体评分</td>
+				</tr>
+				<tr>
+                    <td>taste_rating</td>
+                    <td>string</td>
+                    <td>口味评分</td>
+				</tr>
+				<tr>
+                    <td>service_rating</td>
+                    <td>string</td>
+                    <td>服务评分</td>
+				</tr>
+				<tr>
+                    <td>environment_rating</td>
+                    <td>string</td>
+                    <td>环境评分</td>
+				</tr>
+				<tr>
+                    <td>facility_rating</td>
+                    <td>string</td>
+                    <td>星级（设备）评分</td>
+				</tr>
+				<tr>
+                    <td>hygiene_rating</td>
+                    <td>string</td>
+                    <td>卫生评分</td>
+				</tr>
+				<tr>
+                    <td>technology_rating</td>
+                    <td>string</td>
+                    <td>技术评分</td>
+				</tr>
+				<tr>
+                    <td>image_num</td>
+                    <td>string</td>
+                    <td>图片数</td>
+				</tr>
+				<tr>
+                    <td>groupon_num</td>
+                    <td>int</td>
+                    <td>团购数</td>
+				</tr>
+				<tr>
+                    <td>discount_num</td>
+                    <td>int</td>
+                    <td>优惠数</td>
+				</tr>
+				<tr>
+                    <td>comment_num</td>
+                    <td>string</td>
+                    <td>评论数</td>
+				</tr>
+				<tr>
+                    <td>favorite_num</td>
+                    <td>string</td>
+                    <td>收藏数</td>
+				</tr>
+				<tr>
+                    <td>checkin_num</td>
+                    <td>string</td>
+                    <td>签到数</td>
+				</tr>
+				</tbody>
+				</table>
+			
+		<h2 id=".E6.8E.A5.E5.8F.A3.E5.8F.82.E6.95.B7">6.Place详情检索服务</h2>
+		<br>
+		<b class="placeService">&nbsp;服务地址：</b>
+		<pre><a href="http://api.map.baidu.com/place/v2/detail" target="_blank">&nbsp;http://api.map.baidu.com/place/v2/detail</a></pre>
+				<p>提供查询某个POI点的详情信息，如好评，评价等。</p>
+				<p><b>请求参数说明:</b></p>
+                <table class="mplacetable">
+				<tbody><tr>
+                <th width="96px">参数</th><th width="70px">是否必须</th><th width="60px">默认值</th><th width="220px">格式举例</th><th width="255px">含义
+                </th></tr>
+				<tr>
+                <td class="mcode">uid
+                </td><td>是
+                </td><td>无 
+                </td><td>‘8ee4560cf91d160e6cc02cd7’
+                </td><td>poi的uid
+                </td></tr>
+                <tr>
+                <td class="mcode">output
+                </td><td>否
+                </td><td>xml
+                </td><td>json或xml
+                </td><td>请求返回格式
+                </td></tr>
+                <tr>
+                <td class="mcode">scope
+                </td><td>是
+                </td><td>1
+                </td><td>1、2
+                </td><td>检索结果详细程度。取值为1 或空，则返回基本信息；取值为2，返回检索POI详细信息
+                </td></tr>
+                <tr>
+                <td class="mcode">ak
+                </td><td>是
+                </td><td>无
+                </td><td>E4805d16520de693a3fe707cdc962045
+                </td><td>用户的访问密钥，必填项。v2之前该属性为key。
+                </td></tr>
+                <tr>
+                <td class="mcode">sn
+                </td><td>否
+                </td><td>无
+                </td><td>
+                </td><td>用户的权限签名。
+                </td></tr>
+                <tr>
+                <td class="mcode">timestamp
+                </td><td>否
+                </td><td>无
+                </td><td>
+                </td><td>设置sn后该值必填。
+                </td></tr>
+				</tbody></table>
+				<p><b>返回值与<a href="http://developer.baidu.com/map/webservice-placeapi.htm#.E6.9C.8D.E5.8A.A1.E5.9C.B0.E5.9D.81">Place API检索返回结果字段相同。</a></b></p>
+				<b>示例：</b>
+				<pre><a href="http://api.map.baidu.com/place/v2/detail?uid=8ee4560cf91d160e6cc02cd7&ak=E4805d16520de693a3fe707cdc962045&output=json&scope=2" target="_blank">http://api.map.baidu.com/place/v2/detail?uid=8ee4560cf91d160e6cc02cd7&amp;ak=E4805d16520de693a3fe707cdc962045&amp;output=json&amp;scope=2</a></pre>
+				<b>返回值：</b>
+				<div class="dp-highlighter"><div class="bar"><div class="tools"><a href="http://developer.baidu.com/map/webservice-placeapi.htm#" onclick="dp.sh.Toolbar.Command(&#39;ViewSource&#39;,this);return false;">源码</a><a href="http://developer.baidu.com/map/webservice-placeapi.htm#" onclick="dp.sh.Toolbar.Command(&#39;CopyToClipboard&#39;,this);return false;" id="clip172">复制</a><a href="http://developer.baidu.com/map/webservice-placeapi.htm#" onclick="dp.sh.Toolbar.Command(&#39;PrintSource&#39;,this);return false;">打印</a><a href="http://developer.baidu.com/map/webservice-placeapi.htm#" onclick="dp.sh.Toolbar.Command(&#39;About&#39;,this);return false;">关于</a></div></div><ol start="1" class="dp-c"><li class="alt"><span><span>{&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;status:&nbsp;0,&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;message:&nbsp;<span class="string">"ok"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;result:&nbsp;{&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name:&nbsp;<span class="string">"江边城外•巫山烤全鱼亚运村店"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;location:&nbsp;{&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lng:&nbsp;116.412347,&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lat:&nbsp;40.005328&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address:&nbsp;<span class="string">"朝阳区慧忠北路慧忠里123号楼(近北辰东路)"</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;telephone:&nbsp;<span class="string">"(010)64924119"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uid:&nbsp;<span class="string">"8ee4560cf91d160e6cc02cd7"</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detail_info:&nbsp;{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tag:&nbsp;<span class="string">"美食&nbsp;中餐馆&nbsp;烤鱼&nbsp;饭统北京&nbsp;家人团聚&nbsp;朋友聚会&nbsp;烧烤&nbsp;学生聚餐&nbsp;二三人小聚&nbsp;家庭团聚&nbsp;生日PARTY&nbsp;同事朋友聚会&nbsp;亚运村店&nbsp;川菜&nbsp;适合大伙人&nbsp;餐馆&nbsp;川北凉粉&nbsp;大拌菜&nbsp;豆豉烤鱼&nbsp;豆豉清江鱼&nbsp;怪味清江鱼&nbsp;会员卡商户&nbsp;家常泡饼&nbsp;家庭聚会&nbsp;可以刷卡&nbsp;麻辣烤鱼&nbsp;免费停车&nbsp;朋友聚餐&nbsp;皮蛋豆腐&nbsp;青椒皮蛋&nbsp;情侣约会&nbsp;商务宴请&nbsp;跳水木耳&nbsp;无线上网&nbsp;香辣烤鱼&nbsp;香辣清江鱼&nbsp;休闲小憩&nbsp;有无烟区"</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;detail_url:&nbsp;<span class="string">"http://api.map.baidu.com/place/detail?uid=8ee4560cf91d160e6cc02cd7&amp;output=html&amp;source=placeapi_v2"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type:&nbsp;<span class="string">"cater"</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;price:&nbsp;<span class="string">"63"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;overall_rating:&nbsp;<span class="string">"5.0"</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;taste_rating:&nbsp;<span class="string">"5.0"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;service_rating:&nbsp;<span class="string">"5.0"</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;environment_rating:&nbsp;<span class="string">"5.0"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;image_num:&nbsp;<span class="string">"671"</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;comment_num:&nbsp;<span class="string">"1191"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;favorite_num:&nbsp;<span class="string">"1851"</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;checkin_num:&nbsp;<span class="string">"45060"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shop_hours:&nbsp;<span class="string">"11：00-23：00"</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li class="alt"><span>}&nbsp;&nbsp;</span></li></ol></div><pre class="js" name="code" style="display: none;">{
+    status: 0,
+    message: "ok",
+    result: {
+        name: "江边城外•巫山烤全鱼亚运村店",
+        location: {
+            lng: 116.412347,
+            lat: 40.005328
+        },
+        address: "朝阳区慧忠北路慧忠里123号楼(近北辰东路)",
+        telephone: "(010)64924119",
+        uid: "8ee4560cf91d160e6cc02cd7",
+        detail_info: {
+            tag: "美食 中餐馆 烤鱼 饭统北京 家人团聚 朋友聚会 烧烤 学生聚餐 二三人小聚 家庭团聚 生日PARTY 同事朋友聚会 亚运村店 川菜 适合大伙人 餐馆 川北凉粉 大拌菜 豆豉烤鱼 豆豉清江鱼 怪味清江鱼 会员卡商户 家常泡饼 家庭聚会 可以刷卡 麻辣烤鱼 免费停车 朋友聚餐 皮蛋豆腐 青椒皮蛋 情侣约会 商务宴请 跳水木耳 无线上网 香辣烤鱼 香辣清江鱼 休闲小憩 有无烟区",
+            detail_url: "http://api.map.baidu.com/place/detail?uid=8ee4560cf91d160e6cc02cd7&amp;output=html&amp;source=placeapi_v2",
+            type: "cater",
+            price: "63",
+            overall_rating: "5.0",
+            taste_rating: "5.0",
+            service_rating: "5.0",
+            environment_rating: "5.0",
+            image_num: "671",
+            comment_num: "1191",
+            favorite_num: "1851",
+            checkin_num: "45060",
+            shop_hours: "11：00-23：00"
+        }
+    }
+}</pre>
+			<h2 id=".E8.BF.94.E5.9B.9E.E6.95.B0.E6.8D.AE.E8.AF.B4.E6.98.8E">7. Place团购检索服务</h2>
+			<b id=".E8.BF.94.E5.9B.9E.E6.95.B0.E6.8D.AE.E8.AF.B4.E6.98.8F">&nbsp;7.1 团购信息检索服务</b>
+			<p><b>服务地址： </b><br>
+			</p><pre><a href="http://api.map.baidu.com/place/v2/eventsearch?" target="_blank">http://api.map.baidu.com/place/v2/eventsearch?</a><p></p></pre>
+			<p>根据团购关键字、团购分类、区域范围等条件组合检索，支持按团购价格、距离等条件排序。</p>
+			<p><b>请求参数说明:</b></p>
+                <table class="mplacetable">
+				<tbody><tr>
+                <th width="96px">参数</th><th width="70px">是否必须</th><th width="60px">默认值</th><th width="220px">格式</th><th width="255px">含义
+                </th></tr>
+				<tr>
+                <td class="mcode">q(query)
+                </td><td>是
+                </td><td>无 
+                </td><td>小吃、宾馆、娱乐
+                </td><td>关键字检索
+                </td></tr>
+                <tr>
+                <td class="mcode">event
+                </td><td>是
+                </td><td>无
+                </td><td>groupon、discount、all
+                </td><td>事件名称，可以是团购、打折或全部，目前只支持团购。
+                </td></tr>
+                <tr>
+                <td class="mcode">region
+                </td><td>是
+                </td><td>131
+                </td><td>北京、131，注意：和search功能不同，此字段必须填写城市名称或城市代码，不能为全国或1。
+                </td><td>检索区域
+                </td></tr>
+                <tr>
+                <td class="mcode">location
+                </td><td>是，二选一 
+                			1)location 
+                			2)bounds
+                			若都出现时，bounds优先级最大，location优先级小。
+                </td><td>无
+                </td><td>38.76623,116.43213
+                </td><td>检索中心点，注意顺序：纬度，经度
+                </td></tr>
+                <tr>
+                <td class="mcode">radius(r)
+                </td><td>否
+                </td><td>1000
+                </td><td>2000
+                </td><td>检索半径。默认1000米，最大可设置2000米。
+                </td></tr>
+                <tr>
+                <td class="mcode">bounds(bds)
+                </td><td>是，二选一
+						1) location
+						2) bounds
+						若都出现时，bounds优先级最大，location优先级小。
+
+                </td><td>无
+                </td><td>38.76623,116.43213,39.54321,116.46773
+                </td><td>检索矩形Bound，注意顺序：左下角纬度，左下角经度，右上角纬度，右上角经度。
+                </td></tr>
+                <tr>
+                <td class="mcode">output
+                </td><td>否
+                </td><td>xml
+                </td><td>json或xml，默认xml
+                </td><td>输出格式
+                </td></tr>
+                <tr>
+                <td class="mcode">filter
+                </td><td>否
+                </td><td>无
+                </td><td colspan="2">检索过滤条件。<br>
+					groupon_type为团购类型，取值如下：<br>
+					1: 餐饮<br>
+					2：生活<br>
+					3：娱乐<br>
+					4：旅游住宿<br>
+					<br>
+					sort_name为排序字段，取值如下：<br>
+					data_type：数据类型，默认排序<br>
+					groupon_num：团购销量<br>
+					groupon_price：团购价格<br>
+					groupon_start：团购开始时间<br>
+					distance:按距离排序，只对中心点检索有效<br>
+					<br>
+					sort_rule为排序规则，取值如下：<br>
+					0: 从高到低<br>
+					1：从低到高 <br>
+					该规则对data_type和groupon_num字段无效。<br>
+					示例：<br>
+					groupon_type:1|sort_name:group_price|sort_rule:1<br>
+					<br>
+                </td></tr>
+                
+                <tr>
+                <td class="mcode">page_size
+                </td><td>否
+                </td><td>10
+                </td><td>10
+                </td><td>返回记录数量，默认为10条记录，最大可设置为20条。
+                </td></tr>
+                
+                <tr>
+                <td class="mcode">page_num
+                </td><td>否
+                </td><td>0
+                </td><td>0、1、2
+                </td><td>分页页码，默认为0。
+				0代表第一页，1代表第二页，以此类推。
+				如果设置了此字段，则输出结果中含有total字段。
+                </td></tr>
+                
+                <tr>
+                <td class="mcode">ak
+                </td><td>是
+                </td><td>无
+                </td><td>vDh8mxgqaG4clKP7u
+                </td><td>用户的访问密钥
+                </td></tr>
+                
+                <tr>
+                <td class="mcode">sn
+                </td><td>否
+                </td><td>无
+                </td><td>LiD0WoSTit8b8teqHSNysUrK63a3m
+                </td><td>用户的权限签名
+                </td></tr>
+                
+                <tr>
+                <td class="mcode">timestamp
+                </td><td>sn存在时必选。
+                </td><td>无
+                </td><td>1352887837758
+                </td><td>时间戳
+                </td></tr>
+				</tbody></table>
+			<p>备注：query和region取值说明详见<a href="http://developer.baidu.com/map/webservice-placeapi.htm#.E6.8E.A5.E5.8F.A3.E5.8F.82.E6.95.B6">编码说明。</a></p>
+			
+			<b>&nbsp;服务示例:</b>
+			<pre><p><a href="http://api.map.baidu.com/place/v2/eventsearch?query=%E7%BE%8E%E9%A3%9F&event=groupon&region=131&bounds=39.915,116.404,39.935,116.435&output=json&page_size=1&ak=6cb3f458a482fcd009414370808ea219" target="_blank">http://api.map.baidu.com/place/v2/eventsearch?query=%E7%BE%8E%E9%A3%9F&amp;event=groupon&amp;region=131&amp;bounds=39.915,116.404,39.935,116.435&amp;output=json&amp;page_size=1&amp;ak=E4805d16520de693a3fe707cdc962045</a><br> //北京市的“美食”团购信息</p></pre>
+			
+			<b>返回结果：</b>	
+			<p>返回结果有两种形式，一种是json,另一种为xml,默认为xml格式，下面示例为json格式。</p>
+			<div class="dp-highlighter"><div class="bar"><div class="tools"><a href="http://developer.baidu.com/map/webservice-placeapi.htm#" onclick="dp.sh.Toolbar.Command(&#39;ViewSource&#39;,this);return false;">源码</a><a href="http://developer.baidu.com/map/webservice-placeapi.htm#" onclick="dp.sh.Toolbar.Command(&#39;CopyToClipboard&#39;,this);return false;" id="clip185">复制</a><a href="http://developer.baidu.com/map/webservice-placeapi.htm#" onclick="dp.sh.Toolbar.Command(&#39;PrintSource&#39;,this);return false;">打印</a><a href="http://developer.baidu.com/map/webservice-placeapi.htm#" onclick="dp.sh.Toolbar.Command(&#39;About&#39;,this);return false;">关于</a></div></div><ol start="1" class="dp-c"><li class="alt"><span><span>{&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;status:&nbsp;0,&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;message:&nbsp;<span class="string">"ok"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;results:&nbsp;&nbsp;&nbsp;</span></li><li class="alt"><span>[&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;uid:&nbsp;<span class="string">"9d18c725de1b540efb2d6192"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;name:&nbsp;<span class="string">"DQ冰淇淋(王府井店)"</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;lcatin:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li><li class=""><span>{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;lat:&nbsp;<span class="string">"39.920411"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;lng:&nbsp;<span class="string">"116.418224"</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span></li><li class="alt"><span>}&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;address:&nbsp;<span class="string">"东城区王府井大街138号新东安商场"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;telephne:&nbsp;<span class="string">"(010)65283613"</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;event:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li><li class=""><span>[&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;cn_name:&nbsp;<span class="string">"大众点评"</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;grupn_end:&nbsp;<span class="string">"2013-05-05"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;grupn_id:&nbsp;<span class="string">"4310671635"</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;grupn_image:&nbsp;<span class="string">"http%3A%2F%2Ftuanimg.baidu.cm%2Fdata%2F2_3b10ad0339b39176869831e787b1a9ea"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;grupn_num:&nbsp;<span class="string">"38178"</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;grupn_price:&nbsp;<span class="string">"16.6"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;grupn_rebate:&nbsp;<span class="string">"7.9"</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;grupn_site:&nbsp;:&nbsp;<span class="string">"http%3A%2F%2Ft.dianping.cm%2Fredirect%3Futm_surce%3Dtuan_baidu%26amp%3Bcityname%3Dbeijing"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;grupn_start:&nbsp;<span class="string">"2013-04-12"</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;grupn_tips:&nbsp;&nbsp;<span class="string">"&lt;&nbsp;div&nbsp;class="</span><span>detail-bx</span><span class="string">"&gt;&nbsp;&lt;h3&nbsp;class="</span><span>tit&nbsp;tit-c</span><span class="string">"&gt;特别提示&lt;/h3&gt;&nbsp;&lt;/br&gt;&nbsp;&lt;/br&gt;&lt;/p&nbsp;class="</span><span>listitem</span><span class="string">"&gt;有效期：&lt;/br&gt;北京地区套餐中杯暴风雪1杯&nbsp;2013-04-12&nbsp;至&nbsp;2013-05-30&lt;br/&gt;天津地区套餐&nbsp;2013-04-12&nbsp;至&nbsp;2013-05-30&lt;《》br/&gt;天津提拉米苏布朗尼套餐&nbsp;2013-04-14&nbsp;至&nbsp;2013-05-30&lt;/br/&gt;石家庄地区套餐&nbsp;2013-04-12&nbsp;至&nbsp;2013-05-30&lt;/p&gt;&lt;p&nbsp;class="</span><span>listitem</span><span class="string">"&gt;仅限DQ(北京，天津，石家庄)使用，详情见页面附表使用&lt;/p&gt;&lt;p&nbsp;class="</span><span>listitem</span><span class="string">"&gt;无需预约&lt;/p&gt;&lt;p&nbsp;class="</span><span>listitem</span><span class="string">"&gt;团购券请于到店时出示&lt;/p&gt;&lt;p&nbsp;class="</span><span>listitem</span><span class="string">"&gt;不可与其他优惠同享&lt;/p&gt;&lt;p&nbsp;class="</span><span>listitem</span><span class="string">"&gt;本单团购不支持退款&lt;/p&gt;&lt;p&nbsp;class="</span><span>listitem</span><span class="string">"&gt;本单团购不能使用点评团抵用券/优惠代码&lt;/p&gt;&lt;/br&gt;&nbsp;&lt;/br&gt;&nbsp;&lt;/div&gt;"</span><span>,&nbsp;&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;grupn_title:&nbsp;<span class="string">"DQ冰淇淋!仅售16.6元,最高价值21元中杯暴风雪1杯!3城97家店可选!缤纷滋味由你决定,倒杯不洒的诱惑,开启甜蜜瞬间!"</span><span>,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;grupn_type:&nbsp;<span class="string">"1"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;grupn_url_mbile:&nbsp;<span class="string">"http://tuan.baidu.cm/redirect?frm=bdmapwise&amp;url=http%3A%2F%2Fwap.dianping.cm%2Ftuan%2Fredirect%3Fdid%3D152496"</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;grupn_url_pc:<span class="string">"http://tuan.baidu.cm/redirect?frm=bdmappc&amp;url=http%3A%2F%2Ft.dianping.cm%2Fredirect%3Fdid%3D152496"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;regular_price:&nbsp;<span class="string">"21"</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;reservatin:&nbsp;<span class="string">"1"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;shrt_title:&nbsp;<span class="string">"DQ冰淇淋中杯暴风雪冰激凌"</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;spend_end_time:&nbsp;<span class="string">"1369929599"</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span></li><li class=""><span>}&nbsp;&nbsp;</span></li><li class="alt"><span>]&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li class="alt"><span>]&nbsp;&nbsp;</span></li><li class=""><span>}&nbsp;&nbsp;</span></li></ol></div><pre class="js" name="code" style="display: none;">{
+	status: 0,
+	message: "ok",
+	results: 
+[
+	{		
+	uid: "9d18c725de1b540efb2d6192",
+	name: "DQ冰淇淋(王府井店)",
+    lcatin: 						
+{			
+	lat: "39.920411",
+	lng: "116.418224"				
+}
+		
+	address: "东城区王府井大街138号新东安商场",
+	telephne: "(010)65283613",
+    event: 						
+[
+	{					
+	cn_name: "大众点评",
+	grupn_end: "2013-05-05",
+	grupn_id: "4310671635",
+	grupn_image: "http%3A%2F%2Ftuanimg.baidu.cm%2Fdata%2F2_3b10ad0339b39176869831e787b1a9ea",
+	grupn_num: "38178",
+	grupn_price: "16.6",
+	grupn_rebate: "7.9",
+	grupn_site: : "http%3A%2F%2Ft.dianping.cm%2Fredirect%3Futm_surce%3Dtuan_baidu%26amp%3Bcityname%3Dbeijing",
+	grupn_start: "2013-04-12",
+	grupn_tips:  "&lt; div class="detail-bx"&gt; &lt;h3 class="tit tit-c"&gt;特别提示&lt;/h3&gt; &lt;/br&gt; &lt;/br&gt;&lt;/p class="listitem"&gt;有效期：&lt;/br&gt;北京地区套餐中杯暴风雪1杯 2013-04-12 至 2013-05-30&lt;br/&gt;天津地区套餐 2013-04-12 至 2013-05-30&lt;《》br/&gt;天津提拉米苏布朗尼套餐 2013-04-14 至 2013-05-30&lt;/br/&gt;石家庄地区套餐 2013-04-12 至 2013-05-30&lt;/p&gt;&lt;p class="listitem"&gt;仅限DQ(北京，天津，石家庄)使用，详情见页面附表使用&lt;/p&gt;&lt;p class="listitem"&gt;无需预约&lt;/p&gt;&lt;p class="listitem"&gt;团购券请于到店时出示&lt;/p&gt;&lt;p class="listitem"&gt;不可与其他优惠同享&lt;/p&gt;&lt;p class="listitem"&gt;本单团购不支持退款&lt;/p&gt;&lt;p class="listitem"&gt;本单团购不能使用点评团抵用券/优惠代码&lt;/p&gt;&lt;/br&gt; &lt;/br&gt; &lt;/div&gt;", 
+    grupn_title: "DQ冰淇淋!仅售16.6元,最高价值21元中杯暴风雪1杯!3城97家店可选!缤纷滋味由你决定,倒杯不洒的诱惑,开启甜蜜瞬间!",			
+	grupn_type: "1",
+	grupn_url_mbile: "http://tuan.baidu.cm/redirect?frm=bdmapwise&amp;url=http%3A%2F%2Fwap.dianping.cm%2Ftuan%2Fredirect%3Fdid%3D152496",
+	grupn_url_pc:"http://tuan.baidu.cm/redirect?frm=bdmappc&amp;url=http%3A%2F%2Ft.dianping.cm%2Fredirect%3Fdid%3D152496",
+	regular_price: "21",
+	reservatin: "1",
+	shrt_title: "DQ冰淇淋中杯暴风雪冰激凌",
+	spend_end_time: "1369929599"		 		
+}
+]
+	}
+]
+}
+</pre>
+			<b id=".E8.BF.94.E5.9B.9E.E6.95.B0.E6.8D.AE.E8.AF.B4.E6.98.8G">7.2 商家团购详情查询</b>	
+			<b>服务地址：</b>
+			<pre><p><a href="http://api.map.baidu.com/place/v2/eventdetail?" target="_blank">http://api.map.baidu.com/place/v2/eventdetail?</a></p></pre>
+			<p>根据POI UID查询当前POI所有的团购详细信息。</p>
+			<p><b>请求参数说明：</b></p>
+            <table class="mplacetable">
+				<tbody><tr>
+                <th width="96px">参数</th><th width="70px">是否必须</th><th width="60px">默认值</th><th width="220px">格式</th><th width="255px">含义
+                </th></tr>
+				<tr>
+                <td class="mcode">uid
+                </td><td>是
+                </td><td>
+                </td><td>8ee4560cf91d160e6cc02cd7
+                </td><td>POI uid
+                </td></tr>
+                <tr>
+                <td class="mcode">output
+                </td><td>否
+                </td><td>
+                </td><td>json或xml
+                </td><td>输出格式
+                </td></tr>
+                <tr>
+                <td class="mcode">ak
+                </td><td>必选
+                </td><td>
+                </td><td>vDh8mxgqaG4clKP7u
+                </td><td>用户的访问密钥
+                </td></tr>
+				<tr>
+                <td class="mcode">sn
+                </td><td>可选。
+                </td><td>
+                </td><td>LiD0WoSTit8b8teqHSNysUrK63a3m
+                </td><td>用户的权限签名
+                </td></tr>
+                
+                <tr>
+                <td class="mcode">timestamp
+                </td><td>sn存在时必选。
+                </td><td>
+                </td><td>1352887837758
+                </td><td>时间戳
+                </td></tr>
+			</tbody></table>
+			<b>服务示例:</b>
+			<pre><p><a href="http://api.map.baidu.com/place/v2/eventdetail?uid=c14fc238f7fadd4ea5da390f&output=json&ak=6cb3f458a482fcd009414370808ea219" target="_blank">http://api.map.baidu.com/place/v2/eventdetail?uid=c14fc238f7fadd4ea5da390f&amp;output=json&amp;ak=6cb3f458a482fcd009414370808ea219</a>//根据uid: "c14fc238f7fadd4ea5da390f查询该POI对应的所有团购信息。<br></p></pre>
+			<b>返回结果：</b>
+			<p>返回结果有两种形式，一种是json,另一种为xml,默认为xml格式，下面示例为json格式。</p>
+			<div class="dp-highlighter"><div class="bar"><div class="tools"><a href="http://developer.baidu.com/map/webservice-placeapi.htm#" onclick="dp.sh.Toolbar.Command(&#39;ViewSource&#39;,this);return false;">源码</a><a href="http://developer.baidu.com/map/webservice-placeapi.htm#" onclick="dp.sh.Toolbar.Command(&#39;CopyToClipboard&#39;,this);return false;" id="clip776">复制</a><a href="http://developer.baidu.com/map/webservice-placeapi.htm#" onclick="dp.sh.Toolbar.Command(&#39;PrintSource&#39;,this);return false;">打印</a><a href="http://developer.baidu.com/map/webservice-placeapi.htm#" onclick="dp.sh.Toolbar.Command(&#39;About&#39;,this);return false;">关于</a></div></div><ol start="1" class="dp-c"><li class="alt"><span><span>{&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;status:&nbsp;0,&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;message:&nbsp;<span class="string">"ok"</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result:&nbsp;&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;</span></li><li class="alt"><span>{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uid:&nbsp;<span class="string">"c14fc238f7fadd4ea5da390f"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name:&nbsp;<span class="string">"觉品壹号"</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lcatin:&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;</span></li><li class="alt"><span>{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lat:&nbsp;<span class="string">"39.905745"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lng:&nbsp;<span class="string">"116.390223"</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;</span></li><li class=""><span>},&nbsp;&nbsp;</span></li><li class="alt"><span>address:&nbsp;<span class="string">"西城区南新华街1号瑞驰大酒店1楼(近地铁和平门站)"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>telephne:&nbsp;<span class="string">"(010)63022277,(010)63188187"</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>events:&nbsp;&nbsp;&nbsp;</span></li><li class=""><span>[&nbsp;&nbsp;</span></li><li class="alt"><span>{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;cn_name:&nbsp;<span class="string">"糯米网"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;grupn_end:&nbsp;<span class="string">"2013-08-01"</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;grupn_id:&nbsp;<span class="string">"4309423174"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;grupn_image:&nbsp;<span class="string">"http%3A%2F%2Ftuanimg.baidu.cm%2Fdata%2F2_618fcdeff527f6c3e4af41be48693f4f"</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;grupn_num:&nbsp;<span class="string">"55"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;grupn_price:&nbsp;<span class="string">"368"</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;grupn_rebate:&nbsp;<span class="string">"2.4"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;grupn_price:&nbsp;<span class="string">"368"</span><span>,grupn_site:&nbsp;</span><span class="string">"http%3A%2F%2Fbj.numi.cm"</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;grupn_start:&nbsp;<span class="string">"2013-02-05"</span><span>,&lt;br&gt;&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;grupn_tips:&nbsp;&nbsp;<span class="string">"1、糯米券有效期为2013年02月05日至2013年08月04日&lt;/br&gt;2、营业时间：11:00-14:00；17:00-21:00&lt;/br&gt;3、请提前24小时预约，预约电话：010-63188187/13552470897&lt;/br&gt;4、糯米券不限购买数量，每张糯米券建议6人使用&lt;/br&gt;5、节假日通用（春节、情人节均可以使用）&lt;/br&gt;6、糯米券不兑现、不找零，不与店内其他优惠同享"</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;grupn_title:&nbsp;<span class="string">"[觉品壹号会所]6人套餐！创意惊艳岁末宴，春节、假日通用！"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;grupn_type:&nbsp;<span class="string">"1"</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;grupn_url_mbile:&nbsp;<span class="string">"http://tuan.baidu.cm/redirect?frm=bdmapwise&amp;url=http%3A%2F%2Fm.numi.cm%2Fdeal%2Fview%3Ftinyurl%3D0wua4ryz"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;grupn_url_pc:&nbsp;<span class="string">"http://tuan.baidu.cm/redirect?frm=bdmappc&amp;url=http%3A%2F%2Fbj.numi.cm%2Fdeal%2F0wua4ryz.html%3Futm_surce%3Dbaidu-cps%26amp%3Butm_medium%3Dny-pic%26amp%3Butm_campaign%3Dny-pic%26amp%3Bcid%3D006001"</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;regular_price:&nbsp;<span class="string">"1558"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;reservatin:&nbsp;<span class="string">"1"</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;shrt_title:&nbsp;<span class="string">"觉品壹号368"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;spend_end_time:&nbsp;<span class="string">"1375631999"</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;</span></li><li class=""><span>}&nbsp;&nbsp;</span></li><li class="alt"><span>]&nbsp;&nbsp;</span></li><li class=""><span>}&nbsp;&nbsp;</span></li><li class="alt"><span>}&nbsp;&nbsp;</span></li></ol></div><pre class="js" name="code" style="display: none;">			
+				{
+				
+				      status: 0,
+					  message: "ok",
+					  result: 
+				
+				{
+				
+					  uid: "c14fc238f7fadd4ea5da390f",
+					  name: "觉品壹号",
+					  lcatin:
+				
+				{
+				
+					  lat: "39.905745",
+					  lng: "116.390223"
+				
+				},
+				address: "西城区南新华街1号瑞驰大酒店1楼(近地铁和平门站)",
+				telephne: "(010)63022277,(010)63188187",
+				events: 
+				[
+				{
+				
+					cn_name: "糯米网",
+					grupn_end: "2013-08-01",
+					grupn_id: "4309423174",
+					grupn_image: "http%3A%2F%2Ftuanimg.baidu.cm%2Fdata%2F2_618fcdeff527f6c3e4af41be48693f4f",
+					grupn_num: "55",
+					grupn_price: "368",
+					grupn_rebate: "2.4",
+					grupn_price: "368",grupn_site: "http%3A%2F%2Fbj.numi.cm",
+					grupn_start: "2013-02-05",<br>
+					grupn_tips:  "1、糯米券有效期为2013年02月05日至2013年08月04日&lt;/br&gt;2、营业时间：11:00-14:00；17:00-21:00&lt;/br&gt;3、请提前24小时预约，预约电话：010-63188187/13552470897&lt;/br&gt;4、糯米券不限购买数量，每张糯米券建议6人使用&lt;/br&gt;5、节假日通用（春节、情人节均可以使用）&lt;/br&gt;6、糯米券不兑现、不找零，不与店内其他优惠同享",
+					grupn_title: "[觉品壹号会所]6人套餐！创意惊艳岁末宴，春节、假日通用！",
+					grupn_type: "1",
+					grupn_url_mbile: "http://tuan.baidu.cm/redirect?frm=bdmapwise&amp;url=http%3A%2F%2Fm.numi.cm%2Fdeal%2Fview%3Ftinyurl%3D0wua4ryz",
+					grupn_url_pc: "http://tuan.baidu.cm/redirect?frm=bdmappc&amp;url=http%3A%2F%2Fbj.numi.cm%2Fdeal%2F0wua4ryz.html%3Futm_surce%3Dbaidu-cps%26amp%3Butm_medium%3Dny-pic%26amp%3Butm_campaign%3Dny-pic%26amp%3Bcid%3D006001",
+				    regular_price: "1558",
+				    reservatin: "1",
+				    shrt_title: "觉品壹号368",
+				    spend_end_time: "1375631999"
+				
+				}
+				]
+				}
+				}
+			
+			</pre>
+			<br>
+			<h2 id=".E6.8E.A5.E5.8F.A3.E7.A4.BA.E4.BE.8A">8.状态码附录</h2>
+			<table class="mplacetable">
+				<tbody><tr><th>返回码</th><th>定义</th><th>英文返回描述</th></tr>
+				<tr><td>0</td><td>正常</td><td>ok</td></tr>
+				<tr><td>2</td><td>请求参数非法</td><td>Parameter Invalid</td></tr>
+				<tr><td>3</td><td>权限校验失败</td><td>Verify Failure</td></tr>
+				<tr><td>4</td><td>配额校验失败</td><td>Quota Failure</td></tr>
+				<tr><td>5</td><td>ak不存在或者非法</td><td>AK Failure</td></tr>
+				<tr><td>2xx</td><td>无权限</td><td></td></tr>
+				<tr><td>3xx</td><td>配额错误</td><td></td></tr>
+			</tbody></table>
+			<h2 id=".E6.8E.A5.E5.8F.A3.E7.A4.BA.E4.BE.8B">9.升级说明</h2>
+				<ul>
+				<li>v2版本较之v1版本，功能更新详见<a href="http://developer.baidu.com/map/service-update.htm#2013.E5.B9.B406.E6.9C.8827.E6.97.A5">更新日志</a>，且请求url参数：新增版本号“v2”，修改“key”为“ak”。V2不兼容v1版本的key，若需升级，请重新<a href="http://lbsyun.baidu.com/apiconsole/key?application=key" target="_blank">获取密钥</a>。</li>
+				<li>若需查看v1文档，请访问“<a href="http://developer.baidu.com/map/place-api.htm">Place APIv1.0</a>”。</li>
+				</ul>
+        </div>
+        </div>
+    </div>
+    <div class="mwrappend clearfix">&nbsp;</div><div class="copyright clearfix"><p>©2014 Baidu<a href="http://www.baidu.com/duty/">使用百度前必读</a><a target="_blank" href="http://www.miibeian.gov.cn/">京ICP证030173号</a><img src="./Place API- 百度地图Web服务API_files/gs.gif"></p></div></div>
+
+	 <!--代码高亮-->
+	 <script type="text/javascript" src="./Place API- 百度地图Web服务API_files/ZeroClipboard.js"></script>
+	 <script type="text/javascript" src="./Place API- 百度地图Web服务API_files/shCore.js"></script>
+	 <script type="text/javascript" src="./Place API- 百度地图Web服务API_files/shBrushJScript.js"></script>
+	 <script type="text/javascript" src="./Place API- 百度地图Web服务API_files/shBrushCss.js"></script>
+	 <link type="text/css" rel="stylesheet" href="./Place API- 百度地图Web服务API_files/shCore.css">
+	<script class="javascript">
+	dp.SyntaxHighlighter.ClipboardSwf = '';
+	dp.SyntaxHighlighter.HighlightAll('code');
+	</script>
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F5650c092812f8659cdfe23eeb42024ef' type='text/javascript'%3E%3C/script%3E"));
+</script><script src="./Place API- 百度地图Web服务API_files/h.js" type="text/javascript"></script>
+
+<div id="guideMask" style="width: 1030px; height: 11648px;"></div><div id="guideContainer" style="left: 145.5px; top: -22px;"><div class="guide_title"><span>亲爱的访客：<span class="high">免费！</span>木有商业版，木有收费版... 全国人民用的都一样!</span><div class="guide_close" onclick="closeGuide()"></div></div><div class="guide_content"><div id="guide_arrow"></div><div class="title">我是...</div><div class="item"><div class="item_left"><div class="guide_icon"><div class="programmer"></div></div><div class="guide_text"><div class="text_title">程序猿</div><div class="text_link"><a onclick="_addStat(&#39;apidoc_guide1&#39;)" href="http://developer.baidu.com/map/jshome.htm" target="_blank">Web程序猿</a><a onclick="_addStat(&#39;apidoc_guide2&#39;)" href="http://developer.baidu.com/map/sdk-android.htm" target="_blank">Android程序猿</a><a onclick="_addStat(&#39;apidoc_guide3&#39;)" href="http://developer.baidu.com/map/sdk-ios.htm" target="_blank">iOS程序猿</a><br><a onclick="_addStat(&#39;apidoc_guide4&#39;)" href="http://developer.baidu.com/map/webservice.htm" target="_blank">C#/C++/Java程序猿</a></div></div></div><div class="item_right"><div class="guide_icon"><div class="factory"></div></div><div class="guide_text"><div class="text_title">厂商</div><div class="text_link"><a onclick="_addStat(&#39;apidoc_guide5&#39;)" href="http://developer.baidu.com/map/carhome.htm" target="_blank">汽车厂商（车联网服务）</a><br><a onclick="_addStat(&#39;apidoc_guide6&#39;)" href="mailto:mapapi@baidu.com" onmouseover="openTip(&#39;hardwareTip&#39;)" onmouseout="closeTip(&#39;hardwareTip&#39;)">硬件制造厂商（手机、Pad等）</a>        <div id="hardwareTip" class="popTip"><span>地图需求的商业合作请发送邮件至mapapi@baidu.com</span></div></div></div></div></div><div class="dashline dashline_margin_bottom"><div class="dashline_left"></div></div><div class="item"><div class="item_left"><div class="guide_icon"><div class="xiaobai"></div></div><div class="guide_text"><div class="text_title">开发小白</div><div class="text_tip"><span>老板催得紧，不会开发，咋办呀？<br>这里一样潇洒用地图。</span></div><div class="text_link"><a onclick="_addStat(&#39;apidoc_guide7&#39;)" href="http://developer.baidu.com/map/tool.htm" target="_blank">立即进入</a></div></div></div></div><div class="solidline"></div><div class="title">我要...</div><div class="item item_short"><div class="item_left"><div class="guide_icon"><div class="position"></div></div><div class="guide_text"><div class="text_title">我要定位</div><div class="text_link link_zIndex"><a onclick="_addStat(&#39;apidoc_guide8&#39;)" href="http://developer.baidu.com/map/geosdk-android.htm" target="_blank">Android定位</a><a onclick="_addStat(&#39;apidoc_guide9&#39;)" href="http://developer.baidu.com/map/geosdk-symbian.htm" target="_blank">Symbian定位</a><a onclick="_addStat(&#39;apidoc_guide10&#39;)" href="javascript:void(0)" onmouseover="openTip(&#39;iosTip&#39;)" onmouseout="closeTip(&#39;iosTip&#39;)">iOS定位</a><div id="iosTip" class="popTip"><span>请使用iOS系统自带的定位功能。为啥我木有？去问乔布斯哈！</span></div></div></div></div><div class="item_right"><div class="guide_icon"><div class="process"></div></div><div class="guide_text"><div class="text_title">我要管理我的数据</div><div class="text_tip"><span>LBS云：帮您存、查、地图展示！</span></div><div class="text_link"><a onclick="_addStat(&#39;apidoc_guide11&#39;)" href="http://developer.baidu.com/map/lbs-cloud.htm" target="_blank">立即进入</a></div></div></div></div><div class="dashline dashline_margin_bottom"><div class="dashline_left"></div><div class="dashline_right"></div></div><div class="item"><div class="item_left"><div class="guide_icon"><div class="callbaidu"></div></div><div class="guide_text"><div class="text_title">我要调用百度地图</div><div class="text_tip"><span>从今以后这不再是梦！看位置、查公交<br>一键分享都变得那么简单！</span></div><div class="text_link"><a onclick="_addStat(&#39;apidoc_guide12&#39;)" href="http://developer.baidu.com/map/uri.htm" target="_blank">立即进入</a></div></div></div><div class="item_right"><div class="guide_icon"><div class="baidupoi"></div></div><div class="guide_text"><div class="text_title">我要搜索百度POI数据</div><div class="text_tip"><span>北京的购物中心、宾馆...<br>周边的餐馆、电影院...还有详情可以看！</span></div><div class="text_link"><a onclick="_addStat(&#39;apidoc_guide13&#39;)" href="./Place API- 百度地图Web服务API_files/Place API- 百度地图Web服务API.htm" target="_blank">立即进入</a></div></div></div></div><div class="dashline dashline_margin_vertical"><div class="dashline_left"></div></div><div class="item"><div class="item_left"><div class="guide_icon"><div class="coord"></div></div><div class="guide_text"><div class="text_title">我要坐标 我要地址</div><div class="text_tip"><span>坐标与地址间的解析，Geocoding帮您搞定！</span></div><div class="text_link"><a onclick="_addStat(&#39;apidoc_guide14&#39;)" href="http://developer.baidu.com/map/webservice-geocoding.htm" target="_blank">立即进入</a></div></div></div><div class="item_right"><div class="more_problem"><a onclick="_addStat(&#39;apidoc_guide15&#39;)" href="http://developer.baidu.com/map/question.htm" target="_blank">更多问题...</a></div></div></div></div></div><div class="gf-con"><div class="gf-plugin" id="gf_to_top" style="display: block;"><a href="javascript:void(0)">返回顶部</a></div><div class="gf-plugin" id="gf_guide"><a href="javascript:openGuide();" onclick="_addStatNew(&#39;lbsapi_guanwang&#39;,{&#39;operate&#39;: &#39;guanwang_productclick&#39;})">产品指引</a></div><div class="gf-plugin" id="gf_for_help"><a href="http://developer.baidu.com/map/help_index.html" onclick="_addStatNew(&#39;lbsapi_guanwang&#39;,{&#39;operate&#39;: &#39;guanwang_helpclick&#39;})">咨询求助</a></div><div class="gf-plugin" id="gf_suggestion"><a href="http://developer.baidu.com/map/suggest_index.html" onclick="_addStatNew(&#39;lbsapi_guanwang&#39;,{&#39;operate&#39;: &#39;guanwang_feedbackclick&#39;})">意见反馈</a></div></div><div style="position: absolute; left: 517px; top: 10488px; width: 27px; height: 16px; z-index: 99;"><embed id="ZeroClipboardMovie_1" src="ZeroClipboard.swf" loop="false" menu="false" quality="best" bgcolor="#ffffff" width="27" height="16" name="ZeroClipboardMovie_1" align="middle" allowscriptaccess="always" allowfullscreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="id=1&amp;width=27&amp;height=16" wmode="transparent"></div><div style="position: absolute; left: 517px; top: 6313px; width: 27px; height: 16px; z-index: 99;"><embed id="ZeroClipboardMovie_2" src="ZeroClipboard.swf" loop="false" menu="false" quality="best" bgcolor="#ffffff" width="27" height="16" name="ZeroClipboardMovie_2" align="middle" allowscriptaccess="always" allowfullscreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="id=2&amp;width=27&amp;height=16" wmode="transparent"></div><div style="position: absolute; left: 517px; top: 8792px; width: 27px; height: 16px; z-index: 99;"><embed id="ZeroClipboardMovie_3" src="ZeroClipboard.swf" loop="false" menu="false" quality="best" bgcolor="#ffffff" width="27" height="16" name="ZeroClipboardMovie_3" align="middle" allowscriptaccess="always" allowfullscreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="id=3&amp;width=27&amp;height=16" wmode="transparent"></div></body></html>

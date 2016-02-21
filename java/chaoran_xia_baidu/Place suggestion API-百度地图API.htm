@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<!-- saved from url=(0055)http://developer.baidu.com/map/place-suggestion-api.htm -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <title>Place suggestion API-百度地图API</title>
+    <meta name="keywords" content="Place API,提示建议，suggestion，提示词条">
+    <meta name="description" content="HTTP形式,提供匹配用户输入关键字的辅助信息、提示接口，返回json或xml格式的一组建议词条的数据。免费对外开放">
+    <script type="text/javascript" src="./Place suggestion API-百度地图API_files/mapnav.js"></script>
+    <link rel="stylesheet" href="./Place suggestion API-百度地图API_files/mapi.css" type="text/css" media="screen">
+	 <script type="text/javascript" src="./Place suggestion API-百度地图API_files/jquery-1.7.2.min.js"></script>
+	 <script type="text/javascript" src="./Place suggestion API-百度地图API_files/menu.js"></script>
+	 <script type="text/javascript" src="./Place suggestion API-百度地图API_files/mapi.js"></script>
+     
+<style>
+.mmenu a { text-indent:29px;}
+.mmenu .on3 a{background-position: 15px 17px;}
+</style>
+<style type="text/css"></style><style type="text/css"></style><script src="./Place suggestion API-百度地图API_files/guide.js" type="text/javascript" charset="utf-8"></script></head>
+<body>
+<script type="text/javascript">
+mnav({
+    one_nav:"mapnav_product",
+    two_nav:"mapnav_web"
+});
+</script><div id="header"><div id="top_main">
+<a href="http://developer.baidu.com/map/"><img class="logo" width="256px" height="52px" src="./Place suggestion API-百度地图API_files/logo.png"></a>
+<div id="nav">
+<div id="logins">
+<ul class="user-nav">
+<li class="user-nav-item " id="user-state-li" style="">
+<a id="userName">justinxia001</a><label>l</label>
+<ul class="username-dropdown" style="visibility: hidden;">
+<li><a target="_top" href="http://passport.baidu.com/center" class="bd-cloud-dropdown-link">帐号设置</a></li>
+<li><a target="_top" href="http://passport.baidu.com/?logout&u=http://developer.baidu.com/map/place-suggestion-api.htm" id="logout">退出</a></li>
+<div class="clear"></div>
+</ul>
+<div class="clear"></div>
+</li>
+<li class="user-nav-item">
+<a target="_blank" href="http://lbsyun.baidu.com/">LBS开放平台</a><label>l</label>
+</li>
+<li class="user-nav-item">
+<a target="_blank" href="http://developer.baidu.com/">百度开放云</a>
+</li>
+<li id="login-reg-li" class="user-nav-item" style="display: none;">
+<label id="dot-line">l</label><a id="login" href="" target="_top">登录</a>
+<a id="register" href="" target="_top">注册</a>
+</li>
+<div class="clear"></div>
+</ul>
+</div>
+<div class="clear"></div>
+<ul class="navul">
+<li>
+<a id="mapnav_home" href="http://developer.baidu.com/map/">首页</a>
+</li>
+<li class="nav-item">
+<a id="mapnav_product" href="http://developer.baidu.com/map/lbs-cloud.htm" class=" nav_on">API <span class="tri_span"></span></a>
+<div id="homeTab1" class="homeTab"><ul>
+<li><a href="http://developer.baidu.com/map/lbs-cloud.htm">LBS.云</a></li>
+<li><a href="http://developer.baidu.com/map/jshome.htm">JavaScript API</a> | <a href="http://developer.baidu.com/map/flash.htm">Flash API</a></li>
+<li><a href="http://developer.baidu.com/map/sdk-android.htm">Android SDK</a> | <a href="http://developer.baidu.com/map/sdk-ios.htm">iOS SDK</a> | <a href="http://developer.baidu.com/map/geosdk.htm">定位 SDK</a></li>
+<li><a href="http://developer.baidu.com/map/webservice.htm">Web服务 API</a> | <a href="http://developer.baidu.com/map/staticimg.htm">静态图 API</a> | <a href="http://developer.baidu.com/map/carhome.htm">车联网 API</a> | <a href="http://developer.baidu.com/map/uri.htm">URI API</a></li>
+<div class="clear"></div>
+</ul>
+</div>
+</li>
+<li class="nav-item">
+<a id="mapnav_tool" target="_blank" href="http://api.map.baidu.com/lbsapi/creatmap/index.html">工具<span class="tri_span"></span></a>
+<div class="homeTab">
+<ul>
+<li><a target="_blank" href="http://api.map.baidu.com/lbsapi/creatmap/index.html">地图生成器</a></li>
+<li><a target="_blank" href="http://api.map.baidu.com/lbsapi/getpoint/index.html">坐标拾取工具</a></li>
+<li><a target="_blank" href="http://api.map.baidu.com/mapCard/">地图名片</a></li>
+<li><a target="_blank" href="http://api.map.baidu.com/lbsapi/tuan/index.html">团购插件</a></li>
+<li><a target="_blank" href="http://developer.baidu.com/map/move.htm">零成本搬家工具</a></li>
+<div class="clear"></div>
+</ul>
+</div>
+</li>
+<li>
+<a id="mapnav_news" href="http://lbsyun.baidu.com/news">新闻</a>
+</li>
+<li class="nav-item">
+<a id="mapnav_support" href="http://developer.baidu.com/map/question.htm">支持<span class="tri_span"></span></a>
+<div class="homeTab">
+<ul>
+<li>
+<a href="javascript:openGuide();" onclick="_addStatNew(" lbsapi_guanwang",{operate:="" guanwang_productclick})"="">产品指引</a> | <a href="http://developer.baidu.com/map/question.htm">常见问题</a> | <a href="http://developer.baidu.com/map/devRes.htm">开发资源</a>
+</li>
+<li>
+<a href="http://developer.baidu.com/map/help_index.html">咨询求助</a> | <a href="http://developer.baidu.com/map/suggest_index.html">意见反馈</a> | <a href="http://developer.baidu.com/map/contact.htm">联系我们</a>
+</li>
+<div class="clear"></div>
+</ul>
+</div>
+</li>
+<li>
+<a id="mapnav_bbs" target="_blank" href="http://bbs.lbsyun.baidu.com/">论坛</a>
+</li>
+<li class="nav-item">
+<a id="mapnav_success" href="http://developer.baidu.com/map/case.htm" class="a_success">成功案例<span class="tri_span"></span></a>
+<div class="homeTab"><ul>
+<li style="width:250px"><a href="http://developer.baidu.com/map/case.htm">房产类</a></li>
+<li style="width:250px"><a href="http://developer.baidu.com/map/case-more.htm">更多案例</a></li>
+<div class="clear"></div>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="clear"></div>
+<div id="headTop">
+<div id="headeTop_main">
+<ul id="mapnav_tool_two">
+<li id="mapnav_creatmap"><a href="http://api.map.baidu.com/lbsapi/creatmap/index.html">地图生成器</a><b>|</b></li>
+<li id="mapnav_getpoint"><a href="http://api.map.baidu.com/lbsapi/getpoint/index.html">坐标拾取工具</a><b>|</b></li>
+<li id="mapnav_mapcard"><a href="http://api.map.baidu.com/mapCard/">地图名片</a><b>|</b></li>
+<li id="mapnav_tuan"><a href="http://api.map.baidu.com/lbsapi/tuan/index.html">团购插件</a><b>|</b></li>
+<li id="mapnav_move"><a href="http://developer.baidu.com/map/move.htm">零成本搬家</a></li></ul>
+<ul id="mapnav_support_two">
+<li id="mapnav_creatmap"><a href="javascript:openGuide();" onclick="_addStatNew(lbsapi_guanwang,{operate: guanwang_productclick})">产品指引</a><b>|</b></li>
+<li id="mapnav_question"><a href="http://developer.baidu.com/map/question.htm">常见问题</a><b>|</b></li>
+<li id="mapnav_devRes"><a href="http://developer.baidu.com/map/devRes.htm">开发资源</a><b>|</b></li>
+<li id="mapnav_help"><a href="http://developer.baidu.com/map/help_index.html">咨询求助</a><b>|</b></li>
+<li id="mapnav_suggest"><a href="http://developer.baidu.com/map/suggest_index.html">意见反馈</a><b>|</b></li>
+<li id="mapnav_contact"><a href="http://developer.baidu.com/map/contact.htm">联系我们</a></li>
+</ul>
+<ul id="mapnav_success_two">
+<li id="mapnav_houseProperty"><a href="http://developer.baidu.com/map/case.htm">房产类</a><b>|</b></li>
+<li id="mapnav_more_case"><a href="http://developer.baidu.com/map/case-more.htm">更多案例</a><b></b></li>
+</ul>
+<ul id="mapnav_product_two" style="display: block;">
+<li id="mapnav_yun"><a href="http://developer.baidu.com/map/lbs-cloud.htm">LBS.云</a><b>|</b></li>
+<li id="mapnav_javascript"><a class="Top_two" href="http://developer.baidu.com/map/jshome.htm">JavaScript API</a></li>
+<li id="mapnav_flash"><a href="http://developer.baidu.com/map/flash.htm">Flash API</a><b>|</b></li>
+<li>
+<ul>
+<li id="mapnav_and"><a href="http://developer.baidu.com/map/sdk-android.htm" class="Top_two">Android SDK</a></li>
+<li id="mapnav_ios"><a href="http://developer.baidu.com/map/sdk-ios.htm" class="Top_two">iOS SDK</a></li>
+<li id="mapnav_geo"><a href="http://developer.baidu.com/map/geosdk.htm">定位SDK</a><b>|</b></li>
+</ul>
+</li>
+<li>
+<ul>
+<li id="mapnav_web" class="nav-item  Top_on"><a href="http://developer.baidu.com/map/webservice.htm" class="Top_two_triangle">Web服务API</a>
+<div class="homeTab webTab">
+<ul>
+<li><a href="http://developer.baidu.com/map/webservice-placeapi.htm">Place API</a></li>
+<li><a href="./Place suggestion API-百度地图API_files/Place suggestion API-百度地图API.htm">Place suggestion API</a></li>
+<li><a href="http://developer.baidu.com/map/webservice-geocoding.htm">Geocoding API</a></li>
+<li><a href="http://developer.baidu.com/map/direction-api.htm">Direction API</a></li>
+<li><a href="http://developer.baidu.com/map/route-matrix-api.htm">Route Matrix API</a></li>
+<li><a href="http://developer.baidu.com/map/ip-location-api.htm">IP定位 API</a></li>
+<div class="clear"></div>
+</ul>
+</div>
+</li>
+<li id="mapnav_static"><a href="http://developer.baidu.com/map/staticimg.htm" class="Top_two">静态图API</a></li>
+<li id="mapnav_car"><a href="http://developer.baidu.com/map/carhome.htm" class="Top_two">车联网API</a></li>
+<li id="mapnav_uri"><a href="http://developer.baidu.com/map/uri.htm">URI API</a></li>
+</ul>
+</li>
+</ul>
+</div><!--end of headTop_main-->
+</div><!-- end of headTop --></div><div class="clear"></div><script src="./Place suggestion API-百度地图API_files/login.js"></script>
+<div class="mbody">
+    <div class="mbread clearfix">
+        <a href="http://developer.baidu.com/map/place-suggestion-api.htm#">您当前的位置</a>：<a href="http://developer.baidu.com/map/webservice.htm">Web服务API</a>&gt;<a href="./Place suggestion API-百度地图API_files/Place suggestion API-百度地图API.htm">Place suggestion API</a>
+    </div>
+    <div class="mwrapper clearfix">
+        <div class="mmenu" style="position: fixed; top: 0px;">
+        <script type="text/javascript">
+					addMenu_web();
+					addClass_on3('webmenu_8');
+				</script><ul><li id="webmenu_6" class="mm16"><a href="http://developer.baidu.com/map/webservice.htm">概述</a></li><li id="webmenu_1" class="mm12"><a href="http://lbsyun.baidu.com/apiconsole/key?application=key" target="_blank">获取密钥</a></li><li id="webmenu_2" class="mm13"><a href="http://developer.baidu.com/map/webservice-placeapi.htm">Place API</a></li><li id="webmenu_8" class="mm18 on3"><a href="./Place suggestion API-百度地图API_files/Place suggestion API-百度地图API.htm">Place suggestion API</a></li><li id="webmenu_3" class="mm14"><a href="http://developer.baidu.com/map/webservice-geocoding.htm">Geocoding API</a></li><li id="webmenu_4" class="mm15"><a href="http://developer.baidu.com/map/direction-api.htm">Direction API</a></li><li id="webmenu_9" class="mm17"><a href="http://developer.baidu.com/map/route-matrix-api.htm">Route Matrix API<img src="./Place suggestion API-百度地图API_files/new.png"></a></li><li id="webmenu_7" class="mm17"><a href="http://developer.baidu.com/map/ip-location-api.htm">IP定位 API</a></li><li id="webmenu_5" class="mm16"><a href="http://developer.baidu.com/map/service-update.htm">更新日志</a></li></ul>
+        </div>
+        <div class="mcontainer">
+            <h1>Place suggestion API v1.0</h1>
+            <div class="mcatalog">
+            	<ol>
+                    <li class="mcatalog_odd_item"><a href="http://developer.baidu.com/map/place-suggestion-api.htm#place1">1.产品介绍</a></li>
+                    <li class="mcatalog_even_item"><a href="http://developer.baidu.com/map/place-suggestion-api.htm#place2">2.适用场景</a></li>
+                    <li class="mcatalog_odd_item"><a href="http://developer.baidu.com/map/place-suggestion-api.htm#place3">3.使用限制</a></li>
+                    <li class="mcatalog_odd_item"><a href="http://developer.baidu.com/map/place-suggestion-api.htm#place4">4.使用方法</a></li>
+                    <li class="mcatalog_even_item"><a href="http://developer.baidu.com/map/place-suggestion-api.htm#place5">5.服务地址</a></li>
+                    <li class="mcatalog_odd_item"><a href="http://developer.baidu.com/map/place-suggestion-api.htm#place6">6.请求接口参数</a></li>
+                    <li class="mcatalog_even_item"><a href="http://developer.baidu.com/map/place-suggestion-api.htm#place7">7.接口示例</a></li>
+                    <li class="mcatalog_even_item"><a href="http://developer.baidu.com/map/place-suggestion-api.htm#place8">8.更新日志</a></li>
+                </ol>
+            </div>
+            <div class="mcontent">
+            <h2 id="place1">产品介绍</h2>
+            <p>Place suggestion API 是一套以HTTP形式提供的匹配用户输入关键字辅助信息、提示接口，可返回json或xml格式的一组建议词条的数据。</p><p> 
+该套API免费对外开放，您需先<a target="_blank" href="http://lbsyun.baidu.com/apiconsole/key?application=key">申请密钥（ak）</a> ，1个ak支持10万次/天。</p>
+            <h2 id="place2">适用场景</h2>
+            <p>配合<a target="_blank" href="http://developer.baidu.com/map/webservice-placeapi.htm#.E6.8E.A5.E5.8F.A3.E5.8F.82.E6.95.B0">Place  API</a>使用：使用本接口请求，可调出匹配用户输入的关键字的建议列表，用户选择列表中确定的一条，结合Place  API返回查询的结果。效果如：</p>
+            <p align="center"><img src="./Place suggestion API-百度地图API_files/place-suggest.jpg"></p>
+            <h2 id="place3">使用限制</h2>
+            <p>1个ak支持10万次/天，超过请求不返回结果。</p>
+            <h2 id="place4">使用方法</h2>
+           <p>第一步，<a target="_blank" href="http://lbsyun.baidu.com/apiconsole/key?application=key">申请密钥（ak）</a> ，作为访问服务的依据；</p>
+           <p>第二步，按照请求参数说明拼写发送http请求的url，注意需使用第一步申请的ak；</p>
+           <p>第三步，接收返回的数据（json或xml格式）。</p>
+           <p><b>注：本接口不支持回调，如需在JavaScript中回调使用，可以直接参考JavaScript API封装的Suggestion函数,<a target="_blank" href="http://developer.baidu.com/map/jsdemo.htm#a6_2">体验效果</a>。</b></p>
+           <h2 id="place5">服务地址</h2>
+           <p></p><pre class="blue">http://api.map.baidu.com/place/v2/suggestion/</pre><p></p>
+            
+            <h2 id="place6">请求接口参数</h2>
+				<table class="mplacetable">
+                <tbody><tr>
+                <th>参数名称</th><th>是否必须</th><th>默认值</th><th>格式</th><th>备注</th>
+				</tr>
+                <tr>
+                <td class="mcode">q(query)</td>
+				<td>是</td>
+				<td>无</td>
+				<td>上地、天安、中关、shanghai</td>
+                <td>输入建议关键字（支持拼音）</td>
+				</tr>
+                <tr>
+                <td class="mcode">region</td>
+				<td>是</td>
+				<td>无</td>
+				<td>全国、北京市、131、江苏省等</td>
+                <td>所属城市/区域名称或代号</td>
+				</tr>
+                                <tr>
+                <td class="mcode">output</td>
+				<td>否</td>
+				<td>xml</td>
+				<td>json、xml</td>
+                <td>返回数据格式，可选json、xml两种</td>
+				</tr>
+                                <tr>
+                <td class="mcode">ak</td>
+				<td>是</td>
+				<td>无</td>
+				<td>E4805d16520de693a3fe707cdc962045</td>
+                <td>开发者访问密钥，必选。</td>
+                                </tr><tr>
+                <td class="mcode">sn</td>
+				<td>否</td>
+				<td>无</td>
+				<td>E4805d16520de693a3fe707cdc962045</td>
+                <td>用户的权限签名</td>
+                                </tr><tr>
+                <td class="mcode">timestamp</td>
+				<td>否</td>
+				<td>无</td>
+				<td>E4805d16520de693a3fe707cdc962045</td>
+                <td>设置sn后该值必选</td>
+				</tr>
+				</tbody></table>
+                
+            <h2 id="place7">接口示例</h2>
+            <p></p><pre><a target="_blank" href="http://api.map.baidu.com/place/v2/suggestion?query=%E5%A4%A9%E5%AE%89%E9%97%A8&region=131%20&output=json&ak=E4805d16520de693a3fe707cdc962045" class="blue">http://api.map.baidu.com/place/v2/suggestion?query=%E5%A4%A9%E5%AE%89%E9%97%A8&amp;region=131%20&amp;output=json&amp;ak=E4805d16520de693a3fe707cdc962045</a>
+//返回一组包含"天安门"字段的建议词条列表</pre><p></p>
+<p><b>说明</b></p>
+<p>query是需要查询输入建议的关键字，region是指定辅助城市，output用于指定返回数据的格式（xml或json）；ak是开发者请求数据的标识。</p>
+<p><b>返回结果</b></p>
+            <div class="dp-highlighter"><div class="bar"><div class="tools"><a href="http://developer.baidu.com/map/place-suggestion-api.htm#" onclick="dp.sh.Toolbar.Command(&#39;ViewSource&#39;,this);return false;">源码</a><a href="http://developer.baidu.com/map/place-suggestion-api.htm#" onclick="dp.sh.Toolbar.Command(&#39;CopyToClipboard&#39;,this);return false;" id="clip371">复制</a><a href="http://developer.baidu.com/map/place-suggestion-api.htm#" onclick="dp.sh.Toolbar.Command(&#39;PrintSource&#39;,this);return false;">打印</a><a href="http://developer.baidu.com/map/place-suggestion-api.htm#" onclick="dp.sh.Toolbar.Command(&#39;About&#39;,this);return false;">关于</a></div></div><ol start="1" class="dp-c"><li class="alt"><span><span>&nbsp;&nbsp;&nbsp;</span></span></li><li class=""><span>{&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"status"</span><span>:0,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"message"</span><span>:</span><span class="string">"ok"</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"result"</span><span>:[&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"name"</span><span>:</span><span class="string">"天安门"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"city"</span><span>:</span><span class="string">"北京市"</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"district"</span><span>:</span><span class="string">"东城区"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"business"</span><span>:</span><span class="string">""</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"cityid"</span><span>:</span><span class="string">"131"</span><span>&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"name"</span><span>:</span><span class="string">"天安门城楼"</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"city"</span><span>:</span><span class="string">"北京市"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"district"</span><span>:</span><span class="string">"东城区"</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"business"</span><span>:</span><span class="string">""</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"cityid"</span><span>:</span><span class="string">"131"</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"name"</span><span>:</span><span class="string">"天安门东"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"city"</span><span>:</span><span class="string">"北京市"</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"district"</span><span>:</span><span class="string">"东城区"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"business"</span><span>:</span><span class="string">""</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"cityid"</span><span>:</span><span class="string">"131"</span><span>&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"name"</span><span>:</span><span class="string">"天安门西"</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"city"</span><span>:</span><span class="string">"北京市"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"district"</span><span>:</span><span class="string">"西城区"</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"business"</span><span>:</span><span class="string">""</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"cityid"</span><span>:</span><span class="string">"131"</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"name"</span><span>:</span><span class="string">"天安门仿膳"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"city"</span><span>:</span><span class="string">"北京市"</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"district"</span><span>:</span><span class="string">"东城区"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"business"</span><span>:</span><span class="string">""</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"cityid"</span><span>:</span><span class="string">"131"</span><span>&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"name"</span><span>:</span><span class="string">"天安门东地铁站派出所"</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"city"</span><span>:</span><span class="string">"北京市"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"district"</span><span>:</span><span class="string">"东城区"</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"business"</span><span>:</span><span class="string">""</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"cityid"</span><span>:</span><span class="string">"131"</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"name"</span><span>:</span><span class="string">"天安门广场西"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"city"</span><span>:</span><span class="string">"北京市"</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"district"</span><span>:</span><span class="string">"西城区"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"business"</span><span>:</span><span class="string">""</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"cityid"</span><span>:</span><span class="string">"131"</span><span>&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"name"</span><span>:</span><span class="string">"天安门广场东"</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"city"</span><span>:</span><span class="string">"北京市"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"district"</span><span>:</span><span class="string">"东城区"</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"business"</span><span>:</span><span class="string">""</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"cityid"</span><span>:</span><span class="string">"131"</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"name"</span><span>:</span><span class="string">"天安门东地铁站b口"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"city"</span><span>:</span><span class="string">"北京市"</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"district"</span><span>:</span><span class="string">"东城区"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"business"</span><span>:</span><span class="string">""</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"cityid"</span><span>:</span><span class="string">"131"</span><span>&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"name"</span><span>:</span><span class="string">"天安门东地铁站a口"</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"city"</span><span>:</span><span class="string">"北京市"</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"district"</span><span>:</span><span class="string">"东城区"</span><span>,&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"business"</span><span>:</span><span class="string">""</span><span>,&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"cityid"</span><span>:</span><span class="string">"131"</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;]&nbsp;&nbsp;</span></li><li class="alt"><span>}&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li></ol></div><pre class="js" name="code" style="display: none;"> 
+{
+    "status":0,
+    "message":"ok",
+    "result":[
+        {
+            "name":"天安门",
+            "city":"北京市",
+            "district":"东城区",
+            "business":"",
+            "cityid":"131"
+        },
+        {
+            "name":"天安门城楼",
+            "city":"北京市",
+            "district":"东城区",
+            "business":"",
+            "cityid":"131"
+        },
+        {
+            "name":"天安门东",
+            "city":"北京市",
+            "district":"东城区",
+            "business":"",
+            "cityid":"131"
+        },
+        {
+            "name":"天安门西",
+            "city":"北京市",
+            "district":"西城区",
+            "business":"",
+            "cityid":"131"
+        },
+        {
+            "name":"天安门仿膳",
+            "city":"北京市",
+            "district":"东城区",
+            "business":"",
+            "cityid":"131"
+        },
+        {
+            "name":"天安门东地铁站派出所",
+            "city":"北京市",
+            "district":"东城区",
+            "business":"",
+            "cityid":"131"
+        },
+        {
+            "name":"天安门广场西",
+            "city":"北京市",
+            "district":"西城区",
+            "business":"",
+            "cityid":"131"
+        },
+        {
+            "name":"天安门广场东",
+            "city":"北京市",
+            "district":"东城区",
+            "business":"",
+            "cityid":"131"
+        },
+        {
+            "name":"天安门东地铁站b口",
+            "city":"北京市",
+            "district":"东城区",
+            "business":"",
+            "cityid":"131"
+        },
+        {
+            "name":"天安门东地铁站a口",
+            "city":"北京市",
+            "district":"东城区",
+            "business":"",
+            "cityid":"131"
+        }
+    ]
+}
+			</pre>
+           
+            <h2 id="place8">更新日志</h2>
+         	<p>2013年7月5日Place suggestion APIv1.0发布。</p><p>
+产品上线：新增获取关键字提示词条的数据接口，配合Place API使用。
+</p>
+		</div>
+        </div>
+    </div>
+    <div class="mwrappend clearfix">&nbsp;</div><div class="copyright clearfix"><p>©2014 Baidu<a href="http://www.baidu.com/duty/">使用百度前必读</a><a target="_blank" href="http://www.miibeian.gov.cn/">京ICP证030173号</a><img src="./Place suggestion API-百度地图API_files/gs.gif"></p></div></div>
+
+ <!--代码高亮-->
+	 <script type="text/javascript" src="./Place suggestion API-百度地图API_files/ZeroClipboard.js"></script>
+	 <script type="text/javascript" src="./Place suggestion API-百度地图API_files/shCore.js"></script>
+	 <script type="text/javascript" src="./Place suggestion API-百度地图API_files/shBrushJScript.js"></script>
+	 <script type="text/javascript" src="./Place suggestion API-百度地图API_files/shBrushCss.js"></script>
+	 <link type="text/css" rel="stylesheet" href="./Place suggestion API-百度地图API_files/shCore.css">
+	<script class="javascript">
+	dp.SyntaxHighlighter.ClipboardSwf = '';
+	dp.SyntaxHighlighter.HighlightAll('code');
+	</script>
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F5650c092812f8659cdfe23eeb42024ef' type='text/javascript'%3E%3C/script%3E"));
+</script><script src="./Place suggestion API-百度地图API_files/h.js" type="text/javascript"></script>
+
+<div id="guideMask" style="width: 1030px; height: 3701px;"></div><div id="guideContainer" style="left: 145.5px; top: -21.5px;"><div class="guide_title"><span>亲爱的访客：<span class="high">免费！</span>木有商业版，木有收费版... 全国人民用的都一样!</span><div class="guide_close" onclick="closeGuide()"></div></div><div class="guide_content"><div id="guide_arrow"></div><div class="title">我是...</div><div class="item"><div class="item_left"><div class="guide_icon"><div class="programmer"></div></div><div class="guide_text"><div class="text_title">程序猿</div><div class="text_link"><a onclick="_addStat(&#39;apidoc_guide1&#39;)" href="http://developer.baidu.com/map/jshome.htm" target="_blank">Web程序猿</a><a onclick="_addStat(&#39;apidoc_guide2&#39;)" href="http://developer.baidu.com/map/sdk-android.htm" target="_blank">Android程序猿</a><a onclick="_addStat(&#39;apidoc_guide3&#39;)" href="http://developer.baidu.com/map/sdk-ios.htm" target="_blank">iOS程序猿</a><br><a onclick="_addStat(&#39;apidoc_guide4&#39;)" href="http://developer.baidu.com/map/webservice.htm" target="_blank">C#/C++/Java程序猿</a></div></div></div><div class="item_right"><div class="guide_icon"><div class="factory"></div></div><div class="guide_text"><div class="text_title">厂商</div><div class="text_link"><a onclick="_addStat(&#39;apidoc_guide5&#39;)" href="http://developer.baidu.com/map/carhome.htm" target="_blank">汽车厂商（车联网服务）</a><br><a onclick="_addStat(&#39;apidoc_guide6&#39;)" href="mailto:mapapi@baidu.com" onmouseover="openTip(&#39;hardwareTip&#39;)" onmouseout="closeTip(&#39;hardwareTip&#39;)">硬件制造厂商（手机、Pad等）</a>        <div id="hardwareTip" class="popTip"><span>地图需求的商业合作请发送邮件至mapapi@baidu.com</span></div></div></div></div></div><div class="dashline dashline_margin_bottom"><div class="dashline_left"></div></div><div class="item"><div class="item_left"><div class="guide_icon"><div class="xiaobai"></div></div><div class="guide_text"><div class="text_title">开发小白</div><div class="text_tip"><span>老板催得紧，不会开发，咋办呀？<br>这里一样潇洒用地图。</span></div><div class="text_link"><a onclick="_addStat(&#39;apidoc_guide7&#39;)" href="http://developer.baidu.com/map/tool.htm" target="_blank">立即进入</a></div></div></div></div><div class="solidline"></div><div class="title">我要...</div><div class="item item_short"><div class="item_left"><div class="guide_icon"><div class="position"></div></div><div class="guide_text"><div class="text_title">我要定位</div><div class="text_link link_zIndex"><a onclick="_addStat(&#39;apidoc_guide8&#39;)" href="http://developer.baidu.com/map/geosdk-android.htm" target="_blank">Android定位</a><a onclick="_addStat(&#39;apidoc_guide9&#39;)" href="http://developer.baidu.com/map/geosdk-symbian.htm" target="_blank">Symbian定位</a><a onclick="_addStat(&#39;apidoc_guide10&#39;)" href="javascript:void(0)" onmouseover="openTip(&#39;iosTip&#39;)" onmouseout="closeTip(&#39;iosTip&#39;)">iOS定位</a><div id="iosTip" class="popTip"><span>请使用iOS系统自带的定位功能。为啥我木有？去问乔布斯哈！</span></div></div></div></div><div class="item_right"><div class="guide_icon"><div class="process"></div></div><div class="guide_text"><div class="text_title">我要管理我的数据</div><div class="text_tip"><span>LBS云：帮您存、查、地图展示！</span></div><div class="text_link"><a onclick="_addStat(&#39;apidoc_guide11&#39;)" href="http://developer.baidu.com/map/lbs-cloud.htm" target="_blank">立即进入</a></div></div></div></div><div class="dashline dashline_margin_bottom"><div class="dashline_left"></div><div class="dashline_right"></div></div><div class="item"><div class="item_left"><div class="guide_icon"><div class="callbaidu"></div></div><div class="guide_text"><div class="text_title">我要调用百度地图</div><div class="text_tip"><span>从今以后这不再是梦！看位置、查公交<br>一键分享都变得那么简单！</span></div><div class="text_link"><a onclick="_addStat(&#39;apidoc_guide12&#39;)" href="http://developer.baidu.com/map/uri.htm" target="_blank">立即进入</a></div></div></div><div class="item_right"><div class="guide_icon"><div class="baidupoi"></div></div><div class="guide_text"><div class="text_title">我要搜索百度POI数据</div><div class="text_tip"><span>北京的购物中心、宾馆...<br>周边的餐馆、电影院...还有详情可以看！</span></div><div class="text_link"><a onclick="_addStat(&#39;apidoc_guide13&#39;)" href="http://developer.baidu.com/map/webservice-placeapi.htm" target="_blank">立即进入</a></div></div></div></div><div class="dashline dashline_margin_vertical"><div class="dashline_left"></div></div><div class="item"><div class="item_left"><div class="guide_icon"><div class="coord"></div></div><div class="guide_text"><div class="text_title">我要坐标 我要地址</div><div class="text_tip"><span>坐标与地址间的解析，Geocoding帮您搞定！</span></div><div class="text_link"><a onclick="_addStat(&#39;apidoc_guide14&#39;)" href="http://developer.baidu.com/map/webservice-geocoding.htm" target="_blank">立即进入</a></div></div></div><div class="item_right"><div class="more_problem"><a onclick="_addStat(&#39;apidoc_guide15&#39;)" href="http://developer.baidu.com/map/question.htm" target="_blank">更多问题...</a></div></div></div></div></div><div class="gf-con"><div class="gf-plugin" id="gf_to_top" style="display: block;"><a href="javascript:void(0)">返回顶部</a></div><div class="gf-plugin" id="gf_guide"><a href="javascript:openGuide();" onclick="_addStatNew(&#39;lbsapi_guanwang&#39;,{&#39;operate&#39;: &#39;guanwang_productclick&#39;})">产品指引</a></div><div class="gf-plugin" id="gf_for_help"><a href="http://developer.baidu.com/map/help_index.html" onclick="_addStatNew(&#39;lbsapi_guanwang&#39;,{&#39;operate&#39;: &#39;guanwang_helpclick&#39;})">咨询求助</a></div><div class="gf-plugin" id="gf_suggestion"><a href="http://developer.baidu.com/map/suggest_index.html" onclick="_addStatNew(&#39;lbsapi_guanwang&#39;,{&#39;operate&#39;: &#39;guanwang_feedbackclick&#39;})">意见反馈</a></div></div><div style="position: absolute; left: 309px; top: 1882px; width: 19px; height: 12px; z-index: 99;"><embed id="ZeroClipboardMovie_1" src="ZeroClipboard.swf" loop="false" menu="false" quality="best" bgcolor="#ffffff" width="19" height="12" name="ZeroClipboardMovie_1" align="middle" allowscriptaccess="always" allowfullscreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="id=1&amp;width=19&amp;height=12" wmode="transparent"></div></body></html>

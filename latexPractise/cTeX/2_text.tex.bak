@@ -1,0 +1,7 @@
+\documentoclass[10pt]{article}
+\usepackage{CJK}
+\begin{document}
+\begin{CJK*}{GBK}{fs}
+这是一个例子
+\end{CJK*}
+\end{document}

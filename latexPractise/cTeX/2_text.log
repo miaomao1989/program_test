@@ -1,0 +1,25 @@
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=latex 2013.1.9)  9 JAN 2013 15:52
+entering extended mode
+**2_text.tex
+(F:\latexPractise\cTeX\2_text.tex
+LaTeX2e <2011/06/27>
+Babel <v3.8m> and hyphenation patterns for loaded.
+! Undefined control sequence.
+l.1 \documentoclass
+                   [10pt]{article}
+? 
+! Emergency stop.
+l.1 \documentoclass
+                   [10pt]{article}
+End of file on the terminal!
+
+ 
+Here is how much of TeX's memory you used:
+ 7 strings out of 495355
+ 148 string characters out of 3183883
+ 44842 words of memory out of 3000000
+ 3276 multiletter control sequences out of 15000+200000
+ 3640 words of font info for 14 fonts, out of 3000000 for 9000
+ 14 hyphenation exceptions out of 8191
+ 5i,0n,1p,44b,8s stack positions out of 5000i,500n,10000p,200000b,50000s
+No pages of output.

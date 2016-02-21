@@ -1,0 +1,9 @@
+\documentclass{ctexart} 
+\begin{document}
+\section{A test section}
+\begin{equation}\label{eq-1}
+1+1=2.
+\end{equation}
+等式`\ref{eq-1}是众所周知的.
+%\section{A new section}
+%\begin{equation}\label 

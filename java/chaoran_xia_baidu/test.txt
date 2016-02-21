@@ -1,0 +1,156 @@
+package LocationUtil;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
+
+public class LocationUtil {
+
+	private static final String BAIDU_APP_KEY = "42b8ececa9cd6fe72ae4cddd77c0da5d";
+	
+	/**
+	 * 返回输入地址的经纬度坐标 key lng(经度),lat(纬度)
+	 */
+	public static Map<String, String> getLatitude(String address) {
+		try {
+			// 将地址转换成utf-8的16进制
+			address = URLEncoder.encode(address, "UTF-8");
+			// 如果有代理，要设置代理，没代理可注释
+			// System.setProperty("http.proxyHost","192.168.172.23");
+			// System.setProperty("http.proxyPort","3209");
+
+			URL resjson = new URL("http://api.map.baidu.com/geocoder?address="
+					+ address + "&output=json&key=" + BAIDU_APP_KEY);
+			BufferedReader in = new BufferedReader(new InputStreamReader(
+					resjson.openStream()));
+			String res;
+			StringBuilder sb = new StringBuilder("");
+			while ((res = in.readLine()) != null) {
+				sb.append(res.trim());
+			}
+			in.close();
+			String str = sb.toString();
+			System.out.println("return json:" + str);
+			if(str!=null&&!str.equals("")){
+				Map<String, String> map = null;
+				int lngStart = str.indexOf("lng\":");
+				int lngEnd = str.indexOf(",\"lat");
+				int latEnd = str.indexOf("},\"precise");
+				if (lngStart > 0 && lngEnd > 0 && latEnd > 0) {
+					String lng = str.substring(lngStart + 5, lngEnd);
+					String lat = str.substring(lngEnd + 7, latEnd);
+					map = new HashMap<String, String>();
+					map.put("lng", lng);
+					map.put("lat", lat);
+					return map;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static void main(String args[]) {
+		
+		Map<String, String> map = LocationUtil.getLatitude("江阴市");
+		if (null != map) {
+			System.out.println(map.get("lng"));
+			System.out.println(map.get("lat"));
+		}
+	}
+}
+
+
+http://api.map.baidu.com/place/v2/search/?
+
+q=key_word&tag=catalog&region=北京&scope=1&page_size=20&output=json&ak=秘钥
+
+public static Map<String, String> getJsonData(String query, String region, String scope) {
+
+
+key_word：科技公司
+tag:公司
+scope: 1 or 2试试看看
+page_size: 10 or 20
+region:区域，省
+
+{
+	status : 0,
+	message : "ok",
+	total : 1463,
+	results : 
+	[
+		{
+			name : "万达广场(中共北京市石景山区委员会东)",
+			location : 
+			{
+				lat : 39.912338,
+				lng : 116.232426
+			},
+			address : "石景山路乙18号院2国际资源大厦",
+			street_id : "4fe438e03d935a3274026997",
+			telephone : "(010)88687770",
+			uid : "4fe438e03d935a3274026997",
+			detail_info : 
+			{
+				type : "shopping",
+				detail_url : "http://api.map.baidu.com/place/detail?uid=4fe438e03d935a3274026997&output=html&source=placeapi_v2"
+			}
+		},
+		{
+			name : "北京时尚新世界百货",
+			location : 
+			{
+				lat : 39.905579,
+				lng : 116.419306
+			},
+			address : "东打磨厂街7号新世界女人百货",
+			street_id : "86004e4cefd1fa6e21026256",
+			telephone : "(010)67039500",
+			uid : "86004e4cefd1fa6e21026256",
+			detail_info : 
+			{
+				type : "shopping",
+				tag : "崇文门",
+				detail_url : "http://api.map.baidu.com/place/detail?uid=86004e4cefd1fa6e21026256&output=html&source=placeapi_v2",
+				price : "219",
+				overall_rating : "3",
+				service_rating : "2",
+				environment_rating : "3",
+				image_num : "1",
+				comment_num : "234"
+			}
+		},
+		{
+			name : "韩国777（新世界百货店）",
+			location : 
+			{
+				lat : 39.904355,
+				lng : 116.424526
+			},
+			address : "北京市东城区崇文门外大街3-5号",
+			telephone : "(010)67081605,4008907770",
+			uid : "238edb0420304bd914c8f603",
+			detail_info : 
+			{
+				type : "shopping",
+				detail_url : "http://api.map.baidu.com/place/detail?uid=238edb0420304bd914c8f603&output=html&source=placeapi_v2",
+				price : "466"
+			}
+		}
+	]
+}
+
+
+java：
+
+http://api.map.baidu.com/place/v2/suggestion?ak=UAu5QZDVs5exMiS3szrWqXUr&output=json&query=%E7%A7%91%E6%8A%80%E5%85%AC%E5%8F%B8&page_size=2&page_num=1&scope=2&region=%E5%8C%97%E4%BA%AC
+
+
+BAIDU
+http://api.map.baidu.com/place/v2/search?ak=zl8vtLairw66aIwvWuMX17zi&output=json&query=%E7%A7%91%E6%8A%80%E5%85%AC%E5%8F%B8&page_size=20&page_num=1&scope=2&region=%E5%8C%97%E4%BA%AC
+

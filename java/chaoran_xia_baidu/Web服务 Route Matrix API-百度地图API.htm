@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<!-- saved from url=(0051)http://developer.baidu.com/map/route-matrix-api.htm -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <title>Web服务 Route Matrix API-百度地图API</title>
+  <script type="text/javascript" src="./Web服务 Route Matrix API-百度地图API_files/mapnav.js"></script>
+  <link rel="stylesheet" href="./Web服务 Route Matrix API-百度地图API_files/mapi.css" type="text/css" media="screen">
+  <script type="text/javascript" src="./Web服务 Route Matrix API-百度地图API_files/jquery-1.7.2.min.js"></script>
+  <script type="text/javascript" src="./Web服务 Route Matrix API-百度地图API_files/menu.js"></script>
+  <script type="text/javascript" src="./Web服务 Route Matrix API-百度地图API_files/mapi.js"></script>
+  <style>
+.mmenu a { text-indent:29px;}
+.mmenu .on3 a{background-position: 15px 17px;}
+</style>
+<style type="text/css"></style><style type="text/css"></style><script src="./Web服务 Route Matrix API-百度地图API_files/guide.js" type="text/javascript" charset="utf-8"></script></head>
+<body>
+  <script type="text/javascript">
+mnav({
+    one_nav:"mapnav_product",
+    two_nav:"mapnav_web"
+});
+</script><div id="header"><div id="top_main">
+<a href="http://developer.baidu.com/map/"><img class="logo" width="256px" height="52px" src="./Web服务 Route Matrix API-百度地图API_files/logo.png"></a>
+<div id="nav">
+<div id="logins">
+<ul class="user-nav">
+<li class="user-nav-item " id="user-state-li" style="">
+<a id="userName">justinxia001</a><label>l</label>
+<ul class="username-dropdown" style="visibility: hidden;">
+<li><a target="_top" href="http://passport.baidu.com/center" class="bd-cloud-dropdown-link">帐号设置</a></li>
+<li><a target="_top" href="http://passport.baidu.com/?logout&u=http://developer.baidu.com/map/route-matrix-api.htm" id="logout">退出</a></li>
+<div class="clear"></div>
+</ul>
+<div class="clear"></div>
+</li>
+<li class="user-nav-item">
+<a target="_blank" href="http://lbsyun.baidu.com/">LBS开放平台</a><label>l</label>
+</li>
+<li class="user-nav-item">
+<a target="_blank" href="http://developer.baidu.com/">百度开放云</a>
+</li>
+<li id="login-reg-li" class="user-nav-item" style="display: none;">
+<label id="dot-line">l</label><a id="login" href="" target="_top">登录</a>
+<a id="register" href="" target="_top">注册</a>
+</li>
+<div class="clear"></div>
+</ul>
+</div>
+<div class="clear"></div>
+<ul class="navul">
+<li>
+<a id="mapnav_home" href="http://developer.baidu.com/map/">首页</a>
+</li>
+<li class="nav-item">
+<a id="mapnav_product" href="http://developer.baidu.com/map/lbs-cloud.htm" class=" nav_on">API <span class="tri_span"></span></a>
+<div id="homeTab1" class="homeTab"><ul>
+<li><a href="http://developer.baidu.com/map/lbs-cloud.htm">LBS.云</a></li>
+<li><a href="http://developer.baidu.com/map/jshome.htm">JavaScript API</a> | <a href="http://developer.baidu.com/map/flash.htm">Flash API</a></li>
+<li><a href="http://developer.baidu.com/map/sdk-android.htm">Android SDK</a> | <a href="http://developer.baidu.com/map/sdk-ios.htm">iOS SDK</a> | <a href="http://developer.baidu.com/map/geosdk.htm">定位 SDK</a></li>
+<li><a href="http://developer.baidu.com/map/webservice.htm">Web服务 API</a> | <a href="http://developer.baidu.com/map/staticimg.htm">静态图 API</a> | <a href="http://developer.baidu.com/map/carhome.htm">车联网 API</a> | <a href="http://developer.baidu.com/map/uri.htm">URI API</a></li>
+<div class="clear"></div>
+</ul>
+</div>
+</li>
+<li class="nav-item">
+<a id="mapnav_tool" target="_blank" href="http://api.map.baidu.com/lbsapi/creatmap/index.html">工具<span class="tri_span"></span></a>
+<div class="homeTab">
+<ul>
+<li><a target="_blank" href="http://api.map.baidu.com/lbsapi/creatmap/index.html">地图生成器</a></li>
+<li><a target="_blank" href="http://api.map.baidu.com/lbsapi/getpoint/index.html">坐标拾取工具</a></li>
+<li><a target="_blank" href="http://api.map.baidu.com/mapCard/">地图名片</a></li>
+<li><a target="_blank" href="http://api.map.baidu.com/lbsapi/tuan/index.html">团购插件</a></li>
+<li><a target="_blank" href="http://developer.baidu.com/map/move.htm">零成本搬家工具</a></li>
+<div class="clear"></div>
+</ul>
+</div>
+</li>
+<li>
+<a id="mapnav_news" href="http://lbsyun.baidu.com/news">新闻</a>
+</li>
+<li class="nav-item">
+<a id="mapnav_support" href="http://developer.baidu.com/map/question.htm">支持<span class="tri_span"></span></a>
+<div class="homeTab">
+<ul>
+<li>
+<a href="javascript:openGuide();" onclick="_addStatNew(" lbsapi_guanwang",{operate:="" guanwang_productclick})"="">产品指引</a> | <a href="http://developer.baidu.com/map/question.htm">常见问题</a> | <a href="http://developer.baidu.com/map/devRes.htm">开发资源</a>
+</li>
+<li>
+<a href="http://developer.baidu.com/map/help_index.html">咨询求助</a> | <a href="http://developer.baidu.com/map/suggest_index.html">意见反馈</a> | <a href="http://developer.baidu.com/map/contact.htm">联系我们</a>
+</li>
+<div class="clear"></div>
+</ul>
+</div>
+</li>
+<li>
+<a id="mapnav_bbs" target="_blank" href="http://bbs.lbsyun.baidu.com/">论坛</a>
+</li>
+<li class="nav-item">
+<a id="mapnav_success" href="http://developer.baidu.com/map/case.htm" class="a_success">成功案例<span class="tri_span"></span></a>
+<div class="homeTab"><ul>
+<li style="width:250px"><a href="http://developer.baidu.com/map/case.htm">房产类</a></li>
+<li style="width:250px"><a href="http://developer.baidu.com/map/case-more.htm">更多案例</a></li>
+<div class="clear"></div>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="clear"></div>
+<div id="headTop">
+<div id="headeTop_main">
+<ul id="mapnav_tool_two">
+<li id="mapnav_creatmap"><a href="http://api.map.baidu.com/lbsapi/creatmap/index.html">地图生成器</a><b>|</b></li>
+<li id="mapnav_getpoint"><a href="http://api.map.baidu.com/lbsapi/getpoint/index.html">坐标拾取工具</a><b>|</b></li>
+<li id="mapnav_mapcard"><a href="http://api.map.baidu.com/mapCard/">地图名片</a><b>|</b></li>
+<li id="mapnav_tuan"><a href="http://api.map.baidu.com/lbsapi/tuan/index.html">团购插件</a><b>|</b></li>
+<li id="mapnav_move"><a href="http://developer.baidu.com/map/move.htm">零成本搬家</a></li></ul>
+<ul id="mapnav_support_two">
+<li id="mapnav_creatmap"><a href="javascript:openGuide();" onclick="_addStatNew(lbsapi_guanwang,{operate: guanwang_productclick})">产品指引</a><b>|</b></li>
+<li id="mapnav_question"><a href="http://developer.baidu.com/map/question.htm">常见问题</a><b>|</b></li>
+<li id="mapnav_devRes"><a href="http://developer.baidu.com/map/devRes.htm">开发资源</a><b>|</b></li>
+<li id="mapnav_help"><a href="http://developer.baidu.com/map/help_index.html">咨询求助</a><b>|</b></li>
+<li id="mapnav_suggest"><a href="http://developer.baidu.com/map/suggest_index.html">意见反馈</a><b>|</b></li>
+<li id="mapnav_contact"><a href="http://developer.baidu.com/map/contact.htm">联系我们</a></li>
+</ul>
+<ul id="mapnav_success_two">
+<li id="mapnav_houseProperty"><a href="http://developer.baidu.com/map/case.htm">房产类</a><b>|</b></li>
+<li id="mapnav_more_case"><a href="http://developer.baidu.com/map/case-more.htm">更多案例</a><b></b></li>
+</ul>
+<ul id="mapnav_product_two" style="display: block;">
+<li id="mapnav_yun"><a href="http://developer.baidu.com/map/lbs-cloud.htm">LBS.云</a><b>|</b></li>
+<li id="mapnav_javascript"><a class="Top_two" href="http://developer.baidu.com/map/jshome.htm">JavaScript API</a></li>
+<li id="mapnav_flash"><a href="http://developer.baidu.com/map/flash.htm">Flash API</a><b>|</b></li>
+<li>
+<ul>
+<li id="mapnav_and"><a href="http://developer.baidu.com/map/sdk-android.htm" class="Top_two">Android SDK</a></li>
+<li id="mapnav_ios"><a href="http://developer.baidu.com/map/sdk-ios.htm" class="Top_two">iOS SDK</a></li>
+<li id="mapnav_geo"><a href="http://developer.baidu.com/map/geosdk.htm">定位SDK</a><b>|</b></li>
+</ul>
+</li>
+<li>
+<ul>
+<li id="mapnav_web" class="nav-item  Top_on"><a href="http://developer.baidu.com/map/webservice.htm" class="Top_two_triangle">Web服务API</a>
+<div class="homeTab webTab">
+<ul>
+<li><a href="http://developer.baidu.com/map/webservice-placeapi.htm">Place API</a></li>
+<li><a href="http://developer.baidu.com/map/place-suggestion-api.htm">Place suggestion API</a></li>
+<li><a href="http://developer.baidu.com/map/webservice-geocoding.htm">Geocoding API</a></li>
+<li><a href="http://developer.baidu.com/map/direction-api.htm">Direction API</a></li>
+<li><a href="./Web服务 Route Matrix API-百度地图API_files/Web服务 Route Matrix API-百度地图API.htm">Route Matrix API</a></li>
+<li><a href="http://developer.baidu.com/map/ip-location-api.htm">IP定位 API</a></li>
+<div class="clear"></div>
+</ul>
+</div>
+</li>
+<li id="mapnav_static"><a href="http://developer.baidu.com/map/staticimg.htm" class="Top_two">静态图API</a></li>
+<li id="mapnav_car"><a href="http://developer.baidu.com/map/carhome.htm" class="Top_two">车联网API</a></li>
+<li id="mapnav_uri"><a href="http://developer.baidu.com/map/uri.htm">URI API</a></li>
+</ul>
+</li>
+</ul>
+</div><!--end of headTop_main-->
+</div><!-- end of headTop --></div><div class="clear"></div><script src="./Web服务 Route Matrix API-百度地图API_files/login.js"></script>
+  <div class="mbody">
+    <div class="mbread clearfix">
+      <a href="http://developer.baidu.com/map/route-matrix-api.htm#">您当前的位置</a>
+      ：
+      <a href="http://developer.baidu.com/map/webservice.htm">Web服务API</a>
+      &gt;
+      <a href="./Web服务 Route Matrix API-百度地图API_files/Web服务 Route Matrix API-百度地图API.htm">Route Matrix API</a>
+    </div>
+    <div class="mwrapper clearfix">
+      <div class="mmenu">
+        <script type="text/javascript">
+          addMenu_web();
+          addClass_on3('webmenu_9');
+        </script><ul><li id="webmenu_6" class="mm16"><a href="http://developer.baidu.com/map/webservice.htm">概述</a></li><li id="webmenu_1" class="mm12"><a href="http://lbsyun.baidu.com/apiconsole/key?application=key" target="_blank">获取密钥</a></li><li id="webmenu_2" class="mm13"><a href="http://developer.baidu.com/map/webservice-placeapi.htm">Place API</a></li><li id="webmenu_8" class="mm18"><a href="http://developer.baidu.com/map/place-suggestion-api.htm">Place suggestion API</a></li><li id="webmenu_3" class="mm14"><a href="http://developer.baidu.com/map/webservice-geocoding.htm">Geocoding API</a></li><li id="webmenu_4" class="mm15"><a href="http://developer.baidu.com/map/direction-api.htm">Direction API</a></li><li id="webmenu_9" class="mm17 on3"><a href="./Web服务 Route Matrix API-百度地图API_files/Web服务 Route Matrix API-百度地图API.htm">Route Matrix API<img src="./Web服务 Route Matrix API-百度地图API_files/new.png"></a></li><li id="webmenu_7" class="mm17"><a href="http://developer.baidu.com/map/ip-location-api.htm">IP定位 API</a></li><li id="webmenu_5" class="mm16"><a href="http://developer.baidu.com/map/service-update.htm">更新日志</a></li></ul>
+      </div>
+      <div class="mcontainer">
+        <h1>Route Matrix API v1.0</h1>
+        <div class="mcatalog">
+          <ol>
+            <li class="mcatalog_odd_item">
+              <a href="http://developer.baidu.com/map/route-matrix-api.htm#place1">1.产品介绍</a>
+            </li>
+            <li class="mcatalog_even_item">
+              <a href="http://developer.baidu.com/map/route-matrix-api.htm#place2">2.适用场景</a>
+            </li>
+            <li class="mcatalog_odd_item">
+              <a href="http://developer.baidu.com/map/route-matrix-api.htm#place3">3.使用限制</a>
+            </li>
+            <li class="mcatalog_odd_item">
+              <a href="http://developer.baidu.com/map/route-matrix-api.htm#place4">4.使用方法</a>
+            </li>
+            <li class="mcatalog_even_item">
+              <a href="http://developer.baidu.com/map/route-matrix-api.htm#place5">5.服务地址</a>
+            </li>
+            <li class="mcatalog_odd_item">
+              <a href="http://developer.baidu.com/map/route-matrix-api.htm#place6">6.请求接口参数</a>
+            </li>
+            <li class="mcatalog_odd_item">
+              <a href="http://developer.baidu.com/map/route-matrix-api.htm#place7">7.返回值说明</a>
+            </li>
+            <li class="mcatalog_even_item">
+              <a href="http://developer.baidu.com/map/route-matrix-api.htm#place8">8.接口示例</a>
+            </li>
+            <li class="mcatalog_even_item">
+              <a href="http://developer.baidu.com/map/route-matrix-api.htm#place9">9.状态码</a>
+            </li>
+            <li class="mcatalog_even_item">
+              <a href="http://developer.baidu.com/map/route-matrix-api.htm#place10">10.更新日志</a>
+            </li>
+          </ol>
+        </div>
+        <div class="mcontent">
+          <h2 id="place1">产品介绍</h2>
+          <p>
+            Route Matrix API是一套以HTTP形式提供的批量线路查询接口，用于返回多个起点和多个终点间的线路距离和行驶时间。该服务并不会返回详细的线路信息，查询线路详细请使用
+            <a href="http://developer.baidu.com/map/direction-api.htm">Direction API</a>
+            。
+          </p>
+          <p>
+            点击查看
+            <a target="_blank" href="http://api.map.baidu.com/direction/v1/routematrix?output=json&origins=%E5%A4%A9%E5%AE%89%E9%97%A8&destinations=%E5%8C%97%E4%BA%AC%E9%82%AE%E7%94%B5%E5%A4%A7%E5%AD%A6|%E4%B8%8A%E6%B5%B7%E5%8D%97%E4%BA%AC%E8%B7%AF&ak=E4805d16520de693a3fe707cdc962045">示例</a>
+            。
+          </p>
+          <h2 id="place2">适用场景</h2>
+          <p>
+            该接口适用于仅获取线路距离和时间，无需获取详细线路信息或者需要同时获取多起点、多终点线路距离等的情况。以下是获取同一个起点（酒店）至多个终点（机场、火车站）线路信息（见红框）的示例：
+          </p>
+          <p align="center" style="position: relative;">
+            <img src="./Web服务 Route Matrix API-百度地图API_files/image001.png" style="position:absolute;left:279px;top:293px;">
+            <img src="./Web服务 Route Matrix API-百度地图API_files/routematrix01.png"></p>
+          <h2 id="place3">使用限制</h2>
+          <p>
+            </p><ul>
+              <li>起终点个数最多为5个，即每个请求串最多能查询25条线路信息；</li>
+              <li>每个ak每天最多查询10万次。</li>
+            </ul>
+          <p></p>
+          <h2 id="place4">使用方法</h2>
+          <p>
+            第一步，
+            <a target="_blank" href="http://lbsyun.baidu.com/apiconsole/key?application=key">申请密钥（ak）</a>
+            ，作为访问服务的依据；
+          </p>
+          <p>第二步，按照请求参数说明拼写发送http请求的url，注意需使用第一步申请的ak；</p>
+          <p>第三步，接收返回的数据（json或xml格式）。</p>
+          <p> <b>注：本接口不支持回调。</b>
+          </p>
+          <h2 id="place5">服务地址</h2>
+          <p>
+            </p><pre class="blue">http://api.map.baidu.com/direction/v1/routematrix</pre>
+          <p></p>
+
+          <h2 id="place6">请求接口参数</h2>
+          <table class="mplacetable">
+            <tbody><tr>
+              <th>参数名称</th>
+              <th width="100">是否必须</th>
+              <th>格式举例</th>
+              <th>参数含义</th>
+            </tr>
+            <tr>
+              <td class="mcode">origins</td>
+              <td>必选</td>
+              <td>
+                名称：百度大厦
+                <br>
+                经纬度：40.056878, 116.30815
+              </td>
+              <td>以|分割，最多传5个点</td>
+
+            </tr>
+            <tr>
+              <td class="mcode">destinations</td>
+              <td>必选</td>
+              <td>
+                名称：天安门
+                <br>
+                经纬度：39.915285, 116.403857
+              </td>
+              <td>以|分割，最多传5个点</td>
+
+            </tr>
+            <tr>
+              <td class="mcode">mode</td>
+              <td>选填，默认为driving</td>
+              <td>driving(驾车模式)</td>
+              <td>导航模式，包括：driving（驾车）、walking（步行）</td>
+
+            </tr>
+            <tr>
+              <td class="mcode">output</td>
+              <td>选填，默认为xml</td>
+              <td>json</td>
+              <td>表示输出类型，可设置为xml或json，默认为xml。</td>
+
+            </tr>
+            <tr>
+              <td class="mcode">coord_type</td>
+              <td>选填，默认为bd09ll</td>
+              <td>gcj02(国测局坐标，如google，soso地图均采用该坐标)</td>
+              <td>
+                坐标类型，可选参数，默认为bd09ll。允许的值为：bd09ll（百度经纬度坐标）、bd09mc（百度摩卡托坐标）、gcj02（国测局加密坐标）、wgs84（gps设备获取的坐标）。
+              </td>
+
+            </tr>
+            <tr>
+              <td class="mcode">tactics</td>
+              <td>选填</td>
+              <td>11</td>
+              <td>导航策略。导航路线类型，10，不走高速；11、最少时间；12、最短路径。</td>
+
+            </tr>
+            <tr>
+              <td class="mcode">ak</td>
+              <td>必填</td>
+              <td>E4805d16520de693a3fe707cdc962045</td>
+              <td>用户的访问权限</td>
+
+            </tr>
+            <tr>
+              <td class="mcode">sn</td>
+              <td>选填</td>
+              <td></td>
+              <td>用户的权限签名</td>
+
+            </tr>
+            <tr>
+              <td class="mcode">timestamp</td>
+              <td>sn存在时必填</td>
+              <td></td>
+              <td>时间戳，与sn配合使用。</td>
+
+            </tr>
+          </tbody></table>
+          <h2 id="place7">返回值说明</h2>
+          <table class="mplacetable">
+            <tbody><tr>
+              <th width="100px">参数名称</th>
+              <th width="280px" colspan="3">参数含义</th>
+              <th>备注</th>
+            </tr>
+            <tr>
+              <td>status</td>
+              <td colspan="3">状态码</td>
+              <td>
+                0：成功
+                <br>
+                2：参数错误
+                <br>
+                3：权限或配额校验失败
+              </td>
+            </tr>
+            <tr>
+              <td>message</td>
+              <td colspan="3">状态码对应的信息</td>
+              <td>例如 message："ok"</td>
+            </tr>
+
+            <tr>
+              <td>info</td>
+              <td colspan="3">版权信息</td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td>result</td>
+              <td colspan="3">返回的结果数组</td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td rowspan="2"></td>
+              <td rowspan="2">elements</td>
+              <td>distance（线路距离，分文本描述和数值两种形式）
+              </td>
+              <td width="100px">{<br>
+                     &nbsp;text：xx公里,<br>
+                     &nbsp;value：xxxx<br>
+                  }
+              </td>
+              <td rowspan="2">数组元素，数组每个元素对应每行里的检索结果
+                  每行指一个起点与n个终点的计算返回结果
+              </td>
+            </tr>
+            <tr>
+              <td>duration（时间，分文本描述和数值两种形式）</td>
+              <td>{<br>
+                    &nbsp;text：x.x小时,<br>
+                    &nbsp;value：xxxx<br>
+                  }
+              </td>
+           
+            </tr>
+
+          </tbody></table>
+          <h2 id="place8">接口示例</h2>
+           <p> <b>查看示例</b>
+          </p>
+          <p>
+            </p><pre><a target="_blank" href="http://api.map.baidu.com/direction/v1/routematrix?output=json&origins=%E5%A4%A9%E5%AE%89%E9%97%A8|%E9%B8%9F%E5%B7%A2&destinations=%E5%8C%97%E4%BA%AC%E9%82%AE%E7%94%B5%E5%A4%A7%E5%AD%A6|%E4%B8%8A%E6%B5%B7%E5%8D%97%E4%BA%AC%E8%B7%AF&ak=E4805d16520de693a3fe707cdc962045" class="blue">http://api.map.baidu.com/direction/v1/routematrix?output=json&amp;origins=%E5%A4%A9%E5%AE%89%E9%97%A8|%E9%B8%9F%E5%B7%A2&amp;destinations=%E5%8C%97%E4%BA%AC%E9%82%AE%E7%94%B5%E5%A4%A7%E5%AD%A6|%E4%B8%8A%E6%B5%B7%E5%8D%97%E4%BA%AC%E8%B7%AF&amp;ak=E4805d16520de693a3fe707cdc962045</a>
+           </pre>
+          <p></p>
+          <p> <b>返回结果格式</b>
+          </p>
+          <div class="dp-highlighter"><div class="bar"><div class="tools"><a href="http://developer.baidu.com/map/route-matrix-api.htm#" onclick="dp.sh.Toolbar.Command(&#39;ViewSource&#39;,this);return false;">源码</a><a href="http://developer.baidu.com/map/route-matrix-api.htm#" onclick="dp.sh.Toolbar.Command(&#39;CopyToClipboard&#39;,this);return false;" id="clip502">复制</a><a href="http://developer.baidu.com/map/route-matrix-api.htm#" onclick="dp.sh.Toolbar.Command(&#39;PrintSource&#39;,this);return false;">打印</a><a href="http://developer.baidu.com/map/route-matrix-api.htm#" onclick="dp.sh.Toolbar.Command(&#39;About&#39;,this);return false;">关于</a></div></div><ol start="1" class="dp-c"><li class="alt"><span><span>&nbsp;&nbsp;&nbsp;</span></span></li><li class=""><span>{&nbsp;&nbsp;&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"elements"</span><span>:[&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{origin1-destination1},&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{origin1-destination2},&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{origin2-destination1},&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{origin2-destination2}&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;]&nbsp;&nbsp;</span></li><li class="alt"><span>}&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li></ol></div><pre class="js" name="code" style="display: none;"> 
+{  
+    "elements":[
+        {origin1-destination1},
+        {origin1-destination2},
+        {origin2-destination1},
+        {origin2-destination2}
+    ]
+}
+      </pre>
+        <p> <b>请求格式如下</b>
+          </p>
+        <p>
+            </p><pre>http://api.map.baidu.com/direction/v1/routematrix?output=json&amp;origins=origin1|orgin2&amp;destinations=destination1|destination2&amp;ak=E4805d16520de693a3fe707cdc962045  <span style="float:left">//origins=origin1|orgin2为请求的起点，destinations=destination1|destination2为请求的终点：</span></pre>
+          <p></p>
+
+          <h2 id="place9">状态码</h2>
+          <table class="mplacetable">
+            <tbody><tr>
+              <td width="320px">0</td>
+              <td width="350px">成功</td>
+            </tr>
+            <tr>
+              <td>1</td>
+              <td>服务器内部错误</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>请求参数非法</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>权限校验失败</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>配额校验失败</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>Ak不存在或者非法</td>
+            </tr>
+            <tr>
+              <td>11</td>
+              <td>起终点信息模糊</td>
+            </tr>
+            <tr>
+              <td>12</td>
+              <td>起点或者终点超过5个</td>
+            </tr>
+            <tr>
+              <td>101</td>
+              <td>服务禁用</td>
+            </tr>
+            <tr>
+              <td>102</td>
+              <td>不通过白名单或者安全码不对</td>
+            </tr>
+          </tbody></table>
+          <h2 id="place10">更新日志</h2>
+          <p>2013年12月19日 Route Matrix APIv1.0发布。</p>
+          <p>产品上线：提供同时查询多个起终点线路信息的数据接口。</p>
+        </div>
+      </div>
+    </div>
+    <div class="mwrappend clearfix">&nbsp;</div>
+    <div class="copyright clearfix">
+      <p>
+        ©2014 Baidu
+        <a href="http://www.baidu.com/duty/">使用百度前必读</a>
+        <a target="_blank" href="http://www.miibeian.gov.cn/">京ICP证030173号</a>
+        <img src="./Web服务 Route Matrix API-百度地图API_files/gs.gif"></p>
+    </div>
+  </div>
+  <!--代码高亮-->
+  <script type="text/javascript" src="./Web服务 Route Matrix API-百度地图API_files/ZeroClipboard.js"></script>
+  <script type="text/javascript" src="./Web服务 Route Matrix API-百度地图API_files/shCore.js"></script>
+  <script type="text/javascript" src="./Web服务 Route Matrix API-百度地图API_files/shBrushJScript.js"></script>
+  <script type="text/javascript" src="./Web服务 Route Matrix API-百度地图API_files/shBrushCss.js"></script>
+  <link type="text/css" rel="stylesheet" href="./Web服务 Route Matrix API-百度地图API_files/shCore.css">
+  <script class="javascript">
+  dp.SyntaxHighlighter.ClipboardSwf = '';
+  dp.SyntaxHighlighter.HighlightAll('code');
+  </script>
+  <script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F5650c092812f8659cdfe23eeb42024ef' type='text/javascript'%3E%3C/script%3E"));
+</script><script src="./Web服务 Route Matrix API-百度地图API_files/h.js" type="text/javascript"></script>
+
+<div id="guideMask" style="width: 1030px; height: 3615px;"></div><div id="guideContainer" style="left: 145.5px; top: -21.5px;"><div class="guide_title"><span>亲爱的访客：<span class="high">免费！</span>木有商业版，木有收费版... 全国人民用的都一样!</span><div class="guide_close" onclick="closeGuide()"></div></div><div class="guide_content"><div id="guide_arrow"></div><div class="title">我是...</div><div class="item"><div class="item_left"><div class="guide_icon"><div class="programmer"></div></div><div class="guide_text"><div class="text_title">程序猿</div><div class="text_link"><a onclick="_addStat(&#39;apidoc_guide1&#39;)" href="http://developer.baidu.com/map/jshome.htm" target="_blank">Web程序猿</a><a onclick="_addStat(&#39;apidoc_guide2&#39;)" href="http://developer.baidu.com/map/sdk-android.htm" target="_blank">Android程序猿</a><a onclick="_addStat(&#39;apidoc_guide3&#39;)" href="http://developer.baidu.com/map/sdk-ios.htm" target="_blank">iOS程序猿</a><br><a onclick="_addStat(&#39;apidoc_guide4&#39;)" href="http://developer.baidu.com/map/webservice.htm" target="_blank">C#/C++/Java程序猿</a></div></div></div><div class="item_right"><div class="guide_icon"><div class="factory"></div></div><div class="guide_text"><div class="text_title">厂商</div><div class="text_link"><a onclick="_addStat(&#39;apidoc_guide5&#39;)" href="http://developer.baidu.com/map/carhome.htm" target="_blank">汽车厂商（车联网服务）</a><br><a onclick="_addStat(&#39;apidoc_guide6&#39;)" href="mailto:mapapi@baidu.com" onmouseover="openTip(&#39;hardwareTip&#39;)" onmouseout="closeTip(&#39;hardwareTip&#39;)">硬件制造厂商（手机、Pad等）</a>        <div id="hardwareTip" class="popTip"><span>地图需求的商业合作请发送邮件至mapapi@baidu.com</span></div></div></div></div></div><div class="dashline dashline_margin_bottom"><div class="dashline_left"></div></div><div class="item"><div class="item_left"><div class="guide_icon"><div class="xiaobai"></div></div><div class="guide_text"><div class="text_title">开发小白</div><div class="text_tip"><span>老板催得紧，不会开发，咋办呀？<br>这里一样潇洒用地图。</span></div><div class="text_link"><a onclick="_addStat(&#39;apidoc_guide7&#39;)" href="http://developer.baidu.com/map/tool.htm" target="_blank">立即进入</a></div></div></div></div><div class="solidline"></div><div class="title">我要...</div><div class="item item_short"><div class="item_left"><div class="guide_icon"><div class="position"></div></div><div class="guide_text"><div class="text_title">我要定位</div><div class="text_link link_zIndex"><a onclick="_addStat(&#39;apidoc_guide8&#39;)" href="http://developer.baidu.com/map/geosdk-android.htm" target="_blank">Android定位</a><a onclick="_addStat(&#39;apidoc_guide9&#39;)" href="http://developer.baidu.com/map/geosdk-symbian.htm" target="_blank">Symbian定位</a><a onclick="_addStat(&#39;apidoc_guide10&#39;)" href="javascript:void(0)" onmouseover="openTip(&#39;iosTip&#39;)" onmouseout="closeTip(&#39;iosTip&#39;)">iOS定位</a><div id="iosTip" class="popTip"><span>请使用iOS系统自带的定位功能。为啥我木有？去问乔布斯哈！</span></div></div></div></div><div class="item_right"><div class="guide_icon"><div class="process"></div></div><div class="guide_text"><div class="text_title">我要管理我的数据</div><div class="text_tip"><span>LBS云：帮您存、查、地图展示！</span></div><div class="text_link"><a onclick="_addStat(&#39;apidoc_guide11&#39;)" href="http://developer.baidu.com/map/lbs-cloud.htm" target="_blank">立即进入</a></div></div></div></div><div class="dashline dashline_margin_bottom"><div class="dashline_left"></div><div class="dashline_right"></div></div><div class="item"><div class="item_left"><div class="guide_icon"><div class="callbaidu"></div></div><div class="guide_text"><div class="text_title">我要调用百度地图</div><div class="text_tip"><span>从今以后这不再是梦！看位置、查公交<br>一键分享都变得那么简单！</span></div><div class="text_link"><a onclick="_addStat(&#39;apidoc_guide12&#39;)" href="http://developer.baidu.com/map/uri.htm" target="_blank">立即进入</a></div></div></div><div class="item_right"><div class="guide_icon"><div class="baidupoi"></div></div><div class="guide_text"><div class="text_title">我要搜索百度POI数据</div><div class="text_tip"><span>北京的购物中心、宾馆...<br>周边的餐馆、电影院...还有详情可以看！</span></div><div class="text_link"><a onclick="_addStat(&#39;apidoc_guide13&#39;)" href="http://developer.baidu.com/map/webservice-placeapi.htm" target="_blank">立即进入</a></div></div></div></div><div class="dashline dashline_margin_vertical"><div class="dashline_left"></div></div><div class="item"><div class="item_left"><div class="guide_icon"><div class="coord"></div></div><div class="guide_text"><div class="text_title">我要坐标 我要地址</div><div class="text_tip"><span>坐标与地址间的解析，Geocoding帮您搞定！</span></div><div class="text_link"><a onclick="_addStat(&#39;apidoc_guide14&#39;)" href="http://developer.baidu.com/map/webservice-geocoding.htm" target="_blank">立即进入</a></div></div></div><div class="item_right"><div class="more_problem"><a onclick="_addStat(&#39;apidoc_guide15&#39;)" href="http://developer.baidu.com/map/question.htm" target="_blank">更多问题...</a></div></div></div></div></div><div class="gf-con"><div class="gf-plugin" id="gf_to_top"><a href="javascript:void(0)">返回顶部</a></div><div class="gf-plugin" id="gf_guide"><a href="javascript:openGuide();" onclick="_addStatNew(&#39;lbsapi_guanwang&#39;,{&#39;operate&#39;: &#39;guanwang_productclick&#39;})">产品指引</a></div><div class="gf-plugin" id="gf_for_help"><a href="http://developer.baidu.com/map/help_index.html" onclick="_addStatNew(&#39;lbsapi_guanwang&#39;,{&#39;operate&#39;: &#39;guanwang_helpclick&#39;})">咨询求助</a></div><div class="gf-plugin" id="gf_suggestion"><a href="http://developer.baidu.com/map/suggest_index.html" onclick="_addStatNew(&#39;lbsapi_guanwang&#39;,{&#39;operate&#39;: &#39;guanwang_feedbackclick&#39;})">意见反馈</a></div></div><div style="position: absolute; left: 309px; top: 2695px; width: 19px; height: 12px; z-index: 99;"><embed id="ZeroClipboardMovie_1" src="ZeroClipboard.swf" loop="false" menu="false" quality="best" bgcolor="#ffffff" width="19" height="12" name="ZeroClipboardMovie_1" align="middle" allowscriptaccess="always" allowfullscreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="id=1&amp;width=19&amp;height=12" wmode="transparent"></div></body></html>

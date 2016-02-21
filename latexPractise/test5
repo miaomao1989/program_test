@@ -1,0 +1,17 @@
+\documentclass{article}
+\usepackage{CJK,graphicx}
+\graphicspath{latexPractise/}
+\begin{document}
+\begin{CJK*}{GBK}{kai}
+\renewcommand\figurename{图}
+
+图形纳入测试：
+\begin{figure}[h]\centering
+    \includegraphics[width=10cm]{Tulips.jpg}\\
+    \caption{日落西山红霞飞}\label{fig:tulips}
+\end{figure}
+
+一个日落的照片, 参见图~\ref{fig:tulips}. (此图在~Windows 操
+作系统‘‘图片收藏’’的‘‘示例图片’’文件夹中.)
+\end{CJK*}
+\end{document}

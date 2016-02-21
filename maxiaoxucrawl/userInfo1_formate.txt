@@ -1,0 +1,1111 @@
+[ 
+ {
+    "_id": {
+      "$oid": "533d3017b5f34202d7b467c9"
+    },
+    "fans": [
+      {
+        "uid": "1808085044",
+        "nickname": "cn_support"
+      },
+      {
+        "uid": "3988074097",
+        "nickname": "Ethan的云安全世界"
+      },
+      {
+        "uid": "5079246356",
+        "nickname": "weijing2009"
+      },
+      {
+        "uid": "3827860741",
+        "nickname": "存储菜哥"
+      },
+      {
+        "uid": "3032027571",
+        "nickname": "手机用户3032027571"
+      },
+      {
+        "uid": "3006150115",
+        "nickname": "wind__dance"
+      },
+      {
+        "uid": "1422674903",
+        "nickname": "52乐享"
+      },
+      {
+        "uid": "2329088323",
+        "nickname": "順崎自RAN"
+      },
+      {
+        "uid": "1916593201",
+        "nickname": "弗兰克无"
+      },
+      {
+        "uid": "1853613045",
+        "nickname": "围脖故障"
+      },
+      {
+        "uid": "3484572152",
+        "nickname": "SC黎奎"
+      },
+      {
+        "uid": "2663445331",
+        "nickname": "白黑蒙哥拿"
+      },
+      {
+        "uid": "3013099567",
+        "nickname": "高端存储"
+      },
+      {
+        "uid": "1781379531",
+        "nickname": "zedware"
+      },
+      {
+        "uid": "1402934772",
+        "nickname": "我的未来不是梦514"
+      },
+      {
+        "uid": "1235173834",
+        "nickname": "莴怖熵崴箔"
+      },
+      {
+        "uid": "1441020812",
+        "nickname": "传说中的冬瓜头"
+      },
+      {
+        "uid": "1907674053",
+        "nickname": "tong_liang"
+      },
+      {
+        "uid": "3529743383",
+        "nickname": "OpenStack中国社区"
+      },
+      {
+        "uid": "1793490555",
+        "nickname": "刘爱贵"
+      },
+      {
+        "uid": "1654535432",
+        "nickname": "京瑞鸿禧"
+      },
+      {
+        "uid": "3939634341",
+        "nickname": "无名1434"
+      },
+      {
+        "uid": "1534787925",
+        "nickname": "frank0101"
+      },
+      {
+        "uid": "1821782247",
+        "nickname": "ittwo"
+      },
+      {
+        "uid": "1495439540",
+        "nickname": "高端存储知识"
+      },
+      {
+        "uid": "1765830541",
+        "nickname": "唐僧_huangliang"
+      },
+      {
+        "uid": "1721482654",
+        "nickname": "打铁巷卖骚"
+      },
+      {
+        "uid": "1798074535",
+        "nickname": "钟媛Cynthia"
+      },
+      {
+        "uid": "2286285544",
+        "nickname": "AISI716"
+      },
+      {
+        "uid": "1888869661",
+        "nickname": "loong_ly"
+      },
+      {
+        "uid": "3194460890",
+        "nickname": "手机用户3194460890"
+      },
+      {
+        "uid": "1875729747",
+        "nickname": "野兽的文明之路"
+      },
+      {
+        "uid": "3899431151",
+        "nickname": "每天一个段子V"
+      },
+      {
+        "uid": "3672481052",
+        "nickname": "MCIT"
+      },
+      {
+        "uid": "1973955992",
+        "nickname": "橘黄色的鱼"
+      },
+      {
+        "uid": "1427440243",
+        "nickname": "简单_Frank"
+      },
+      {
+        "uid": "1750329185",
+        "nickname": "肥翀翀"
+      },
+      {
+        "uid": "2021613281",
+        "nickname": "有木有开心"
+      },
+      {
+        "uid": "2541491885",
+        "nickname": "四代移动通信"
+      },
+      {
+        "uid": "1008470940",
+        "nickname": "Sonic-shi"
+      },
+      {
+        "uid": "2733649971",
+        "nickname": "StoragePartner存储伙伴网"
+      },
+      {
+        "uid": "1917051155",
+        "nickname": "林吟红Rachel_Lin"
+      },
+      {
+        "uid": "2979473200",
+        "nickname": "易会科技"
+      },
+      {
+        "uid": "2036392232",
+        "nickname": "bean_king"
+      },
+      {
+        "uid": "1913173554",
+        "nickname": "小宝杭州"
+      },
+      {
+        "uid": "2463416710",
+        "nickname": "smithdanny"
+      },
+      {
+        "uid": "2625899155",
+        "nickname": "田文刚"
+      },
+      {
+        "uid": "1807599690",
+        "nickname": "_石先森"
+      },
+      {
+        "uid": "3853243769",
+        "nickname": "Fusion-io中国"
+      },
+      {
+        "uid": "1898353550",
+        "nickname": "OpenStack"
+      },
+      {
+        "uid": "2047104910",
+        "nickname": "raidwang"
+      },
+      {
+        "uid": "1046913624",
+        "nickname": "黄小黄huang"
+      },
+      {
+        "uid": "1415782494",
+        "nickname": "前世情人今续缘"
+      },
+      {
+        "uid": "2407832987",
+        "nickname": "Net130在线"
+      },
+      {
+        "uid": "2502180202",
+        "nickname": "飘飘飘扬扬扬"
+      },
+      {
+        "uid": "3669827380",
+        "nickname": "我是一粒青豆"
+      },
+      {
+        "uid": "2509964282",
+        "nickname": "笑看云存储"
+      },
+      {
+        "uid": "3017896265",
+        "nickname": "uniidsh"
+      },
+      {
+        "uid": "2793664604",
+        "nickname": "比特实验室"
+      },
+      {
+        "uid": "2214179107",
+        "nickname": "hjwsm1989"
+      },
+      {
+        "uid": "2841744673",
+        "nickname": "2013网络存储大会SNW"
+      },
+      {
+        "uid": "1845928380",
+        "nickname": "奖励你肿么了"
+      },
+      {
+        "uid": "1427928630",
+        "nickname": "同有--湖南小金刚"
+      },
+      {
+        "uid": "1969995521",
+        "nickname": "EMC_VNX_WangWei"
+      },
+      {
+        "uid": "3430290942",
+        "nickname": "红帽小伙_77314"
+      },
+      {
+        "uid": "2106292427",
+        "nickname": "kj101"
+      },
+      {
+        "uid": "2345602153",
+        "nickname": "WatchStor论坛"
+      },
+      {
+        "uid": "2279046881",
+        "nickname": "红旗下的蛋_同有科技"
+      },
+      {
+        "uid": "1914404191",
+        "nickname": "珠穆朗玛乐峰"
+      },
+      {
+        "uid": "1655490731",
+        "nickname": "宇菲申竔"
+      },
+      {
+        "uid": "2050717445",
+        "nickname": "存储达人V"
+      },
+      {
+        "uid": "3237509922",
+        "nickname": "__卍_-Sugar"
+      },
+      {
+        "uid": "2832015852",
+        "nickname": "PMC官方微博"
+      },
+      {
+        "uid": "2026301505",
+        "nickname": "张倩文0610"
+      },
+      {
+        "uid": "1130141412",
+        "nickname": "苏钰suyu"
+      },
+      {
+        "uid": "2285840307",
+        "nickname": "李明-同有科技安防"
+      },
+      {
+        "uid": "2455793231",
+        "nickname": "黄_解放"
+      },
+      {
+        "uid": "2271922871",
+        "nickname": "存储小金刚"
+      },
+      {
+        "uid": "1400710647",
+        "nickname": "KevinChensc"
+      },
+      {
+        "uid": "3152734960",
+        "nickname": "炫铃用户3152734960"
+      },
+      {
+        "uid": "2677876017",
+        "nickname": "crazywujipeng"
+      },
+      {
+        "uid": "3023291125",
+        "nickname": "封艳征"
+      },
+      {
+        "uid": "1826908374",
+        "nickname": "鲍捷安"
+      },
+      {
+        "uid": "2405248812",
+        "nickname": "孔四茄"
+      },
+      {
+        "uid": "2447720741",
+        "nickname": "俞雪文"
+      },
+      {
+        "uid": "1726773945",
+        "nickname": "打开存储问号"
+      },
+      {
+        "uid": "2536076197",
+        "nickname": "东北角_"
+      },
+      {
+        "uid": "2603634961",
+        "nickname": "Foxrang"
+      },
+      {
+        "uid": "2723843265",
+        "nickname": "MagicianHong"
+      },
+      {
+        "uid": "2122852653",
+        "nickname": "jwgxy1998"
+      },
+      {
+        "uid": "2332965842",
+        "nickname": "睦三色堇"
+      },
+      {
+        "uid": "1700636092",
+        "nickname": "清浊自在"
+      },
+      {
+        "uid": "2303823592",
+        "nickname": "沙枣树的花香"
+      },
+      {
+        "uid": "1854119967",
+        "nickname": "全宇宙最帅的流氓"
+      },
+      {
+        "uid": "2719201184",
+        "nickname": "手机用户2719201184"
+      },
+      {
+        "uid": "1495366824",
+        "nickname": "老绳子头"
+      },
+      {
+        "uid": "2308489083",
+        "nickname": "福禄克万用表"
+      },
+      {
+        "uid": "1040585443",
+        "nickname": "jussin"
+      },
+      {
+        "uid": "2287248124",
+        "nickname": "TotalRecall技術廣角鏡"
+      },
+      {
+        "uid": "2260130181",
+        "nickname": "Jacky於"
+      },
+      {
+        "uid": "2166827994",
+        "nickname": "ghost-FC"
+      },
+      {
+        "uid": "1804326160",
+        "nickname": "番茄在这里"
+      },
+      {
+        "uid": "1652402721",
+        "nickname": "星星铺路"
+      },
+      {
+        "uid": "2385250871",
+        "nickname": "手机用户2385250871"
+      },
+      {
+        "uid": "2296934247",
+        "nickname": "余琛-HW"
+      },
+      {
+        "uid": "2375102623",
+        "nickname": "楚留香赵"
+      },
+      {
+        "uid": "2372528665",
+        "nickname": "gmy55662372528665"
+      },
+      {
+        "uid": "2267258454",
+        "nickname": "大脚满安2009"
+      },
+      {
+        "uid": "2372423997",
+        "nickname": "回身一跪为2372423997"
+      },
+      {
+        "uid": "2350634337",
+        "nickname": "JG呒呒呒"
+      },
+      {
+        "uid": "2322368070",
+        "nickname": "哈里波波和哈里波特256"
+      },
+      {
+        "uid": "2322039720",
+        "nickname": "GQ_MIE"
+      },
+      {
+        "uid": "2239092010",
+        "nickname": "雅蝶小白"
+      },
+      {
+        "uid": "2334319110",
+        "nickname": "Dang雷平"
+      },
+      {
+        "uid": "2332469072",
+        "nickname": "安伦石"
+      }
+    ],
+    "follows": [
+      {
+        "nickname": "李建辉-hz",
+        "uid": "1964899733"
+      },
+      {
+        "nickname": "沃趣科技",
+        "uid": "2827527822"
+      },
+      {
+        "nickname": "高端存储知识",
+        "uid": "1495439540"
+      },
+      {
+        "nickname": "Mr-Eagle-Liu",
+        "uid": "2009202821"
+      },
+      {
+        "nickname": "莴怖熵崴箔",
+        "uid": "1235173834"
+      },
+      {
+        "nickname": "zedware",
+        "uid": "1781379531"
+      },
+      {
+        "nickname": "传说中的冬瓜头",
+        "uid": "1441020812"
+      },
+      {
+        "nickname": "唐僧_huangliang",
+        "uid": "1765830541"
+      },
+      {
+        "nickname": "新浪每日英语推荐",
+        "uid": "1642624462"
+      },
+      {
+        "nickname": "吴甘沙",
+        "uid": "1557337604"
+      },
+      {
+        "nickname": "钟媛Cynthia",
+        "uid": "1798074535"
+      },
+      {
+        "nickname": "HANA中国社区",
+        "uid": "3265412551"
+      },
+      {
+        "nickname": "开源力量",
+        "uid": "1750199512"
+      },
+      {
+        "nickname": "阿里技术保障",
+        "uid": "3851645388"
+      },
+      {
+        "nickname": "集邦DRAMeXchange",
+        "uid": "1960136440"
+      },
+      {
+        "nickname": "英国首相",
+        "uid": "3919002287"
+      },
+      {
+        "nickname": "GITC_全球互联网技术大会",
+        "uid": "3786297922"
+      },
+      {
+        "nickname": "红帽中国",
+        "uid": "2298930370"
+      },
+      {
+        "nickname": "郑思遥",
+        "uid": "1722574910"
+      },
+      {
+        "nickname": "中科同向数据备份",
+        "uid": "3221392062"
+      },
+      {
+        "nickname": "薛正华-中国科学院",
+        "uid": "1671776984"
+      },
+      {
+        "nickname": "朱荣泽",
+        "uid": "1912486375"
+      },
+      {
+        "nickname": "刘爱贵",
+        "uid": "1793490555"
+      },
+      {
+        "nickname": "bean_king",
+        "uid": "2036392232"
+      },
+      {
+        "nickname": "CA_中国",
+        "uid": "2345261213"
+      },
+      {
+        "nickname": "OceanBase开源",
+        "uid": "2356115944"
+      },
+      {
+        "nickname": "网络世界",
+        "uid": "1900512197"
+      },
+      {
+        "nickname": "Hadoop中国",
+        "uid": "2126884617"
+      },
+      {
+        "nickname": "英特尔IDF",
+        "uid": "2062470471"
+      },
+      {
+        "nickname": "行云之路",
+        "uid": "2110379083"
+      },
+      {
+        "nickname": "品高云计算",
+        "uid": "1721739114"
+      },
+      {
+        "nickname": "天云趋势",
+        "uid": "2654125991"
+      },
+      {
+        "nickname": "Firemaster",
+        "uid": "1497100602"
+      },
+      {
+        "nickname": "程辉",
+        "uid": "1248270665"
+      },
+      {
+        "nickname": "Fusion-io中国",
+        "uid": "3853243769"
+      },
+      {
+        "nickname": "Hadoop中国技术峰会",
+        "uid": "3679536607"
+      },
+      {
+        "nickname": "智能矩阵-国产内存数据库",
+        "uid": "3224609681"
+      },
+      {
+        "nickname": "淘泰来",
+        "uid": "1991826825"
+      },
+      {
+        "nickname": "CloudStack中国",
+        "uid": "2974090924"
+      },
+      {
+        "nickname": "OpenStack",
+        "uid": "1898353550"
+      },
+      {
+        "nickname": "新浪科技",
+        "uid": "1642634100"
+      },
+      {
+        "nickname": "UnitedStack",
+        "uid": "2816204117"
+      },
+      {
+        "nickname": "弯曲评论官方微博",
+        "uid": "2176173002"
+      },
+      {
+        "nickname": "CSDN",
+        "uid": "1798777247"
+      },
+      {
+        "nickname": "张笑HW",
+        "uid": "1989006327"
+      },
+      {
+        "nickname": "经宁HW",
+        "uid": "1497080665"
+      },
+      {
+        "nickname": "北京创业读书会",
+        "uid": "1109774253"
+      },
+      {
+        "nickname": "黄小黄huang",
+        "uid": "1046913624"
+      },
+      {
+        "nickname": "李小龙Bruce_Lee",
+        "uid": "1945906841"
+      },
+      {
+        "nickname": "华为企业业务",
+        "uid": "1927776237"
+      },
+      {
+        "nickname": "晏子去旅行",
+        "uid": "1756709587"
+      },
+      {
+        "nickname": "ZDNet",
+        "uid": "1686203097"
+      },
+      {
+        "nickname": "前世情人今续缘",
+        "uid": "1415782494"
+      },
+      {
+        "nickname": "行癫",
+        "uid": "1419403675"
+      },
+      {
+        "nickname": "阿里正祥",
+        "uid": "1070095910"
+      },
+      {
+        "nickname": "淘宝正明",
+        "uid": "1710406277"
+      },
+      {
+        "nickname": "淘宝褚霸",
+        "uid": "1915508822"
+      },
+      {
+        "nickname": "淘宝TFS",
+        "uid": "2218694820"
+      },
+      {
+        "nickname": "Taile梦呓",
+        "uid": "1873389615"
+      },
+      {
+        "nickname": "Deepb1ue",
+        "uid": "1882011875"
+      },
+      {
+        "nickname": "硅谷知青",
+        "uid": "1881887271"
+      },
+      {
+        "nickname": "redstorm",
+        "uid": "1404336112"
+      },
+      {
+        "nickname": "YentownAngel",
+        "uid": "1656689200"
+      },
+      {
+        "nickname": "狒哥",
+        "uid": "1649162343"
+      },
+      {
+        "nickname": "符庆明",
+        "uid": "1542241431"
+      },
+      {
+        "nickname": "曹国伟",
+        "uid": "1007343817"
+      },
+      {
+        "nickname": "kobe",
+        "uid": "1582157323"
+      },
+      {
+        "nickname": "sinard",
+        "uid": "1345096900"
+      },
+      {
+        "nickname": "IT专家网",
+        "uid": "1679383982"
+      },
+      {
+        "nickname": "比特实验室",
+        "uid": "2793664604"
+      },
+      {
+        "nickname": "比特企业计算",
+        "uid": "2588335650"
+      },
+      {
+        "nickname": "ChinaByte比特网",
+        "uid": "1660387637"
+      },
+      {
+        "nickname": "DOIT",
+        "uid": "1658037742"
+      },
+      {
+        "nickname": "思杰Citrix",
+        "uid": "1741606642"
+      },
+      {
+        "nickname": "SAS中国培训中心",
+        "uid": "2817726852"
+      },
+      {
+        "nickname": "SAP中国",
+        "uid": "1759418035"
+      },
+      {
+        "nickname": "云安全_赛门铁克",
+        "uid": "2392402900"
+      },
+      {
+        "nickname": "社交商务IBM",
+        "uid": "1988961767"
+      },
+      {
+        "nickname": "IBM专家集成系统",
+        "uid": "3004965272"
+      },
+      {
+        "nickname": "IBM中国",
+        "uid": "1937649537"
+      },
+      {
+        "nickname": "德勤中国DeloitteChina",
+        "uid": "1921792607"
+      },
+      {
+        "nickname": "埃森哲中国",
+        "uid": "2822118855"
+      },
+      {
+        "nickname": "博科中国",
+        "uid": "2091235443"
+      },
+      {
+        "nickname": "富士通中国",
+        "uid": "2620719401"
+      },
+      {
+        "nickname": "Forrester",
+        "uid": "2452463391"
+      },
+      {
+        "nickname": "赛凡云存储",
+        "uid": "3134989490"
+      },
+      {
+        "nickname": "优储档案存储服务商",
+        "uid": "3427202282"
+      },
+      {
+        "nickname": "创新科存储技术有限公司",
+        "uid": "2482248514"
+      },
+      {
+        "nickname": "HDS云存储",
+        "uid": "2455749374"
+      },
+      {
+        "nickname": "三星存储产品",
+        "uid": "2642921683"
+      },
+      {
+        "nickname": "NetApp",
+        "uid": "1677924493"
+      },
+      {
+        "nickname": "ZDNet企业解决方案中心",
+        "uid": "2690167713"
+      },
+      {
+        "nickname": "Novell中国",
+        "uid": "1738254031"
+      },
+      {
+        "nickname": "林仕鼎",
+        "uid": "2244218960"
+      },
+      {
+        "nickname": "明生78",
+        "uid": "1364660707"
+      },
+      {
+        "nickname": "Google黑板报",
+        "uid": "2617744132"
+      },
+      {
+        "nickname": "AMD中国",
+        "uid": "1883832215"
+      },
+      {
+        "nickname": "英特尔商用频道",
+        "uid": "2295615873"
+      },
+      {
+        "nickname": "EMC易安信数据保护和高可用",
+        "uid": "3277302752"
+      },
+      {
+        "nickname": "爱数",
+        "uid": "1726836254"
+      },
+      {
+        "nickname": "Emulex",
+        "uid": "2769923361"
+      },
+      {
+        "nickname": "联想企业级业务",
+        "uid": "2692294371"
+      },
+      {
+        "nickname": "EMC_VNX_WangWei",
+        "uid": "1969995521"
+      },
+      {
+        "nickname": "Seagate希捷科技",
+        "uid": "2556038621"
+      },
+      {
+        "nickname": "Gartner中国",
+        "uid": "1880184065"
+      },
+      {
+        "nickname": "IDC咨询",
+        "uid": "2101545262"
+      },
+      {
+        "nickname": "LSI中国",
+        "uid": "2240137385"
+      },
+      {
+        "nickname": "PMC官方微博",
+        "uid": "2832015852"
+      },
+      {
+        "nickname": "英特尔中国",
+        "uid": "2637370927"
+      },
+      {
+        "nickname": "黄_解放",
+        "uid": "2455793231"
+      },
+      {
+        "nickname": "张倩文0610",
+        "uid": "2026301505"
+      },
+      {
+        "nickname": "李明-同有科技安防",
+        "uid": "2285840307"
+      },
+      {
+        "nickname": "存储达人V",
+        "uid": "2050717445"
+      },
+      {
+        "nickname": "KevinChensc",
+        "uid": "1400710647"
+      },
+      {
+        "nickname": "存储小金刚",
+        "uid": "2271922871"
+      },
+      {
+        "nickname": "苏钰suyu",
+        "uid": "1130141412"
+      },
+      {
+        "nickname": "红旗下的蛋_同有科技",
+        "uid": "2279046881"
+      },
+      {
+        "nickname": "华为云计算官方微博",
+        "uid": "1930559805"
+      },
+      {
+        "nickname": "达梦数据库",
+        "uid": "1712234411"
+      },
+      {
+        "nickname": "金仓数据库",
+        "uid": "2211771435"
+      },
+      {
+        "nickname": "TechTarget数据库",
+        "uid": "1679367883"
+      },
+      {
+        "nickname": "戴尔企业级服务器",
+        "uid": "2643218533"
+      },
+      {
+        "nickname": "IBM_System_x服务器",
+        "uid": "2128296123"
+      },
+      {
+        "nickname": "范瑞琦HW",
+        "uid": "1929171681"
+      },
+      {
+        "nickname": "DOSTOR",
+        "uid": "1998935235"
+      },
+      {
+        "nickname": "打开存储问号",
+        "uid": "1726773945"
+      },
+      {
+        "nickname": "戴尔轻松存储",
+        "uid": "2290329085"
+      },
+      {
+        "nickname": "惠普存储",
+        "uid": "2031552673"
+      },
+      {
+        "nickname": "HGST存储fans团",
+        "uid": "1775829110"
+      },
+      {
+        "nickname": "VMware中国",
+        "uid": "1747413277"
+      },
+      {
+        "nickname": "施耐德电气旗下的APC",
+        "uid": "2348675223"
+      },
+      {
+        "nickname": "华为中国区",
+        "uid": "2557129567"
+      },
+      {
+        "nickname": "计算机世界",
+        "uid": "1739964112"
+      },
+      {
+        "nickname": "德州仪器",
+        "uid": "1698743510"
+      },
+      {
+        "nickname": "环球企业家杂志",
+        "uid": "1657236125"
+      },
+      {
+        "nickname": "SAS中国公司",
+        "uid": "1942237283"
+      },
+      {
+        "nickname": "Qualcomm中国",
+        "uid": "1738056157"
+      },
+      {
+        "nickname": "TechTarget中国",
+        "uid": "1684793947"
+      },
+      {
+        "nickname": "TechTarget数据中心",
+        "uid": "1679418382"
+      },
+      {
+        "nickname": "甲骨文中国",
+        "uid": "1771900102"
+      },
+      {
+        "nickname": "数据挖掘研究院",
+        "uid": "1762335444"
+      },
+      {
+        "nickname": "第一财经周刊",
+        "uid": "1315591982"
+      },
+      {
+        "nickname": "CNET",
+        "uid": "1644676117"
+      },
+      {
+        "nickname": "英特尔中国天天事",
+        "uid": "1340241374"
+      },
+      {
+        "nickname": "通信产业报网",
+        "uid": "1708813312"
+      },
+      {
+        "nickname": "TechTarget虚拟化",
+        "uid": "1679379971"
+      },
+      {
+        "nickname": "TechTarget服务器",
+        "uid": "1679373257"
+      },
+      {
+        "nickname": "TechTarget安全",
+        "uid": "1679366863"
+      },
+      {
+        "nickname": "ZDNet存储时代",
+        "uid": "1684373961"
+      },
+      {
+        "nickname": "TechTarget存储",
+        "uid": "1679374001"
+      },
+      {
+        "nickname": "中国计算机报",
+        "uid": "1708265521"
+      },
+      {
+        "nickname": "C114中国通信网",
+        "uid": "1892507065"
+      },
+      {
+        "nickname": "oracle技术研究",
+        "uid": "1766636317"
+      },
+      {
+        "nickname": "EMC中国-云计算",
+        "uid": "1919897211"
+      },
+      {
+        "nickname": "虚拟化与云计算",
+        "uid": "1762600755"
+      },
+      {
+        "nickname": "CSDN云计算",
+        "uid": "1741045432"
+      },
+      {
+        "nickname": "微软云计算",
+        "uid": "1870283203"
+      },
+      {
+        "nickname": "凤凰科技",
+        "uid": "1856404484"
+      },
+      {
+        "nickname": "麻省理工科技评论",
+        "uid": "1738690784"
+      }
+    ],
+    "newest_mids": [
+      
+    ],
+    "uid": "2068093955"
+  },
+]
