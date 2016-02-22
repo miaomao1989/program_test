@@ -4,7 +4,7 @@
 #include <pthread.h>
 #include <semaphore.h>
 #include <error.h>
-#define return_if_fail(p); if ( (p) == 0) { printf("[%s]: func error !\n", __func__); return;}
+#define return_if_fail(p) if ( (p) == 0) { printf("[%s]: func error !\n", __func__); return;}
 
 typedef struct _PrivInfo
 {
@@ -15,8 +15,10 @@ typedef struct _PrivInfo
 
 static void info_init (PrivInfo *thiz);
 static void info_destroy (PrivInfo *thiz);
-static void *pthread_func_1 (PrivInfo *thiz);
-static void *pthread_func_2 (PrivInfo *thiz);
+//static void *pthread_func_1 (PrivInfo *thiz);
+//static void *pthread_func_2 (PrivInfo *thiz);
+static void *pthread_func_1 (void *);
+static void *pthread_func_2 (void *);
 
 int main(int argc, char ** argv)
 {
@@ -31,13 +33,13 @@ int main(int argc, char ** argv)
 		return -1;
 	}
 	info_init(thiz);
-	ret = pthread_create( &pt_1, NULL, (void *)pthread_func_1, thiz);
+	ret = pthread_create(&pt_1, NULL, pthread_func_1, thiz);
 	if ( ret != 0)
 	{
 		perror("pthread_1_create: ");
 	}
 
-	ret = pthread_create( &pt_2, NULL, (void *)pthread_func_2, thiz);
+	ret = pthread_create(&pt_2, NULL, pthread_func_2, thiz);
 	if ( ret != 0)
 	{
 		perror("pthread_2_create:");
@@ -67,14 +69,15 @@ static void info_destroy(PrivInfo *thiz)
 	return;
 }
 
-static void * pthread_func_1 (PrivInfo * thiz)
+static void * pthread_func_1 (void * thiz)
 {
 	return_if_fail(thiz != NULL);
-	while(time(NULL) < thiz->end_time)
+	PrivInfo * thaz = (PrivInfo *)thiz;
+	while(time(NULL) < thaz->end_time)
 	{
-		sem_wait(&thiz->s2);
+		sem_wait(&thaz->s2);
 		printf("pthread1: pthread1 get the lock.\n");
-		sem_post(&thiz->s1);
+		sem_post(&thaz->s1);
 		printf("pthread1: pthread1 unlock\n");
 		sleep(1);
 	}
@@ -84,11 +87,12 @@ static void * pthread_func_1 (PrivInfo * thiz)
 static void * pthread_func_2 (PrivInfo * thiz)
 {
 	return_if_fail(thiz != NULL);
-	while(time(NULL) < thiz->end_time)
+	PrivInfo * thaz = (PrivInfo *)thiz;
+	while(time(NULL) < thaz->end_time)
 	{
-		sem_wait(&thiz->s1);
+		sem_wait(&thaz->s1);
 		printf("pthread2: pthread2 get the unlock.\n");
-		sem_post(&thiz->s2);
+		sem_post(&thaz->s2);
 		printf("pthread2: pthread2 unlock.\n");
 		sleep(1);
 	}
