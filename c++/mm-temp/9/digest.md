@@ -122,3 +122,19 @@ string::size_type pos = dept.find_first_not_of(numbers);
 ```
 
 ### 9.6.5 `string`对象的比较
+
+## 容器适配器
+
+**适配器**是标准库中的一种概念，包括容器适配器/迭代器适配器和函数适配器。本质上，适配器是使一事物类似于另一事物的行为的一种机制。 容器适配器让一种已经存在的容器类型能采用另外一种不同的抽象类型的工作方式实现。例如，`stack`（栈）适配器可使任何一种顺序容器以栈的方式工作。
+
+默认的`stack`和`queue`都基于`deque`容器实现，而`priority_queue`则在`vector`容器上实现。在创建适配器时，通过将一个顺序容器指定为适配器的第二个类型实参，可覆盖其关联的基础容器类型。
+
+```
+// empty stack implemented on top of vector
+stack< string, vector<stirng> str;
+// str_stk2 is implemented on top of vector and holds a copy of svec
+stack< string, vector<string> > str_stk2(svec);
+```
+对于给定的适配器，其关联的容器必须满足一定的约束条件。`stack`适配器所关联的基础容器可以是任意一种顺序容器类型。因此，`stack`栈也可以建立在`vector`，`list`或者`deque`容器之上。而`queue`适配器要求其关联的基础容器必须提供`push_front`运算，因此只能建立在`list`容器上，而不能建立在`vector`容器上。`priority_queue`适配器要求提供随机访问的功能，因此可建立在`vector`或`deque`容器上，但不能建立在`list`容器上。
+
+所有容器适配器都根据其基础容器类型所支持的操作来定义自己的操作。默认情况下，栈适配器在`deque`容器上，因此采用`deque`提供的操作来实现功能。
