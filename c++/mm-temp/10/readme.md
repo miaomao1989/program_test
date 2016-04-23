@@ -200,3 +200,13 @@ while (pos.first != pos.second){
 - `read_file`成员函数，其形参为一个`ifstream &`类型对象。该函数每次从文件中读入一行，并将它保存在`vector`容器中，输入完毕后，`read_file`将创建关联每个单词以及其所在行号的`map`容器。
 - `run_query`成员函数，其形参为一个`string`类型对象，返回一个`set`对象，该`set`对象包含出现该`string`对象的所有行的行号；
 - `text_line`成员函数，其形参为一个行号，返回输入文本中该行号对应的文本行。
+
+为了实现`read_file`功能，还需要定义两个`private`函数来读取输入文本和创建`map`容器：
+- `store_file`函数读入文件，并将文件内容存储在`vector`容器对象中；
+- `build_map`函数将每一行分解为各个单词，创建`map`容器对象，同时记录每个单词出现的行号；
+
+#### `TextQuery`类
+
+经过前面的设计之后，现在可以编写`TextQuery`类了：
+
+```
