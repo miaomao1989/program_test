@@ -81,7 +81,6 @@ void TextQuery::display_map()
 {
   map< string, set<line_no> >::iterator iter = word_map.begin(), iter_end = word_map.end();
 
-
   // for each word in the map
   for( ; iter != iter_end; ++iter) {
     cout << "word: " << iter->first << " {";
