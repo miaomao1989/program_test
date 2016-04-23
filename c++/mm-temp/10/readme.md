@@ -82,3 +82,21 @@ if ( it != word_count.end())
 如果希望当具有指定键的元素存在时, 就获取该元素的引用,否则就不在容器中创建新的元素, 那么应该使用`find`.
 
 这个单词统计程序依据字典顺序输出单词. 在使用迭代器遍历`map`容器时, 迭代器指向的元素按键的升序排列.
+
+### 10.4 `set`类型
+
+`map`容器是键-值对的集合，好比以人名为键的地址和电话号码。相反地，`set`容器只是单纯的键的集合。
+`set`不支持下表操作符，而且没有定义`mapped_type类型。在`set`容器中，`value_type`不是`pair`类型，而是与`key_type`相同的类型。他们指的都是`set`中存储的元素类型。这一差别也体现了`set`存储的元素仅仅是键，二没有所关联的值。与`map`一样，`set`容器存储的键也必须唯一，而且不能修改。
+
+```
+// define a vector with 20 elements, holding two copies of each number from 0 to 9
+vector< int > ivec;
+for (vector< int >::size_type i = 0; i != 10; ++i) {
+	ivec.push_back(i);
+	ivec.push_back(i);			// duplicate copies of each number
+}
+// iset holds unique elements from ivec
+set< int > iset(ivec.begin(), ivec.end());
+cout << ivec.size() << endl;					// prints 20
+cout << iset.size() << endl;					// prints 10
+```
