@@ -82,3 +82,121 @@ if ( it != word_count.end())
 如果希望当具有指定键的元素存在时, 就获取该元素的引用,否则就不在容器中创建新的元素, 那么应该使用`find`.
 
 这个单词统计程序依据字典顺序输出单词. 在使用迭代器遍历`map`容器时, 迭代器指向的元素按键的升序排列.
+
+### 10.4 `set`类型
+
+`set`容器不提供下标操作，为了通过键从`set`中获取元素，可以使用`find`运算。如果只需简单地判断某个元素是否存在，同样可以使用`count`运算，返回`set`中该键对应的元素个数。
+正如不能修改`map`中元素的键部分一样，`set`中的键也为`const`。在获得指向`set`中某元素的迭代器之后，只能对其做读操作，而不能做写操作。
+
+```
+// set_it refers to the element with key == 1
+set< int >::iterator set_it = iset.find(1);
+*set_it = 11;										// error: keys in a set are read-only
+cout << *set_it << endl;				// ok: can read the key
+```
+
+```
+void restricted_wc(ifstream &remove_file, map< string, int > &word_count){
+	set< string > exclude;				// set to hodl words we'll ignore
+	string remove_word;
+	while (remove_file >> remove_word)
+		excluded.insert(remove_word);
+
+	// read input and keep a count for words that aren't in the exclusion set
+	string word;
+	while ( cin >> word )
+		// increment counter only if the word is not in excluded
+		if (!excluded.count(word))
+			++word_count[word];
+}
+
+```
+
+### 10.5 `multimap`和`multiset`类型
+
+`map`和`set`容器中，一个键只能对应一个实例。而`multiset`和`multimap`类型则允许一个键对应多个实例。例如，在电话簿中，每个人可能有单独的电话号码列表。在作者的文集中，每位作者可能有单独的文章标题列表。`multimap`和`multiset`类型与相应的单元素八本具有相同的头文件定义：分别是`map`和`set`头文件。
+
+`multimap`和`mulset`所支持的操作分别与`map`和`set`的操作相同，只有一个例外： `multimap`不支持下标运算。不能对`multimap`对象使用下标操作，因为在这类容器中，某个键可能对应多个值。为了顺应一个键科一对应多个值这一性质，`map`和`multimap`，或`set`和`multiset`中相同的操作都以不同的方式做出了一定的修改。在使用`multimap`和`multiset`时，对于某个键，必须做好处理多个值的准备，而非只有单一的值。
+
+由于键不要求是唯一的，因此每次调用`insert`总会添加一个元素。例如，可如下定义一个`multimap`容器对象将作者映射到他们所写的书上。这样的映射可为一个作者存储多个条目：
+```
+// adds first element with key Barth
+authors.insert(make_pair(
+	string("Barth, John"),
+	string("Sot-Weed Factor")
+	));
+
+authors.insert(make_pair(
+	string("Barth, John"),
+	string("Lost in the Funhouse")
+	));
+```
+
+带有一个键参数的`erase`版本将删除拥有该键的`所有`元素，并返回删除元素的个数。而带有一个或一对迭代器参数的版本只删除指定的元素，并返回`void`类型。
+
+```
+multimap< string, string > authors;
+string search_item("Kazuo Ishiguro");
+// erase all elements with this key; returns number of elements remove_word
+multimap< stirng, string >::size_type cnt = authors.erase(search_item);
+```
+
+> 迭代遍历`multimap`或`multiset`容器时，科一保证一次返回特定键所关联的所有元素。
+
+```
+// author we'll look for
+string search_item("Alain de Bottom");
+// how many entries are there for this author
+typedef multimap< string, string >::size_type sz_type;
+sz_type entries = authors.cout(search_item);
+// get iterator to the first entry for this author
+multimap< string, string >::iterator iter = authors.find(search_item);
+// loop through the number of entries there are for this authors
+for (sz_type cnt = 0; cnt != entries; ++cnt, ++iter)
+	cout << iter->second << endl;			// print each title
+```
+
+在同一个键上调用`lower_bound`和`upper_bound`，将产生能够一个迭代器范围，指示出该键所关联的所有元素。如果该键在容器中存在，则会获得两个不同的迭代器：`lower_bound`返回的迭代器指向该键关联的第一个实例；而`upper_bound`返回的迭代器则指向最后一个实例的下一个位置。如果该键不在`multimap`中，这两个操作符将返回同一个迭代器，指向依据元素的排列顺序该键应该插入的位置。
+
+```
+// definitions of authors and search_item as above
+// beg and denote range of elements for this author
+typedef multimap< string, string >::iterator authors_iter;
+authors_iter beg = authors.lower_bound(search_item);
+authors_iter end = authors.upper_bound(search_item);
+
+//loop through the number of entries there are for this authors_iter
+while ( beg != end ) {
+	cout << beg->second << endl;			// print each title
+	++beg;
+}
+```
+
+> 这两个操作不会说明键是否存在，其关键之处在于返回值给出了迭代器的范围。
+
+```
+// definitions of authors and search_item as above
+// pos holds iterators that denote range of elements for this key
+typedef multimap< string, string >::iterators authors_iter;
+pair< authors_iter, author_iter > pos = authors.equal_range(search_item);
+
+// loop through the number of entries there are for this author
+while (pos.first != pos.second){
+	cout << pos.first->second << endl;
+	++pos.first;
+}
+```
+
+这个程序段与前面使用`upper_bound`和`lower_bound`的程序基本上是相同的。本程序不用局部变量`beg`和`end`.
+
+**设计程序的一个良好习惯是首先将程序所涉及的操作列出来。明确需要提供的操作有助于建立需要的数据结构和实现这些行为。**
+从需求出发，我们的程序需要支持如下任务：
+1. 他必须允许用户指明要处理的文件名字。程序将存储该文件的内容，以便输出每个单词所在的原始行；
+2. 它必须将每一行分解为各个单词，并记录每个单词所在的所有行。在输出行号时，应该保证以升序输出，并且不重复；
+3. 对特定单词的查询将返回出现该单词的所有行的行号；
+4. 输出某单词所在的行文本时，程序必须能根据给定的行号从输入文件中获取相应的行；
+
+将这四个任务映射为类的成员函数，则类的借口需要提供一下三个`public`函数：
+- `read_file`成员函数，其形参为一个`ifstream &`类型对象。该函数每次从文件中读入一行，并将它保存在`vector`容器中，输入完毕后，`read_file`将创建关联每个单词以及其所在行号的`map`容器。
+- `run_query`成员函数，其形参为一个`string`类型对象，返回一个`set`对象，该`set`对象包含出现该`string`对象的所有行的行号；
+- `text_line`成员函数，其形参为一个行号，返回输入文本中该行号对应的文本行。
