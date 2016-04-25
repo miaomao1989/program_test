@@ -73,3 +73,58 @@ cout << "Found " << cnt
 `fill_n`函数假定对指定数量的元素做写操作是安全的。初学者常犯的错误是：在没有元素的空容器上调用`fill_n`函数（或者类似的写元素的算法）。
 
 > 对指定数目的元素做写入运算，或者写到目标迭代器的算法，都不检查目标的大小是否足以存储要写入的元素是很危险的！。
+
+`back_insert`生成一个绑定在该容器上的插入迭代器。在试图通过这个迭代器给元素赋值的时候，赋值运算将调用`push_back`在容器中添加一个具有指定值的元素。
+
+```
+vector< int > vec;    // empty vector
+// ok : back_inserter creates an insert iterator that adds elements to vec
+fill_n(back_inserter(vec), 10, 0);      // appends 10 elements to vec
+```
+现在，`fill_n`函数每写入一个值，都会通过`back_inserter`生成的插入迭代器实现。效果相当于在`vec`上调用`push_back`，在`vec`末尾添加10个元素，每个元素都是`0`。
+
+第三类算法向目标迭代器写入未知个数的元素，正如`fill_n`函数一样，目标迭代器指向存放输出数据的序列的第一个元素。
+
+
+```
+vector< int > ivec;       // empty vector
+// copy elements from ilst into ivec
+copy(ilst.begin(), ilst.end(), back_inserter(ivec));
+```
+
+当然，这个例子的效率比较差：通常，如果要以一个已经存在的容器为副本创建新的容器，更好的方法是直接用输入范围作为新的构造容器的初始化式。
+```
+// better way to copy elements from ilst
+vector< int > ivec(ilst.begin(), ilst.end());
+```
+
+有些算法提供所谓的“复制(copying)版本”。这些算法对输入序列的元素做出处理，但不修改原来的元素，而是创建一个新的序列存储元素的处理结果。
+
+```
+// replace any element with value of 0 by 42
+replace(ilst.begin(), ilst.end(), 0, 42);
+```
+这个调用将所有值为0的实例替换成42.如果不想改变原来的序列，则调用`replace_copy`。这个算法接受第三个迭代器实参，指定保存调整后序列的目标位置。
+
+```
+// create empty vector to hold the replacement
+vector< int > ivec;
+// use back_inserter to grow destination as needed
+replace_copy( ilst.begin(), ilst.end(), back_inserter(ivec), 0 ,42);
+```
+
+> 算法不直接修改容器的大小。如果需要添加或删除元素，则必须使用容器操作。
+
+```
+// sort word alphabetically so we can find the duplicates
+sort(words.begin(), words.end());
+/ * eliminate duplicate words:
+  * unique reorders words so that each word appears once in the front portion of words and returns an iterator one past the unique range;
+  * erase uses a vector opeartion to remove the nonunique elements
+  */
+
+vector< string >::iterator end_unique = unique(words.begin(), words.end());
+words.erase(end_unique, words.end());
+```
+
+`stable_sort`保留相等元素的相对位置。通常，对于已排序的序列，我们并不关心其相等元素的相对位置，毕竟，这些元素是相等的。但是，在这个应用中，我们将“相等”定义为“相同的长度”，有着相同长度的元素还能以字典序的不同而区分。调用`stable_sort`之后，对于长度相同的元素，将保留其字典顺序。
