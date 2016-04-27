@@ -285,3 +285,49 @@ Screen & Screen::move(index r, index c)
 在普通的非`const`成员函数中，`this`的类型是一个指向类类型的`const`指针。可以改变`this`指针所指向的值，但不能改变`this`所保存的地址。在`const`成员函数中，`this`的类型是一个指向`const`类类型对象的`const`指针。既不能改变`this`所指向的对象，也不能改变`this`所保存的地址。
 
 > 不能从`const`成员函数返回指向类对象的普通引用。`const`成员函数只能返回`*this`作为一个`const`引用。
+
+4. 基于`const`的重载
+为了解决这个问题，我们必须定义两个`display`操作：一个是`const`，另一个不是`const`。基于成员函数是否为`const`，可以重载一个成员函数；同样地，基于一个指针形参是否指向`const`，可以重载一个函数。`const`对象只能使用`const`成员。非`const`对象可以使用任意成员，但非`const`版本是一个更好的匹配。
+
+在此，我们将定义一个名为`do_display`的`private`成员来打印`Screen`。每个`display`操作都将调用此函数，然后返回调用自己的那个对象：
+
+```
+class Screen {
+public:
+  // interface member functions
+  // display overloaded on whether the object is const or not
+  Screen & display(std::ostream &os)
+  { do_display(os); return *this; }
+
+  const Screen & display(std::ostream &os) const
+  { do_display(os); return *this; }
+
+private:
+  // single function to do the work of displaying a Screen
+  // will be called by the display operations
+  void do_display(std::ostream &os) const
+  { os << contents; }
+
+  // as before
+};
+```
+
+5. 可变数据成员
+
+有时（但不是很经常），我们希望类的数据成员（甚至在`const`成员函数内）可以修改。这可以通过他们声明为`mutable`来实现。
+
+**可变数据成员** 永远都不能为`const`，甚至当它是`const`对象的成员时也如此。因此，`const`成员函数可以改变`mutable`成员。要将数据成员声明为可变的，必须将关键字`mutable`放在成员声明之前：
+
+```
+class Screen {
+public:
+  // interface member functions
+private:
+  mutable size_t access_ctr;      // may change in a const members
+  // other data members as before
+};
+```
+
+```
+void 
+```
