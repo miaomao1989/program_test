@@ -329,5 +329,9 @@ private:
 ```
 
 ```
-void 
+void Screen::do_display(std::ostream &os) const
+{
+  ++access_ctr;
+  os << contents;
+}
 ```
