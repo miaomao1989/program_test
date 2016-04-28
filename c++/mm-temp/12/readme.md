@@ -329,5 +329,245 @@ private:
 ```
 
 ```
-void 
+void
 ```
+
+### 12.3 类作用域
+
+> 即使两个类具有完全相同的成员列表，它们也是不同的类型。每个类的成员不同于任何其他类（或任何其他作用域）的成员。
+
+```
+// Note: This code is for illustration purposes only and reflects bad practise
+// It is a bad idea to use the same name for a parameter and a member
+int height;
+class Screen {
+public:
+  void dummy_fcn(index height) {
+    cursor = width * height;    // which height ? The parameter
+  }
+
+private:
+  index cursor;
+  index height, width;
+};
+
+```
+
+
+> 尽管类的成员被屏蔽了，但仍然可以通过类名来限定成员或显式使用`this`指针来使用它。
+
+
+如果我们向覆盖常规的查找规则，应该这样做：
+
+```
+// bad practise: Names local to member functions shouldn't hide member Names
+void dummy_fcn(index height) {
+  cursor = width * this->height;        // member height
+  // alternative way to indicate the member
+  cursor = width * Screen::height;      // member height
+}
+```
+
+> 尽管全局对象被屏蔽了，但通过全局作用域确定操作符来限定名字，仍然可以使用它。
+
+```
+// bad practise: Don't hide names that are needed from surrounding scopes
+void dummy_fcn(index height) {
+  cursor = width * ::height;      // which height ? The global one
+}
+```
+
+
+### 12.4 构造函数
+**构造函数是特殊的成员函数，只要创建类类型的新对象，都要执行构造函数**。构造函数的工作是保证每个对象的数据成员具有合适的初始值。
+
+```
+class Sales_item {
+public:
+  // operations on Sales_item object
+  // default constructor needed to initialize members of built-in type
+  Sales_item(): units_sold(0), revenue(0.0){ }
+private:
+  std::string isbn;
+  unsigned units_sold;
+  double revenue;
+}
+```
+
+这个构造函数使用构造函数初始化列表类初始化`units_sold`和`revenue`成员。`isbn`成员由`string`的默认构造函数隐式初始化为空。
+**构造函数的名字与类的名字相同，并且不能指定返回类型。像其他任何函数一样，它们可以没有形参，也可以定义多个形参。**
+
+1. 构造函数可以被重载
+
+可以为一个类声明的构造函数的数量没有限制，只要每个构造函数的形参表是唯一的。
+
+```
+class Sales_item {
+//other members as before
+public:
+  // added constructor to initialize from a string or an istream
+  Sales_item(const std::string &);
+  Sales_item(std::istream &);
+  Sales_item();
+};
+```
+
+2. 实参决定使用哪个构造函数
+3. 构造函数自动执行
+
+只要创建该类型的一个对象，编译器就运行一个构造函数：
+```
+// constructor that takes a string used to create and initialize variable
+Sales_item Primer_2nd_ed("0201548488");
+// default constructor used to initialize unnamed object on the heap
+Sales_item *p = new Sales_item();
+```
+
+2. 实参决定使用哪个构造函数
+3. 构造函数自动执行
+
+只要创建该类型的一个对象，编译器就运行一个构造函数：
+```
+// constructor that takes a string used to create and initialize variable
+Sales_item Primer_2nd_ed("0201548488");
+// default constructor used to initialize unnamed object on the heap
+Sales_item *p = new Sales_item();
+```
+
+4. 用于`const`对象的构造函数
+
+构造函数不能声明为`const`：
+```
+class Sales_item {
+public:
+  Sales_item() const;   // error
+}
+```
+`const`构造函数是不必要的。创建类类型的`const`对象时，运行一个普通构造函数来初始化该`const`对象。构造函数的工作是初始化对象，不管对象是否为`const`，都用一个构造函数来初始化该对象。
+
+```
+class NoName {
+public:
+  // constructor go here ...
+  NoName() {}
+  // NoName(std::string *pstr, int iv, double dv): pstring(pstr), ival(iv), dval(dv) { }
+  NoName(std::string *pstr, int iv, double dv)
+  {
+    pstring = pstr;
+    ival = iv;
+    dval = dv;
+  }
+
+private:
+  std::string *pstring;
+  int       ival;
+  double    dval;
+};
+
+```
+
+#### 12.4.1 构造函数初始化式
+
+与其他任何函数一样，构造函数具有名字/形参表和函数体。与其他函数不同的是，构造函数也科一包含一个构造函数初始化列表：
+
+```
+// recommended way to write constructors using a constructor initializer
+Sales_item::Sales_item(const string &book): isbn(book), units_sold(0), revenue(0.0) { }
+```
+
+> 构造函数初始化列表是许多相当有经验的`C++`程序员都没有掌握的一个特性。
+
+从概念上来讲，可以认为构造函数 分两个阶段进行：（1）初始化阶段；（2）普通的计算阶段。计算阶段由构造函数函数体中的所有语句组成。
+
+> 不管成员是否在构造函数初始化列表中显式初始化，类类型的数据成员总是在初始化阶段初始化。初始化发生在计算阶段开始之前。
+
+在狗仔函数初始化列表中没有显式提及的每个成员，使用与初始化变量相同的规则来进行初始化。运行该类型的默认构造函数，来初始化类类型的数据成员。内置或符合类型的成员初始值依赖于对象的作用域：在局部作用域中这些成员不被初始化，而在全局作用域中他们被初始化为0.
+
+1. 有时需要构造函数初始化列表
+
+> 有些成员必须在构造函数初始化列表中进行初始化。对于这样的成员，在构造函数函数体中对它们赋值不起作用。**没有默认构造函数的类类型成员，以及`const`或引用类型的成员**，不管是哪种类型，都必须在构造函数初始化列表中进行初始化。
+
+因为内置类型的成员不进行隐式初始化，所以对这些成员是进行初始化还是赋值似乎都无关紧要。除了两个例外，对非类类型的数据成员进行赋值或使用初始化式在结果和性能上都是等价的。
+
+```
+class ConstRef {
+public:
+  ConstRef(int ii);
+
+private:
+  int i;
+  const int ci;
+  int &ri;
+};
+
+ConstRef::ConstRef(int ii)
+{
+  i = ii;     // ok
+  ci = ii;    // error: cannot assign to a const
+  ri = i;     // assigns to ri which was not bound to an object
+}
+
+```
+
+**记住，可以初始化`const`对象或引用类型的对象，但不能对它们赋值。在开始执行构造函数的函数体之前，要完成初始化。初始化`const`或引用类型数据成员的唯一机会是在构造函数初始化列表中。编写该构造函数的正确方式为**
+
+```
+//ok: explicitly initialize reference and const members
+ConstRef::ConstRef(int ii): i(ii), ci(i), ri(ii) { }
+```
+
+> 建议：使用构造函数初始化列表
+> 在许多类中，初始化和赋值严格来讲都是低效率的：数据成员可能已经被直接初始化了，还要对它进行初始化和赋值。比效率问题更重要的是：某些数据成员必须要进行初始化，这是一个事实。
+> 当类成员需要使用初始化列表时，通过常规地使用构造函数初始化列表，就可以避免发生编译时错误。
+
+_必须对任何`const`或引用类型成员以及没有默认构造函数的类类型的任何成员使用初始化式_
+
+2. 成员初始化的次序
+
+构造函数初始化列表仅指定用于初始化成员的值，并不指定这些初始化执行的次序。成员被初始化的次序就是定义成员的次序。
+
+> 初始化的次序常常无关紧要。然而，如果一个成员是根据其他成员而初始化，则成员初始化的次序是至关重要的。
+
+> 按照与成员声明一致的次序编写构造函数初始化列表是个好主意。此外，尽可能避免使用成员来初始化其他成员。
+
+3. 初始化式可以是任意表达式
+一个初始化式可以是任意复杂的表达式。
+
+4. 类类型的数据成员的初始化式
+```
+// alternative definition for Sales_item default constructor
+Sales_item(): isbn(10, '9'), units_sold(0), revenue(0.0) { }
+```
+
+```
+class NoName {
+public:
+  NoName() { }
+  NoName():name("DemoClass"), ival(0), pd(0), inFile(file) { }
+
+private:
+  const string;
+  int ival;
+  double *pd;
+  ifstream &inFile;
+};
+```
+
+#### 12.4.2 默认实参与构造函数
+```
+Sales_item(const std::string &book): isbn(book), units_sold(0), revenue(0.0) { }
+Sales_item:units_sold(0), revenue(0.0) { }
+```
+
+可以通过为`string`初始化式提供一个默认实参将这些构造函数组合起来：
+```
+class Sales_item {
+public:
+  // default argument for book is the empty string
+Sales_item(const std:::string & book = ""): isbn(book), units_sold(0),  revenue(0.0) { }
+Sales_item(std::istream &is);
+  // as before
+}
+```
+
+> 我们更喜欢使用默认实参，因为它减少代码重复。
