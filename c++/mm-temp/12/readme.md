@@ -617,4 +617,9 @@ Sales_item myobj;
 // ok: create an unnamed, empty Sales_item and use to initialize myobj
 Sales_item myobj = Sales_item();
 ```
-在这里，我们创建并初始化一个`Sales_item`对象，然后用它
+在这里，我们创建并初始化一个`Sales_item`对象，然后用它来按值初始化`myobj`。编译器通过运行`Sales_item`的默认构造函数来按值初始化一个`Sales_item`。
+
+#### 12.4.4 隐式类类型转换
+`C++`语言定义了内置类型之间的几个自动转换。也可以定义如何将其他类型的对象隐式转换为我们的类类型，或将我们的类类型的对象隐式转换为其他类型。在`14.9`节将会看到如何定义从类类型到其他类型的转换。为了定义到类类型的隐式转换，需要定义合适的构造函数。
+
+> 可以用单个实参来调用的构造函数定义了从形参类型到该类类型的一个隐式转换。
