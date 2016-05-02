@@ -622,4 +622,174 @@ Sales_item myobj = Sales_item();
 #### 12.4.4 隐式类类型转换
 `C++`语言定义了内置类型之间的几个自动转换。也可以定义如何将其他类型的对象隐式转换为我们的类类型，或将我们的类类型的对象隐式转换为其他类型。在`14.9`节将会看到如何定义从类类型到其他类型的转换。为了定义到类类型的隐式转换，需要定义合适的构造函数。
 
-> 可以用单个实参来调用的构造函数定义了从形参类型到该类类型的一个隐式转换。
+> 可以用**单个实参**来调用的构造函数定义了从形参类型到该类类型的一个隐式转换。
+
+```
+class Sales_item {
+public:
+  // default argument for book is the empty string
+  Sales_item(const std::string &book = ""): isbn(book), units_sold(0), revenue(0.0) { }
+  Sales_item(std::istream &is);
+  // as before
+};
+```
+
+这里的每个构造函数都定义了一个隐士转换。因此，在期待一个`Sales_item`类型对象的地方，可以使用一个`string`或一个`istream`：
+```
+string null_book = "9-999-99999-9";
+// ok: builds a Sales_item with 0 units_sold and revenue from
+// and isbn equal to null_book
+item.same_isbn(null_book);
+```
+
+这段程序使用一个`string`类型对象对象实参传给`Sales_item`的`same_isbn`函数。该函数期待一个`Sales_item`对象作为实参。编译器使用一个`string`的`Sales_item`构造函数从`null_book`生成一个新的`Sales_item`对象。新生成的（临时的）`Sales_item`被传递给`same_isbn`。
+
+这个`Sales_item`对象是一个临时对象。一旦`Sales_item`结束，就不能再访问它。实际上，我们构造了一个在测试完成后就被丢弃的对象。这个行为几乎肯定是一个错误。
+
+1. 抑制由构造函数定义的隐式转换
+
+可以通过将构造函数声明为`explicit`，来防止在需要隐士转换的上下文中使用构造函数：
+
+```
+class Sales_item {
+public:
+  // default argument for book is the empty string
+  explicit Sales_item(const std::string &book = ""): isbn(book), units_sold(0), revenue(0.0) { }
+  explicit Sales_item(std::istream &is);
+
+  // as before
+}
+```
+
+`explicit`关键字只能用于**类内部的构造函数声明**上。在类的定义体外部所做的定义上不再重复它；
+
+```
+// error: explicit allowed only on constructor declaration in class header
+explicit Sales_item::Sales_item(istream &is)
+{
+  is >> *this;      // uses Sales_item input operator to read the members
+}
+```
+
+> 当构造函数被声明为`explicit`时，变一起将不能使用它作为转换操作符。
+
+2. 为转换而显示地使用构造函数
+
+```
+string null_book = "9-999-99999-9";
+// ok: builds a Sales_item with 0 units_sold and revenue from
+// and isbn equal to null_book
+item.same_isbn(Sales_item(null_book));
+```
+
+显示的调用构造函数只是终止了隐式地调用构造函数。任何够着函数都可以用来显示的创建的对象。
+
+> 通常，除非有明显的理由想要定义隐士转换，否则，单形参构造函数应该为`explicit`。将构造函数设置为`explicit`可以避免错误，并且当转换有用时，用户可以显示的构造对象。
+
+#### 12.4.5 类成员的显示初始化
+
+尽管大多数对象都可以通过运行适当的构造函数进行初始化，但是直接初始化简单的非抽象类的数据成员仍是可能的。对于没有定义构造函数并且全体数据成员均为`public`的类，可以采用与初始化数组元素相同的方式初始化其成员：
+
+```
+struct Data {
+  int ival;
+  char *ptr;
+};
+
+// val1.ival = 0; val1.ptr = 0
+Data val1 = {0,0};
+
+
+// val2.ivall = 1024;
+// val2.ptr = "Anna Livia Plurabvelle";
+Data val2 = {1024, "Anna Livia Plurabelle"};
+```
+
+根据数据成员的声明次序来使用初始化式。这种形式的初始化从`C`继承而来，支持与`C`程序兼容。显示初始化类类型对象的成员有三个重大的缺点。
+1. 要求类的全体数据成员都是`public`；
+2. 将初始化每个对象的每个成员的负担放在程序员身上。这样的初始化是乏味且容易出错的，因为容易遗忘初始化式或者提供不恰当的初始化式。
+3. 如果增加或删除一个成员，必须找到所有的初始化并正确更新。
+
+> 定义和使用构造函数几乎总是比较好的。当我们为自己定义的类型提供一个默认构造函数时，允许编译器自动运行那个构造函数，以保证每个类对象在初次使用之前正确初始化。
+
+`pair`的数据成员为`public`，然而下面的这段代码却不能编译，为什么？
+```
+pair<int, int> p2 = {0, 42};      // doesn't compile, why ?
+```
+因为`pair`类定义了构造函数，所以尽管其数据成员为`public`，也不能采用这种显示初始化方式。只有没有定义构造函数且全体数据成员均为`public`的类，才可以使用初始化数组相同的方式初始化其成员。可以更正为：
+```
+pair<int, int> p2(0, 42);
+```
+
+### 12.5 友元
+
+在某些情况下，允许特定的非成员函数访问一个类的私有成员，同时仍然阻止一般的访问，这是很方便做到的。例如，被重载的操作符，如输入或输出操作符，经常需要访问类的私有数据成员。这些操作符不可能成为类的成员，具体原因参见`ch14`,。然而，尽管不是类的成员，它们仍然是类的“接口的组成部分”。
+
+**友元(friend)** 机制允许一个类将对其非共有成员的访问权授予指定的函数或类。 友元的声明以关键字`friend`开始。它只能出现在类定义的内部。友元声明可以出现在类中的任何地方：**友元不是授予友元关系的那个类的成员** ，所以它们不受其声明出现部分的访问控制。
+
+> 通常，将友元声明成组地放在类定义的开始或者结尾是个好主意。
+
+```
+class Screen {
+  // Window_Mgr members can access private parts of class Screen
+  friend class Window_Mgr;
+  // ... rest of Screen class
+};
+```
+
+`Window_Mgr`的成员可以直接引用`Screen`的私有成员。例如，`Window_Mgr`可以有一个函数来重定位一个`Screen`:
+```
+Window_Mgr &
+Window_Mgr::relocate(Screen::index r, Screen::index c, Screen & s)
+{
+  // ok to refer to height and width
+  s.height += r;
+  s.width += c;
+  return *this;
+}
+```
+
+缺少友元声明时，这段代码将会出错：将不允许使用形参`s`的`height`和`width`成员。因为`Screen`将友元关系授予`Window_Mgr`，所以，`Window_Mgr`中的函数都可以访问`Screen`的所有成员。
+
+**友元可是普通的非成员函数**， 或前面定义的其他类的成员函数，或整个类。将一个类设置为友元，友元类的所有成员函数都可以访问授予友元关系的那个类的非共有成员。
+
+2. 使其他类的成员函数成为友元
+如果不是将整个`Window_Mgr`类设为友元，`Screen`就可以指定只允许`relocate`成员访问：
+```
+class Screen {
+  // Window_Mgr must be defined before class Screen
+  friend Window_Mgr &
+  Window_Mgr::relocate(Window_Mgr::index,
+                        Window_Mgr::index,
+                        Screen &);
+  //... rest of the Screen class
+};
+```
+当我们将成员函数声明为友元时，函数名必须用该函数所属的类名字加以限定。
+
+3. 友元声明与作用域
+为了正确地构造类，需要注意友元声明与定义之间的相互依赖。在前面的例子中，类`Window_Mgr`必须先定义。否则，`Screen`类就不能那个将一个`Window_Mgr`函数指定为友元。然而，只有在定义类`Screen`之后，才能定义`relocate`函数--毕竟，它被设为友元是为了访问类`Screen`的成员。
+
+必须先定义包含成员函数的类，才能将成员函数设为友元。另一方面，不必预先声明类和非成员函数来将它们设为友元。
+
+> 友元声明将命名的类或非成员函数引入到外围作用域中。此外，友元函数可以在类的内部定义，该函数的作用域扩展到包围该类定义的作用域。
+
+用友元引入的类名和函数（定义或声明），可以香预先声明的一样使用：
+```
+class X {
+  friend class Y;
+  friend void f() { /*ok to define friend function in the class body*/}
+};
+
+class Z {
+  Y *ymem;          // ok: declaration for class Y introduced by friend in X
+  void g() { return ::f();}     // ok: declaration of f introduced by X
+};
+```
+
+4. 重载与友元的关系
+类必须将重载函数集中每一个希望设为友元的函数都声明为友元：
+
+// overloaded storeOn functions
+extern std::ostream &storeOn(std::ostream &, Screen &);
+extern 
