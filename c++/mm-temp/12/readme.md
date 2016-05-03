@@ -872,3 +872,70 @@ void Account::rate(double newRate)
 **`static`数据成员必须在类定义体的外部定义（正好一次）.** 不像普通数据成员，`static`成员不是通过类构造函数进行初始化， 而是应该在定义时进行初始化。
 
 > 保证对象正好一次定义的最好办法，就是将`static`数据成员的定义放在包含类的非内联成员函数定义的文件中。
+
+> 像使用任意的类成员一样，在类定义体外部引用类的`static`成员时，必须指定成员是在那个类中定义的。然而，`static`关键字只能使用雨类定义体内部的声明中，定义不能标示为`static`。
+
+1. 特殊的整形`const static`成员
+
+一般而言，类的`static`成员，像普通数据成员一样，不能在类的定义体中初始化。相反，`static`数据成员通常在定义时才初始化。
+
+这个规则的一个例外是，只要初始化式是一个常亮表达式，整形`const static`数据成员就可以在类的定一体中进行初始化：
+
+```
+class Account {
+public:
+  static double rate() { return interestRate; }
+  static void rate(double);           // sets a new rate
+private:
+  static const int period = 30;       // interest posted every 30 days
+  double daily_tbl[period];           // ok: period is constant expression
+};
+```
+用常量值初始化的整形`const static`数据成员是一个常亮表达式。同样地，它可以用在任何需要常亮表达式的地方，例如指定数组成员`daily_tbl`
+
+> `const static`数据成员在类的定义体中初始化时，该数据成员仍必须在类的定义体之外进行定义。
+
+在类内部提供初始化式，成员的定义不必在指定初始值。
+```
+// definition of static member with no initializer
+// the initial value is specified inside the class definition
+const int Account::period;
+```
+
+2. `static`成员不是类对象的组成部分
+
+因为`static`数据成员不是任何对象的组成部分，所以它们的使用方式对于非`static`成员而言是不合法的。
+
+例如，`static`数据成员的类型可以是该成员所属的类类型。非`static`成员被限定为声明为其自身类对象的指针或引用。
+
+```
+class Bar {
+public:
+  // ...
+private:
+  static Bar mem1;      // ok
+  Bar *mem2;            // ok
+  Bar mem3;             // error
+};
+```
+
+类似地，`static`数据成员可以用作默认实参：
+
+```
+class Screen {
+public:
+  // bkground refers to the static member
+  // declared later in the class definition
+  Screen & clear(char = bkground);
+private:
+  static const char bkground = '#';
+};
+```
+
+非`static`数据成员不能用作默认实参，因为它的值不能独立于所属的对象而使用。使用非`static`数据成员作默认实参，将无法提供对象以获取该成员的值，因而是错误的。
+
+> 数据抽象是指定义数据和函数成员的能力，而封装是指从常规访问中保护类成员的能力，它们都是类的基础。成员函数定义类的借口。通过将类的实现所用到的数据和函数设置为`private`来封装类。
+
+> 类可以定义构造函数，它们是特殊的成员函数，控制如何初始化类的对象。可以重载构造函数。每个构造函数应初始化每个数据成员。初始化列表包含的是名-值对，其中的名是一个成员，而值则是该成员的初始值。
+> 类可以将对其非`public`成员的访问授予其他类或函数，并通过将其他的类或函数设为有缘来授予其访问权限。
+> 类也可以定义`mutable`或`static`成员。`mutable`成员永远都不能为`const`；它的值可以在`const`成员函数中修改。`static`成员可以是函数或数据，独立于类类型的对象而存在。
