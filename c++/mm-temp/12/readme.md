@@ -790,6 +790,85 @@ class Z {
 4. 重载与友元的关系
 类必须将重载函数集中每一个希望设为友元的函数都声明为友元：
 
+```
 // overloaded storeOn functions
 extern std::ostream &storeOn(std::ostream &, Screen &);
-extern 
+extern BitMap & storeOn(BitMap &, Screen &);
+
+class Screen {
+  // ostream version of storeOn may access private parts of Screen objects
+  friend std::ostream & storeOn(std::ostream &, Screen &);
+};
+```
+
+### 12.6 `static`类成员
+
+对于特定类类型的全体对象而言，访问一个全局对象有时是有必要的。也许，在程序的任意点需要统计已创建的特定类类型对象的数量；或者，全局对象可能是指向类的错误处理里程的一个指针；或者，它是指向类类型对象的内存自由存储区的一个指针。
+
+然而，全局对象会破坏封装：对象需要支持特定抽象的实现。如果对象是全局的，一般用户代码可以直接修改这个值。类可以定义 **类静态成员**， 而不是定义一个可普遍访问的全局对象。
+
+通常， 非`static`数据成员存在于类类型的每个对象中。不像普通的数据成员，`static`**数据成员独立于该类的任意对象而存在；**  **每个`static`数据成员是与该类关联的对象，并不与该类的对象关联。**
+
+**正如类可以定义共享的`static`数据成员一样，类也可以定义`static`成员函数。`static`成员函数没有`this`形参，它可以直接访问所属类的`static`成员，但不能直接使用非`static`成员。**
+
+1. 使用类的`static`成员的优点
+  - `static`成员的名字是在类的作用域中，因此可以避免与其他类的成员或全局对象名字冲突；
+  - 可以实施封装。`static`成员可以是私有成员，而全局对象不可以；
+  - 通过阅读程序容易看出`static`成员是与特定类关联的。这种可见性可以清晰地显示程序员的意图。
+2. 定义`static`成员
+  在成员声明前加上关键字`static`将成员设置为`static`。**`static`成员遵循正常的共有/私有访问规则；**
+
+  ```
+  class Account {
+  public:
+    // interface functions here
+    void applyint() {amount += amount * interestRate;}
+    static double rate() { return interestRate; }
+    static void rate(double);   //sets a new rate
+
+  private:
+    std::string owner;
+    double amount;
+    static double interestRate;
+    static double initRate();
+  };
+  ```
+
+3. 使用类的`static`成员
+  可以通过作用域操作符从类直接调用`static`成员，或者通过对象/引用或指向该类类型对象的指针间接调用。
+
+  ```
+  Account ac1;
+  Account *ac2 = &ac1;
+  // equivalent ways to call the static member rate function
+  double rate;
+  rate = ac1.rate();      // through an Account object or reference
+  rate = ac2->rate();     // through a pointer to an Account object
+  rate = Account::rate(); // directly from the class using the scope operator
+  ```
+
+  像使用其他成员一样，类成员函数可以不用作用域操作符来引用类的`static`成员：
+
+#### 12.6.1 `static`成员函数
+
+当我们在类的外部定义`static`成员时，无需重复指定`static`保留字，该保留字只出现在类定义内部的声明处：
+
+```
+void Account::rate(double newRate)
+{
+  interestRate = newRate;
+}
+```
+
+**`static`函数没有`this指针`**
+
+`static`成员是类的组成部分但不是任何对象的组成部分，因此`static`成员函数没有`this`指针。通过使用非`static`成员显示或者隐式的引用`this`是一个编译时错误。
+
+因为`static`成员不是任何对象的组成部分，所以`static`成员函数布恩那个被声明为`const`。毕竟，将成员函数声明为`const`就是承诺不会修改该函数所属的对象。最后，`static`成员函数也不能被声明为虚函数。
+
+#### 12.6.2 `static`数据成员
+`static`数据成员可以被声明为任意类型，可以是常量，引用，数组，类类型等等。
+
+**`static`数据成员必须在类定义体的外部定义（正好一次）.** 不像普通数据成员，`static`成员不是通过类构造函数进行初始化， 而是应该在定义时进行初始化。
+
+> 保证对象正好一次定义的最好办法，就是将`static`数据成员的定义放在包含类的非内联成员函数定义的文件中。
