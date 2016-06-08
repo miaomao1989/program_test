@@ -1,0 +1,108 @@
+﻿.ebproduct{ padding-top:10px;}
+
+ .ebproduct ul {margin:0; padding:0;list-style:none; }
+
+  .list_title a,
+  .list_text .n1_1 span,
+  .list_text .n1_4 span,
+  .list_text .n1_2 a,
+  .list_text .n2_1 span,
+  .list_text .n2_5 span{background:url(../images/bg2.png) no-repeat;}
+
+
+/*头部样式*/
+  .list_title{width:598px;clear:both; overflow:hidden;}
+  .list_title li{ float:left; border-bottom:1px solid #e2e2e2; height:28px; line-height:28px;border-right:1px solid #e2e2e2; background:#f3f3f3;color:#666;}
+  .list_title a{ float:left; padding-right:14px; color:#666; background:url(../images/bg2.png) right -233px no-repeat;background-position:right -233px;text-decoration:none;}
+  .list_title a.pai1{background-position:right -257px;text-decoration:none;}
+  .list_title a.pai2{background-position:right -471px;text-decoration:none;}
+  .list_title a.pai3{background-position:right -442px;text-decoration:none;}
+
+  .list_title .t1_1{ width:97px; padding-left:25px;}
+  .list_title .t1_2{ width:185px; padding-left:30px;  cursor:pointer;}
+  .list_title .t1_3{ width:84px; padding-left:30px; cursor:pointer;}
+  .list_title .t1_4{ width:102px;border-right:0; padding-left:30px;}
+
+  .list_title .t2_1{ width:100px; padding-left:25px;}
+  .list_title .t2_2{ width:125px; padding-left:30px;  }
+  .list_title .t2_2 a{  cursor:pointer;}
+  .list_title .t2_3{ width:65px;  padding-left:15px;  }
+  .list_title .t2_3 a{  cursor:pointer;}
+  .list_title .t2_4{ width:70px; padding-left:30px;}
+  .list_title .t2_5{ width:102px;border-right:0; padding-left:20px;}
+
+
+
+
+ 
+  .list_text{width:598px;}
+  .list_text li{ float:left;border-bottom:1px dotted #ccc; height:33px;background:#fff;}
+  .list_text li a{ display:block; width:598px; height:34px; cursor:pointer;}
+  .list_text li a:hover{ text-decoration:none;}
+  .list_text .n1_1{ float:left; padding:9px 0 0 25px; overflow:hidden; height:18px;}
+  .list_text .n1_1 span{ float:left; padding-left:22px; line-height:22px; color:#333; overflow:hidden;}
+  .list_text .n1_1 .jingdong{background-position:0 0;}
+  .list_text .n1_1 .yixun{background-position:0 -30px;}
+  .list_text .n1_1 .kuba{background-position:0 -60px;}
+  .list_text .n1_1 .z{background-position:0 -90px;}
+  .list_text .n1_1 .guomei{background-position:0 -120px;}
+  .list_text .n1_1 .yidianda{background-position:0 -150px;}
+  .list_text .n1_1 .suning{background-position:0 -180px;}
+  .list_text .n1_1 .apple{background-position:0 -210px;}
+  .list_text .n1_1 .taobao{background-position:0 -419px;}
+  .list_text .n1_1 .tmall{background-position:0 -391px;}
+  .list_text .n1_1 .liantong{background-position:0 -528px;}
+  .list_text .n1_1 .gaohong{background-position:0 -566px;}
+  .list_text .n1_1 .tianyi{background-position:0 -602px;}
+  .list_text .n1_1 .lenovo{background-position:0 -633px;}
+  
+  .list_text .n1_1 .tegong{background-position:0 -664px;}
+  .list_text .n1_1 .dell{background-position:0 -695px;}
+  .list_text .n1_1 .htc{background-position:0 -726px;}
+  .list_text .n1_1 .oppo{background-position:0 -757px;}
+  .list_text .n1_1 .bubugao{background-position:0 -788px;}
+  .list_text .n1_1 .huawei{background-position:0 -819px;}
+  .list_text .n1_1 .jiayu{background-position:0 -850px;}
+  .list_text .n1_1 .meizu{background-position:0 -881px;}
+  .list_text .n1_1 .nokia{background-position:0 -912px;}
+  .list_text .n1_1 .qingcheng{background-position:0 -943px;}
+  .list_text .n1_1 .samsung{background-position:0 -974px;}
+  .list_text .n1_1 .sony{background-position:0 -1005px;}
+  .list_text .n1_1 .microsoft{background-position:0 -1036px;}
+  .list_text .n1_1 .xiaomi{background-position:0 -1067px;}
+  .list_text .n1_1 .changhong{background-position:0 -1098px;}
+  .list_text .n1_1 .haier{background-position:0 -1129px;}
+  .list_text .n1_1 .logitech{background-position:0 -1160px;}
+  .list_text .n1_1 .dangdang{background-position:0 -1191px;}
+  .list_text .n1_1 .newegg{background-position:0 -1222px;}
+  .list_text .n1_1 .okhqb{background-position:0 -1253px;}
+  .list_text .n1_1 .yihaodian{background-position:0 -1284px;}
+  .list_text .n1_1 .zm7{background-position:0 -1315px;}
+  .list_text .n1_1 .feihu{background-position:0 -1346px;}
+  .list_text .n1_1 .new7{background-position:0 -1377px;}
+
+  
+  
+  .list_text .n1_2{ float:left; padding:8px 0 0 30px;  position:relative;}
+  .list_text .n1_2 b{ float:left; font-size:14px; color:#df0708; line-height:18px; width:65px;}
+  .list_text .n1_2 b.hui{ color:#999;}
+  .list_text .n1_2 span{ float:left; color:#f25f02; border:1px solid #fcd096;line-height:16px;background:#fff url(../images/bg2.png) right -292px no-repeat; padding:0 14px 0 3px; height:16px;white-space: nowrap;}
+  .list_text .n1_2 span.here1{background:#fff; padding:0 5px 0 5px;}
+  .list_text .n1_2 .lg_div{ border:1px solid #fcd096; width:250px; background:#fff;  padding:4px 10px 10px 10px; line-height:18px; position:absolute; top:30px; left:90px;z-index:9;}
+  .list_text .n1_2 .lg_div p{ padding-top:6px; color:#666;}
+  .list_text .n1_2 i{ width:7px; height:6px; background:url(../images/dot1.png) no-repeat; overflow:hidden;  top:25px; left:110px; position:absolute; z-index:10;}
+  .list_text .n1_3{ float:left;padding:9px 0 0 15px;}
+  .list_text .n1_3 span{ color:#333; text-decoration:underline; line-height:18px;}
+  .list_text .n1_4{ float:left;padding:7px 0 0 15px;}
+  .list_text .n1_4 span{ display:block; width:57px; height:20px; line-height:21px; text-align:center; color:#fff;background-position:0 -331px;}
+  .list_text .n1_4 span.none{background-position:0 -352px;}
+  .list_text .n{ float:left; width:25px; padding:9px 0 0 20px;color:#999; line-height:18px;}
+
+
+ .list_text li.bg{ background:#f8f8f8;}
+  .list_text li.bgg1{ background:#fff8e7; border-bottom:1px solid #fff;}
+  .list_text li.bg2{ background:#fff8e7;}
+  .title1{height:30px; line-height:30px; background:#ecf3fb; font-size:14px; font-weight:bold; padding-left:11px; margin:1px;}
+
+
+ 

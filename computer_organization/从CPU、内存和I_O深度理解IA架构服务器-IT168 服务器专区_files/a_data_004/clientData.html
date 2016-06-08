@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+</head>
+<body>
+    <script>
+    (function(){var localData={getTopDomain:function(){try{var a=(location.hostname+"/").match(/[\w-]+\.(com|info|net|org|me|mobi|us|biz|xxx|ca|mx|tv|ws|am|asia|at|be|bz|cc|co|de|nom|es|eu|fm|fr|gs|firm|gen|ind|in|it|jobs|jp|ms|nl|nu|se|tc|tk|idv|tw|vg|gov|cn)(\.(cn|hk|jp|tw|kr|mo|uk|ag|es|co|nz|in|br|bz|mx))*\//ig);if(a){if(0<a.length){return a[0].substr(0,a[0].length-1)}}else{return !1}}catch(ex){return}},hname:(function(){return this.getTopDomain()?this.getTopDomain():"localStatus"}),isLocalStorage:(function(){try{return !!window.localStorage}catch(e){return false}})(),dataDom:null,initDom:function(){if(!this.dataDom){try{this.dataDom=document.createElement("input");this.dataDom.type="hidden";this.dataDom.style.display="none";this.dataDom.addBehavior("#default#userData");var g=document.body;g.insertBefore(this.dataDom,g.firstChild);var exDate=new Date();exDate.setDate(exDate.getDate()+365);this.dataDom.expires=exDate.toUTCString()}catch(ex){return false}}return true},set:function(key,value){if(this.isLocalStorage){window.localStorage.setItem(key,value)}else{try{if(this.initDom()){this.dataDom.load(this.hname());this.dataDom.setAttribute(key,value);this.dataDom.save(this.hname())}}catch(f){return false}}},get:function(key){if(this.isLocalStorage){return window.localStorage.getItem(key)}else{try{if(this.initDom()){this.dataDom.load(this.hname());return this.dataDom.getAttribute(key)}}catch(f){return false}}}};if(location.hash){var gid=location.hash.slice(1);var d=new Date();d.setFullYear(d.getFullYear()+3);document.cookie="bfdid="+gid+";expires="+d.toUTCString()+";path=/;domain=baifendian.com";localData.set("bfdid",gid);return}var gids=[];var gid=document.cookie.replace(/(?:(?:^|.*;\s*)bfdid\s*\=\s*([^;]*).*$)|^.*$/,"$1");gid&&gids.push(gid);gid=localData.get("bfdid");gid&&gids.push(gid);window.name=gids.join("&")})();
+    </script>
+
+</body></html>
