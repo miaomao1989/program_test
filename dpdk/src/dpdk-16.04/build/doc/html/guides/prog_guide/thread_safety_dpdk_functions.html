@@ -1,0 +1,320 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>20. Thread Safety of DPDK Functions &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Programmer’s Guide" href="index.html"/>
+        <link rel="next" title="21. Quality of Service (QoS) Framework" href="qos_framework.html"/>
+        <link rel="prev" title="19. Kernel NIC Interface" href="kernel_nic_interface.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Programmer&#8217;s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html">2. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="env_abstraction_layer.html">3. Environment Abstraction Layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ring_lib.html">4. Ring Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mempool_lib.html">5. Mempool Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mbuf_lib.html">6. Mbuf Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="poll_mode_drv.html">7. Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cryptodev_lib.html">8. Cryptography Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ivshmem_lib.html">9. IVSHMEM Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_bonding_poll_mode_drv_lib.html">10. Link Bonding Poll Mode Driver Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer_lib.html">11. Timer Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hash_lib.html">12. Hash Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm_lib.html">13. LPM Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm6_lib.html">14. LPM6 Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_distrib_lib.html">15. Packet Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reorder_lib.html">16. Reorder Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_fragment_reassembly_lib.html">17. IP Fragmentation and Reassembly Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_proc_support.html">18. Multi-process Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">19. Kernel NIC Interface</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">20. Thread Safety of DPDK Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#fast-path-apis">20.1. Fast-Path APIs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#performance-insensitive-api">20.2. Performance Insensitive API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#library-initialization">20.3. Library Initialization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#interrupt-thread">20.4. Interrupt Thread</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="qos_framework.html">21. Quality of Service (QoS) Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="power_man.html">22. Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_classif_access_ctrl.html">23. Packet Classification and Access Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_framework.html">24. Packet Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_lib.html">25. Vhost Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="port_hotplug_framework.html">26. Port Hotplug Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source_org.html">27. Source Organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_kit_build_system.html">28. Development Kit Build System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_kit_root_make_help.html">29. Development Kit Root Makefile Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extend_dpdk.html">30. Extending the DPDK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_app.html">31. Building Your Own Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ext_app_lib_make_help.html">32. External Application/Library Makefile help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perf_opt_guidelines.html">33. Performance Optimization Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing_efficient_code.html">34. Writing Efficient Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="profile_app.html">35. Profile Your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">36. Glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Programmer&#8217;s Guide</a> &raquo;</li>
+      
+    <li>20. Thread Safety of DPDK Functions</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/prog_guide/thread_safety_dpdk_functions.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="thread-safety-of-dpdk-functions">
+<h1>20. Thread Safety of DPDK Functions</h1>
+<p>The DPDK is comprised of several libraries.
+Some of the functions in these libraries can be safely called from multiple threads simultaneously, while others cannot.
+This section allows the developer to take these issues into account when building their own application.</p>
+<p>The run-time environment of the DPDK is typically a single thread per logical core.
+In some cases, it is not only multi-threaded, but multi-process.
+Typically, it is best to avoid sharing data structures between threads and/or processes where possible.
+Where this is not possible, then the execution blocks must access the data in a thread- safe manner.
+Mechanisms such as atomics or locking can be used that will allow execution blocks to operate serially.
+However, this can have an effect on the performance of the application.</p>
+<div class="section" id="fast-path-apis">
+<h2>20.1. Fast-Path APIs</h2>
+<p>Applications operating in the data plane are performance sensitive but
+certain functions within those libraries may not be safe to call from multiple threads simultaneously.
+The hash, LPM and mempool libraries and RX/TX in the PMD are examples of this.</p>
+<p>The hash and LPM libraries are, by design, thread unsafe in order to maintain performance.
+However, if required the developer can add layers on top of these libraries to provide thread safety.
+Locking is not needed in all situations, and in both the hash and LPM libraries,
+lookups of values can be performed in parallel in multiple threads.
+Adding, removing or modifying values, however,
+cannot be done in multiple threads without using locking when a single hash or LPM table is accessed.
+Another alternative to locking would be to create multiple instances of these tables allowing each thread its own copy.</p>
+<p>The RX and TX of the PMD are the most critical aspects of a DPDK application
+and it is recommended that no locking be used as it will impact performance.
+Note, however, that these functions can safely be used from multiple threads
+when each thread is performing I/O on a different NIC queue.
+If multiple threads are to use the same hardware queue on the same NIC port,
+then locking, or some other form of mutual exclusion, is necessary.</p>
+<p>The ring library is based on a lockless ring-buffer algorithm that maintains its original design for thread safety.
+Moreover, it provides high performance for either multi- or single-consumer/producer enqueue/dequeue operations.
+The mempool library is based on the DPDK lockless ring library and therefore is also multi-thread safe.</p>
+</div>
+<div class="section" id="performance-insensitive-api">
+<h2>20.2. Performance Insensitive API</h2>
+<p>Outside of the performance sensitive areas described in Section 25.1,
+the DPDK provides a thread-safe API for most other libraries.
+For example, malloc and memzone functions are safe for use in multi-threaded and multi-process environments.</p>
+<p>The setup and configuration of the PMD is not performance sensitive, but is not thread safe either.
+It is possible that the multiple read/writes during PMD setup and configuration could be corrupted in a multi-thread environment.
+Since this is not performance sensitive, the developer can choose to add their own layer to provide thread-safe setup and configuration.
+It is expected that, in most applications, the initial configuration of the network ports would be done by a single thread at startup.</p>
+</div>
+<div class="section" id="library-initialization">
+<h2>20.3. Library Initialization</h2>
+<p>It is recommended that DPDK libraries are initialized in the main thread at application startup
+rather than subsequently in the forwarding threads.
+However, the DPDK performs checks to ensure that libraries are only initialized once.
+If initialization is attempted more than once, an error is returned.</p>
+<p>In the multi-process case, the configuration information of shared memory will only be initialized by the master process.
+Thereafter, both master and secondary processes can allocate/release any objects of memory that finally rely on rte_malloc or memzones.</p>
+</div>
+<div class="section" id="interrupt-thread">
+<h2>20.4. Interrupt Thread</h2>
+<p>The DPDK works almost entirely in Linux user space in polling mode.
+For certain infrequent operations, such as receiving a PMD link status change notification,
+callbacks may be called in an additional thread outside the main DPDK processing threads.
+These function callbacks should avoid manipulating DPDK objects that are also managed by the normal DPDK threads,
+and if they need to do so,
+it is up to the application to provide the appropriate locking or mutual exclusion restrictions around those objects.</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="qos_framework.html" class="btn btn-neutral float-right" title="21. Quality of Service (QoS) Framework" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="kernel_nic_interface.html" class="btn btn-neutral" title="19. Kernel NIC Interface" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

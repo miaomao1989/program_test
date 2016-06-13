@@ -1,0 +1,435 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>3. Compiling the DPDK Target from Source &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Getting Started Guide for Linux" href="index.html"/>
+        <link rel="next" title="4. Compiling and Running Sample Applications" href="build_sample_apps.html"/>
+        <link rel="prev" title="2. System Requirements" href="sys_reqs.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Getting Started Guide for Linux</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sys_reqs.html">2. System Requirements</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3. Compiling the DPDK Target from Source</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#install-the-dpdk-and-browse-sources">3.1. Install the DPDK and Browse Sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#installation-of-dpdk-target-environments">3.2. Installation of DPDK Target Environments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#browsing-the-installed-dpdk-environment-target">3.3. Browsing the Installed DPDK Environment Target</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#loading-modules-to-enable-userspace-io-for-dpdk">3.4. Loading Modules to Enable Userspace IO for DPDK</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#loading-vfio-module">3.5. Loading VFIO Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#binding-and-unbinding-network-ports-to-from-the-kernel-modules">3.6. Binding and Unbinding Network Ports to/from the Kernel Modules</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="build_sample_apps.html">4. Compiling and Running Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="enable_func.html">5. Enabling Additional Functionality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quick_start.html">6. Quick Start Setup Script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nic_perf_intel_platform.html">7. How to get best performance with NICs on Intel platforms</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Getting Started Guide for Linux</a> &raquo;</li>
+      
+    <li>3. Compiling the DPDK Target from Source</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/linux_gsg/build_dpdk.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="compiling-the-dpdk-target-from-source">
+<span id="linux-gsg-compiling-dpdk"></span><h1>3. Compiling the DPDK Target from Source</h1>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Parts of this process can also be done using the setup script described in
+the <a class="reference internal" href="quick_start.html#linux-setup-script"><span class="std std-ref">Quick Start Setup Script</span></a> section of this document.</p>
+</div>
+<div class="section" id="install-the-dpdk-and-browse-sources">
+<h2>3.1. Install the DPDK and Browse Sources</h2>
+<p>First, uncompress the archive and move to the uncompressed DPDK source directory:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">unzip DPDK-&lt;version&gt;.zip</span>
+<span class="go">cd DPDK-&lt;version&gt;</span>
+
+<span class="go">ls</span>
+<span class="go">app/ config/ examples/ lib/ LICENSE.GPL LICENSE.LGPL Makefile</span>
+<span class="go">mk/ scripts/ tools/</span>
+</pre></div>
+</div>
+<p>The DPDK is composed of several directories:</p>
+<ul class="simple">
+<li>lib: Source code of DPDK libraries</li>
+<li>drivers: Source code of DPDK poll-mode drivers</li>
+<li>app: Source code of DPDK applications (automatic tests)</li>
+<li>examples: Source code of DPDK application examples</li>
+<li>config, tools, scripts, mk: Framework-related makefiles, scripts and configuration</li>
+</ul>
+</div>
+<div class="section" id="installation-of-dpdk-target-environments">
+<h2>3.2. Installation of DPDK Target Environments</h2>
+<p>The format of a DPDK target is:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>ARCH-MACHINE-EXECENV-TOOLCHAIN
+</pre></div>
+</div>
+<p>where:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">ARCH</span></code> can be:  <code class="docutils literal"><span class="pre">i686</span></code>, <code class="docutils literal"><span class="pre">x86_64</span></code>, <code class="docutils literal"><span class="pre">ppc_64</span></code></li>
+<li><code class="docutils literal"><span class="pre">MACHINE</span></code> can be:  <code class="docutils literal"><span class="pre">native</span></code>, <code class="docutils literal"><span class="pre">ivshmem</span></code>, <code class="docutils literal"><span class="pre">power8</span></code></li>
+<li><code class="docutils literal"><span class="pre">EXECENV</span></code> can be:  <code class="docutils literal"><span class="pre">linuxapp</span></code>,  <code class="docutils literal"><span class="pre">bsdapp</span></code></li>
+<li><code class="docutils literal"><span class="pre">TOOLCHAIN</span></code> can be:  <code class="docutils literal"><span class="pre">gcc</span></code>,  <code class="docutils literal"><span class="pre">icc</span></code></li>
+</ul>
+<p>The targets to be installed depend on the 32-bit and/or 64-bit packages and compilers installed on the host.
+Available targets can be found in the DPDK/config directory.
+The defconfig_ prefix should not be used.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Configuration files are provided with the <code class="docutils literal"><span class="pre">RTE_MACHINE</span></code> optimization level set.
+Within the configuration files, the <code class="docutils literal"><span class="pre">RTE_MACHINE</span></code> configuration value is set to native,
+which means that the compiled software is tuned for the platform on which it is built.
+For more information on this setting, and its possible values, see the <em>DPDK Programmers Guide</em>.</p>
+</div>
+<p>When using the Intel® C++ Compiler (icc), one of the following commands should be invoked for 64-bit or 32-bit use respectively.
+Notice that the shell scripts update the <code class="docutils literal"><span class="pre">$PATH</span></code> variable and therefore should not be performed in the same session.
+Also, verify the compiler&#8217;s installation directory since the path may be different:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">source /opt/intel/bin/iccvars.sh intel64</span>
+<span class="go">source /opt/intel/bin/iccvars.sh ia32</span>
+</pre></div>
+</div>
+<p>To install and make targets, use the <code class="docutils literal"><span class="pre">make</span> <span class="pre">install</span> <span class="pre">T=&lt;target&gt;</span></code> command in the top-level DPDK directory.</p>
+<p>For example, to compile a 64-bit target using icc, run:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">make install T=x86_64-native-linuxapp-icc</span>
+</pre></div>
+</div>
+<p>To compile a 32-bit build using gcc, the make command should be:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">make install T=i686-native-linuxapp-gcc</span>
+</pre></div>
+</div>
+<p>To prepare a target without building it, for example, if the configuration changes need to be made before compilation,
+use the <code class="docutils literal"><span class="pre">make</span> <span class="pre">config</span> <span class="pre">T=&lt;target&gt;</span></code> command:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">make config T=x86_64-native-linuxapp-gcc</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Any kernel modules to be used, e.g. <code class="docutils literal"><span class="pre">igb_uio</span></code>, <code class="docutils literal"><span class="pre">kni</span></code>, must be compiled with the
+same kernel as the one running on the target.
+If the DPDK is not being built on the target machine,
+the <code class="docutils literal"><span class="pre">RTE_KERNELDIR</span></code> environment variable should be used to point the compilation at a copy of the kernel version to be used on the target machine.</p>
+</div>
+<p>Once the target environment is created, the user may move to the target environment directory and continue to make code changes and re-compile.
+The user may also make modifications to the compile-time DPDK configuration by editing the .config file in the build directory.
+(This is a build-local copy of the defconfig file from the top- level config directory).</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">cd x86_64-native-linuxapp-gcc</span>
+<span class="go">vi .config</span>
+<span class="go">make</span>
+</pre></div>
+</div>
+<p>In addition, the make clean command can be used to remove any existing compiled files for a subsequent full, clean rebuild of the code.</p>
+</div>
+<div class="section" id="browsing-the-installed-dpdk-environment-target">
+<h2>3.3. Browsing the Installed DPDK Environment Target</h2>
+<p>Once a target is created it contains all libraries, including poll-mode drivers, and header files for the DPDK environment that are required to build customer applications.
+In addition, the test and testpmd applications are built under the build/app directory, which may be used for testing.
+A kmod  directory is also present that contains kernel modules which may be loaded if needed.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">ls x86_64-native-linuxapp-gcc</span>
+
+<span class="go">app build hostapp include kmod lib Makefile</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="loading-modules-to-enable-userspace-io-for-dpdk">
+<h2>3.4. Loading Modules to Enable Userspace IO for DPDK</h2>
+<p>To run any DPDK application, a suitable uio module can be loaded into the running kernel.
+In many cases, the standard <code class="docutils literal"><span class="pre">uio_pci_generic</span></code> module included in the Linux kernel
+can provide the uio capability. This module can be loaded using the command</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">sudo modprobe uio_pci_generic</span>
+</pre></div>
+</div>
+<p>As an alternative to the <code class="docutils literal"><span class="pre">uio_pci_generic</span></code>, the DPDK also includes the igb_uio
+module which can be found in the kmod subdirectory referred to above. It can
+be loaded as shown below:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">sudo modprobe uio</span>
+<span class="go">sudo insmod kmod/igb_uio.ko</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">For some devices which lack support for legacy interrupts, e.g. virtual function
+(VF) devices, the <code class="docutils literal"><span class="pre">igb_uio</span></code> module may be needed in place of <code class="docutils literal"><span class="pre">uio_pci_generic</span></code>.</p>
+</div>
+<p>Since DPDK release 1.7 onward provides VFIO support, use of UIO is optional
+for platforms that support using VFIO.</p>
+</div>
+<div class="section" id="loading-vfio-module">
+<h2>3.5. Loading VFIO Module</h2>
+<p>To run an DPDK application and make use of VFIO, the <code class="docutils literal"><span class="pre">vfio-pci</span></code> module must be loaded:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">sudo modprobe vfio-pci</span>
+</pre></div>
+</div>
+<p>Note that in order to use VFIO, your kernel must support it.
+VFIO kernel modules have been included in the Linux kernel since version 3.6.0 and are usually present by default,
+however please consult your distributions documentation to make sure that is the case.</p>
+<p>Also, to use VFIO, both kernel and BIOS must support and be configured to use IO virtualization (such as Intel® VT-d).</p>
+<p>For proper operation of VFIO when running DPDK applications as a non-privileged user, correct permissions should also be set up.
+This can be done by using the DPDK setup script (called setup.sh and located in the tools directory).</p>
+</div>
+<div class="section" id="binding-and-unbinding-network-ports-to-from-the-kernel-modules">
+<span id="linux-gsg-binding-kernel"></span><h2>3.6. Binding and Unbinding Network Ports to/from the Kernel Modules</h2>
+<p>As of release 1.4, DPDK applications no longer automatically unbind all supported network ports from the kernel driver in use.
+Instead, all ports that are to be used by an DPDK application must be bound to the
+<code class="docutils literal"><span class="pre">uio_pci_generic</span></code>, <code class="docutils literal"><span class="pre">igb_uio</span></code> or <code class="docutils literal"><span class="pre">vfio-pci</span></code> module before the application is run.
+Any network ports under Linux* control will be ignored by the DPDK poll-mode drivers and cannot be used by the application.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The DPDK will, by default, no longer automatically unbind network ports from the kernel driver at startup.
+Any ports to be used by an DPDK application must be unbound from Linux* control and
+bound to the <code class="docutils literal"><span class="pre">uio_pci_generic</span></code>, <code class="docutils literal"><span class="pre">igb_uio</span></code> or <code class="docutils literal"><span class="pre">vfio-pci</span></code> module before the application is run.</p>
+</div>
+<p>To bind ports to the <code class="docutils literal"><span class="pre">uio_pci_generic</span></code>, <code class="docutils literal"><span class="pre">igb_uio</span></code> or <code class="docutils literal"><span class="pre">vfio-pci</span></code> module for DPDK use,
+and then subsequently return ports to Linux* control,
+a utility script called dpdk_nic _bind.py is provided in the tools subdirectory.
+This utility can be used to provide a view of the current state of the network ports on the system,
+and to bind and unbind those ports from the different kernel modules, including the uio and vfio modules.
+The following are some examples of how the script can be used.
+A full description of the script and its parameters can be obtained by calling the script with the <code class="docutils literal"><span class="pre">--help</span></code> or <code class="docutils literal"><span class="pre">--usage</span></code> options.
+Note that the uio or vfio kernel modules to be used, should be loaded into the kernel before
+running the <code class="docutils literal"><span class="pre">dpdk_nic_bind.py</span></code> script.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>Due to the way VFIO works, there are certain limitations to which devices can be used with VFIO.
+Mainly it comes down to how IOMMU groups work.
+Any Virtual Function device can be used with VFIO on its own, but physical devices will require either all ports bound to VFIO,
+or some of them bound to VFIO while others not being bound to anything at all.</p>
+<p class="last">If your device is behind a PCI-to-PCI bridge, the bridge will then be part of the IOMMU group in which your device is in.
+Therefore, the bridge driver should also be unbound from the bridge PCI device for VFIO to work with devices behind the bridge.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">While any user can run the dpdk_nic_bind.py script to view the status of the network ports,
+binding or unbinding network ports requires root privileges.</p>
+</div>
+<p>To see the status of all network ports on the system:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./tools/dpdk_nic_bind.py --status</span>
+
+<span class="go">Network devices using DPDK-compatible driver</span>
+<span class="go">============================================</span>
+<span class="go">0000:82:00.0 &#39;82599EB 10-GbE NIC&#39; drv=uio_pci_generic unused=ixgbe</span>
+<span class="go">0000:82:00.1 &#39;82599EB 10-GbE NIC&#39; drv=uio_pci_generic unused=ixgbe</span>
+
+<span class="go">Network devices using kernel driver</span>
+<span class="go">===================================</span>
+<span class="go">0000:04:00.0 &#39;I350 1-GbE NIC&#39; if=em0  drv=igb unused=uio_pci_generic *Active*</span>
+<span class="go">0000:04:00.1 &#39;I350 1-GbE NIC&#39; if=eth1 drv=igb unused=uio_pci_generic</span>
+<span class="go">0000:04:00.2 &#39;I350 1-GbE NIC&#39; if=eth2 drv=igb unused=uio_pci_generic</span>
+<span class="go">0000:04:00.3 &#39;I350 1-GbE NIC&#39; if=eth3 drv=igb unused=uio_pci_generic</span>
+
+<span class="go">Other network devices</span>
+<span class="go">=====================</span>
+<span class="go">&lt;none&gt;</span>
+</pre></div>
+</div>
+<p>To bind device <code class="docutils literal"><span class="pre">eth1</span></code>,``04:00.1``, to the <code class="docutils literal"><span class="pre">uio_pci_generic</span></code> driver:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./tools/dpdk_nic_bind.py --bind=uio_pci_generic 04:00.1</span>
+</pre></div>
+</div>
+<p>or, alternatively,</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./tools/dpdk_nic_bind.py --bind=uio_pci_generic eth1</span>
+</pre></div>
+</div>
+<p>To restore device <code class="docutils literal"><span class="pre">82:00.0</span></code> to its original kernel binding:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./tools/dpdk_nic_bind.py --bind=ixgbe 82:00.0</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="build_sample_apps.html" class="btn btn-neutral float-right" title="4. Compiling and Running Sample Applications" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="sys_reqs.html" class="btn btn-neutral" title="2. System Requirements" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,915 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>1. DPDK Coding Style &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Contributor’s Guidelines" href="index.html"/>
+        <link rel="next" title="2. Design" href="design.html"/>
+        <link rel="prev" title="Contributor’s Guidelines" href="index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Contributor&#8217;s Guidelines</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">1. DPDK Coding Style</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#description">1.1. Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#general-guidelines">1.2. General Guidelines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#c-comment-style">1.3. C Comment Style</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#usual-comments">1.3.1. Usual Comments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#license-header">1.3.2. License Header</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#c-preprocessor-directives">1.4. C Preprocessor Directives</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#header-includes">1.4.1. Header Includes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#header-file-guards">1.4.2. Header File Guards</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#macros">1.4.3. Macros</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#conditional-compilation">1.4.4. Conditional Compilation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#c-types">1.5. C Types</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#integers">1.5.1. Integers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enumerations">1.5.2. Enumerations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bitfields">1.5.3. Bitfields</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#variable-declarations">1.5.4. Variable Declarations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#structure-declarations">1.5.5. Structure Declarations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#queues">1.5.6. Queues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedefs">1.5.7. Typedefs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#c-indentation">1.6. C Indentation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#general">1.6.1. General</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#control-statements-and-loops">1.6.2. Control Statements and Loops</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-calls">1.6.3. Function Calls</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#operators">1.6.4. Operators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#exit">1.6.5. Exit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#local-variables">1.6.6. Local Variables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#casts-and-sizeof">1.6.7. Casts and sizeof</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#c-function-definition-declaration-and-use">1.7. C Function Definition, Declaration and Use</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#prototypes">1.7.1. Prototypes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#definitions">1.7.2. Definitions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#c-statement-style-and-conventions">1.8. C Statement Style and Conventions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#null-pointers">1.8.1. NULL Pointers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#return-value">1.8.2. Return Value</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#logging-and-errors">1.8.3. Logging and Errors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#branch-prediction">1.8.4. Branch Prediction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#static-variables-and-functions">1.8.5. Static Variables and Functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#const-attribute">1.8.6. Const Attribute</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#inline-asm-in-c-code">1.8.7. Inline ASM in C code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#control-statements">1.8.8. Control Statements</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="design.html">2. Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="versioning.html">3. Managing ABI updates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="documentation.html">4. DPDK Documentation Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="patches.html">5. Contributing Code to DPDK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cheatsheet.html">6. Patch Cheatsheet</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Contributor&#8217;s Guidelines</a> &raquo;</li>
+      
+    <li>1. DPDK Coding Style</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/contributing/coding_style.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="dpdk-coding-style">
+<span id="coding-style"></span><h1>1. DPDK Coding Style</h1>
+<div class="section" id="description">
+<h2>1.1. Description</h2>
+<p>This document specifies the preferred style for source files in the DPDK source tree.
+It is based on the Linux Kernel coding guidelines and the FreeBSD 7.2 Kernel Developer&#8217;s Manual (see man style(9)), but was heavily modified for the needs of the DPDK.</p>
+</div>
+<div class="section" id="general-guidelines">
+<h2>1.2. General Guidelines</h2>
+<p>The rules and guidelines given in this document cannot cover every situation, so the following general guidelines should be used as a fallback:</p>
+<ul class="simple">
+<li>The code style should be consistent within each individual file.</li>
+<li>In the case of creating new files, the style should be consistent within each file in a given directory or module.</li>
+<li>The primary reason for coding standards is to increase code readability and comprehensibility, therefore always use whatever option will make the code easiest to read.</li>
+</ul>
+<p>Line length is recommended to be not more than 80 characters, including comments.
+[Tab stop size should be assumed to be 8-characters wide].</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The above is recommendation, and not a hard limit.
+However, it is expected that the recommendations should be followed in all but the rarest situations.</p>
+</div>
+</div>
+<div class="section" id="c-comment-style">
+<h2>1.3. C Comment Style</h2>
+<div class="section" id="usual-comments">
+<h3>1.3.1. Usual Comments</h3>
+<p>These comments should be used in normal cases.
+To document a public API, a doxygen-like format must be used: refer to <a class="reference internal" href="documentation.html#doxygen-guidelines"><span class="std std-ref">Doxygen Guidelines</span></a>.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm"> * VERY important single-line comments look like this.</span>
+<span class="cm"> */</span>
+
+<span class="cm">/* Most single-line comments look like this. */</span>
+
+<span class="cm">/*</span>
+<span class="cm"> * Multi-line comments look like this.  Make them real sentences. Fill</span>
+<span class="cm"> * them so they look like real paragraphs.</span>
+<span class="cm"> */</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="license-header">
+<h3>1.3.2. License Header</h3>
+<p>Each file should begin with a special comment containing the appropriate copyright and license for the file.
+Generally this is the BSD License, except for code for Linux Kernel modules.
+After any copyright header, a blank line should be left before any other contents, e.g. include statements in a C file.</p>
+</div>
+</div>
+<div class="section" id="c-preprocessor-directives">
+<h2>1.4. C Preprocessor Directives</h2>
+<div class="section" id="header-includes">
+<h3>1.4.1. Header Includes</h3>
+<p>In DPDK sources, the include files should be ordered as following:</p>
+<ol class="arabic simple">
+<li>libc includes (system includes first)</li>
+<li>DPDK EAL includes</li>
+<li>DPDK misc libraries includes</li>
+<li>application-specific includes</li>
+</ol>
+<p>Include files from the local application directory are included using quotes, while includes from other paths are included using angle brackets: &#8220;&lt;&gt;&#8221;.</p>
+<p>Example:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;rte_eal.h&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;rte_ring.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;rte_mempool.h&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&quot;application.h&quot;</span><span class="cp"></span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="header-file-guards">
+<h3>1.4.2. Header File Guards</h3>
+<p>Headers should be protected against multiple inclusion with the usual:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#ifndef _FILE_H_</span>
+<span class="cp">#define _FILE_H_</span>
+
+<span class="cm">/* Code */</span>
+
+<span class="cp">#endif </span><span class="cm">/* _FILE_H_ */</span><span class="cp"></span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="macros">
+<h3>1.4.3. Macros</h3>
+<p>Do not <code class="docutils literal"><span class="pre">#define</span></code> or declare names except with the standard DPDK prefix: <code class="docutils literal"><span class="pre">RTE_</span></code>.
+This is to ensure there are no collisions with definitions in the application itself.</p>
+<p>The names of &#8220;unsafe&#8221; macros (ones that have side effects), and the names of macros for manifest constants, are all in uppercase.</p>
+<p>The expansions of expression-like macros are either a single token or have outer parentheses.
+If a macro is an inline expansion of a function, the function name is all in lowercase and the macro has the same name all in uppercase.
+If the macro encapsulates a compound statement, enclose it in a do-while loop, so that it can be used safely in if statements.
+Any final statement-terminating semicolon should be supplied by the macro invocation rather than the macro, to make parsing easier for pretty-printers and editors.</p>
+<p>For example:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#define MACRO(x, y) do {                                        \</span>
+<span class="cp">        variable = (x) + (y);                                   \</span>
+<span class="cp">        (y) += 2;                                               \</span>
+<span class="cp">} while(0)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Wherever possible, enums and inline functions should be preferred to macros, since they provide additional degrees of type-safety and can allow compilers to emit extra warnings about unsafe code.</p>
+</div>
+</div>
+<div class="section" id="conditional-compilation">
+<h3>1.4.4. Conditional Compilation</h3>
+<ul class="simple">
+<li>When code is conditionally compiled using <code class="docutils literal"><span class="pre">#ifdef</span></code> or <code class="docutils literal"><span class="pre">#if</span></code>, a comment may be added following the matching
+<code class="docutils literal"><span class="pre">#endif</span></code> or <code class="docutils literal"><span class="pre">#else</span></code> to permit the reader to easily discern where conditionally compiled code regions end.</li>
+<li>This comment should be used only for (subjectively) long regions, regions greater than 20 lines, or where a series of nested <code class="docutils literal"><span class="pre">#ifdef</span></code>&#8216;s may be confusing to the reader.
+Exceptions may be made for cases where code is conditionally not compiled for the purposes of lint(1), or other tools, even though the uncompiled region may be small.</li>
+<li>The comment should be separated from the <code class="docutils literal"><span class="pre">#endif</span></code> or <code class="docutils literal"><span class="pre">#else</span></code> by a single space.</li>
+<li>For short conditionally compiled regions, a closing comment should not be used.</li>
+<li>The comment for <code class="docutils literal"><span class="pre">#endif</span></code> should match the expression used in the corresponding <code class="docutils literal"><span class="pre">#if</span></code> or <code class="docutils literal"><span class="pre">#ifdef</span></code>.</li>
+<li>The comment for <code class="docutils literal"><span class="pre">#else</span></code> and <code class="docutils literal"><span class="pre">#elif</span></code> should match the inverse of the expression(s) used in the preceding <code class="docutils literal"><span class="pre">#if</span></code> and/or <code class="docutils literal"><span class="pre">#elif</span></code> statements.</li>
+<li>In the comments, the subexpression <code class="docutils literal"><span class="pre">defined(FOO)</span></code> is abbreviated as &#8220;FOO&#8221;.
+For the purposes of comments, <code class="docutils literal"><span class="pre">#ifndef</span> <span class="pre">FOO</span></code> is treated as <code class="docutils literal"><span class="pre">#if</span> <span class="pre">!defined(FOO)</span></code>.</li>
+</ul>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#ifdef KTRACE</span>
+<span class="cp">#include</span> <span class="cpf">&lt;sys/ktrace.h&gt;</span><span class="cp"></span>
+<span class="cp">#endif</span>
+
+<span class="cp">#ifdef COMPAT_43</span>
+<span class="cm">/* A large region here, or other conditional code. */</span>
+<span class="cp">#else </span><span class="cm">/* !COMPAT_43 */</span><span class="cp"></span>
+<span class="cm">/* Or here. */</span>
+<span class="cp">#endif </span><span class="cm">/* COMPAT_43 */</span><span class="cp"></span>
+
+<span class="cp">#ifndef COMPAT_43</span>
+<span class="cm">/* Yet another large region here, or other conditional code. */</span>
+<span class="cp">#else </span><span class="cm">/* COMPAT_43 */</span><span class="cp"></span>
+<span class="cm">/* Or here. */</span>
+<span class="cp">#endif </span><span class="cm">/* !COMPAT_43 */</span><span class="cp"></span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Conditional compilation should be used only when absolutely necessary, as it increases the number of target binaries that need to be built and tested.</p>
+</div>
+</div>
+</div>
+<div class="section" id="c-types">
+<h2>1.5. C Types</h2>
+<div class="section" id="integers">
+<h3>1.5.1. Integers</h3>
+<p>For fixed/minimum-size integer values, the project uses the form uintXX_t (from stdint.h) instead of older BSD-style integer identifiers of the form u_intXX_t.</p>
+</div>
+<div class="section" id="enumerations">
+<h3>1.5.2. Enumerations</h3>
+<ul class="simple">
+<li>Enumeration values are all uppercase.</li>
+</ul>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">enum</span> <span class="n">enumtype</span> <span class="p">{</span> <span class="n">ONE</span><span class="p">,</span> <span class="n">TWO</span> <span class="p">}</span> <span class="n">et</span><span class="p">;</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>Enum types should be used in preference to macros #defining a set of (sequential) values.</li>
+<li>Enum types should be prefixed with <code class="docutils literal"><span class="pre">rte_</span></code> and the elements by a suitable prefix [generally starting <code class="docutils literal"><span class="pre">RTE_&lt;enum&gt;_</span></code> - where &lt;enum&gt; is a shortname for the enum type] to avoid namespace collisions.</li>
+</ul>
+</div>
+<div class="section" id="bitfields">
+<h3>1.5.3. Bitfields</h3>
+<p>The developer should group bitfields that are included in the same integer, as follows:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">grehdr</span> <span class="p">{</span>
+  <span class="kt">uint16_t</span> <span class="nl">rec</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span>
+      <span class="nl">srr</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
+      <span class="nl">seq</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
+      <span class="nl">key</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
+      <span class="nl">routing</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
+      <span class="nl">csum</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
+      <span class="nl">version</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span>
+      <span class="nl">reserved</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span>
+      <span class="nl">ack</span><span class="p">:</span><span class="mi">1</span><span class="p">;</span>
+<span class="cm">/* ... */</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="variable-declarations">
+<h3>1.5.4. Variable Declarations</h3>
+<p>In declarations, do not put any whitespace between asterisks and adjacent tokens, except for tokens that are identifiers related to types.
+(These identifiers are the names of basic types, type qualifiers, and typedef-names other than the one being declared.)
+Separate these identifiers from asterisks using a single space.</p>
+<p>For example:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="o">*</span><span class="n">x</span><span class="p">;</span>         <span class="cm">/* no space after asterisk */</span>
+<span class="kt">int</span> <span class="o">*</span> <span class="k">const</span> <span class="n">x</span><span class="p">;</span>  <span class="cm">/* space after asterisk when using a type qualifier */</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>All externally-visible variables should have an <code class="docutils literal"><span class="pre">rte_</span></code> prefix in the name to avoid namespace collisions.</li>
+<li>Do not use uppercase letters - either in the form of ALL_UPPERCASE, or CamelCase - in variable names.
+Lower-case letters and underscores only.</li>
+</ul>
+</div>
+<div class="section" id="structure-declarations">
+<h3>1.5.5. Structure Declarations</h3>
+<ul class="simple">
+<li>In general, when declaring variables in new structures, declare them sorted by use, then by size (largest to smallest), and then in alphabetical order.
+Sorting by use means that commonly used variables are used together and that the structure layout makes logical sense.
+Ordering by size then ensures that as little padding is added to the structure as possible.</li>
+<li>For existing structures, additions to structures should be added to the end so for backward compatibility reasons.</li>
+<li>Each structure element gets its own line.</li>
+<li>Try to make the structure readable by aligning the member names using spaces as shown below.</li>
+<li>Names following extremely long types, which therefore cannot be easily aligned with the rest, should be separated by a single space.</li>
+</ul>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">foo</span> <span class="p">{</span>
+        <span class="k">struct</span> <span class="n">foo</span>      <span class="o">*</span><span class="n">next</span><span class="p">;</span>          <span class="cm">/* List of active foo. */</span>
+        <span class="k">struct</span> <span class="n">mumble</span>   <span class="n">amumble</span><span class="p">;</span>        <span class="cm">/* Comment for mumble. */</span>
+        <span class="kt">int</span>             <span class="n">bar</span><span class="p">;</span>            <span class="cm">/* Try to align the comments. */</span>
+        <span class="k">struct</span> <span class="n">verylongtypename</span> <span class="o">*</span><span class="n">baz</span><span class="p">;</span>   <span class="cm">/* Won&#39;t fit with other members */</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>Major structures should be declared at the top of the file in which they are used, or in separate header files if they are used in multiple source files.</li>
+<li>Use of the structures should be by separate variable declarations and those declarations must be extern if they are declared in a header file.</li>
+<li>Externally visible structure definitions should have the structure name prefixed by <code class="docutils literal"><span class="pre">rte_</span></code> to avoid namespace collisions.</li>
+</ul>
+</div>
+<div class="section" id="queues">
+<h3>1.5.6. Queues</h3>
+<p>Use queue(3) macros rather than rolling your own lists, whenever possible.
+Thus, the previous example would be better written:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;sys/queue.h&gt;</span><span class="cp"></span>
+
+<span class="k">struct</span> <span class="n">foo</span> <span class="p">{</span>
+        <span class="n">LIST_ENTRY</span><span class="p">(</span><span class="n">foo</span><span class="p">)</span> <span class="n">link</span><span class="p">;</span>      <span class="cm">/* Use queue macros for foo lists. */</span>
+        <span class="k">struct</span> <span class="n">mumble</span>   <span class="n">amumble</span><span class="p">;</span>   <span class="cm">/* Comment for mumble. */</span>
+        <span class="kt">int</span>             <span class="n">bar</span><span class="p">;</span>       <span class="cm">/* Try to align the comments. */</span>
+        <span class="k">struct</span> <span class="n">verylongtypename</span> <span class="o">*</span><span class="n">baz</span><span class="p">;</span>   <span class="cm">/* Won&#39;t fit with other members */</span>
+<span class="p">};</span>
+<span class="n">LIST_HEAD</span><span class="p">(,</span> <span class="n">foo</span><span class="p">)</span> <span class="n">foohead</span><span class="p">;</span>          <span class="cm">/* Head of global foo list. */</span>
+</pre></div>
+</div>
+<p>DPDK also provides an optimized way to store elements in lockless rings.
+This should be used in all data-path code, when there are several consumer and/or producers to avoid locking for concurrent access.</p>
+</div>
+<div class="section" id="typedefs">
+<h3>1.5.7. Typedefs</h3>
+<p>Avoid using typedefs for structure types.</p>
+<p>For example, use:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">my_struct_type</span> <span class="p">{</span>
+<span class="cm">/* ... */</span>
+<span class="p">};</span>
+
+<span class="k">struct</span> <span class="n">my_struct_type</span> <span class="n">my_var</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>rather than:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">typedef</span> <span class="k">struct</span> <span class="n">my_struct_type</span> <span class="p">{</span>
+<span class="cm">/* ... */</span>
+<span class="p">}</span> <span class="n">my_struct_type</span><span class="p">;</span>
+
+<span class="n">my_struct_type</span> <span class="n">my_var</span>
+</pre></div>
+</div>
+<p>Typedefs are problematic because they do not properly hide their underlying type;
+for example, you need to know if the typedef is the structure itself, as shown above, or a pointer to the structure.
+In addition, they must be declared exactly once, whereas an incomplete structure type can be mentioned as many times as necessary.
+Typedefs are difficult to use in stand-alone header files.
+The header that defines the typedef must be included before the header that uses it, or by the header that uses it (which causes namespace pollution),
+or there must be a back-door mechanism for obtaining the typedef.</p>
+<p>Note that #defines used instead of typedefs also are problematic (since they do not propagate the pointer type correctly due to direct text replacement).
+For example, <code class="docutils literal"><span class="pre">#define</span> <span class="pre">pint</span> <span class="pre">int</span> <span class="pre">*</span></code> does not work as expected, while <code class="docutils literal"><span class="pre">typedef</span> <span class="pre">int</span> <span class="pre">*pint</span></code> does work.
+As stated when discussing macros, typedefs should be preferred to macros in cases like this.</p>
+<p>When convention requires a typedef; make its name match the struct tag.
+Avoid typedefs ending in <code class="docutils literal"><span class="pre">_t</span></code>, except as specified in Standard C or by POSIX.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It is recommended to use typedefs to define function pointer types, for reasons of code readability.
+This is especially true when the function type is used as a parameter to another function.</p>
+</div>
+<p>For example:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * Definition of a remote launch function.</span>
+<span class="cm"> */</span>
+<span class="k">typedef</span> <span class="nf">int</span> <span class="p">(</span><span class="n">lcore_function_t</span><span class="p">)(</span><span class="kt">void</span> <span class="o">*</span><span class="p">);</span>
+
+<span class="cm">/* launch a function of lcore_function_t type */</span>
+<span class="kt">int</span> <span class="nf">rte_eal_remote_launch</span><span class="p">(</span><span class="n">lcore_function_t</span> <span class="o">*</span><span class="n">f</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="n">slave_id</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="c-indentation">
+<h2>1.6. C Indentation</h2>
+<div class="section" id="general">
+<h3>1.6.1. General</h3>
+<ul class="simple">
+<li>Indentation is a hard tab, that is, a tab character, not a sequence of spaces,</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Global whitespace rule in DPDK, use tabs for indentation, spaces for alignment.</p>
+</div>
+<ul class="simple">
+<li>Do not put any spaces before a tab for indentation.</li>
+<li>If you have to wrap a long statement, put the operator at the end of the line, and indent again.</li>
+<li>For control statements (if, while, etc.), continuation it is recommended that the next line be indented by two tabs, rather than one,
+to prevent confusion as to whether the second line of the control statement forms part of the statement body or not.
+Alternatively, the line continuation may use additional spaces to line up to an appropriately point on the preceding line, for example, to align to an opening brace.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">As with all style guidelines, code should match style already in use in an existing file.</p>
+</div>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">while</span> <span class="p">(</span><span class="n">really_long_variable_name_1</span> <span class="o">==</span> <span class="n">really_long_variable_name_2</span> <span class="o">&amp;&amp;</span>
+    <span class="n">var3</span> <span class="o">==</span> <span class="n">var4</span><span class="p">){</span>  <span class="cm">/* confusing to read as */</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="n">z</span><span class="p">;</span>      <span class="cm">/* control stmt body lines up with second line of */</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">b</span> <span class="o">+</span> <span class="n">c</span><span class="p">;</span>      <span class="cm">/* control statement itself if single indent used */</span>
+<span class="p">}</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">really_long_variable_name_1</span> <span class="o">==</span> <span class="n">really_long_variable_name_2</span> <span class="o">&amp;&amp;</span>
+        <span class="n">var3</span> <span class="o">==</span> <span class="n">var4</span><span class="p">){</span>  <span class="cm">/* two tabs used */</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="n">z</span><span class="p">;</span>          <span class="cm">/* statement body no longer lines up */</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">b</span> <span class="o">+</span> <span class="n">c</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">z</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">really</span> <span class="o">+</span> <span class="kt">long</span> <span class="o">+</span> <span class="n">statement</span> <span class="o">+</span> <span class="n">that</span> <span class="o">+</span> <span class="n">needs</span> <span class="o">+</span>
+        <span class="n">two</span> <span class="o">+</span> <span class="n">lines</span> <span class="o">+</span> <span class="n">gets</span> <span class="o">+</span> <span class="n">indented</span> <span class="o">+</span> <span class="n">on</span> <span class="o">+</span> <span class="n">the</span> <span class="o">+</span>
+        <span class="n">second</span> <span class="o">+</span> <span class="n">and</span> <span class="o">+</span> <span class="n">subsequent</span> <span class="o">+</span> <span class="n">lines</span><span class="p">;</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>Do not add whitespace at the end of a line.</li>
+<li>Do not add whitespace or a blank line at the end of a file.</li>
+</ul>
+</div>
+<div class="section" id="control-statements-and-loops">
+<h3>1.6.2. Control Statements and Loops</h3>
+<ul class="simple">
+<li>Include a space after keywords (if, while, for, return, switch).</li>
+<li>Do not use braces (<code class="docutils literal"><span class="pre">{</span></code> and <code class="docutils literal"><span class="pre">}</span></code>) for control statements with zero or just a single statement, unless that statement is more than a single line in which case the braces are permitted.</li>
+</ul>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="p">(</span><span class="n">p</span> <span class="o">=</span> <span class="n">buf</span><span class="p">;</span> <span class="o">*</span><span class="n">p</span> <span class="o">!=</span> <span class="sc">&#39;\0&#39;</span><span class="p">;</span> <span class="o">++</span><span class="n">p</span><span class="p">)</span>
+        <span class="p">;</span>       <span class="cm">/* nothing */</span>
+<span class="k">for</span> <span class="p">(;;)</span>
+        <span class="n">stmt</span><span class="p">;</span>
+<span class="k">for</span> <span class="p">(;;)</span> <span class="p">{</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">really</span> <span class="o">+</span> <span class="kt">long</span> <span class="o">+</span> <span class="n">statement</span> <span class="o">+</span> <span class="n">that</span> <span class="o">+</span> <span class="n">needs</span> <span class="o">+</span>
+                <span class="n">two</span> <span class="o">+</span> <span class="n">lines</span> <span class="o">+</span> <span class="n">gets</span> <span class="o">+</span> <span class="n">indented</span> <span class="o">+</span> <span class="n">on</span> <span class="o">+</span> <span class="n">the</span> <span class="o">+</span>
+                <span class="n">second</span> <span class="o">+</span> <span class="n">and</span> <span class="o">+</span> <span class="n">subsequent</span> <span class="o">+</span> <span class="n">lines</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">for</span> <span class="p">(;;)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">cond</span><span class="p">)</span>
+                <span class="n">stmt</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">val</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="n">realloc</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">newsize</span><span class="p">);</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>Parts of a for loop may be left empty.</li>
+</ul>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="p">(;</span> <span class="n">cnt</span> <span class="o">&lt;</span> <span class="mi">15</span><span class="p">;</span> <span class="n">cnt</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">stmt1</span><span class="p">;</span>
+        <span class="n">stmt2</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>Closing and opening braces go on the same line as the else keyword.</li>
+<li>Braces that are not necessary should be left out.</li>
+</ul>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">test</span><span class="p">)</span>
+        <span class="n">stmt</span><span class="p">;</span>
+<span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="n">bar</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">stmt</span><span class="p">;</span>
+        <span class="n">stmt</span><span class="p">;</span>
+<span class="p">}</span> <span class="k">else</span>
+        <span class="n">stmt</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="function-calls">
+<h3>1.6.3. Function Calls</h3>
+<ul class="simple">
+<li>Do not use spaces after function names.</li>
+<li>Commas should have a space after them.</li>
+<li>No spaces after <code class="docutils literal"><span class="pre">(</span></code> or <code class="docutils literal"><span class="pre">[</span></code> or preceding the <code class="docutils literal"><span class="pre">]</span></code> or <code class="docutils literal"><span class="pre">)</span></code> characters.</li>
+</ul>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="n">error</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="n">a1</span><span class="p">,</span> <span class="n">a2</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">error</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">exit</span><span class="p">(</span><span class="n">error</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="operators">
+<h3>1.6.4. Operators</h3>
+<ul class="simple">
+<li>Unary operators do not require spaces, binary operators do.</li>
+<li>Do not use parentheses unless they are required for precedence or unless the statement is confusing without them.
+However, remember that other people may be more easily confused than you.</li>
+</ul>
+</div>
+<div class="section" id="exit">
+<h3>1.6.5. Exit</h3>
+<p>Exits should be 0 on success, or 1 on failure.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span>        <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>        <span class="cm">/*</span>
+<span class="cm">                         * Avoid obvious comments such as</span>
+<span class="cm">                         * &quot;Exit 0 on success.&quot;</span>
+<span class="cm">                         */</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="local-variables">
+<h3>1.6.6. Local Variables</h3>
+<ul class="simple">
+<li>Variables should be declared at the start of a block of code rather than in the middle.
+The exception to this is when the variable is <code class="docutils literal"><span class="pre">const</span></code> in which case the declaration must be at the point of first use/assignment.</li>
+<li>When declaring variables in functions, multiple variables per line are OK.
+However, if multiple declarations would cause the line to exceed a reasonable line length, begin a new set of declarations on the next line rather than using a line continuation.</li>
+<li>Be careful to not obfuscate the code by initializing variables in the declarations, only the last variable on a line should be initialized.
+If multiple variables are to be initialized when defined, put one per line.</li>
+<li>Do not use function calls in initializers, except for <code class="docutils literal"><span class="pre">const</span></code> variables.</li>
+</ul>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  <span class="cm">/* bad, too many initializer */</span>
+
+<span class="kt">char</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>        <span class="cm">/* OK, one variable per line with initializer */</span>
+<span class="kt">char</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="kt">float</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>  <span class="cm">/* OK, only last variable has initializer */</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="casts-and-sizeof">
+<h3>1.6.7. Casts and sizeof</h3>
+<ul class="simple">
+<li>Casts and sizeof statements are not followed by a space.</li>
+<li>Always write sizeof statements with parenthesis.
+The redundant parenthesis rules do not apply to sizeof(var) instances.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="c-function-definition-declaration-and-use">
+<h2>1.7. C Function Definition, Declaration and Use</h2>
+<div class="section" id="prototypes">
+<h3>1.7.1. Prototypes</h3>
+<ul class="simple">
+<li>It is recommended (and generally required by the compiler) that all non-static functions are prototyped somewhere.</li>
+<li>Functions local to one source module should be declared static, and should not be prototyped unless absolutely necessary.</li>
+<li>Functions used from other parts of code (external API) must be prototyped in the relevant include file.</li>
+<li>Function prototypes should be listed in a logical order, preferably alphabetical unless there is a compelling reason to use a different ordering.</li>
+<li>Functions that are used locally in more than one module go into a separate header file, for example, &#8220;extern.h&#8221;.</li>
+<li>Do not use the <code class="docutils literal"><span class="pre">__P</span></code> macro.</li>
+<li>Functions that are part of an external API should be documented using Doxygen-like comments above declarations. See <a class="reference internal" href="documentation.html#doxygen-guidelines"><span class="std std-ref">Doxygen Guidelines</span></a> for details.</li>
+<li>Functions that are part of the external API must have an <code class="docutils literal"><span class="pre">rte_</span></code> prefix on the function name.</li>
+<li>Do not use uppercase letters - either in the form of ALL_UPPERCASE, or CamelCase - in function names. Lower-case letters and underscores only.</li>
+<li>When prototyping functions, associate names with parameter types, for example:</li>
+</ul>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">function1</span><span class="p">(</span><span class="kt">int</span> <span class="n">fd</span><span class="p">);</span> <span class="cm">/* good */</span>
+<span class="kt">void</span> <span class="nf">function2</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>    <span class="cm">/* bad */</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>Short function prototypes should be contained on a single line.
+Longer prototypes, e.g. those with many parameters, can be split across multiple lines.
+The second and subsequent lines should be further indented as for line statement continuations as described in the previous section.</li>
+</ul>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">char</span> <span class="o">*</span><span class="nf">function1</span><span class="p">(</span><span class="kt">int</span> <span class="n">_arg</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">_arg2</span><span class="p">,</span>
+       <span class="k">struct</span> <span class="n">foo</span> <span class="o">*</span><span class="n">_arg3</span><span class="p">,</span>
+       <span class="k">struct</span> <span class="n">bar</span> <span class="o">*</span><span class="n">_arg4</span><span class="p">,</span>
+       <span class="k">struct</span> <span class="n">baz</span> <span class="o">*</span><span class="n">_arg5</span><span class="p">);</span>
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">usage</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Unlike function definitions, the function prototypes do not need to place the function return type on a separate line.</p>
+</div>
+</div>
+<div class="section" id="definitions">
+<h3>1.7.2. Definitions</h3>
+<ul class="simple">
+<li>The function type should be on a line by itself preceding the function.</li>
+<li>The opening brace of the function body should be on a line by itself.</li>
+</ul>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">char</span> <span class="o">*</span>
+<span class="nf">function</span><span class="p">(</span><span class="kt">int</span> <span class="n">a1</span><span class="p">,</span> <span class="kt">int</span> <span class="n">a2</span><span class="p">,</span> <span class="kt">float</span> <span class="n">fl</span><span class="p">,</span> <span class="kt">int</span> <span class="n">a4</span><span class="p">)</span>
+<span class="p">{</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>Do not declare functions inside other functions.
+ANSI C states that such declarations have file scope regardless of the nesting of the declaration.
+Hiding file declarations in what appears to be a local scope is undesirable and will elicit complaints from a good compiler.</li>
+<li>Old-style (K&amp;R) function declaration should not be used, use ANSI function declarations instead as shown below.</li>
+<li>Long argument lists should be wrapped as described above in the function prototypes section.</li>
+</ul>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm"> * All major routines should have a comment briefly describing what</span>
+<span class="cm"> * they do. The comment before the &quot;main&quot; routine should describe</span>
+<span class="cm"> * what the program does.</span>
+<span class="cm"> */</span>
+<span class="kt">int</span>
+<span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+        <span class="kt">char</span> <span class="o">*</span><span class="n">ep</span><span class="p">;</span>
+        <span class="kt">long</span> <span class="n">num</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">ch</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="c-statement-style-and-conventions">
+<h2>1.8. C Statement Style and Conventions</h2>
+<div class="section" id="null-pointers">
+<h3>1.8.1. NULL Pointers</h3>
+<ul class="simple">
+<li>NULL is the preferred null pointer constant.
+Use NULL instead of <code class="docutils literal"><span class="pre">(type</span> <span class="pre">*)0</span></code> or <code class="docutils literal"><span class="pre">(type</span> <span class="pre">*)NULL</span></code>, except where the compiler does not know the destination type e.g. for variadic args to a function.</li>
+<li>Test pointers against NULL, for example, use:</li>
+</ul>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">p</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="cm">/* Good, compare pointer to NULL */</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">p</span><span class="p">)</span> <span class="cm">/* Bad, using ! on pointer */</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>Do not use ! for tests unless it is a boolean, for example, use:</li>
+</ul>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="n">p</span> <span class="o">==</span> <span class="sc">&#39;\0&#39;</span><span class="p">)</span> <span class="cm">/* check character against (char)0 */</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="return-value">
+<h3>1.8.2. Return Value</h3>
+<ul class="simple">
+<li>Functions which create objects, or allocate memory, should return pointer types, and NULL on error.
+The error type should be indicated may setting the variable <code class="docutils literal"><span class="pre">rte_errno</span></code> appropriately.</li>
+<li>Functions which work on bursts of packets, such as RX-like or TX-like functions, should return the number of packets handled.</li>
+<li>Other functions returning int should generally behave like system calls:
+returning 0 on success and -1 on error, setting <code class="docutils literal"><span class="pre">rte_errno</span></code> to indicate the specific type of error.</li>
+<li>Where already standard in a given library, the alternative error approach may be used where the negative value is not -1 but is instead <code class="docutils literal"><span class="pre">-errno</span></code> if relevant, for example, <code class="docutils literal"><span class="pre">-EINVAL</span></code>.
+Note, however, to allow consistency across functions returning integer or pointer types, the previous approach is preferred for any new libraries.</li>
+<li>For functions where no error is possible, the function type should be <code class="docutils literal"><span class="pre">void</span></code> not <code class="docutils literal"><span class="pre">int</span></code>.</li>
+<li>Routines returning <code class="docutils literal"><span class="pre">void</span> <span class="pre">*</span></code> should not have their return values cast to any pointer type.
+(Typecasting can prevent the compiler from warning about missing prototypes as any implicit definition of a function returns int,
+which, unlike <code class="docutils literal"><span class="pre">void</span> <span class="pre">*</span></code>, needs a typecast to assign to a pointer variable.)</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The above rule about not typecasting <code class="docutils literal"><span class="pre">void</span> <span class="pre">*</span></code> applies to malloc, as well as to DPDK functions.</p>
+</div>
+<ul class="simple">
+<li>Values in return statements should not be enclosed in parentheses.</li>
+</ul>
+</div>
+<div class="section" id="logging-and-errors">
+<h3>1.8.3. Logging and Errors</h3>
+<p>In the DPDK environment, use the logging interface provided:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#define RTE_LOGTYPE_TESTAPP1 RTE_LOGTYPE_USER1</span>
+<span class="cp">#define RTE_LOGTYPE_TESTAPP2 RTE_LOGTYPE_USER2</span>
+
+<span class="cm">/* enable these logs type */</span>
+<span class="n">rte_set_log_type</span><span class="p">(</span><span class="n">RTE_LOGTYPE_TESTAPP1</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+<span class="n">rte_set_log_type</span><span class="p">(</span><span class="n">RTE_LOGTYPE_TESTAPP2</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+
+<span class="cm">/* log in debug level */</span>
+<span class="n">rte_set_log_level</span><span class="p">(</span><span class="n">RTE_LOG_DEBUG</span><span class="p">);</span>
+<span class="n">RTE_LOG</span><span class="p">(</span><span class="n">DEBUG</span><span class="p">,</span> <span class="n">TESTAPP1</span><span class="p">,</span> <span class="s">&quot;this is is a debug level message</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="n">RTE_LOG</span><span class="p">(</span><span class="n">INFO</span><span class="p">,</span> <span class="n">TESTAPP1</span><span class="p">,</span> <span class="s">&quot;this is is a info level message</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="n">RTE_LOG</span><span class="p">(</span><span class="n">WARNING</span><span class="p">,</span> <span class="n">TESTAPP1</span><span class="p">,</span> <span class="s">&quot;this is is a warning level message</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+
+<span class="cm">/* log in info level */</span>
+<span class="n">rte_set_log_level</span><span class="p">(</span><span class="n">RTE_LOG_INFO</span><span class="p">);</span>
+<span class="n">RTE_LOG</span><span class="p">(</span><span class="n">DEBUG</span><span class="p">,</span> <span class="n">TESTAPP2</span><span class="p">,</span> <span class="s">&quot;debug level message (not displayed)</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="branch-prediction">
+<h3>1.8.4. Branch Prediction</h3>
+<ul class="simple">
+<li>When a test is done in a critical zone (called often or in a data path) the code can use the <code class="docutils literal"><span class="pre">likely()</span></code> and <code class="docutils literal"><span class="pre">unlikely()</span></code> macros to indicate the expected, or preferred fast path.
+They are expanded as a compiler builtin and allow the developer to indicate if the branch is likely to be taken or not. Example:</li>
+</ul>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;rte_branch_prediction.h&gt;</span><span class="cp"></span>
+<span class="k">if</span> <span class="p">(</span><span class="n">likely</span><span class="p">(</span><span class="n">x</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">))</span>
+  <span class="n">do_stuff</span><span class="p">();</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The use of <code class="docutils literal"><span class="pre">likely()</span></code> and <code class="docutils literal"><span class="pre">unlikely()</span></code> should only be done in performance critical paths,
+and only when there is a clearly preferred path, or a measured performance increase gained from doing so.
+These macros should be avoided in non-performance-critical code.</p>
+</div>
+</div>
+<div class="section" id="static-variables-and-functions">
+<h3>1.8.5. Static Variables and Functions</h3>
+<ul class="simple">
+<li>All functions and variables that are local to a file must be declared as <code class="docutils literal"><span class="pre">static</span></code> because it can often help the compiler to do some optimizations (such as, inlining the code).</li>
+<li>Functions that should be inlined should to be declared as <code class="docutils literal"><span class="pre">static</span> <span class="pre">inline</span></code> and can be defined in a .c or a .h file.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Static functions defined in a header file must be declared as <code class="docutils literal"><span class="pre">static</span> <span class="pre">inline</span></code> in order to prevent compiler warnings about the function being unused.</p>
+</div>
+</div>
+<div class="section" id="const-attribute">
+<h3>1.8.6. Const Attribute</h3>
+<p>The <code class="docutils literal"><span class="pre">const</span></code> attribute should be used as often as possible when a variable is read-only.</p>
+</div>
+<div class="section" id="inline-asm-in-c-code">
+<h3>1.8.7. Inline ASM in C code</h3>
+<p>The <code class="docutils literal"><span class="pre">asm</span></code> and <code class="docutils literal"><span class="pre">volatile</span></code> keywords do not have underscores. The AT&amp;T syntax should be used.
+Input and output operands should be named to avoid confusion, as shown in the following example:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="n">asm</span> <span class="nf">volatile</span><span class="p">(</span><span class="s">&quot;outb %[val], %[port]&quot;</span>
+        <span class="o">:</span> <span class="o">:</span>
+        <span class="p">[</span><span class="n">port</span><span class="p">]</span> <span class="s">&quot;dN&quot;</span> <span class="p">(</span><span class="n">port</span><span class="p">),</span>
+        <span class="p">[</span><span class="n">val</span><span class="p">]</span> <span class="s">&quot;a&quot;</span> <span class="p">(</span><span class="n">val</span><span class="p">));</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="control-statements">
+<h3>1.8.8. Control Statements</h3>
+<ul class="simple">
+<li>Forever loops are done with for statements, not while statements.</li>
+<li>Elements in a switch statement that cascade should have a FALLTHROUGH comment. For example:</li>
+</ul>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">switch</span> <span class="p">(</span><span class="n">ch</span><span class="p">)</span> <span class="p">{</span>         <span class="cm">/* Indent the switch. */</span>
+<span class="k">case</span> <span class="sc">&#39;a&#39;</span><span class="o">:</span>             <span class="cm">/* Don&#39;t indent the case. */</span>
+        <span class="n">aflag</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>    <span class="cm">/* Indent case body one tab. */</span>
+        <span class="cm">/* FALLTHROUGH */</span>
+<span class="k">case</span> <span class="sc">&#39;b&#39;</span><span class="o">:</span>
+        <span class="n">bflag</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="k">break</span><span class="p">;</span>
+<span class="k">case</span> <span class="sc">&#39;?&#39;</span><span class="o">:</span>
+<span class="k">default</span><span class="o">:</span>
+        <span class="n">usage</span><span class="p">();</span>
+        <span class="cm">/* NOTREACHED */</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="design.html" class="btn btn-neutral float-right" title="2. Design" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Contributor’s Guidelines" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,499 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>34. Test Pipeline Application &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Sample Applications User Guide" href="index.html"/>
+        <link rel="next" title="35. Distributor Sample Application" href="dist_app.html"/>
+        <link rel="prev" title="33. Internet Protocol (IP) Pipeline Application" href="ip_pipeline.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Sample Applications User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmd_line.html">2. Command Line Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethtool.html">3. Ethtool Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exception_path.html">4. Exception Path Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello_world.html">5. Hello World Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skeleton.html">6. Basic Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rxtx_callbacks.html">7. RX/TX Callbacks Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_frag.html">8. IP Fragmentation Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipv4_multicast.html">9. IPv4 Multicast Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_reassembly.html">10. IP Reassembly Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">11. Kernel NIC Interface Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keep_alive.html">12. Keep Alive Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_crypto.html">13. L2 Forwarding with Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_job_stats.html">14. L2 Forwarding Sample Application (in Real and Virtualized Environments) with core load statistics.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_real_virtual.html">15. L2 Forwarding Sample Application (in Real and Virtualized Environments)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_cat.html">16. L2 Forwarding Sample Application with Cache Allocation Technology (CAT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward.html">17. L3 Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_power_man.html">18. L3 Forwarding with Power Management Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_access_ctrl.html">19. L3 Forwarding with Access Control Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_virtual.html">20. L3 Forwarding in a Virtualization Environment Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_status_intr.html">21. Link Status Interrupt Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="load_balancer.html">22. Load Balancer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_process.html">23. Multi-process Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_metering.html">24. QoS Metering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_scheduler.html">25. QoS Scheduler Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intel_quickassist.html">26. Intel® QuickAssist Technology Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quota_watermark.html">27. Quota and Watermark Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer.html">28. Timer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_ordering.html">29. Packet Ordering Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_dcb_forwarding.html">30. VMDQ and DCB Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">31. Vhost Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="netmap_compatibility.html">32. Netmap Compatibility Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_pipeline.html">33. Internet Protocol (IP) Pipeline Application</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">34. Test Pipeline Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">34.1. Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compiling-the-application">34.2. Compiling the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-application">34.3. Running the Application</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#application-command-line">34.3.1. Application Command Line</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#table-types-and-behavior">34.3.2. Table Types and Behavior</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#input-traffic">34.3.3. Input Traffic</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dist_app.html">35. Distributor Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vm_power_management.html">36. VM Power Management Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tep_termination.html">37. TEP termination Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="proc_info.html">38. dpdk_proc_info Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ptpclient.html">39. PTP Client Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance_thread.html">40. Performance Thread Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_secgw.html">41. IPsec Security Gateway Sample Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Sample Applications User Guide</a> &raquo;</li>
+      
+    <li>34. Test Pipeline Application</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/sample_app_ug/test_pipeline.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="test-pipeline-application">
+<h1>34. Test Pipeline Application</h1>
+<p>The Test Pipeline application illustrates the use of the DPDK Packet Framework tool suite.
+Its purpose is to demonstrate the performance of single-table DPDK pipelines.</p>
+<div class="section" id="overview">
+<h2>34.1. Overview</h2>
+<p>The application uses three CPU cores:</p>
+<ul class="simple">
+<li>Core A (&#8220;RX core&#8221;) receives traffic from the NIC ports and feeds core B with traffic through SW queues.</li>
+<li>Core B (&#8220;Pipeline core&#8221;) implements a single-table DPDK pipeline
+whose type is selectable through specific command line parameter.
+Core B receives traffic from core A through software queues,
+processes it according to the actions configured in the table entries that
+are hit by the input packets and feeds it to core C through another set of software queues.</li>
+<li>Core C (&#8220;TX core&#8221;) receives traffic from core B through software queues and sends it to the NIC ports for transmission.</li>
+</ul>
+<div class="figure" id="id1">
+<span id="figure-test-pipeline-app"></span><img alt="../_images/test_pipeline_app.png" src="../_images/test_pipeline_app.png" />
+<p class="caption"><span class="caption-number">Fig. 34.1 </span><span class="caption-text">Test Pipeline Application</span></p>
+</div>
+</div>
+<div class="section" id="compiling-the-application">
+<h2>34.2. Compiling the Application</h2>
+<ol class="arabic">
+<li><p class="first">Go to the app/test directory:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export RTE_SDK=/path/to/rte_sdk</span>
+<span class="go">cd ${RTE_SDK}/app/test/test-pipeline</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Set the target (a default target is used if not specified):</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export RTE_TARGET=x86_64-native-linuxapp-gcc</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Build the application:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">make</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="running-the-application">
+<h2>34.3. Running the Application</h2>
+<div class="section" id="application-command-line">
+<h3>34.3.1. Application Command Line</h3>
+<p>The application execution command line is:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./test-pipeline [EAL options] -- -p PORTMASK --TABLE_TYPE</span>
+</pre></div>
+</div>
+<p>The -c EAL CPU core mask option has to contain exactly 3 CPU cores.
+The first CPU core in the core mask is assigned for core A, the second for core B and the third for core C.</p>
+<p>The PORTMASK parameter must contain 2 or 4 ports.</p>
+</div>
+<div class="section" id="table-types-and-behavior">
+<h3>34.3.2. Table Types and Behavior</h3>
+<p><a class="reference internal" href="#table-test-pipeline-1"><span class="std std-numref">Table 34.1</span></a> describes the table types used and how they are populated.</p>
+<p>The hash tables are pre-populated with 16 million keys.
+For hash tables, the following parameters can be selected:</p>
+<ul class="simple">
+<li><strong>Configurable key size implementation or fixed (specialized) key size implementation (e.g. hash-8-ext or hash-spec-8-ext).</strong>
+The key size specialized implementations are expected to provide better performance for 8-byte and 16-byte key sizes,
+while the key-size-non-specialized implementation is expected to provide better performance for larger key sizes;</li>
+<li><strong>Key size (e.g. hash-spec-8-ext or hash-spec-16-ext).</strong>
+The available options are 8, 16 and 32 bytes;</li>
+<li><strong>Table type (e.g. hash-spec-16-ext or hash-spec-16-lru).</strong>
+The available options are ext (extendable bucket) or lru (least recently used).</li>
+</ul>
+<table border="1" class="docutils" id="id2">
+<span id="table-test-pipeline-1"></span><caption><span class="caption-number">Table 34.1 </span><span class="caption-text">Table Types</caption>
+<colgroup>
+<col width="5%" />
+<col width="17%" />
+<col width="40%" />
+<col width="38%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><strong>#</strong></th>
+<th class="head"><strong>TABLE_TYPE</strong></th>
+<th class="head"><strong>Description of Core B Table</strong></th>
+<th class="head"><strong>Pre-added Table Entries</strong></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>none</td>
+<td>Core B is not implementing a DPDK pipeline.
+Core B is implementing a pass-through from its input set
+of software queues to its output set of software queues.</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>stub</td>
+<td>Stub table. Core B is implementing the same pass-through
+functionality as described for the &#8220;none&#8221; option by
+using the DPDK Packet Framework by using one
+stub table for each input NIC port.</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>3</td>
+<td>hash-[spec]-8-lru</td>
+<td>LRU hash table with 8-byte key size and 16 million
+entries.</td>
+<td><p class="first">16 million entries are successfully added to the
+hash table with the following key format:</p>
+<p>[4-byte index, 4 bytes of 0]</p>
+<p>The action configured for all table entries is
+&#8220;Sendto output port&#8221;, with the output port index
+uniformly distributed for the range of output ports.</p>
+<p>The default table rule (used in the case of a lookup
+miss) is to drop the packet.</p>
+<p>At run time, core A is creating the following lookup
+key and storing it into the packet meta data for
+core B to use for table lookup:</p>
+<p class="last">[destination IPv4 address, 4 bytes of 0]</p>
+</td>
+</tr>
+<tr class="row-odd"><td>4</td>
+<td>hash-[spec]-8-ext</td>
+<td>Extendable bucket hash table with 8-byte key size
+and 16 million entries.</td>
+<td>Same as hash-[spec]-8-lru table entries, above.</td>
+</tr>
+<tr class="row-even"><td>5</td>
+<td>hash-[spec]-16-lru</td>
+<td>LRU hash table with 16-byte key size and 16 million
+entries.</td>
+<td><p class="first">16 million entries are successfully added to the hash
+table with the following key format:</p>
+<p>[4-byte index, 12 bytes of 0]</p>
+<p>The action configured for all table entries is
+&#8220;Send to output port&#8221;, with the output port index
+uniformly distributed for the range of output ports.</p>
+<p>The default table rule (used in the case of a lookup
+miss) is to drop the packet.</p>
+<p>At run time, core A is creating the following lookup
+key and storing it into the packet meta data for core
+B to use for table lookup:</p>
+<p class="last">[destination IPv4 address, 12 bytes of 0]</p>
+</td>
+</tr>
+<tr class="row-odd"><td>6</td>
+<td>hash-[spec]-16-ext</td>
+<td>Extendable bucket hash table with 16-byte key size
+and 16 million entries.</td>
+<td>Same as hash-[spec]-16-lru table entries, above.</td>
+</tr>
+<tr class="row-even"><td>7</td>
+<td>hash-[spec]-32-lru</td>
+<td>LRU hash table with 32-byte key size and 16 million
+entries.</td>
+<td><p class="first">16 million entries are successfully added to the hash
+table with the following key format:</p>
+<p>[4-byte index, 28 bytes of 0].</p>
+<p>The action configured for all table entries is
+&#8220;Send to output port&#8221;, with the output port index
+uniformly distributed for the range of output ports.</p>
+<p>The default table rule (used in the case of a lookup
+miss) is to drop the packet.</p>
+<p>At run time, core A is creating the following lookup
+key and storing it into the packet meta data for
+Lpmcore B to use for table lookup:</p>
+<p class="last">[destination IPv4 address, 28 bytes of 0]</p>
+</td>
+</tr>
+<tr class="row-odd"><td>8</td>
+<td>hash-[spec]-32-ext</td>
+<td>Extendable bucket hash table with 32-byte key size
+and 16 million entries.</td>
+<td>Same as hash-[spec]-32-lru table entries, above.</td>
+</tr>
+<tr class="row-even"><td>9</td>
+<td>lpm</td>
+<td>Longest Prefix Match (LPM) IPv4 table.</td>
+<td><p class="first">In the case of two ports, two routes
+are added to the table:</p>
+<p>[0.0.0.0/9 =&gt; send to output port 0]</p>
+<p>[0.128.0.0/9 =&gt; send to output port 1]</p>
+<p>In case of four ports, four entries are added to the
+table:</p>
+<p>[0.0.0.0/10 =&gt; send to output port 0]</p>
+<p>[0.64.0.0/10 =&gt; send to output port 1]</p>
+<p>[0.128.0.0/10 =&gt; send to output port 2]</p>
+<p>[0.192.0.0/10 =&gt; send to output port 3]</p>
+<p>The default table rule (used in the case of a lookup
+miss) is to drop the packet.</p>
+<p class="last">At run time, core A is storing the IPv4 destination
+within the packet meta data to be later used by core
+B as the lookup key.</p>
+</td>
+</tr>
+<tr class="row-odd"><td>10</td>
+<td>acl</td>
+<td>Access Control List (ACL) table</td>
+<td><p class="first">In the case of two ports, two ACL rules are added to
+the table:</p>
+<p>[priority = 0 (highest),</p>
+<p>IPv4 source = ANY,</p>
+<p>IPv4 destination = 0.0.0.0/9,</p>
+<p>L4 protocol = ANY,</p>
+<p>TCP source port = ANY,</p>
+<p>TCP destination port = ANY</p>
+<p>=&gt; send to output port 0]</p>
+<p>[priority = 0 (highest),</p>
+<p>IPv4 source = ANY,</p>
+<p>IPv4 destination = 0.128.0.0/9,</p>
+<p>L4 protocol = ANY,</p>
+<p>TCP source port = ANY,</p>
+<p>TCP destination port = ANY</p>
+<p>=&gt; send to output port 0].</p>
+<p class="last">The default table rule (used in the case of a lookup
+miss) is to drop the packet.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="input-traffic">
+<h3>34.3.3. Input Traffic</h3>
+<p>Regardless of the table type used for the core B pipeline,
+the same input traffic can be used to hit all table entries with uniform distribution,
+which results in uniform distribution of packets sent out on the set of output NIC ports.
+The profile for input traffic is TCP/IPv4 packets with:</p>
+<ul class="simple">
+<li>destination IP address as A.B.C.D with A fixed to 0 and B, C,D random</li>
+<li>source IP address fixed to 0.0.0.0</li>
+<li>destination TCP port fixed to 0</li>
+<li>source TCP port fixed to 0</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="dist_app.html" class="btn btn-neutral float-right" title="35. Distributor Sample Application" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ip_pipeline.html" class="btn btn-neutral" title="33. Internet Protocol (IP) Pipeline Application" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

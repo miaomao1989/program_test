@@ -1,0 +1,500 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>12. Hash Library &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Programmer’s Guide" href="index.html"/>
+        <link rel="next" title="13. LPM Library" href="lpm_lib.html"/>
+        <link rel="prev" title="11. Timer Library" href="timer_lib.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Programmer&#8217;s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html">2. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="env_abstraction_layer.html">3. Environment Abstraction Layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ring_lib.html">4. Ring Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mempool_lib.html">5. Mempool Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mbuf_lib.html">6. Mbuf Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="poll_mode_drv.html">7. Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cryptodev_lib.html">8. Cryptography Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ivshmem_lib.html">9. IVSHMEM Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_bonding_poll_mode_drv_lib.html">10. Link Bonding Poll Mode Driver Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer_lib.html">11. Timer Library</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">12. Hash Library</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#hash-api-overview">12.1. Hash API Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#multi-process-support">12.2. Multi-process support</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#implementation-details">12.3. Implementation Details</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#entry-distribution-in-hash-table">12.4. Entry distribution in hash table</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#use-case-flow-classification">12.5. Use Case: Flow Classification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#references">12.6. References</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="lpm_lib.html">13. LPM Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm6_lib.html">14. LPM6 Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_distrib_lib.html">15. Packet Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reorder_lib.html">16. Reorder Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_fragment_reassembly_lib.html">17. IP Fragmentation and Reassembly Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_proc_support.html">18. Multi-process Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">19. Kernel NIC Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thread_safety_dpdk_functions.html">20. Thread Safety of DPDK Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_framework.html">21. Quality of Service (QoS) Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="power_man.html">22. Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_classif_access_ctrl.html">23. Packet Classification and Access Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_framework.html">24. Packet Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_lib.html">25. Vhost Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="port_hotplug_framework.html">26. Port Hotplug Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source_org.html">27. Source Organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_kit_build_system.html">28. Development Kit Build System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_kit_root_make_help.html">29. Development Kit Root Makefile Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extend_dpdk.html">30. Extending the DPDK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_app.html">31. Building Your Own Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ext_app_lib_make_help.html">32. External Application/Library Makefile help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perf_opt_guidelines.html">33. Performance Optimization Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing_efficient_code.html">34. Writing Efficient Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="profile_app.html">35. Profile Your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">36. Glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Programmer&#8217;s Guide</a> &raquo;</li>
+      
+    <li>12. Hash Library</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/prog_guide/hash_lib.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="hash-library">
+<span id="id1"></span><h1>12. Hash Library</h1>
+<p>The DPDK provides a Hash Library for creating hash table for fast lookup.
+The hash table is a data structure optimized for searching through a set of entries that are each identified by a unique key.
+For increased performance the DPDK Hash requires that all the keys have the same number of bytes which is set at the hash creation time.</p>
+<div class="section" id="hash-api-overview">
+<h2>12.1. Hash API Overview</h2>
+<p>The main configuration parameters for the hash are:</p>
+<ul class="simple">
+<li>Total number of hash entries</li>
+<li>Size of the key in bytes</li>
+</ul>
+<p>The hash also allows the configuration of some low-level implementation related parameters such as:</p>
+<ul class="simple">
+<li>Hash function to translate the key into a bucket index</li>
+</ul>
+<p>The main methods exported by the hash are:</p>
+<ul class="simple">
+<li>Add entry with key: The key is provided as input. If a new entry is successfully added to the hash for the specified key,
+or there is already an entry in the hash for the specified key, then the position of the entry is returned.
+If the operation was not successful, for example due to lack of free entries in the hash, then a negative value is returned;</li>
+<li>Delete entry with key: The key is provided as input. If an entry with the specified key is found in the hash,
+then the entry is removed from the hash and the position where the entry was found in the hash is returned.
+If no entry with the specified key exists in the hash, then a negative value is returned</li>
+<li>Lookup for entry with key: The key is provided as input. If an entry with the specified key is found in the hash (lookup hit),
+then the position of the entry is returned, otherwise (lookup miss) a negative value is returned.</li>
+</ul>
+<p>Apart from these method explained above, the API allows the user three more options:</p>
+<ul class="simple">
+<li>Add / lookup / delete with key and precomputed hash: Both the key and its precomputed hash are provided as input. This allows
+the user to perform these operations faster, as hash is already computed.</li>
+<li>Add / lookup with key and data: A pair of key-value is provided as input. This allows the user to store
+not only the key, but also data which may be either a 8-byte integer or a pointer to external data (if data size is more than 8 bytes).</li>
+<li>Combination of the two options above: User can provide key, precomputed hash and data.</li>
+</ul>
+<p>Also, the API contains a method to allow the user to look up entries in bursts, achieving higher performance
+than looking up individual entries, as the function prefetches next entries at the time it is operating
+with the first ones, which reduces significantly the impact of the necessary memory accesses.
+Notice that this method uses a pipeline of 8 entries (4 stages of 2 entries), so it is highly recommended
+to use at least 8 entries per burst.</p>
+<p>The actual data associated with each key can be either managed by the user using a separate table that
+mirrors the hash in terms of number of entries and position of each entry,
+as shown in the Flow Classification use case describes in the following sections,
+or stored in the hash table itself.</p>
+<p>The example hash tables in the L2/L3 Forwarding sample applications defines which port to forward a packet to based on a packet flow identified by the five-tuple lookup.
+However, this table could also be used for more sophisticated features and provide many other functions and actions that could be performed on the packets and flows.</p>
+</div>
+<div class="section" id="multi-process-support">
+<h2>12.2. Multi-process support</h2>
+<p>The hash library can be used in a multi-process environment, minding that only lookups are thread-safe.
+The only function that can only be used in single-process mode is rte_hash_set_cmp_func(), which sets up
+a custom compare function, which is assigned to a function pointer (therefore, it is not supported in
+multi-process mode).</p>
+</div>
+<div class="section" id="implementation-details">
+<h2>12.3. Implementation Details</h2>
+<p>The hash table has two main tables:</p>
+<ul class="simple">
+<li>First table is an array of entries which is further divided into buckets,
+with the same number of consecutive array entries in each bucket. Each entry contains the computed primary
+and secondary hashes of a given key (explained below), and an index to the second table.</li>
+<li>The second table is an array of all the keys stored in the hash table and its data associated to each key.</li>
+</ul>
+<p>The hash library uses the cuckoo hash method to resolve collisions.
+For any input key, there are two possible buckets (primary and secondary/alternative location)
+where that key can be stored in the hash, therefore only the entries within those bucket need to be examined
+when the key is looked up.
+The lookup speed is achieved by reducing the number of entries to be scanned from the total
+number of hash entries down to the number of entries in the two hash buckets,
+as opposed to the basic method of linearly scanning all the entries in the array.
+The hash uses a hash function (configurable) to translate the input key into a 4-byte key signature.
+The bucket index is the key signature modulo the number of hash buckets.</p>
+<p>Once the buckets are identified, the scope of the hash add,
+delete and lookup operations is reduced to the entries in those buckets (it is very likely that entries are in the primary bucket).</p>
+<p>To speed up the search logic within the bucket, each hash entry stores the 4-byte key signature together with the full key for each hash entry.
+For large key sizes, comparing the input key against a key from the bucket can take significantly more time than
+comparing the 4-byte signature of the input key against the signature of a key from the bucket.
+Therefore, the signature comparison is done first and the full key comparison done only when the signatures matches.
+The full key comparison is still necessary, as two input keys from the same bucket can still potentially have the same 4-byte hash signature,
+although this event is relatively rare for hash functions providing good uniform distributions for the set of input keys.</p>
+<p>Example of lookup:</p>
+<p>First of all, the primary bucket is identified and entry is likely to be stored there.
+If signature was stored there, we compare its key against the one provided and return the position
+where it was stored and/or the data associated to that key if there is a match.
+If signature is not in the primary bucket, the secondary bucket is looked up, where same procedure
+is carried out. If there is no match there either, key is considered not to be in the table.</p>
+<p>Example of addition:</p>
+<p>Like lookup, the primary and secondary buckets are identified. If there is an empty slot in
+the primary bucket, primary and secondary signatures are stored in that slot, key and data (if any) are added to
+the second table and an index to the position in the second table is stored in the slot of the first table.
+If there is no space in the primary bucket, one of the entries on that bucket is pushed to its alternative location,
+and the key to be added is inserted in its position.
+To know where the alternative bucket of the evicted entry is, the secondary signature is looked up and alternative bucket index
+is calculated from doing the modulo, as seen above. If there is room in the alternative bucket, the evicted entry
+is stored in it. If not, same process is repeated (one of the entries gets pushed) until a non full bucket is found.
+Notice that despite all the entry movement in the first table, the second table is not touched, which would impact
+greatly in performance.</p>
+<p>In the very unlikely event that table enters in a loop where same entries are being evicted indefinitely,
+key is considered not able to be stored.
+With random keys, this method allows the user to get around 90% of the table utilization, without
+having to drop any stored entry (LRU) or allocate more memory (extended buckets).</p>
+</div>
+<div class="section" id="entry-distribution-in-hash-table">
+<h2>12.4. Entry distribution in hash table</h2>
+<p>As mentioned above, Cuckoo hash implementation pushes elements out of their bucket,
+if there is a new entry to be added which primary location coincides with their current bucket,
+being pushed to their alternative location.
+Therefore, as user adds more entries to the hash table, distribution of the hash values
+in the buckets will change, being most of them in their primary location and a few in
+their secondary location, which the later will increase, as table gets busier.
+This information is quite useful, as performance may be lower as more entries
+are evicted to their secondary location.</p>
+<p>See the tables below showing example entry distribution as table utilization increases.</p>
+<table border="1" class="docutils" id="id2">
+<span id="table-hash-lib-1"></span><caption><span class="caption-number">Table 12.1 </span><span class="caption-text">Entry distribution measured with an example table with 1024 random entries using jhash algorithm</caption>
+<colgroup>
+<col width="23%" />
+<col width="37%" />
+<col width="40%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">% Table used</th>
+<th class="head">% In Primary location</th>
+<th class="head">% In Secondary location</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>25</td>
+<td>100</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>50</td>
+<td>96.1</td>
+<td>3.9</td>
+</tr>
+<tr class="row-even"><td>75</td>
+<td>88.2</td>
+<td>11.8</td>
+</tr>
+<tr class="row-odd"><td>80</td>
+<td>86.3</td>
+<td>13.7</td>
+</tr>
+<tr class="row-even"><td>85</td>
+<td>83.1</td>
+<td>16.9</td>
+</tr>
+<tr class="row-odd"><td>90</td>
+<td>77.3</td>
+<td>22.7</td>
+</tr>
+<tr class="row-even"><td>95.8</td>
+<td>64.5</td>
+<td>35.5</td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<table border="1" class="docutils" id="id3">
+<span id="table-hash-lib-2"></span><caption><span class="caption-number">Table 12.2 </span><span class="caption-text">Entry distribution measured with an example table with 1 million random entries using jhash algorithm</caption>
+<colgroup>
+<col width="23%" />
+<col width="37%" />
+<col width="40%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">% Table used</th>
+<th class="head">% In Primary location</th>
+<th class="head">% In Secondary location</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>50</td>
+<td>96</td>
+<td>4</td>
+</tr>
+<tr class="row-odd"><td>75</td>
+<td>86.9</td>
+<td>13.1</td>
+</tr>
+<tr class="row-even"><td>80</td>
+<td>83.9</td>
+<td>16.1</td>
+</tr>
+<tr class="row-odd"><td>85</td>
+<td>80.1</td>
+<td>19.9</td>
+</tr>
+<tr class="row-even"><td>90</td>
+<td>74.8</td>
+<td>25.2</td>
+</tr>
+<tr class="row-odd"><td>94.5</td>
+<td>67.4</td>
+<td>32.6</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Last values on the tables above are the average maximum table
+utilization with random keys and using Jenkins hash function.</p>
+</div>
+</div>
+<div class="section" id="use-case-flow-classification">
+<h2>12.5. Use Case: Flow Classification</h2>
+<p>Flow classification is used to map each input packet to the connection/flow it belongs to.
+This operation is necessary as the processing of each input packet is usually done in the context of their connection,
+so the same set of operations is applied to all the packets from the same flow.</p>
+<p>Applications using flow classification typically have a flow table to manage, with each separate flow having an entry associated with it in this table.
+The size of the flow table entry is application specific, with typical values of 4, 16, 32 or 64 bytes.</p>
+<p>Each application using flow classification typically has a mechanism defined to uniquely identify a flow based on
+a number of fields read from the input packet that make up the flow key.
+One example is to use the DiffServ 5-tuple made up of the following fields of the IP and transport layer packet headers:
+Source IP Address, Destination IP Address, Protocol, Source Port, Destination Port.</p>
+<p>The DPDK hash provides a generic method to implement an application specific flow classification mechanism.
+Given a flow table implemented as an array, the application should create a hash object with the same number of entries as the flow table and
+with the hash key size set to the number of bytes in the selected flow key.</p>
+<p>The flow table operations on the application side are described below:</p>
+<ul class="simple">
+<li>Add flow: Add the flow key to hash.
+If the returned position is valid, use it to access the flow entry in the flow table for adding a new flow or
+updating the information associated with an existing flow.
+Otherwise, the flow addition failed, for example due to lack of free entries for storing new flows.</li>
+<li>Delete flow: Delete the flow key from the hash. If the returned position is valid,
+use it to access the flow entry in the flow table to invalidate the information associated with the flow.</li>
+<li>Lookup flow: Lookup for the flow key in the hash.
+If the returned position is valid (flow lookup hit), use the returned position to access the flow entry in the flow table.
+Otherwise (flow lookup miss) there is no flow registered for the current packet.</li>
+</ul>
+</div>
+<div class="section" id="references">
+<h2>12.6. References</h2>
+<ul class="simple">
+<li>Donald E. Knuth, The Art of Computer Programming, Volume 3: Sorting and Searching (2nd Edition), 1998, Addison-Wesley Professional</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="lpm_lib.html" class="btn btn-neutral float-right" title="13. LPM Library" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="timer_lib.html" class="btn btn-neutral" title="11. Timer Library" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,602 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>1. DPDK Xen Based Packet-Switching Solution &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Xen Guide" href="index.html"/>
+        <link rel="next" title="Programmer’s Guide" href="../prog_guide/index.html"/>
+        <link rel="prev" title="Xen Guide" href="index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Xen Guide</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">1. DPDK Xen Based Packet-Switching Solution</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">1.1. Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#device-creation">1.2. Device Creation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#poll-mode-driver-front-end">1.2.1. Poll Mode Driver Front End</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#switching-back-end">1.2.2. Switching Back End</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#packet-reception">1.2.3. Packet Reception</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#packet-transmission">1.2.4. Packet Transmission</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-application">1.3. Running the Application</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#validated-environment">1.3.1. Validated Environment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#xen-host-prerequisites">1.3.2. Xen Host Prerequisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building-and-running-the-switching-backend">1.3.3. Building and Running the Switching Backend</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#xen-pmd-frontend-prerequisites">1.3.4. Xen PMD Frontend Prerequisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building-and-running-the-front-end">1.3.5. Building and Running the Front End</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#usage-examples-injecting-a-packet-stream-using-a-packet-generator">1.3.6. Usage Examples: Injecting a Packet Stream Using a Packet Generator</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Xen Guide</a> &raquo;</li>
+      
+    <li>1. DPDK Xen Based Packet-Switching Solution</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/xen/pkt_switch.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="dpdk-xen-based-packet-switching-solution">
+<h1>1. DPDK Xen Based Packet-Switching Solution</h1>
+<div class="section" id="introduction">
+<h2>1.1. Introduction</h2>
+<p>DPDK provides a para-virtualization packet switching solution, based on the Xen hypervisor&#8217;s Grant Table, Note 1,
+which provides simple and fast packet switching capability between guest domains and host domain based on MAC address or VLAN tag.</p>
+<p>This solution is comprised of two components;
+a Poll Mode Driver (PMD) as the front end in the guest domain and a switching back end in the host domain.
+XenStore is used to exchange configure information between the PMD front end and switching back end,
+including grant reference IDs for shared Virtio RX/TX rings,
+MAC address, device state, and so on. XenStore is an information storage space shared between domains,
+see further information on XenStore below.</p>
+<p>The front end PMD can be found in the DPDK directory lib/ librte_pmd_xenvirt and back end example in examples/vhost_xen.</p>
+<p>The PMD front end and switching back end use shared Virtio RX/TX rings as para- virtualized interface.
+The Virtio ring is created by the front end, and Grant table references for the ring are passed to host.
+The switching back end maps those grant table references and creates shared rings in a mapped address space.</p>
+<p>The following diagram describes the functionality of the DPDK Xen Packet- Switching Solution.</p>
+<div class="figure" id="id1">
+<span id="figure-dpdk-xen-pkt-switch"></span><img alt="../_images/dpdk_xen_pkt_switch.png" src="../_images/dpdk_xen_pkt_switch.png" />
+<p class="caption"><span class="caption-number">Fig. 1.1 </span><span class="caption-text">Functionality of the DPDK Xen Packet Switching Solution.</span></p>
+</div>
+<p>Note 1 The Xen hypervisor uses a mechanism called a Grant Table to share memory between domains
+(<a class="reference external" href="http://wiki.xen.org/wiki/Grant%20Table">http://wiki.xen.org/wiki/Grant Table</a>).</p>
+<p>A diagram of the design is shown below, where &#8220;gva&#8221; is the Guest Virtual Address,
+which is the data pointer of the mbuf, and &#8220;hva&#8221; is the Host Virtual Address:</p>
+<div class="figure" id="id2">
+<span id="figure-grant-table"></span><img alt="../_images/grant_table.png" src="../_images/grant_table.png" />
+<p class="caption"><span class="caption-number">Fig. 1.2 </span><span class="caption-text">DPDK Xen Layout</span></p>
+</div>
+<p>In this design, a Virtio ring is used as a para-virtualized interface for better performance over a Xen private ring
+when packet switching to and from a VM.
+The additional performance is gained by avoiding a system call and memory map in each memory copy with a XEN private ring.</p>
+</div>
+<div class="section" id="device-creation">
+<h2>1.2. Device Creation</h2>
+<div class="section" id="poll-mode-driver-front-end">
+<h3>1.2.1. Poll Mode Driver Front End</h3>
+<ul>
+<li><p class="first">Mbuf pool allocation:</p>
+<p>To use a Xen switching solution, the DPDK application should use rte_mempool_gntalloc_create()
+to reserve mbuf pools during initialization.
+rte_mempool_gntalloc_create() creates a mempool with objects from memory allocated and managed via gntalloc/gntdev.</p>
+<p>The DPDK now supports construction of mempools from allocated virtual memory through the rte_mempool_xmem_create() API.</p>
+<p>This front end constructs mempools based on memory allocated through the xen_gntalloc driver.
+rte_mempool_gntalloc_create() allocates Grant pages, maps them to continuous virtual address space,
+and calls rte_mempool_xmem_create() to build mempools.
+The Grant IDs for all Grant pages are passed to the host through XenStore.</p>
+</li>
+<li><p class="first">Virtio Ring Creation:</p>
+<p>The Virtio queue size is defined as 256 by default in the VQ_DESC_NUM macro.
+Using the queue setup function,
+Grant pages are allocated based on ring size and are mapped to continuous virtual address space to form the Virtio ring.
+Normally, one ring is comprised of several pages.
+Their Grant IDs are passed to the host through XenStore.</p>
+<p>There is no requirement that this memory be physically continuous.</p>
+</li>
+<li><p class="first">Interrupt and Kick:</p>
+<p>There are no interrupts in DPDK Xen Switching as both front and back ends work in polling mode.
+There is no requirement for notification.</p>
+</li>
+<li><p class="first">Feature Negotiation:</p>
+<p>Currently, feature negotiation through XenStore is not supported.</p>
+</li>
+<li><p class="first">Packet Reception &amp; Transmission:</p>
+<p>With mempools and Virtio rings created, the front end can operate Virtio devices,
+as it does in Virtio PMD for KVM Virtio devices with the exception that the host
+does not require notifications or deal with interrupts.</p>
+</li>
+</ul>
+<p>XenStore is a database that stores guest and host information in the form of (key, value) pairs.
+The following is an example of the information generated during the startup of the front end PMD in a guest VM (domain ID 1):</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">xenstore -ls /local/domain/1/control/dpdk</span>
+<span class="go">0_mempool_gref=&quot;3042,3043,3044,3045&quot;</span>
+<span class="go">0_mempool_va=&quot;0x7fcbc6881000&quot;</span>
+<span class="go">0_tx_vring_gref=&quot;3049&quot;</span>
+<span class="go">0_rx_vring_gref=&quot;3053&quot;</span>
+<span class="go">0_ether_addr=&quot;4e:0b:d0:4e:aa:f1&quot;</span>
+<span class="go">0_vring_flag=&quot;3054&quot;</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+<p>Multiple mempools and multiple Virtios may exist in the guest domain, the first number is the index, starting from zero.</p>
+<p>The idx#_mempool_va stores the guest virtual address for mempool idx#.</p>
+<p>The idx#_ether_adder stores the MAC address of the guest Virtio device.</p>
+<p>For idx#_rx_ring_gref, idx#_tx_ring_gref, and idx#_mempool_gref, the value is a list of Grant references.
+Take idx#_mempool_gref node for example, the host maps those Grant references to a continuous virtual address space.
+The real Grant reference information is stored in this virtual address space,
+where (gref, pfn) pairs follow each other with -1 as the terminator.</p>
+<div class="figure" id="id3">
+<span id="figure-grant-refs"></span><img alt="../_images/grant_refs.png" src="../_images/grant_refs.png" />
+<p class="caption"><span class="caption-number">Fig. 1.3 </span><span class="caption-text">Mapping Grant references to a continuous virtual address space</span></p>
+</div>
+<p>After all gref# IDs are retrieved, the host maps them to a continuous virtual address space.
+With the guest mempool virtual address, the host establishes 1:1 address mapping.
+With multiple guest mempools, the host establishes multiple address translation regions.</p>
+</div>
+<div class="section" id="switching-back-end">
+<h3>1.2.2. Switching Back End</h3>
+<p>The switching back end monitors changes in XenStore.
+When the back end detects that a new Virtio device has been created in a guest domain, it will:</p>
+<ol class="arabic simple">
+<li>Retrieve Grant and configuration information from XenStore.</li>
+<li>Map and create a Virtio ring.</li>
+<li>Map mempools in the host and establish address translation between the guest address and host address.</li>
+<li>Select a free VMDQ pool, set its affinity with the Virtio device, and set the MAC/ VLAN filter.</li>
+</ol>
+</div>
+<div class="section" id="packet-reception">
+<h3>1.2.3. Packet Reception</h3>
+<p>When packets arrive from an external network, the MAC?VLAN filter classifies packets into queues in one VMDQ pool.
+As each pool is bonded to a Virtio device in some guest domain, the switching back end will:</p>
+<ol class="arabic simple">
+<li>Fetch an available entry from the Virtio RX ring.</li>
+<li>Get gva, and translate it to hva.</li>
+<li>Copy the contents of the packet to the memory buffer pointed to by gva.</li>
+</ol>
+<p>The DPDK application in the guest domain, based on the PMD front end,
+is polling the shared Virtio RX ring for available packets and receives them on arrival.</p>
+</div>
+<div class="section" id="packet-transmission">
+<h3>1.2.4. Packet Transmission</h3>
+<p>When a Virtio device in one guest domain is to transmit a packet,
+it puts the virtual address of the packet&#8217;s data area into the shared Virtio TX ring.</p>
+<p>The packet switching back end is continuously polling the Virtio TX ring.
+When new packets are available for transmission from a guest, it will:</p>
+<ol class="arabic simple">
+<li>Fetch an available entry from the Virtio TX ring.</li>
+<li>Get gva, and translate it to hva.</li>
+<li>Copy the packet from hva to the host mbuf&#8217;s data area.</li>
+<li>Compare the destination MAC address with all the MAC addresses of the Virtio devices it manages.
+If a match exists, it directly copies the packet to the matched VIrtio RX ring.
+Otherwise, it sends the packet out through hardware.</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The packet switching back end is for demonstration purposes only.
+The user could implement their switching logic based on this example.
+In this example, only one physical port on the host is supported.
+Multiple segments are not supported. The biggest mbuf supported is 4KB.
+When the back end is restarted, all front ends must also be restarted.</p>
+</div>
+</div>
+</div>
+<div class="section" id="running-the-application">
+<h2>1.3. Running the Application</h2>
+<p>The following describes the steps required to run the application.</p>
+<div class="section" id="validated-environment">
+<h3>1.3.1. Validated Environment</h3>
+<p>Host:</p>
+<blockquote>
+<div><p>Xen-hypervisor: 4.2.2</p>
+<p>Distribution: Fedora release 18</p>
+<p>Kernel: 3.10.0</p>
+<p>Xen development package (including Xen, Xen-libs, xen-devel): 4.2.3</p>
+</div></blockquote>
+<p>Guest:</p>
+<blockquote>
+<div><p>Distribution: Fedora 16 and 18</p>
+<p>Kernel: 3.6.11</p>
+</div></blockquote>
+</div>
+<div class="section" id="xen-host-prerequisites">
+<h3>1.3.2. Xen Host Prerequisites</h3>
+<p>Note that the following commands might not be the same on different Linux* distributions.</p>
+<ul>
+<li><p class="first">Install xen-devel package:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">yum install xen-devel.x86_64</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Start xend if not already started:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">/etc/init.d/xend start</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Mount xenfs if not already mounted:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">mount -t xenfs none /proc/xen</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Enlarge the limit for xen_gntdev driver:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">modprobe -r xen_gntdev</span>
+<span class="go">modprobe xen_gntdev limit=1000000</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The default limit for earlier versions of the xen_gntdev driver is 1024.
+That is insufficient to support the mapping of multiple Virtio devices into multiple VMs,
+so it is necessary to enlarge the limit by reloading this module.
+The default limit of recent versions of xen_gntdev is 1048576.
+The rough calculation of this limit is:</p>
+<blockquote class="last">
+<div><p>limit=nb_mbuf# * VM#.</p>
+<p>In DPDK examples, nb_mbuf# is normally 8192.</p>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="building-and-running-the-switching-backend">
+<h3>1.3.3. Building and Running the Switching Backend</h3>
+<ol class="arabic">
+<li><p class="first">Edit config/common_linuxapp, and change the default configuration value for the following two items:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">CONFIG_RTE_LIBRTE_XEN_DOM0=y</span>
+<span class="go">CONFIG RTE_LIBRTE_PMD_XENVIRT=n</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Build the target:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">make install T=x86_64-native-linuxapp-gcc</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Ensure that RTE_SDK and RTE_TARGET are correctly set. Build the switching example:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">make -C examples/vhost_xen/</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Load the Xen DPDK memory management module and preallocate memory:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">insmod ./x86_64-native-linuxapp-gcc/build/lib/librte_eal/linuxapp/xen_dom0/rte_dom0_mm.ko</span>
+<span class="go">echo 2048&gt; /sys/kernel/mm/dom0-mm/memsize-mB/memsize</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">On Xen Dom0, there is no hugepage support.
+Under Xen Dom0, the DPDK uses a special memory management kernel module
+to allocate chunks of physically continuous memory.
+Refer to the <em>DPDK Getting Started Guide</em> for more information on memory management in the DPDK.
+In the above command, 4 GB memory is reserved (2048 of 2 MB pages) for DPDK.</p>
+</div>
+</li>
+<li><p class="first">Load uio_pci_generic and bind one Intel NIC controller to it:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">modprobe uio_pci_generic</span>
+<span class="go">python tools/dpdk_nic_bind.py -b uio_pci_generic 0000:09:00:00.0</span>
+</pre></div>
+</div>
+<p>In this case, 0000:09:00.0 is the PCI address for the NIC controller.</p>
+</li>
+<li><p class="first">Run the switching back end example:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">examples/vhost_xen/build/vhost-switch -c f -n 3 --xen-dom0 -- -p1</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The -xen-dom0 option instructs the DPDK to use the Xen kernel module to allocate memory.</p>
+</div>
+<p>Other Parameters:</p>
+<ul>
+<li><p class="first">-vm2vm</p>
+<p>The vm2vm parameter enables/disables packet switching in software.
+Disabling vm2vm implies that on a VM packet transmission will always go to the Ethernet port
+and will not be switched to another VM</p>
+</li>
+<li><p class="first">-Stats</p>
+<p>The Stats parameter controls the printing of Virtio-net device statistics.
+The parameter specifies the interval (in seconds) at which to print statistics,
+an interval of 0 seconds will disable printing statistics.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="xen-pmd-frontend-prerequisites">
+<h3>1.3.4. Xen PMD Frontend Prerequisites</h3>
+<ol class="arabic">
+<li><p class="first">Install xen-devel package for accessing XenStore:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">yum install xen-devel.x86_64</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Mount xenfs, if it is not already mounted:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">mount -t xenfs none /proc/xen</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Enlarge the default limit for xen_gntalloc driver:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">modprobe -r xen_gntalloc</span>
+<span class="go">modprobe xen_gntalloc limit=6000</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Before the Linux kernel version 3.8-rc5, Jan 15th 2013,
+a critical defect occurs when a guest is heavily allocating Grant pages.
+The Grant driver allocates fewer pages than expected which causes kernel memory corruption.
+This happens, for example, when a guest uses the v1 format of a Grant table entry and allocates
+more than 8192 Grant pages (this number might be different on different hypervisor versions).
+To work around this issue, set the limit for gntalloc driver to 6000.
+(The kernel normally allocates hundreds of Grant pages with one Xen front end per virtualized device).
+If the kernel allocates a lot of Grant pages, for example, if the user uses multiple net front devices,
+it is best to upgrade the Grant alloc driver.
+This defect has been fixed in kernel version 3.8-rc5 and later.</p>
+</div>
+</div>
+<div class="section" id="building-and-running-the-front-end">
+<h3>1.3.5. Building and Running the Front End</h3>
+<ol class="arabic">
+<li><p class="first">Edit config/common_linuxapp, and change the default configuration value:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">CONFIG_RTE_LIBRTE_XEN_DOM0=n</span>
+<span class="go">CONFIG_RTE_LIBRTE_PMD_XENVIRT=y</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Build the package:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">make install T=x86_64-native-linuxapp-gcc</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Enable hugepages. Refer to the  <em>DPDK Getting Started Guide</em> for instructions on
+how to use hugepages in the DPDK.</p>
+</li>
+<li><p class="first">Run TestPMD. Refer to <em>DPDK TestPMD Application User Guide</em> for detailed parameter usage.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./x86_64-native-linuxapp-gcc/app/testpmd -c f -n 4 --vdev=&quot;eth_xenvirt0,mac=00:00:00:00:00:11&quot;</span>
+<span class="go">testpmd&gt;set fwd mac</span>
+<span class="go">testpmd&gt;start</span>
+</pre></div>
+</div>
+<p>As an example to run two TestPMD instances over 2 Xen Virtio devices:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">--vdev=&quot;eth_xenvirt0,mac=00:00:00:00:00:11&quot; --vdev=&quot;eth_xenvirt1;mac=00:00:00:00:00:22&quot;</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="usage-examples-injecting-a-packet-stream-using-a-packet-generator">
+<h3>1.3.6. Usage Examples: Injecting a Packet Stream Using a Packet Generator</h3>
+<div class="section" id="loopback-mode">
+<h4>1.3.6.1. Loopback Mode</h4>
+<p>Run TestPMD in a guest VM:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./x86_64-native-linuxapp-gcc/app/testpmd -c f -n 4 --vdev=&quot;eth_xenvirt0,mac=00:00:00:00:00:11&quot; -- -i --eth-peer=0,00:00:00:00:00:22</span>
+<span class="go">testpmd&gt; set fwd mac</span>
+<span class="go">testpmd&gt; start</span>
+</pre></div>
+</div>
+<p>Example output of the vhost_switch would be:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">DATA:(0) MAC_ADDRESS 00:00:00:00:00:11 and VLAN_TAG 1000 registered.</span>
+</pre></div>
+</div>
+<p>The above message indicates that device 0 has been registered with MAC address 00:00:00:00:00:11 and VLAN tag 1000.
+Any packets received on the NIC with these values is placed on the device&#8217;s receive queue.</p>
+<p>Configure a packet stream in the packet generator, set the destination MAC address to 00:00:00:00:00:11, and VLAN to 1000,
+the guest Virtio receives these packets and sends them out with destination MAC address 00:00:00:00:00:22.</p>
+</div>
+<div class="section" id="inter-vm-mode">
+<h4>1.3.6.2. Inter-VM Mode</h4>
+<p>Run TestPMD in guest VM1:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./x86_64-native-linuxapp-gcc/app/testpmd -c f -n 4 --vdev=&quot;eth_xenvirt0,mac=00:00:00:00:00:11&quot; -- -i --eth-peer=0,00:00:00:00:00:22 -- -i</span>
+</pre></div>
+</div>
+<p>Run TestPMD in guest VM2:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./x86_64-native-linuxapp-gcc/app/testpmd -c f -n 4 --vdev=&quot;eth_xenvirt0,mac=00:00:00:00:00:22&quot; -- -i --eth-peer=0,00:00:00:00:00:33</span>
+</pre></div>
+</div>
+<p>Configure a packet stream in the packet generator, and set the destination MAC address to 00:00:00:00:00:11 and VLAN to 1000.
+The packets received in Virtio in guest VM1 will be forwarded to Virtio in guest VM2 and
+then sent out through hardware with destination MAC address 00:00:00:00:00:33.</p>
+<p>The packet flow is:</p>
+<p>packet generator-&gt;Virtio in guest VM1-&gt;switching backend-&gt;Virtio in guest VM2-&gt;switching backend-&gt;wire</p>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../prog_guide/index.html" class="btn btn-neutral float-right" title="Programmer’s Guide" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Xen Guide" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

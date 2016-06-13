@@ -1,0 +1,678 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>10. Link Bonding Poll Mode Driver Library &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Programmer’s Guide" href="index.html"/>
+        <link rel="next" title="11. Timer Library" href="timer_lib.html"/>
+        <link rel="prev" title="9. IVSHMEM Library" href="ivshmem_lib.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Programmer&#8217;s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html">2. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="env_abstraction_layer.html">3. Environment Abstraction Layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ring_lib.html">4. Ring Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mempool_lib.html">5. Mempool Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mbuf_lib.html">6. Mbuf Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="poll_mode_drv.html">7. Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cryptodev_lib.html">8. Cryptography Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ivshmem_lib.html">9. IVSHMEM Library</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">10. Link Bonding Poll Mode Driver Library</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#link-bonding-modes-overview">10.1. Link Bonding Modes Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#implementation-details">10.2. Implementation Details</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#link-status-change-interrupts-polling">10.2.1. Link Status Change Interrupts / Polling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#requirements-limitations">10.2.2. Requirements / Limitations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuration">10.2.3. Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#using-link-bonding-devices">10.3. Using Link Bonding Devices</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#using-the-poll-mode-driver-from-an-application">10.3.1. Using the Poll Mode Driver from an Application</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#using-link-bonding-devices-from-the-eal-command-line">10.3.2. Using Link Bonding Devices from the EAL Command Line</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="timer_lib.html">11. Timer Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hash_lib.html">12. Hash Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm_lib.html">13. LPM Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm6_lib.html">14. LPM6 Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_distrib_lib.html">15. Packet Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reorder_lib.html">16. Reorder Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_fragment_reassembly_lib.html">17. IP Fragmentation and Reassembly Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_proc_support.html">18. Multi-process Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">19. Kernel NIC Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thread_safety_dpdk_functions.html">20. Thread Safety of DPDK Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_framework.html">21. Quality of Service (QoS) Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="power_man.html">22. Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_classif_access_ctrl.html">23. Packet Classification and Access Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_framework.html">24. Packet Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_lib.html">25. Vhost Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="port_hotplug_framework.html">26. Port Hotplug Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source_org.html">27. Source Organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_kit_build_system.html">28. Development Kit Build System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_kit_root_make_help.html">29. Development Kit Root Makefile Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extend_dpdk.html">30. Extending the DPDK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_app.html">31. Building Your Own Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ext_app_lib_make_help.html">32. External Application/Library Makefile help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perf_opt_guidelines.html">33. Performance Optimization Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing_efficient_code.html">34. Writing Efficient Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="profile_app.html">35. Profile Your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">36. Glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Programmer&#8217;s Guide</a> &raquo;</li>
+      
+    <li>10. Link Bonding Poll Mode Driver Library</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/prog_guide/link_bonding_poll_mode_drv_lib.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="link-bonding-poll-mode-driver-library">
+<h1>10. Link Bonding Poll Mode Driver Library</h1>
+<p>In addition to Poll Mode Drivers (PMDs) for physical and virtual hardware,
+DPDK also includes a pure-software library that
+allows physical PMD&#8217;s to be bonded together to create a single logical PMD.</p>
+<div class="figure" id="id1">
+<img src="../_images/bond-overview.svg" /><p class="caption"><span class="caption-number">Fig. 10.1 </span><span class="caption-text">Bonded PMDs</span></p>
+</div>
+<p>The Link Bonding PMD library(librte_pmd_bond) supports bonding of groups of
+<code class="docutils literal"><span class="pre">rte_eth_dev</span></code> ports of the same speed and duplex to provide
+similar the capabilities to that found in Linux bonding driver to allow the
+aggregation of multiple (slave) NICs into a single logical interface between a
+server and a switch. The new bonded PMD will then process these interfaces
+based on the mode of operation specified to provide support for features such
+as redundant links, fault tolerance and/or load balancing.</p>
+<p>The librte_pmd_bond library exports a C API which provides an API for the
+creation of bonded devices as well as the configuration and management of the
+bonded device and its slave devices.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The Link Bonding PMD Library is enabled by default in the build
+configuration files, the library can be disabled by setting
+<code class="docutils literal"><span class="pre">CONFIG_RTE_LIBRTE_PMD_BOND=n</span></code> and recompiling the DPDK.</p>
+</div>
+<div class="section" id="link-bonding-modes-overview">
+<h2>10.1. Link Bonding Modes Overview</h2>
+<p>Currently the Link Bonding PMD library supports following modes of operation:</p>
+<ul class="simple">
+<li><strong>Round-Robin (Mode 0):</strong></li>
+</ul>
+<div class="figure" id="id2">
+<img src="../_images/bond-mode-0.svg" /><p class="caption"><span class="caption-number">Fig. 10.2 </span><span class="caption-text">Round-Robin (Mode 0)</span></p>
+<div class="legend">
+<blockquote>
+<div>This mode provides load balancing and fault tolerance by transmission of
+packets in sequential order from the first available slave device through
+the last. Packets are bulk dequeued from devices then serviced in a
+round-robin manner. This mode does not guarantee in order reception of
+packets and down stream should be able to handle out of order packets.</div></blockquote>
+</div>
+</div>
+<ul class="simple">
+<li><strong>Active Backup (Mode 1):</strong></li>
+</ul>
+<div class="figure" id="id3">
+<img src="../_images/bond-mode-1.svg" /><p class="caption"><span class="caption-number">Fig. 10.3 </span><span class="caption-text">Active Backup (Mode 1)</span></p>
+<div class="legend">
+<blockquote>
+<div>In this mode only one slave in the bond is active at any time, a different
+slave becomes active if, and only if, the primary active slave fails,
+thereby providing fault tolerance to slave failure. The single logical
+bonded interface&#8217;s MAC address is externally visible on only one NIC (port)
+to avoid confusing the network switch.</div></blockquote>
+</div>
+</div>
+<ul class="simple">
+<li><strong>Balance XOR (Mode 2):</strong></li>
+</ul>
+<div class="figure" id="id4">
+<img src="../_images/bond-mode-2.svg" /><p class="caption"><span class="caption-number">Fig. 10.4 </span><span class="caption-text">Balance XOR (Mode 2)</span></p>
+<div class="legend">
+<blockquote>
+<div>This mode provides transmit load balancing (based on the selected
+transmission policy) and fault tolerance. The default policy (layer2) uses
+a simple calculation based on the packet flow source and destination MAC
+addresses as well as the number of active slaves available to the bonded
+device to classify the packet to a specific slave to transmit on. Alternate
+transmission policies supported are layer 2+3, this takes the IP source and
+destination addresses into the calculation of the transmit slave port and
+the final supported policy is layer 3+4, this uses IP source and
+destination addresses as well as the TCP/UDP source and destination port.</div></blockquote>
+</div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The coloring differences of the packets are used to identify different flow
+classification calculated by the selected transmit policy</p>
+</div>
+<ul class="simple">
+<li><strong>Broadcast (Mode 3):</strong></li>
+</ul>
+<div class="figure" id="id5">
+<img src="../_images/bond-mode-3.svg" /><p class="caption"><span class="caption-number">Fig. 10.5 </span><span class="caption-text">Broadcast (Mode 3)</span></p>
+<div class="legend">
+<blockquote>
+<div>This mode provides fault tolerance by transmission of packets on all slave
+ports.</div></blockquote>
+</div>
+</div>
+<ul class="simple">
+<li><strong>Link Aggregation 802.3AD (Mode 4):</strong></li>
+</ul>
+<div class="figure" id="id6">
+<img src="../_images/bond-mode-4.svg" /><p class="caption"><span class="caption-number">Fig. 10.6 </span><span class="caption-text">Link Aggregation 802.3AD (Mode 4)</span></p>
+<div class="legend">
+<blockquote>
+<div><p>This mode provides dynamic link aggregation according to the 802.3ad
+specification. It negotiates and monitors aggregation groups that share the
+same speed and duplex settings using the selected balance transmit policy
+for balancing outgoing traffic.</p>
+<p>DPDK implementation of this mode provide some additional requirements of
+the application.</p>
+<ol class="arabic simple">
+<li>It needs to call <code class="docutils literal"><span class="pre">rte_eth_tx_burst</span></code> and <code class="docutils literal"><span class="pre">rte_eth_rx_burst</span></code> with
+intervals period of less than 100ms.</li>
+<li>Calls to <code class="docutils literal"><span class="pre">rte_eth_tx_burst</span></code> must have a buffer size of at least 2xN,
+where N is the number of slaves. This is a space required for LACP
+frames. Additionally LACP packets are included in the statistics, but
+they are not returned to the application.</li>
+</ol>
+</div></blockquote>
+</div>
+</div>
+<ul class="simple">
+<li><strong>Transmit Load Balancing (Mode 5):</strong></li>
+</ul>
+<div class="figure" id="id7">
+<img src="../_images/bond-mode-5.svg" /><p class="caption"><span class="caption-number">Fig. 10.7 </span><span class="caption-text">Transmit Load Balancing (Mode 5)</span></p>
+<div class="legend">
+<blockquote>
+<div>This mode provides an adaptive transmit load balancing. It dynamically
+changes the transmitting slave, according to the computed load. Statistics
+are collected in 100ms intervals and scheduled every 10ms.</div></blockquote>
+</div>
+</div>
+</div>
+<div class="section" id="implementation-details">
+<h2>10.2. Implementation Details</h2>
+<p>The librte_pmd_bond bonded device are compatible with the Ethernet device API
+exported by the Ethernet PMDs described in the <em>DPDK API Reference</em>.</p>
+<p>The Link Bonding Library supports the creation of bonded devices at application
+startup time during EAL initialization using the <code class="docutils literal"><span class="pre">--vdev</span></code> option as well as
+programmatically via the C API <code class="docutils literal"><span class="pre">rte_eth_bond_create</span></code> function.</p>
+<p>Bonded devices support the dynamical addition and removal of slave devices using
+the <code class="docutils literal"><span class="pre">rte_eth_bond_slave_add</span></code> / <code class="docutils literal"><span class="pre">rte_eth_bond_slave_remove</span></code> APIs.</p>
+<p>After a slave device is added to a bonded device slave is stopped using
+<code class="docutils literal"><span class="pre">rte_eth_dev_stop</span></code> and then reconfigured using <code class="docutils literal"><span class="pre">rte_eth_dev_configure</span></code>
+the RX and TX queues are also reconfigured using <code class="docutils literal"><span class="pre">rte_eth_tx_queue_setup</span></code> /
+<code class="docutils literal"><span class="pre">rte_eth_rx_queue_setup</span></code> with the parameters use to configure the bonding
+device. If RSS is enabled for bonding device, this mode is also enabled on new
+slave and configured as well.</p>
+<p>Setting up multi-queue mode for bonding device to RSS, makes it fully
+RSS-capable, so all slaves are synchronized with its configuration. This mode is
+intended to provide RSS configuration on slaves transparent for client
+application implementation.</p>
+<p>Bonding device stores its own version of RSS settings i.e. RETA, RSS hash
+function and RSS key, used to set up its slaves. That let to define the meaning
+of RSS configuration of bonding device as desired configuration of whole bonding
+(as one unit), without pointing any of slave inside. It is required to ensure
+consistency and made it more error-proof.</p>
+<p>RSS hash function set for bonding device, is a maximal set of RSS hash functions
+supported by all bonded slaves. RETA size is a GCD of all its RETA&#8217;s sizes, so
+it can be easily used as a pattern providing expected behavior, even if slave
+RETAs&#8217; sizes are different. If RSS Key is not set for bonded device, it&#8217;s not
+changed on the slaves and default key for device is used.</p>
+<p>All settings are managed through the bonding port API and always are propagated
+in one direction (from bonding to slaves).</p>
+<div class="section" id="link-status-change-interrupts-polling">
+<h3>10.2.1. Link Status Change Interrupts / Polling</h3>
+<p>Link bonding devices support the registration of a link status change callback,
+using the <code class="docutils literal"><span class="pre">rte_eth_dev_callback_register</span></code> API, this will be called when the
+status of the bonding device changes. For example in the case of a bonding
+device which has 3 slaves, the link status will change to up when one slave
+becomes active or change to down when all slaves become inactive. There is no
+callback notification when a single slave changes state and the previous
+conditions are not met. If a user wishes to monitor individual slaves then they
+must register callbacks with that slave directly.</p>
+<p>The link bonding library also supports devices which do not implement link
+status change interrupts, this is achieved by polling the devices link status at
+a defined period which is set using the <code class="docutils literal"><span class="pre">rte_eth_bond_link_monitoring_set</span></code>
+API, the default polling interval is 10ms. When a device is added as a slave to
+a bonding device it is determined using the <code class="docutils literal"><span class="pre">RTE_PCI_DRV_INTR_LSC</span></code> flag
+whether the device supports interrupts or whether the link status should be
+monitored by polling it.</p>
+</div>
+<div class="section" id="requirements-limitations">
+<h3>10.2.2. Requirements / Limitations</h3>
+<p>The current implementation only supports devices that support the same speed
+and duplex to be added as a slaves to the same bonded device. The bonded device
+inherits these attributes from the first active slave added to the bonded
+device and then all further slaves added to the bonded device must support
+these parameters.</p>
+<p>A bonding device must have a minimum of one slave before the bonding device
+itself can be started.</p>
+<p>To use a bonding device dynamic RSS configuration feature effectively, it is
+also required, that all slaves should be RSS-capable and support, at least one
+common hash function available for each of them. Changing RSS key is only
+possible, when all slave devices support the same key size.</p>
+<p>To prevent inconsistency on how slaves process packets, once a device is added
+to a bonding device, RSS configuration should be managed through the bonding
+device API, and not directly on the slave.</p>
+<p>Like all other PMD, all functions exported by a PMD are lock-free functions
+that are assumed not to be invoked in parallel on different logical cores to
+work on the same target object.</p>
+<p>It should also be noted that the PMD receive function should not be invoked
+directly on a slave devices after they have been to a bonded device since
+packets read directly from the slave device will no longer be available to the
+bonded device to read.</p>
+</div>
+<div class="section" id="configuration">
+<h3>10.2.3. Configuration</h3>
+<p>Link bonding devices are created using the <code class="docutils literal"><span class="pre">rte_eth_bond_create</span></code> API
+which requires a unique device name, the bonding mode,
+and the socket Id to allocate the bonding device&#8217;s resources on.
+The other configurable parameters for a bonded device are its slave devices,
+its primary slave, a user defined MAC address and transmission policy to use if
+the device is in balance XOR mode.</p>
+<div class="section" id="slave-devices">
+<h4>10.2.3.1. Slave Devices</h4>
+<p>Bonding devices support up to a maximum of <code class="docutils literal"><span class="pre">RTE_MAX_ETHPORTS</span></code> slave devices
+of the same speed and duplex. Ethernet devices can be added as a slave to a
+maximum of one bonded device. Slave devices are reconfigured with the
+configuration of the bonded device on being added to a bonded device.</p>
+<p>The bonded also guarantees to return the MAC address of the slave device to its
+original value of removal of a slave from it.</p>
+</div>
+<div class="section" id="primary-slave">
+<h4>10.2.3.2. Primary Slave</h4>
+<p>The primary slave is used to define the default port to use when a bonded
+device is in active backup mode. A different port will only be used if, and
+only if, the current primary port goes down. If the user does not specify a
+primary port it will default to being the first port added to the bonded device.</p>
+</div>
+<div class="section" id="mac-address">
+<h4>10.2.3.3. MAC Address</h4>
+<p>The bonded device can be configured with a user specified MAC address, this
+address will be inherited by the some/all slave devices depending on the
+operating mode. If the device is in active backup mode then only the primary
+device will have the user specified MAC, all other slaves will retain their
+original MAC address. In mode 0, 2, 3, 4 all slaves devices are configure with
+the bonded devices MAC address.</p>
+<p>If a user defined MAC address is not defined then the bonded device will
+default to using the primary slaves MAC address.</p>
+</div>
+<div class="section" id="balance-xor-transmit-policies">
+<h4>10.2.3.4. Balance XOR Transmit Policies</h4>
+<p>There are 3 supported transmission policies for bonded device running in
+Balance XOR mode. Layer 2, Layer 2+3, Layer 3+4.</p>
+<ul class="simple">
+<li><strong>Layer 2:</strong>   Ethernet MAC address based balancing is the default
+transmission policy for Balance XOR bonding mode. It uses a simple XOR
+calculation on the source MAC address and destination MAC address of the
+packet and then calculate the modulus of this value to calculate the slave
+device to transmit the packet on.</li>
+<li><strong>Layer 2 + 3:</strong> Ethernet MAC address &amp; IP Address based balancing uses a
+combination of source/destination MAC addresses and the source/destination
+IP addresses of the data packet to decide which slave port the packet will
+be transmitted on.</li>
+<li><strong>Layer 3 + 4:</strong>  IP Address &amp; UDP Port based  balancing uses a combination
+of source/destination IP Address and the source/destination UDP ports of
+the packet of the data packet to decide which slave port the packet will be
+transmitted on.</li>
+</ul>
+<p>All these policies support 802.1Q VLAN Ethernet packets, as well as IPv4, IPv6
+and UDP protocols for load balancing.</p>
+</div>
+</div>
+</div>
+<div class="section" id="using-link-bonding-devices">
+<h2>10.3. Using Link Bonding Devices</h2>
+<p>The librte_pmd_bond library supports two modes of device creation, the libraries
+export full C API or using the EAL command line to statically configure link
+bonding devices at application startup. Using the EAL option it is possible to
+use link bonding functionality transparently without specific knowledge of the
+libraries API, this can be used, for example, to add bonding functionality,
+such as active backup, to an existing application which has no knowledge of
+the link bonding C API.</p>
+<div class="section" id="using-the-poll-mode-driver-from-an-application">
+<h3>10.3.1. Using the Poll Mode Driver from an Application</h3>
+<p>Using the librte_pmd_bond libraries API it is possible to dynamically create
+and manage link bonding device from within any application. Link bonding
+devices are created using the <code class="docutils literal"><span class="pre">rte_eth_bond_create</span></code> API which requires a
+unique device name, the link bonding mode to initial the device in and finally
+the socket Id which to allocate the devices resources onto. After successful
+creation of a bonding device it must be configured using the generic Ethernet
+device configure API <code class="docutils literal"><span class="pre">rte_eth_dev_configure</span></code> and then the RX and TX queues
+which will be used must be setup using <code class="docutils literal"><span class="pre">rte_eth_tx_queue_setup</span></code> /
+<code class="docutils literal"><span class="pre">rte_eth_rx_queue_setup</span></code>.</p>
+<p>Slave devices can be dynamically added and removed from a link bonding device
+using the <code class="docutils literal"><span class="pre">rte_eth_bond_slave_add</span></code> / <code class="docutils literal"><span class="pre">rte_eth_bond_slave_remove</span></code>
+APIs but at least one slave device must be added to the link bonding device
+before it can be started using <code class="docutils literal"><span class="pre">rte_eth_dev_start</span></code>.</p>
+<p>The link status of a bonded device is dictated by that of its slaves, if all
+slave device link status are down or if all slaves are removed from the link
+bonding device then the link status of the bonding device will go down.</p>
+<p>It is also possible to configure / query the configuration of the control
+parameters of a bonded device using the provided APIs
+<code class="docutils literal"><span class="pre">rte_eth_bond_mode_set/</span> <span class="pre">get</span></code>, <code class="docutils literal"><span class="pre">rte_eth_bond_primary_set/get</span></code>,
+<code class="docutils literal"><span class="pre">rte_eth_bond_mac_set/reset</span></code> and <code class="docutils literal"><span class="pre">rte_eth_bond_xmit_policy_set/get</span></code>.</p>
+</div>
+<div class="section" id="using-link-bonding-devices-from-the-eal-command-line">
+<h3>10.3.2. Using Link Bonding Devices from the EAL Command Line</h3>
+<p>Link bonding devices can be created at application startup time using the
+<code class="docutils literal"><span class="pre">--vdev</span></code> EAL command line option. The device name must start with the
+eth_bond prefix followed by numbers or letters. The name must be unique for
+each device. Each device can have multiple options arranged in a comma
+separated list. Multiple devices definitions can be arranged by calling the
+<code class="docutils literal"><span class="pre">--vdev</span></code> option multiple times.</p>
+<p>Device names and bonding options must be separated by commas as shown below:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span>RTE_TARGET/app/testpmd -c f -n <span class="m">4</span> --vdev <span class="s1">&#39;eth_bond0,bond_opt0=..,bond opt1=..&#39;</span>--vdev <span class="s1">&#39;eth_bond1,bond _opt0=..,bond_opt1=..&#39;</span>
+</pre></div>
+</div>
+<div class="section" id="link-bonding-eal-options">
+<h4>10.3.2.1. Link Bonding EAL Options</h4>
+<p>There are multiple ways of definitions that can be assessed and combined as
+long as the following two rules are respected:</p>
+<ul class="simple">
+<li>A unique device name, in the format of eth_bondX is provided,
+where X can be any combination of numbers and/or letters,
+and the name is no greater than 32 characters long.</li>
+<li>A least one slave device is provided with for each bonded device definition.</li>
+<li>The operation mode of the bonded device being created is provided.</li>
+</ul>
+<p>The different options are:</p>
+<ul class="simple">
+<li>mode: Integer value defining the bonding mode of the device.
+Currently supports modes 0,1,2,3,4,5 (round-robin, active backup, balance,
+broadcast, link aggregation, transmit load balancing).</li>
+</ul>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">mode=2</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>slave: Defines the PMD device which will be added as slave to the bonded
+device. This option can be selected multiple times, for each device to be
+added as a slave. Physical devices should be specified using their PCI
+address, in the format domain:bus:devid.function</li>
+</ul>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">slave=0000:0a:00.0,slave=0000:0a:00.1</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>primary: Optional parameter which defines the primary slave port,
+is used in active backup mode to select the primary slave for data TX/RX if
+it is available. The primary port also is used to select the MAC address to
+use when it is not defined by the user. This defaults to the first slave
+added to the device if it is specified. The primary device must be a slave
+of the bonded device.</li>
+</ul>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">primary=0000:0a:00.0</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>socket_id: Optional parameter used to select which socket on a NUMA device
+the bonded devices resources will be allocated on.</li>
+</ul>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">socket_id=0</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>mac: Optional parameter to select a MAC address for link bonding device,
+this overrides the value of the primary slave device.</li>
+</ul>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">mac=00:1e:67:1d:fd:1d</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>xmit_policy: Optional parameter which defines the transmission policy when
+the bonded device is in  balance mode. If not user specified this defaults
+to l2 (layer 2) forwarding, the other transmission policies available are
+l23 (layer 2+3) and l34 (layer 3+4)</li>
+</ul>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">xmit_policy=l23</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>lsc_poll_period_ms: Optional parameter which defines the polling interval
+in milli-seconds at which devices which don&#8217;t support lsc interrupts are
+checked for a change in the devices link status</li>
+</ul>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">lsc_poll_period_ms=100</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>up_delay: Optional parameter which adds a delay in milli-seconds to the
+propagation of a devices link status changing to up, by default this
+parameter is zero.</li>
+</ul>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">up_delay=10</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>down_delay: Optional parameter which adds a delay in milli-seconds to the
+propagation of a devices link status changing to down, by default this
+parameter is zero.</li>
+</ul>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">down_delay=50</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="examples-of-usage">
+<h4>10.3.2.2. Examples of Usage</h4>
+<p>Create a bonded device in round robin mode with two slaves specified by their PCI address:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span>RTE_TARGET/app/testpmd -c <span class="s1">&#39;0xf&#39;</span> -n <span class="m">4</span> --vdev <span class="s1">&#39;eth_bond0,mode=0, slave=0000:00a:00.01,slave=0000:004:00.00&#39;</span> -- --port-topology<span class="o">=</span>chained
+</pre></div>
+</div>
+<p>Create a bonded device in round robin mode with two slaves specified by their PCI address and an overriding MAC address:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span>RTE_TARGET/app/testpmd -c <span class="s1">&#39;0xf&#39;</span> -n <span class="m">4</span> --vdev <span class="s1">&#39;eth_bond0,mode=0, slave=0000:00a:00.01,slave=0000:004:00.00,mac=00:1e:67:1d:fd:1d&#39;</span> -- --port-topology<span class="o">=</span>chained
+</pre></div>
+</div>
+<p>Create a bonded device in active backup mode with two slaves specified, and a primary slave specified by their PCI addresses:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span>RTE_TARGET/app/testpmd -c <span class="s1">&#39;0xf&#39;</span> -n <span class="m">4</span> --vdev <span class="s1">&#39;eth_bond0,mode=1, slave=0000:00a:00.01,slave=0000:004:00.00,primary=0000:00a:00.01&#39;</span> -- --port-topology<span class="o">=</span>chained
+</pre></div>
+</div>
+<p>Create a bonded device in balance mode with two slaves specified by their PCI addresses, and a transmission policy of layer 3 + 4 forwarding:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span>RTE_TARGET/app/testpmd -c <span class="s1">&#39;0xf&#39;</span> -n <span class="m">4</span> --vdev <span class="s1">&#39;eth_bond0,mode=2, slave=0000:00a:00.01,slave=0000:004:00.00,xmit_policy=l34&#39;</span> -- --port-topology<span class="o">=</span>chained
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="timer_lib.html" class="btn btn-neutral float-right" title="11. Timer Library" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ivshmem_lib.html" class="btn btn-neutral" title="9. IVSHMEM Library" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

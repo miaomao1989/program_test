@@ -1,0 +1,564 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>3. Running the Application &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Testpmd Application User Guide" href="index.html"/>
+        <link rel="next" title="4. Testpmd Runtime Functions" href="testpmd_funcs.html"/>
+        <link rel="prev" title="2. Compiling the Application" href="build_app.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Testpmd Application User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_app.html">2. Compiling the Application</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3. Running the Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#eal-command-line-options">3.1. EAL Command-line Options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#testpmd-command-line-options">3.2. Testpmd Command-line Options</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="testpmd_funcs.html">4. Testpmd Runtime Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Testpmd Application User Guide</a> &raquo;</li>
+      
+    <li>3. Running the Application</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/testpmd_app_ug/run_app.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="running-the-application">
+<h1>3. Running the Application</h1>
+<div class="section" id="eal-command-line-options">
+<h2>3.1. EAL Command-line Options</h2>
+<p>The following are the EAL command-line options that can be used in conjunction with the testpmd,
+or any other DPDK application.
+See the DPDK Getting Started Guides for more information on these options.</p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">-c</span> <span class="pre">COREMASK</span></code></p>
+<p>Set the hexadecimal bitmask of the cores to run on.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-l</span> <span class="pre">CORELIST</span></code></p>
+<p>List of cores to run on</p>
+<p>The argument format is <code class="docutils literal"><span class="pre">&lt;c1&gt;[-c2][,c3[-c4],...]</span></code>
+where <code class="docutils literal"><span class="pre">c1</span></code>, <code class="docutils literal"><span class="pre">c2</span></code>, etc are core indexes between 0 and 128.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--lcores</span> <span class="pre">COREMAP</span></code></p>
+<p>Map lcore set to physical cpu set</p>
+<p>The argument format is:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>&lt;lcores[@cpus]&gt;[&lt;,lcores[@cpus]&gt;...]
+</pre></div>
+</div>
+<p>Lcore and CPU lists are grouped by <code class="docutils literal"><span class="pre">(</span></code> and <code class="docutils literal"><span class="pre">)</span></code> Within the group.
+The <code class="docutils literal"><span class="pre">-</span></code> character is used as a range separator and <code class="docutils literal"><span class="pre">,</span></code> is used as a single number separator.
+The grouping <code class="docutils literal"><span class="pre">()</span></code> can be omitted for single element group.
+The <code class="docutils literal"><span class="pre">&#64;</span></code> can be omitted if cpus and lcores have the same value.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--master-lcore</span> <span class="pre">ID</span></code></p>
+<p>Core ID that is used as master.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-n</span> <span class="pre">NUM</span></code></p>
+<p>Set the number of memory channels to use.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-b,</span> <span class="pre">--pci-blacklist</span> <span class="pre">domain:bus:devid.func</span></code></p>
+<p>Blacklist a PCI devise to prevent EAL from using it. Multiple -b options are allowed.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-d</span> <span class="pre">LIB.so</span></code></p>
+<p>Load an external driver. Multiple -d options are allowed.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-w,</span> <span class="pre">--pci-whitelist</span> <span class="pre">domain:bus:devid:func</span></code></p>
+<p>Add a PCI device in white list.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-m</span> <span class="pre">MB</span></code></p>
+<p>Memory to allocate. See also <code class="docutils literal"><span class="pre">--socket-mem</span></code>.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-r</span> <span class="pre">NUM</span></code></p>
+<p>Set the number of memory ranks (auto-detected by default).</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-v</span></code></p>
+<p>Display the version information on startup.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--xen-dom0</span></code></p>
+<p>Support application running on Xen Domain0 without hugetlbfs.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--syslog</span></code></p>
+<p>Set the syslog facility.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--socket-mem</span></code></p>
+<p>Set the memory to allocate on specific sockets (use comma separated values).</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--huge-dir</span></code></p>
+<p>Specify the directory where the hugetlbfs is mounted.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--proc-type</span></code></p>
+<p>Set the type of the current process.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--file-prefix</span></code></p>
+<p>Prefix for hugepage filenames.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-vmware-tsc-map</span></code></p>
+<p>Use VMware TSC map instead of native RDTSC.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--vdev</span></code></p>
+<p>Add a virtual device using the format:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>&lt;driver&gt;&lt;id&gt;[,key=val, ...]
+</pre></div>
+</div>
+<p>For example:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>--vdev &#39;eth_pcap0,rx_pcap=input.pcap,tx_pcap=output.pcap&#39;
+</pre></div>
+</div>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--base-virtaddr</span></code></p>
+<p>Specify base virtual address.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--create-uio-dev</span></code></p>
+<p>Create <code class="docutils literal"><span class="pre">/dev/uioX</span></code> (usually done by hotplug).</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--no-shconf</span></code></p>
+<p>No shared config (mmap-ed files).</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--no-pci</span></code></p>
+<p>Disable pci.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--no-hpet</span></code></p>
+<p>Disable hpet.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--no-huge</span></code></p>
+<p>Use malloc instead of hugetlbfs.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="testpmd-command-line-options">
+<h2>3.2. Testpmd Command-line Options</h2>
+<p>The following are the command-line options for the testpmd applications.
+They must be separated from the EAL options, shown in the previous section, with a <code class="docutils literal"><span class="pre">--</span></code> separator:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">sudo ./testpmd -c 0xF -n 4 -- -i --portmask=0x1 --nb-cores=2</span>
+</pre></div>
+</div>
+<p>The commandline options are:</p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">-i,</span> <span class="pre">--interactive</span></code></p>
+<p>Run testpmd in interactive mode.
+In this mode, the testpmd starts with a prompt that can be used to start and stop forwarding,
+configure the application and display stats on the current packet processing session.
+See <a class="reference internal" href="testpmd_funcs.html#testpmd-runtime"><span class="std std-ref">Testpmd Runtime Functions</span></a> for more details.</p>
+<p>In non-interactive mode,
+the application starts with the configuration specified on the command-line and
+immediately enters forwarding mode.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-h,</span> <span class="pre">--help</span></code></p>
+<p>Display a help message and quit.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">-a,</span> <span class="pre">--auto-start</span></code></p>
+<p>Start forwarding on initialization.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--nb-cores=N</span></code></p>
+<p>Set the number of forwarding cores,
+where 1 &lt;= N &lt;= &#8220;number of cores&#8221; or <code class="docutils literal"><span class="pre">CONFIG_RTE_MAX_LCORE</span></code> from the configuration file.
+The default value is 1.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--nb-ports=N</span></code></p>
+<p>Set the number of forwarding ports,
+where 1 &lt;= N &lt;= &#8220;number of ports&#8221; on the board or <code class="docutils literal"><span class="pre">CONFIG_RTE_MAX_ETHPORTS</span></code> from the configuration file.
+The default value is the number of ports on the board.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--coremask=0xXX</span></code></p>
+<p>Set the hexadecimal bitmask of the cores running the packet forwarding test.
+The master lcore is reserved for command line parsing only and cannot be masked on for packet forwarding.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--portmask=0xXX</span></code></p>
+<p>Set the hexadecimal bitmask of the ports used by the packet forwarding test.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--numa</span></code></p>
+<p>Enable NUMA-aware allocation of RX/TX rings and of RX memory buffers (mbufs).</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--port-numa-config=(port,socket)[,(port,socket)]</span></code></p>
+<p>Specify the socket on which the memory pool to be used by the port will be allocated.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--ring-numa-config=(port,flag,socket)[,(port,flag,socket)]</span></code></p>
+<p>Specify the socket on which the TX/RX rings for the port will be allocated.
+Where flag is 1 for RX, 2 for TX, and 3 for RX and TX.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--socket-num=N</span></code></p>
+<p>Set the socket from which all memory is allocated in NUMA mode,
+where 0 &lt;= N &lt; number of sockets on the board.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--mbuf-size=N</span></code></p>
+<p>Set the data size of the mbufs used to N bytes, where N &lt; 65536. The default value is 2048.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--total-num-mbufs=N</span></code></p>
+<p>Set the number of mbufs to be allocated in the mbuf pools, where N &gt; 1024.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--max-pkt-len=N</span></code></p>
+<p>Set the maximum packet size to N bytes, where N &gt;= 64. The default value is 1518.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--eth-peers-configfile=name</span></code></p>
+<p>Use a configuration file containing the Ethernet addresses of the peer ports.
+The configuration file should contain the Ethernet addresses on separate lines:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>XX:XX:XX:XX:XX:01
+XX:XX:XX:XX:XX:02
+...
+</pre></div>
+</div>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--eth-peer=N,XX:XX:XX:XX:XX:XX</span></code></p>
+<p>Set the MAC address <code class="docutils literal"><span class="pre">XX:XX:XX:XX:XX:XX</span></code> of the peer port N,
+where 0 &lt;= N &lt; <code class="docutils literal"><span class="pre">CONFIG_RTE_MAX_ETHPORTS</span></code> from the configuration file.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--pkt-filter-mode=mode</span></code></p>
+<p>Set Flow Director mode where mode is either <code class="docutils literal"><span class="pre">none</span></code> (the default), <code class="docutils literal"><span class="pre">signature</span></code> or <code class="docutils literal"><span class="pre">perfect</span></code>.
+See <a class="reference internal" href="testpmd_funcs.html#testpmd-flow-director"><span class="std std-ref">flow_director_filter</span></a> for more details.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--pkt-filter-report-hash=mode</span></code></p>
+<p>Set Flow Director hash match reporting mode where mode is <code class="docutils literal"><span class="pre">none</span></code>, <code class="docutils literal"><span class="pre">match</span></code> (the default) or <code class="docutils literal"><span class="pre">always</span></code>.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--pkt-filter-size=N</span></code></p>
+<p>Set Flow Director allocated memory size, where N is 64K, 128K or 256K.
+Sizes are in kilobytes. The default is 64.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--pkt-filter-flexbytes-offset=N</span></code></p>
+<p>Set the flexbytes offset.
+The offset is defined in words (not bytes) counted from the first byte of the destination Ethernet MAC address,
+where N is 0 &lt;= N &lt;= 32.
+The default value is 0x6.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--pkt-filter-drop-queue=N</span></code></p>
+<p>Set the drop-queue.
+In perfect filter mode, when a rule is added with queue = -1, the packet will be enqueued into the RX drop-queue.
+If the drop-queue does not exist, the packet is dropped. The default value is N=127.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--crc-strip</span></code></p>
+<p>Enable hardware CRC stripping.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--enable-rx-cksum</span></code></p>
+<p>Enable hardware RX checksum offload.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--disable-hw-vlan</span></code></p>
+<p>Disable hardware VLAN.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--disable-hw-vlan-filter</span></code></p>
+<p>Disable hardware VLAN filter.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--disable-hw-vlan-strip</span></code></p>
+<p>Disable hardware VLAN strip.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--disable-hw-vlan-extend</span></code></p>
+<p>Disable hardware VLAN extend.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--enable-drop-en</span></code></p>
+<p>Enable per-queue packet drop for packets with no descriptors.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--disable-rss</span></code></p>
+<p>Disable RSS (Receive Side Scaling).</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--port-topology=mode</span></code></p>
+<p>Set port topology, where mode is <code class="docutils literal"><span class="pre">paired</span></code> (the default) or <code class="docutils literal"><span class="pre">chained</span></code>.</p>
+<p>In <code class="docutils literal"><span class="pre">paired</span></code> mode, the forwarding is between pairs of ports, for example: (0,1), (2,3), (4,5).</p>
+<p>In <code class="docutils literal"><span class="pre">chained</span></code> mode, the forwarding is to the next available port in the port mask, for example: (0,1), (1,2), (2,0).</p>
+<p>The ordering of the ports can be changed using the portlist testpmd runtime function.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--forward-mode=mode</span></code></p>
+<p>Set the forwarding mode where <code class="docutils literal"><span class="pre">mode</span></code> is one of the following:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>io (the default)
+mac
+mac_retry
+mac_swap
+flowgen
+rxonly
+txonly
+csum
+icmpecho
+ieee1588
+</pre></div>
+</div>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--rss-ip</span></code></p>
+<p>Set RSS functions for IPv4/IPv6 only.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--rss-udp</span></code></p>
+<p>Set RSS functions for IPv4/IPv6 and UDP.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--rxq=N</span></code></p>
+<p>Set the number of RX queues per port to N, where 1 &lt;= N &lt;= 65535.
+The default value is 1.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--rxd=N</span></code></p>
+<p>Set the number of descriptors in the RX rings to N, where N &gt; 0.
+The default value is 128.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--txq=N</span></code></p>
+<p>Set the number of TX queues per port to N, where 1 &lt;= N &lt;= 65535.
+The default value is 1.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--txd=N</span></code></p>
+<p>Set the number of descriptors in the TX rings to N, where N &gt; 0.
+The default value is 512.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--burst=N</span></code></p>
+<p>Set the number of packets per burst to N, where 1 &lt;= N &lt;= 512.
+The default value is 16.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--mbcache=N</span></code></p>
+<p>Set the cache of mbuf memory pools to N, where 0 &lt;= N &lt;= 512.
+The default value is 16.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--rxpt=N</span></code></p>
+<p>Set the prefetch threshold register of RX rings to N, where N &gt;= 0.
+The default value is 8.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--rxht=N</span></code></p>
+<p>Set the host threshold register of RX rings to N, where N &gt;= 0.
+The default value is 8.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--rxfreet=N</span></code></p>
+<p>Set the free threshold of RX descriptors to N, where 0 &lt;= N &lt; value of &#8211;rxd.
+The default value is 0.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--rxwt=N</span></code></p>
+<p>Set the write-back threshold register of RX rings to N, where N &gt;= 0.
+The default value is 4.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--txpt=N</span></code></p>
+<p>Set the prefetch threshold register of TX rings to N, where N &gt;= 0.
+The default value is 36.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--txht=N</span></code></p>
+<p>Set the host threshold register of TX rings to N, where N &gt;= 0.
+The default value is 0.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--txwt=N</span></code></p>
+<p>Set the write-back threshold register of TX rings to N, where N &gt;= 0.
+The default value is 0.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--txfreet=N</span></code></p>
+<p>Set the transmit free threshold of TX rings to N, where 0 &lt;= N &lt;= value of <code class="docutils literal"><span class="pre">--txd</span></code>.
+The default value is 0.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--txrst=N</span></code></p>
+<p>Set the transmit RS bit threshold of TX rings to N, where 0 &lt;= N &lt;= value of <code class="docutils literal"><span class="pre">--txd</span></code>.
+The default value is 0.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--txqflags=0xXXXXXXXX</span></code></p>
+<p>Set the hexadecimal bitmask of TX queue flags, where 0 &lt;= N &lt;= 0x7FFFFFFF.
+The default value is 0.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">When using hardware offload functions such as vlan or checksum
+add <code class="docutils literal"><span class="pre">txqflags=0</span></code> to force the full-featured TX code path.
+In some PMDs this may already be the default.</p>
+</div>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--rx-queue-stats-mapping=(port,queue,mapping)[,(port,queue,mapping)]</span></code></p>
+<p>Set the RX queues statistics counters mapping 0 &lt;= mapping &lt;= 15.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--tx-queue-stats-mapping=(port,queue,mapping)[,(port,queue,mapping)]</span></code></p>
+<p>Set the TX queues statistics counters mapping 0 &lt;= mapping &lt;= 15.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--no-flush-rx</span></code></p>
+<p>Don&#8217;t flush the RX streams before starting forwarding. Used mainly with the PCAP PMD.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--txpkts=X[,Y]</span></code></p>
+<p>Set TX segment sizes.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">--disable-link-check</span></code></p>
+<p>Disable check on link status when starting/stopping ports.</p>
+</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="testpmd_funcs.html" class="btn btn-neutral float-right" title="4. Testpmd Runtime Functions" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="build_app.html" class="btn btn-neutral" title="2. Compiling the Application" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

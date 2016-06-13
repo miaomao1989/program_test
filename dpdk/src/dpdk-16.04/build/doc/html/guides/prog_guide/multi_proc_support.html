@@ -1,0 +1,411 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>18. Multi-process Support &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Programmer’s Guide" href="index.html"/>
+        <link rel="next" title="19. Kernel NIC Interface" href="kernel_nic_interface.html"/>
+        <link rel="prev" title="17. IP Fragmentation and Reassembly Library" href="ip_fragment_reassembly_lib.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Programmer&#8217;s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html">2. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="env_abstraction_layer.html">3. Environment Abstraction Layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ring_lib.html">4. Ring Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mempool_lib.html">5. Mempool Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mbuf_lib.html">6. Mbuf Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="poll_mode_drv.html">7. Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cryptodev_lib.html">8. Cryptography Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ivshmem_lib.html">9. IVSHMEM Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_bonding_poll_mode_drv_lib.html">10. Link Bonding Poll Mode Driver Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer_lib.html">11. Timer Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hash_lib.html">12. Hash Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm_lib.html">13. LPM Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm6_lib.html">14. LPM6 Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_distrib_lib.html">15. Packet Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reorder_lib.html">16. Reorder Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_fragment_reassembly_lib.html">17. IP Fragmentation and Reassembly Library</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">18. Multi-process Support</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#memory-sharing">18.1. Memory Sharing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#deployment-models">18.2. Deployment Models</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#symmetric-peer-processes">18.2.1. Symmetric/Peer Processes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#asymmetric-non-peer-processes">18.2.2. Asymmetric/Non-Peer Processes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#running-multiple-independent-dpdk-applications">18.2.3. Running Multiple Independent DPDK Applications</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#running-multiple-independent-groups-of-dpdk-applications">18.2.4. Running Multiple Independent Groups of DPDK Applications</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#multi-process-limitations">18.3. Multi-process Limitations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">19. Kernel NIC Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thread_safety_dpdk_functions.html">20. Thread Safety of DPDK Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_framework.html">21. Quality of Service (QoS) Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="power_man.html">22. Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_classif_access_ctrl.html">23. Packet Classification and Access Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_framework.html">24. Packet Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_lib.html">25. Vhost Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="port_hotplug_framework.html">26. Port Hotplug Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source_org.html">27. Source Organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_kit_build_system.html">28. Development Kit Build System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_kit_root_make_help.html">29. Development Kit Root Makefile Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extend_dpdk.html">30. Extending the DPDK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_app.html">31. Building Your Own Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ext_app_lib_make_help.html">32. External Application/Library Makefile help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perf_opt_guidelines.html">33. Performance Optimization Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing_efficient_code.html">34. Writing Efficient Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="profile_app.html">35. Profile Your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">36. Glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Programmer&#8217;s Guide</a> &raquo;</li>
+      
+    <li>18. Multi-process Support</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/prog_guide/multi_proc_support.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="multi-process-support">
+<span id="id1"></span><h1>18. Multi-process Support</h1>
+<p>In the DPDK, multi-process support is designed to allow a group of DPDK processes
+to work together in a simple transparent manner to perform packet processing,
+or other workloads, on Intel® architecture hardware.
+To support this functionality,
+a number of additions have been made to the core DPDK Environment Abstraction Layer (EAL).</p>
+<p>The EAL has been modified to allow different types of DPDK processes to be spawned,
+each with different permissions on the hugepage memory used by the applications.
+For now, there are two types of process specified:</p>
+<ul class="simple">
+<li>primary processes, which can initialize and which have full permissions on shared memory</li>
+<li>secondary processes, which cannot initialize shared memory,
+but can attach to pre- initialized shared memory and create objects in it.</li>
+</ul>
+<p>Standalone DPDK processes are primary processes,
+while secondary processes can only run alongside a primary process or
+after a primary process has already configured the hugepage shared memory for them.</p>
+<p>To support these two process types, and other multi-process setups described later,
+two additional command-line parameters are available to the EAL:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">--proc-type:</span></code> for specifying a given process instance as the primary or secondary DPDK instance</li>
+<li><code class="docutils literal"><span class="pre">--file-prefix:</span></code> to allow processes that do not want to co-operate to have different memory regions</li>
+</ul>
+<p>A number of example applications are provided that demonstrate how multiple DPDK processes can be used together.
+These are more fully documented in the &#8220;Multi- process Sample Application&#8221; chapter
+in the <em>DPDK Sample Application&#8217;s User Guide</em>.</p>
+<div class="section" id="memory-sharing">
+<h2>18.1. Memory Sharing</h2>
+<p>The key element in getting a multi-process application working using the DPDK is to ensure that
+memory resources are properly shared among the processes making up the multi-process application.
+Once there are blocks of shared memory available that can be accessed by multiple processes,
+then issues such as inter-process communication (IPC) becomes much simpler.</p>
+<p>On application start-up in a primary or standalone process,
+the DPDK records to memory-mapped files the details of the memory configuration it is using - hugepages in use,
+the virtual addresses they are mapped at, the number of memory channels present, etc.
+When a secondary process is started, these files are read and the EAL recreates the same memory configuration
+in the secondary process so that all memory zones are shared between processes and all pointers to that memory are valid,
+and point to the same objects, in both processes.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Refer to <a class="reference internal" href="#multi-process-limitations">Multi-process Limitations</a> for details of
+how Linux kernel Address-Space Layout Randomization (ASLR) can affect memory sharing.</p>
+</div>
+<div class="figure" id="id2">
+<span id="figure-multi-process-memory"></span><img src="../_images/multi_process_memory.svg" /><p class="caption"><span class="caption-number">Fig. 18.1 </span><span class="caption-text">Memory Sharing in the DPDK Multi-process Sample Application</span></p>
+</div>
+<p>The EAL also supports an auto-detection mode (set by EAL <code class="docutils literal"><span class="pre">--proc-type=auto</span></code> flag ),
+whereby an DPDK process is started as a secondary instance if a primary instance is already running.</p>
+</div>
+<div class="section" id="deployment-models">
+<h2>18.2. Deployment Models</h2>
+<div class="section" id="symmetric-peer-processes">
+<h3>18.2.1. Symmetric/Peer Processes</h3>
+<p>DPDK multi-process support can be used to create a set of peer processes where each process performs the same workload.
+This model is equivalent to having multiple threads each running the same main-loop function,
+as is done in most of the supplied DPDK sample applications.
+In this model, the first of the processes spawned should be spawned using the <code class="docutils literal"><span class="pre">--proc-type=primary</span></code> EAL flag,
+while all subsequent instances should be spawned using the <code class="docutils literal"><span class="pre">--proc-type=secondary</span></code> flag.</p>
+<p>The simple_mp and symmetric_mp sample applications demonstrate this usage model.
+They are described in the &#8220;Multi-process Sample Application&#8221; chapter in the <em>DPDK Sample Application&#8217;s User Guide</em>.</p>
+</div>
+<div class="section" id="asymmetric-non-peer-processes">
+<h3>18.2.2. Asymmetric/Non-Peer Processes</h3>
+<p>An alternative deployment model that can be used for multi-process applications
+is to have a single primary process instance that acts as a load-balancer or
+server distributing received packets among worker or client threads, which are run as secondary processes.
+In this case, extensive use of rte_ring objects is made, which are located in shared hugepage memory.</p>
+<p>The client_server_mp sample application shows this usage model.
+It is described in the &#8220;Multi-process Sample Application&#8221; chapter in the <em>DPDK Sample Application&#8217;s User Guide</em>.</p>
+</div>
+<div class="section" id="running-multiple-independent-dpdk-applications">
+<h3>18.2.3. Running Multiple Independent DPDK Applications</h3>
+<p>In addition to the above scenarios involving multiple DPDK processes working together,
+it is possible to run multiple DPDK processes side-by-side,
+where those processes are all working independently.
+Support for this usage scenario is provided using the <code class="docutils literal"><span class="pre">--file-prefix</span></code> parameter to the EAL.</p>
+<p>By default, the EAL creates hugepage files on each hugetlbfs filesystem using the rtemap_X filename,
+where X is in the range 0 to the maximum number of hugepages -1.
+Similarly, it creates shared configuration files, memory mapped in each process, using the /var/run/.rte_config filename,
+when run as root (or $HOME/.rte_config when run as a non-root user;
+if filesystem and device permissions are set up to allow this).
+The rte part of the filenames of each of the above is configurable using the file-prefix parameter.</p>
+<p>In addition to specifying the file-prefix parameter,
+any DPDK applications that are to be run side-by-side must explicitly limit their memory use.
+This is done by passing the -m flag to each process to specify how much hugepage memory, in megabytes,
+each process can use (or passing <code class="docutils literal"><span class="pre">--socket-mem</span></code> to specify how much hugepage memory on each socket each process can use).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Independent DPDK instances running side-by-side on a single machine cannot share any network ports.
+Any network ports being used by one process should be blacklisted in every other process.</p>
+</div>
+</div>
+<div class="section" id="running-multiple-independent-groups-of-dpdk-applications">
+<h3>18.2.4. Running Multiple Independent Groups of DPDK Applications</h3>
+<p>In the same way that it is possible to run independent DPDK applications side- by-side on a single system,
+this can be trivially extended to multi-process groups of DPDK applications running side-by-side.
+In this case, the secondary processes must use the same <code class="docutils literal"><span class="pre">--file-prefix</span></code> parameter
+as the primary process whose shared memory they are connecting to.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">All restrictions and issues with multiple independent DPDK processes running side-by-side
+apply in this usage scenario also.</p>
+</div>
+</div>
+</div>
+<div class="section" id="multi-process-limitations">
+<h2>18.3. Multi-process Limitations</h2>
+<p>There are a number of limitations to what can be done when running DPDK multi-process applications.
+Some of these are documented below:</p>
+<ul class="simple">
+<li>The multi-process feature requires that the exact same hugepage memory mappings be present in all applications.
+The Linux security feature - Address-Space Layout Randomization (ASLR) can interfere with this mapping,
+so it may be necessary to disable this feature in order to reliably run multi-process applications.</li>
+</ul>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Disabling Address-Space Layout Randomization (ASLR) may have security implications,
+so it is recommended that it be disabled only when absolutely necessary,
+and only when the implications of this change have been understood.</p>
+</div>
+<ul class="simple">
+<li>All DPDK processes running as a single application and using shared memory must have distinct coremask arguments.
+It is not possible to have a primary and secondary instance, or two secondary instances,
+using any of the same logical cores.
+Attempting to do so can cause corruption of memory pool caches, among other issues.</li>
+<li>The delivery of interrupts, such as Ethernet* device link status interrupts, do not work in secondary processes.
+All interrupts are triggered inside the primary process only.
+Any application needing interrupt notification in multiple processes should provide its own mechanism
+to transfer the interrupt information from the primary process to any secondary process that needs the information.</li>
+<li>The use of function pointers between multiple processes running based of different compiled binaries is not supported,
+since the location of a given function in one process may be different to its location in a second.
+This prevents the librte_hash library from behaving properly as in a multi-threaded instance,
+since it uses a pointer to the hash function internally.</li>
+</ul>
+<p>To work around this issue, it is recommended that multi-process applications perform the hash calculations by directly calling
+the hashing function from the code and then using the rte_hash_add_with_hash()/rte_hash_lookup_with_hash() functions
+instead of the functions which do the hashing internally, such as rte_hash_add()/rte_hash_lookup().</p>
+<ul class="simple">
+<li>Depending upon the hardware in use, and the number of DPDK processes used,
+it may not be possible to have HPET timers available in each DPDK instance.
+The minimum number of HPET comparators available to Linux* userspace can be just a single comparator,
+which means that only the first, primary DPDK process instance can open and mmap  /dev/hpet.
+If the number of required DPDK processes exceeds that of the number of available HPET comparators,
+the TSC (which is the default timer in this release) must be used as a time source across all processes instead of the HPET.</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="kernel_nic_interface.html" class="btn btn-neutral float-right" title="19. Kernel NIC Interface" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ip_fragment_reassembly_lib.html" class="btn btn-neutral" title="17. IP Fragmentation and Reassembly Library" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

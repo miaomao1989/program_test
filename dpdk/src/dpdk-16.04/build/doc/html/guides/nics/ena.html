@@ -1,0 +1,441 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>5. ENA Poll Mode Driver &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Network Interface Controller Drivers" href="index.html"/>
+        <link rel="next" title="6. ENIC Poll Mode Driver" href="enic.html"/>
+        <link rel="prev" title="4. Driver for VM Emulated Devices" href="e1000em.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Network Interface Controller Drivers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">1. Overview of Networking Drivers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bnx2x.html">2. BNX2X Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cxgbe.html">3. CXGBE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="e1000em.html">4. Driver for VM Emulated Devices</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5. ENA Poll Mode Driver</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">5.1. Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#management-interface">5.2. Management Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#data-path-interface">5.3. Data Path Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration-information">5.4. Configuration information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#building-dpdk">5.5. Building DPDK</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#supported-ena-adapters">5.6. Supported ENA adapters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#supported-operating-systems">5.7. Supported Operating Systems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#supported-features">5.8. Supported features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#unsupported-features">5.9. Unsupported features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prerequisites">5.10. Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#usage-example">5.11. Usage example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="enic.html">6. ENIC Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fm10k.html">7. FM10K Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="i40e.html">8. I40E Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ixgbe.html">9. IXGBE Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intel_vf.html">10. I40E/IXGBE/IGB Virtual Function Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mlx4.html">11. MLX4 poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mlx5.html">12. MLX5 poll mode driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nfp.html">13. NFP poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="szedata2.html">14. SZEDATA2 poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="virtio.html">15. Poll Mode Driver for Emulated Virtio NIC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">16. Poll Mode Driver that wraps vhost library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmxnet3.html">17. Poll Mode Driver for Paravirtual VMXNET3 NIC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pcap_ring.html">18. Libpcap and Ring Based Poll Mode Drivers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Network Interface Controller Drivers</a> &raquo;</li>
+      
+    <li>5. ENA Poll Mode Driver</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/nics/ena.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="ena-poll-mode-driver">
+<h1>5. ENA Poll Mode Driver</h1>
+<p>The ENA PMD is a DPDK poll-mode driver for the Amazon Elastic
+Network Adapter (ENA) family.</p>
+<div class="section" id="overview">
+<h2>5.1. Overview</h2>
+<p>The ENA driver exposes a lightweight management interface with a
+minimal set of memory mapped registers and an extendable command set
+through an Admin Queue.</p>
+<p>The driver supports a wide range of ENA adapters, is link-speed
+independent (i.e., the same driver is used for 10GbE, 25GbE, 40GbE,
+etc.), and it negotiates and supports an extendable feature set.</p>
+<p>ENA adapters allow high speed and low overhead Ethernet traffic
+processing by providing a dedicated Tx/Rx queue pair per CPU core.</p>
+<p>The ENA driver supports industry standard TCP/IP offload features such
+as checksum offload and TCP transmit segmentation offload (TSO).</p>
+<p>Receive-side scaling (RSS) is supported for multi-core scaling.</p>
+<p>Some of the ENA devices support a working mode called Low-latency
+Queue (LLQ), which saves several more microseconds.</p>
+</div>
+<div class="section" id="management-interface">
+<h2>5.2. Management Interface</h2>
+<p>ENA management interface is exposed by means of:</p>
+<ul class="simple">
+<li>Device Registers</li>
+<li>Admin Queue (AQ) and Admin Completion Queue (ACQ)</li>
+</ul>
+<p>ENA device memory-mapped PCIe space for registers (MMIO registers)
+are accessed only during driver initialization and are not involved
+in further normal device operation.</p>
+<p>AQ is used for submitting management commands, and the
+results/responses are reported asynchronously through ACQ.</p>
+<p>ENA introduces a very small set of management commands with room for
+vendor-specific extensions. Most of the management operations are
+framed in a generic Get/Set feature command.</p>
+<p>The following admin queue commands are supported:</p>
+<ul class="simple">
+<li>Create I/O submission queue</li>
+<li>Create I/O completion queue</li>
+<li>Destroy I/O submission queue</li>
+<li>Destroy I/O completion queue</li>
+<li>Get feature</li>
+<li>Set feature</li>
+<li>Get statistics</li>
+</ul>
+<p>Refer to <code class="docutils literal"><span class="pre">ena_admin_defs.h</span></code> for the list of supported Get/Set Feature
+properties.</p>
+</div>
+<div class="section" id="data-path-interface">
+<h2>5.3. Data Path Interface</h2>
+<p>I/O operations are based on Tx and Rx Submission Queues (Tx SQ and Rx
+SQ correspondingly). Each SQ has a completion queue (CQ) associated
+with it.</p>
+<p>The SQs and CQs are implemented as descriptor rings in contiguous
+physical memory.</p>
+<p>Refer to <code class="docutils literal"><span class="pre">ena_eth_io_defs.h</span></code> for the detailed structure of the descriptor</p>
+<p>The driver supports multi-queue for both Tx and Rx.</p>
+</div>
+<div class="section" id="configuration-information">
+<h2>5.4. Configuration information</h2>
+<p><strong>DPDK Configuration Parameters</strong></p>
+<blockquote>
+<div><p>The following configuration options are available for the ENA PMD:</p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>CONFIG_RTE_LIBRTE_ENA_PMD</strong> (default y): Enables or disables inclusion
+of the ENA PMD driver in the DPDK compilation.</li>
+<li><strong>CONFIG_RTE_LIBRTE_ENA_DEBUG_INIT</strong> (default y): Enables or disables debug
+logging of device initialization within the ENA PMD driver.</li>
+<li><strong>CONFIG_RTE_LIBRTE_ENA_DEBUG_RX</strong> (default n): Enables or disables debug
+logging of RX logic within the ENA PMD driver.</li>
+<li><strong>CONFIG_RTE_LIBRTE_ENA_DEBUG_TX</strong> (default n): Enables or disables debug
+logging of TX logic within the ENA PMD driver.</li>
+<li><strong>CONFIG_RTE_LIBRTE_ENA_COM_DEBUG</strong> (default n): Enables or disables debug
+logging of low level tx/rx logic in ena_com(base) within the ENA PMD driver.</li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+<p><strong>ENA Configuration Parameters</strong></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><strong>Number of Queues</strong></p>
+<p>This is the requested number of queues upon initialization, however, the actual
+number of receive and transmit queues to be created will be the minimum between
+the maximal number supported by the device and number of queues requested.</p>
+</li>
+<li><p class="first"><strong>Size of Queues</strong></p>
+<p>This is the requested size of receive/transmit queues, while the actual size
+will be the minimum between the requested size and the maximal receive/transmit
+supported by the device.</p>
+</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="building-dpdk">
+<h2>5.5. Building DPDK</h2>
+<p>See the <a class="reference internal" href="../linux_gsg/index.html#linux-gsg"><span class="std std-ref">DPDK Getting Started Guide for Linux</span></a> for
+instructions on how to build DPDK.</p>
+<p>By default the ENA PMD library will be built into the DPDK library.</p>
+<p>For configuring and using UIO and VFIO frameworks, please also refer <a class="reference internal" href="../linux_gsg/index.html#linux-gsg"><span class="std std-ref">the
+documentation that comes with DPDK suite</span></a>.</p>
+</div>
+<div class="section" id="supported-ena-adapters">
+<h2>5.6. Supported ENA adapters</h2>
+<p>Current ENA PMD supports the following ENA adapters including:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">1d0f:ec20</span></code> - ENA VF</li>
+<li><code class="docutils literal"><span class="pre">1d0f:ec21</span></code> - ENA VF with LLQ support</li>
+</ul>
+</div>
+<div class="section" id="supported-operating-systems">
+<h2>5.7. Supported Operating Systems</h2>
+<p>Any Linux distribution fulfilling the conditions described in <code class="docutils literal"><span class="pre">System</span> <span class="pre">Requirements</span></code>
+section of <a class="reference internal" href="../linux_gsg/index.html#linux-gsg"><span class="std std-ref">the DPDK documentation</span></a> or refer to <em>DPDK Release Notes</em>.</p>
+</div>
+<div class="section" id="supported-features">
+<h2>5.8. Supported features</h2>
+<ul class="simple">
+<li>Jumbo frames up to 9K</li>
+<li>Port Hardware Statistics</li>
+<li>IPv4/TCP/UDP checksum offload</li>
+<li>TSO offload</li>
+<li>Multiple receive and transmit queues</li>
+<li>RSS</li>
+<li>Low Latency Queue for Tx</li>
+</ul>
+</div>
+<div class="section" id="unsupported-features">
+<h2>5.9. Unsupported features</h2>
+<p>The features supported by the device and not yet supported by this PMD include:</p>
+<ul class="simple">
+<li>Asynchronous Event Notification Queue (AENQ)</li>
+</ul>
+</div>
+<div class="section" id="prerequisites">
+<h2>5.10. Prerequisites</h2>
+<ol class="arabic simple">
+<li>Prepare the system as recommended by DPDK suite.  This includes environment
+variables, hugepages configuration, tool-chains and configuration</li>
+<li>Insert igb_uio kernel module using the command &#8216;modprobe igb_uio&#8217;</li>
+<li>Bind the intended ENA device to igb_uio module</li>
+</ol>
+<p>At this point the system should be ready to run DPDK applications. Once the
+application runs to completion, the ENA can be detached from igb_uio if necessary.</p>
+</div>
+<div class="section" id="usage-example">
+<h2>5.11. Usage example</h2>
+<p>This section demonstrates how to launch <strong>testpmd</strong> with Amazon ENA
+devices managed by librte_pmd_ena.</p>
+<ol class="arabic">
+<li><p class="first">Load the kernel modules:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">modprobe uio</span>
+<span class="go">insmod ./x86_64-native-linuxapp-gcc/kmod/igb_uio.ko</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Currently Amazon ENA PMD driver depends on igb_uio user space I/O kernel module</p>
+</div>
+</li>
+<li><p class="first">Mount and request huge pages:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">mount -t hugetlbfs nodev /mnt/hugepages</span>
+<span class="go">echo 1024 &gt; /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Bind UIO driver to ENA device (using provided by DPDK binding tool):</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./tools/dpdk_nic_bind.py --bind=igb_uio 0000:02:00.1</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Start testpmd with basic parameters:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./x86_64-native-linuxapp-gcc/app/testpmd -c 0xf -n 4 -- -i</span>
+</pre></div>
+</div>
+<p>Example output:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">[...]</span>
+<span class="go">EAL: PCI device 0000:02:00.1 on NUMA socket -1</span>
+<span class="go">EAL:   probe driver: 1d0f:ec20 rte_ena_pmd</span>
+<span class="go">EAL:   PCI memory mapped at 0x7f9b6c400000</span>
+<span class="go">PMD: eth_ena_dev_init(): Initializing 0:2:0.1</span>
+<span class="go">Interactive-mode selected</span>
+<span class="go">Configuring Port 0 (socket 0)</span>
+<span class="go">Port 0: 00:00:00:11:00:01</span>
+<span class="go">Checking link statuses...</span>
+<span class="go">Port 0 Link Up - speed 10000 Mbps - full-duplex</span>
+<span class="go">Done</span>
+<span class="go">testpmd&gt;</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="enic.html" class="btn btn-neutral float-right" title="6. ENIC Poll Mode Driver" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="e1000em.html" class="btn btn-neutral" title="4. Driver for VM Emulated Devices" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,573 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>17. L3 Forwarding Sample Application &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Sample Applications User Guide" href="index.html"/>
+        <link rel="next" title="18. L3 Forwarding with Power Management Sample Application" href="l3_forward_power_man.html"/>
+        <link rel="prev" title="16. L2 Forwarding Sample Application with Cache Allocation Technology (CAT)" href="l2_forward_cat.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Sample Applications User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmd_line.html">2. Command Line Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethtool.html">3. Ethtool Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exception_path.html">4. Exception Path Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello_world.html">5. Hello World Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skeleton.html">6. Basic Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rxtx_callbacks.html">7. RX/TX Callbacks Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_frag.html">8. IP Fragmentation Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipv4_multicast.html">9. IPv4 Multicast Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_reassembly.html">10. IP Reassembly Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">11. Kernel NIC Interface Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keep_alive.html">12. Keep Alive Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_crypto.html">13. L2 Forwarding with Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_job_stats.html">14. L2 Forwarding Sample Application (in Real and Virtualized Environments) with core load statistics.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_real_virtual.html">15. L2 Forwarding Sample Application (in Real and Virtualized Environments)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_cat.html">16. L2 Forwarding Sample Application with Cache Allocation Technology (CAT)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">17. L3 Forwarding Sample Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">17.1. Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compiling-the-application">17.2. Compiling the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-application">17.3. Running the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#explanation">17.4. Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#hash-initialization">17.4.1. Hash Initialization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lpm-initialization">17.4.2. LPM Initialization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#packet-forwarding-for-hash-based-lookups">17.4.3. Packet Forwarding for Hash-based Lookups</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#packet-forwarding-for-lpm-based-lookups">17.4.4. Packet Forwarding for LPM-based Lookups</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_power_man.html">18. L3 Forwarding with Power Management Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_access_ctrl.html">19. L3 Forwarding with Access Control Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_virtual.html">20. L3 Forwarding in a Virtualization Environment Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_status_intr.html">21. Link Status Interrupt Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="load_balancer.html">22. Load Balancer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_process.html">23. Multi-process Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_metering.html">24. QoS Metering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_scheduler.html">25. QoS Scheduler Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intel_quickassist.html">26. Intel® QuickAssist Technology Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quota_watermark.html">27. Quota and Watermark Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer.html">28. Timer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_ordering.html">29. Packet Ordering Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_dcb_forwarding.html">30. VMDQ and DCB Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">31. Vhost Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="netmap_compatibility.html">32. Netmap Compatibility Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_pipeline.html">33. Internet Protocol (IP) Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_pipeline.html">34. Test Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dist_app.html">35. Distributor Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vm_power_management.html">36. VM Power Management Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tep_termination.html">37. TEP termination Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="proc_info.html">38. dpdk_proc_info Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ptpclient.html">39. PTP Client Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance_thread.html">40. Performance Thread Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_secgw.html">41. IPsec Security Gateway Sample Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Sample Applications User Guide</a> &raquo;</li>
+      
+    <li>17. L3 Forwarding Sample Application</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/sample_app_ug/l3_forward.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="l3-forwarding-sample-application">
+<h1>17. L3 Forwarding Sample Application</h1>
+<p>The L3 Forwarding application is a simple example of packet processing using the DPDK.
+The application performs L3 forwarding.</p>
+<div class="section" id="overview">
+<h2>17.1. Overview</h2>
+<p>The application demonstrates the use of the hash and LPM libraries in the DPDK to implement packet forwarding.
+The initialization and run-time paths are very similar to those of the <a class="reference internal" href="l2_forward_real_virtual.html"><span class="doc">L2 Forwarding Sample Application (in Real and Virtualized Environments)</span></a>.
+The main difference from the L2 Forwarding sample application is that the forwarding decision
+is made based on information read from the input packet.</p>
+<p>The lookup method is either hash-based or LPM-based and is selected at compile time. When the selected lookup method is hash-based,
+a hash object is used to emulate the flow classification stage.
+The hash object is used in correlation with a flow table to map each input packet to its flow at runtime.</p>
+<p>The hash lookup key is represented by a DiffServ 5-tuple composed of the following fields read from the input packet:
+Source IP Address, Destination IP Address, Protocol, Source Port and Destination Port.
+The ID of the output interface for the input packet is read from the identified flow table entry.
+The set of flows used by the application is statically configured and loaded into the hash at initialization time.
+When the selected lookup method is LPM based, an LPM object is used to emulate the forwarding stage for IPv4 packets.
+The LPM object is used as the routing table to identify the next hop for each input packet at runtime.</p>
+<p>The LPM lookup key is represented by the Destination IP Address field read from the input packet.
+The ID of the output interface for the input packet is the next hop returned by the LPM lookup.
+The set of LPM rules used by the application is statically configured and loaded into the LPM object at initialization time.</p>
+<p>In the sample application, hash-based forwarding supports IPv4 and IPv6. LPM-based forwarding supports IPv4 only.</p>
+</div>
+<div class="section" id="compiling-the-application">
+<h2>17.2. Compiling the Application</h2>
+<p>To compile the application:</p>
+<ol class="arabic">
+<li><p class="first">Go to the sample application directory:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export RTE_SDK=/path/to/rte_sdk</span>
+<span class="go">cd ${RTE_SDK}/examples/l3fwd</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Set the target (a default target is used if not specified). For example:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export RTE_TARGET=x86_64-native-linuxapp-gcc</span>
+</pre></div>
+</div>
+<p>See the <em>DPDK Getting Started Guide</em> for possible RTE_TARGET values.</p>
+</li>
+<li><p class="first">Build the application:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">make</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="running-the-application">
+<h2>17.3. Running the Application</h2>
+<p>The application has a number of command line options:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./build/l3fwd [EAL options] -- -p PORTMASK [-P]  --config(port,queue,lcore)[,(port,queue,lcore)] [--enable-jumbo [--max-pkt-len PKTLEN]]  [--no-numa][--hash-entry-num][--ipv6] [--parse-ptype]</span>
+</pre></div>
+</div>
+<p>where,</p>
+<ul class="simple">
+<li>-p PORTMASK: Hexadecimal bitmask of ports to configure</li>
+<li>-P: optional, sets all ports to promiscuous mode so that packets are accepted regardless of the packet&#8217;s Ethernet MAC destination address.
+Without this option, only packets with the Ethernet MAC destination address set to the Ethernet address of the port are accepted.</li>
+<li>&#8211;config (port,queue,lcore)[,(port,queue,lcore)]: determines which queues from which ports are mapped to which cores</li>
+<li>&#8211;enable-jumbo: optional, enables jumbo frames</li>
+<li>&#8211;max-pkt-len: optional, maximum packet length in decimal (64-9600)</li>
+<li>&#8211;no-numa: optional, disables numa awareness</li>
+<li>&#8211;hash-entry-num: optional, specifies the hash entry number in hexadecimal to be setup</li>
+<li>&#8211;ipv6: optional, set it if running ipv6 packets</li>
+<li>&#8211;parse-ptype: optional, set it if use software way to analyze packet type</li>
+</ul>
+<p>For example, consider a dual processor socket platform where cores 0-7 and 16-23 appear on socket 0, while cores 8-15 and 24-31 appear on socket 1.
+Let&#8217;s say that the programmer wants to use memory from both NUMA nodes, the platform has only two ports, one connected to each NUMA node,
+and the programmer wants to use two cores from each processor socket to do the packet processing.</p>
+<p>To enable L3 forwarding between two ports, using two cores, cores 1 and 2, from each processor,
+while also taking advantage of local memory access by optimizing around NUMA, the programmer must enable two queues from each port,
+pin to the appropriate cores and allocate memory from the appropriate NUMA node. This is achieved using the following command:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./build/l3fwd -c 606 -n 4 -- -p 0x3 --config=&quot;(0,0,1),(0,1,2),(1,0,9),(1,1,10)&quot;</span>
+</pre></div>
+</div>
+<p>In this command:</p>
+<ul class="simple">
+<li>The -c option enables cores 0, 1, 2, 3</li>
+<li>The -p option enables ports 0 and 1</li>
+<li>The &#8211;config option enables two queues on each port and maps each (port,queue) pair to a specific core.
+Logic to enable multiple RX queues using RSS and to allocate memory from the correct NUMA nodes
+is included in the application and is done transparently.
+The following table shows the mapping in this example:</li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="16%" />
+<col width="16%" />
+<col width="54%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>Port</strong></td>
+<td><strong>Queue</strong></td>
+<td><strong>lcore</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr class="row-even"><td>0</td>
+<td>0</td>
+<td>0</td>
+<td>Map queue 0 from port 0 to lcore 0.</td>
+</tr>
+<tr class="row-odd"><td>0</td>
+<td>1</td>
+<td>2</td>
+<td>Map queue 1 from port 0 to lcore 2.</td>
+</tr>
+<tr class="row-even"><td>1</td>
+<td>0</td>
+<td>1</td>
+<td>Map queue 0 from port 1 to lcore 1.</td>
+</tr>
+<tr class="row-odd"><td>1</td>
+<td>1</td>
+<td>3</td>
+<td>Map queue 1 from port 1 to lcore 3.</td>
+</tr>
+</tbody>
+</table>
+<p>Refer to the <em>DPDK Getting Started Guide</em> for general information on running applications and
+the Environment Abstraction Layer (EAL) options.</p>
+</div>
+<div class="section" id="explanation">
+<span id="l3-fwd-explanation"></span><h2>17.4. Explanation</h2>
+<p>The following sections provide some explanation of the sample application code. As mentioned in the overview section,
+the initialization and run-time paths are very similar to those of the <a class="reference internal" href="l2_forward_real_virtual.html"><span class="doc">L2 Forwarding Sample Application (in Real and Virtualized Environments)</span></a>.
+The following sections describe aspects that are specific to the L3 Forwarding sample application.</p>
+<div class="section" id="hash-initialization">
+<h3>17.4.1. Hash Initialization</h3>
+<p>The hash object is created and loaded with the pre-configured entries read from a global array,
+and then generate the expected 5-tuple as key to keep consistence with those of real flow
+for the convenience to execute hash performance test on 4M/8M/16M flows.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The Hash initialization will setup both ipv4 and ipv6 hash table,
+and populate the either table depending on the value of variable ipv6.
+To support the hash performance test with up to 8M single direction flows/16M bi-direction flows,
+populate_ipv4_many_flow_into_table() function will populate the hash table with specified hash table entry number(default 4M).</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Value of global variable ipv6 can be specified with &#8211;ipv6 in the command line.
+Value of global variable hash_entry_number,
+which is used to specify the total hash entry number for all used ports in hash performance test,
+can be specified with &#8211;hash-entry-num VALUE in command line, being its default value 4.</p>
+</div>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#if (APP_LOOKUP_METHOD == APP_LOOKUP_EXACT_MATCH)</span>
+
+    <span class="k">static</span> <span class="kt">void</span>
+    <span class="nf">setup_hash</span><span class="p">(</span><span class="kt">int</span> <span class="n">socketid</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// ...</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">hash_entry_number</span> <span class="o">!=</span> <span class="n">HASH_ENTRY_NUMBER_DEFAULT</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">ipv6</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                <span class="cm">/* populate the ipv4 hash */</span>
+                <span class="n">populate_ipv4_many_flow_into_table</span><span class="p">(</span><span class="n">ipv4_l3fwd_lookup_struct</span><span class="p">[</span><span class="n">socketid</span><span class="p">],</span> <span class="n">hash_entry_number</span><span class="p">);</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="cm">/* populate the ipv6 hash */</span>
+                <span class="n">populate_ipv6_many_flow_into_table</span><span class="p">(</span> <span class="n">ipv6_l3fwd_lookup_struct</span><span class="p">[</span><span class="n">socketid</span><span class="p">],</span> <span class="n">hash_entry_number</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span> <span class="k">else</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">ipv6</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                <span class="cm">/* populate the ipv4 hash */</span>
+                <span class="n">populate_ipv4_few_flow_into_table</span><span class="p">(</span><span class="n">ipv4_l3fwd_lookup_struct</span><span class="p">[</span><span class="n">socketid</span><span class="p">]);</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="cm">/* populate the ipv6 hash */</span>
+                <span class="n">populate_ipv6_few_flow_into_table</span><span class="p">(</span><span class="n">ipv6_l3fwd_lookup_struct</span><span class="p">[</span><span class="n">socketid</span><span class="p">]);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="cp">#endif</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="lpm-initialization">
+<h3>17.4.2. LPM Initialization</h3>
+<p>The LPM object is created and loaded with the pre-configured entries read from a global array.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#if (APP_LOOKUP_METHOD == APP_LOOKUP_LPM)</span>
+
+<span class="k">static</span> <span class="kt">void</span>
+<span class="nf">setup_lpm</span><span class="p">(</span><span class="kt">int</span> <span class="n">socketid</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="n">i</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">ret</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="n">s</span><span class="p">[</span><span class="mi">64</span><span class="p">];</span>
+
+    <span class="cm">/* create the LPM table */</span>
+
+    <span class="n">snprintf</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">s</span><span class="p">),</span> <span class="s">&quot;IPV4_L3FWD_LPM_%d&quot;</span><span class="p">,</span> <span class="n">socketid</span><span class="p">);</span>
+
+    <span class="n">ipv4_l3fwd_lookup_struct</span><span class="p">[</span><span class="n">socketid</span><span class="p">]</span> <span class="o">=</span> <span class="n">rte_lpm_create</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">socketid</span><span class="p">,</span> <span class="n">IPV4_L3FWD_LPM_MAX_RULES</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">ipv4_l3fwd_lookup_struct</span><span class="p">[</span><span class="n">socketid</span><span class="p">]</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+        <span class="n">rte_exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">,</span> <span class="s">&quot;Unable to create the l3fwd LPM table&quot;</span>
+            <span class="s">&quot; on socket %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">socketid</span><span class="p">);</span>
+
+    <span class="cm">/* populate the LPM table */</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">IPV4_L3FWD_NUM_ROUTES</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="cm">/* skip unused ports */</span>
+
+        <span class="k">if</span> <span class="p">((</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">ipv4_l3fwd_route_array</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">if_out</span> <span class="o">&amp;</span> <span class="n">enabled_port_mask</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="k">continue</span><span class="p">;</span>
+
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">rte_lpm_add</span><span class="p">(</span><span class="n">ipv4_l3fwd_lookup_struct</span><span class="p">[</span><span class="n">socketid</span><span class="p">],</span> <span class="n">ipv4_l3fwd_route_array</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">ip</span><span class="p">,</span>
+                                <span class="n">ipv4_l3fwd_route_array</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">depth</span><span class="p">,</span> <span class="n">ipv4_l3fwd_route_array</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">if_out</span><span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">rte_exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">,</span> <span class="s">&quot;Unable to add entry %u to the &quot;</span>
+                    <span class="s">&quot;l3fwd LPM table on socket %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">socketid</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">printf</span><span class="p">(</span><span class="s">&quot;LPM: Adding route 0x%08x / %d (%d)</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="kt">unsigned</span><span class="p">)</span><span class="n">ipv4_l3fwd_route_array</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">ip</span><span class="p">,</span> <span class="n">ipv4_l3fwd_route_array</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">depth</span><span class="p">,</span> <span class="n">ipv4_l3fwd_route_array</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">if_out</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="cp">#endif</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="packet-forwarding-for-hash-based-lookups">
+<h3>17.4.3. Packet Forwarding for Hash-based Lookups</h3>
+<p>For each input packet, the packet forwarding operation is done by the l3fwd_simple_forward()
+or simple_ipv4_fwd_4pkts() function for IPv4 packets or the simple_ipv6_fwd_4pkts() function for IPv6 packets.
+The l3fwd_simple_forward() function provides the basic functionality for both IPv4 and IPv6 packet forwarding
+for any number of burst packets received,
+and the packet forwarding decision (that is, the identification of the output interface for the packet)
+for hash-based lookups is done by the  get_ipv4_dst_port() or get_ipv6_dst_port() function.
+The get_ipv4_dst_port() function is shown below:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span>static inline uint8_t
+get_ipv4_dst_port(void *ipv4_hdr, uint8_t portid, lookup_struct_t *ipv4_l3fwd_lookup_struct)
+{
+    int ret = 0;
+    union ipv4_5tuple_host key;
+
+    ipv4_hdr = (uint8_t \*)ipv4_hdr + offsetof(struct ipv4_hdr, time_to_live);
+
+    m128i data = _mm_loadu_si128(( m128i*)(ipv4_hdr));
+
+    /* Get 5 tuple: dst port, src port, dst IP address, src IP address and protocol */
+
+    key.xmm = _mm_and_si128(data, mask0);
+
+    /* Find destination port */
+
+    ret = rte_hash_lookup(ipv4_l3fwd_lookup_struct, (const void *)&amp;key);
+
+    return (uint8_t)((ret &lt; 0)? portid : ipv4_l3fwd_out_if[ret]);
+}
+</pre></div>
+</div>
+<p>The get_ipv6_dst_port() function is similar to the get_ipv4_dst_port() function.</p>
+<p>The simple_ipv4_fwd_4pkts() and simple_ipv6_fwd_4pkts() function are optimized for continuous 4 valid ipv4 and ipv6 packets,
+they leverage the multiple buffer optimization to boost the performance of forwarding packets with the exact match on hash table.
+The key code snippet of simple_ipv4_fwd_4pkts() is shown below:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span>
+<span class="nf">simple_ipv4_fwd_4pkts</span><span class="p">(</span><span class="k">struct</span> <span class="n">rte_mbuf</span><span class="o">*</span> <span class="n">m</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="kt">uint8_t</span> <span class="n">portid</span><span class="p">,</span> <span class="k">struct</span> <span class="n">lcore_conf</span> <span class="o">*</span><span class="n">qconf</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// ...</span>
+
+    <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">_mm_loadu_si128</span><span class="p">((</span> <span class="n">m128i</span><span class="o">*</span><span class="p">)(</span><span class="n">rte_pktmbuf_mtod</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="o">+</span> <span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="n">ether_hdr</span><span class="p">)</span> <span class="o">+</span> <span class="n">offsetof</span><span class="p">(</span><span class="k">struct</span> <span class="n">ipv4_hdr</span><span class="p">,</span> <span class="n">time_to_live</span><span class="p">)));</span>
+    <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">_mm_loadu_si128</span><span class="p">((</span> <span class="n">m128i</span><span class="o">*</span><span class="p">)(</span><span class="n">rte_pktmbuf_mtod</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="o">+</span> <span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="n">ether_hdr</span><span class="p">)</span> <span class="o">+</span> <span class="n">offsetof</span><span class="p">(</span><span class="k">struct</span> <span class="n">ipv4_hdr</span><span class="p">,</span> <span class="n">time_to_live</span><span class="p">)));</span>
+    <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">_mm_loadu_si128</span><span class="p">((</span> <span class="n">m128i</span><span class="o">*</span><span class="p">)(</span><span class="n">rte_pktmbuf_mtod</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="o">+</span> <span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="n">ether_hdr</span><span class="p">)</span> <span class="o">+</span> <span class="n">offsetof</span><span class="p">(</span><span class="k">struct</span> <span class="n">ipv4_hdr</span><span class="p">,</span> <span class="n">time_to_live</span><span class="p">)));</span>
+    <span class="n">data</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">_mm_loadu_si128</span><span class="p">((</span> <span class="n">m128i</span><span class="o">*</span><span class="p">)(</span><span class="n">rte_pktmbuf_mtod</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="o">+</span> <span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="n">ether_hdr</span><span class="p">)</span> <span class="o">+</span> <span class="n">offsetof</span><span class="p">(</span><span class="k">struct</span> <span class="n">ipv4_hdr</span><span class="p">,</span> <span class="n">time_to_live</span><span class="p">)));</span>
+
+    <span class="n">key</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">xmm</span> <span class="o">=</span> <span class="n">_mm_and_si128</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">mask0</span><span class="p">);</span>
+    <span class="n">key</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">xmm</span> <span class="o">=</span> <span class="n">_mm_and_si128</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">mask0</span><span class="p">);</span>
+    <span class="n">key</span><span class="p">[</span><span class="mi">2</span><span class="p">].</span><span class="n">xmm</span> <span class="o">=</span> <span class="n">_mm_and_si128</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">mask0</span><span class="p">);</span>
+    <span class="n">key</span><span class="p">[</span><span class="mi">3</span><span class="p">].</span><span class="n">xmm</span> <span class="o">=</span> <span class="n">_mm_and_si128</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">mask0</span><span class="p">);</span>
+
+    <span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="n">key_array</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="o">&amp;</span><span class="n">key</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">&amp;</span><span class="n">key</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="o">&amp;</span><span class="n">key</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="o">&amp;</span><span class="n">key</span><span class="p">[</span><span class="mi">3</span><span class="p">]};</span>
+
+    <span class="n">rte_hash_lookup_multi</span><span class="p">(</span><span class="n">qconf</span><span class="o">-&gt;</span><span class="n">ipv4_lookup_struct</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">key_array</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">4</span><span class="p">,</span> <span class="n">ret</span><span class="p">);</span>
+
+    <span class="n">dst_port</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">?</span> <span class="nl">portid</span><span class="p">:</span><span class="n">ipv4_l3fwd_out_if</span><span class="p">[</span><span class="n">ret</span><span class="p">[</span><span class="mi">0</span><span class="p">]];</span>
+    <span class="n">dst_port</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">?</span> <span class="nl">portid</span><span class="p">:</span><span class="n">ipv4_l3fwd_out_if</span><span class="p">[</span><span class="n">ret</span><span class="p">[</span><span class="mi">1</span><span class="p">]];</span>
+    <span class="n">dst_port</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">?</span> <span class="nl">portid</span><span class="p">:</span><span class="n">ipv4_l3fwd_out_if</span><span class="p">[</span><span class="n">ret</span><span class="p">[</span><span class="mi">2</span><span class="p">]];</span>
+    <span class="n">dst_port</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">?</span> <span class="nl">portid</span><span class="p">:</span><span class="n">ipv4_l3fwd_out_if</span><span class="p">[</span><span class="n">ret</span><span class="p">[</span><span class="mi">3</span><span class="p">]];</span>
+
+    <span class="c1">// ...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The simple_ipv6_fwd_4pkts() function is similar to the simple_ipv4_fwd_4pkts() function.</p>
+<p>Known issue: IP packets with extensions or IP packets which are not TCP/UDP cannot work well at this mode.</p>
+</div>
+<div class="section" id="packet-forwarding-for-lpm-based-lookups">
+<h3>17.4.4. Packet Forwarding for LPM-based Lookups</h3>
+<p>For each input packet, the packet forwarding operation is done by the l3fwd_simple_forward() function,
+but the packet forwarding decision (that is, the identification of the output interface for the packet)
+for LPM-based lookups is done by the get_ipv4_dst_port() function below:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kr">inline</span> <span class="kt">uint8_t</span>
+<span class="nf">get_ipv4_dst_port</span><span class="p">(</span><span class="k">struct</span> <span class="n">ipv4_hdr</span> <span class="o">*</span><span class="n">ipv4_hdr</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">portid</span><span class="p">,</span> <span class="n">lookup_struct_t</span> <span class="o">*</span><span class="n">ipv4_l3fwd_lookup_struct</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">uint8_t</span> <span class="n">next_hop</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="kt">uint8_t</span><span class="p">)</span> <span class="p">((</span><span class="n">rte_lpm_lookup</span><span class="p">(</span><span class="n">ipv4_l3fwd_lookup_struct</span><span class="p">,</span> <span class="n">rte_be_to_cpu_32</span><span class="p">(</span><span class="n">ipv4_hdr</span><span class="o">-&gt;</span><span class="n">dst_addr</span><span class="p">),</span> <span class="o">&amp;</span><span class="n">next_hop</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span><span class="o">?</span> <span class="nl">next_hop</span> <span class="p">:</span> <span class="n">portid</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="l3_forward_power_man.html" class="btn btn-neutral float-right" title="18. L3 Forwarding with Power Management Sample Application" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="l2_forward_cat.html" class="btn btn-neutral" title="16. L2 Forwarding Sample Application with Cache Allocation Technology (CAT)" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

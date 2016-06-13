@@ -1,0 +1,738 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>3. CXGBE Poll Mode Driver &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Network Interface Controller Drivers" href="index.html"/>
+        <link rel="next" title="4. Driver for VM Emulated Devices" href="e1000em.html"/>
+        <link rel="prev" title="2. BNX2X Poll Mode Driver" href="bnx2x.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Network Interface Controller Drivers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">1. Overview of Networking Drivers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bnx2x.html">2. BNX2X Poll Mode Driver</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3. CXGBE Poll Mode Driver</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#features">3.1. Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#limitations">3.2. Limitations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#supported-chelsio-t5-nics">3.3. Supported Chelsio T5 NICs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prerequisites">3.4. Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pre-installation-configuration">3.5. Pre-Installation Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#config-file-options">3.5.1. Config File Options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#driver-compilation">3.5.2. Driver Compilation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#linux">3.6. Linux</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#linux-installation">3.6.1. Linux Installation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#running-testpmd">3.6.2. Running testpmd</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#freebsd">3.7. FreeBSD</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#freebsd-installation">3.7.1. FreeBSD Installation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">3.7.2. Running testpmd</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#sample-application-notes">3.8. Sample Application Notes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#enable-disable-flow-control">3.8.1. Enable/Disable Flow Control</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#jumbo-mode">3.8.2. Jumbo Mode</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="e1000em.html">4. Driver for VM Emulated Devices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ena.html">5. ENA Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="enic.html">6. ENIC Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fm10k.html">7. FM10K Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="i40e.html">8. I40E Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ixgbe.html">9. IXGBE Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intel_vf.html">10. I40E/IXGBE/IGB Virtual Function Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mlx4.html">11. MLX4 poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mlx5.html">12. MLX5 poll mode driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nfp.html">13. NFP poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="szedata2.html">14. SZEDATA2 poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="virtio.html">15. Poll Mode Driver for Emulated Virtio NIC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">16. Poll Mode Driver that wraps vhost library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmxnet3.html">17. Poll Mode Driver for Paravirtual VMXNET3 NIC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pcap_ring.html">18. Libpcap and Ring Based Poll Mode Drivers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Network Interface Controller Drivers</a> &raquo;</li>
+      
+    <li>3. CXGBE Poll Mode Driver</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/nics/cxgbe.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="cxgbe-poll-mode-driver">
+<h1>3. CXGBE Poll Mode Driver</h1>
+<p>The CXGBE PMD (<strong>librte_pmd_cxgbe</strong>) provides poll mode driver support
+for <strong>Chelsio T5</strong> 10/40 Gbps family of adapters. CXGBE PMD has support
+for the latest Linux and FreeBSD operating systems.</p>
+<p>More information can be found at <a class="reference external" href="http://www.chelsio.com">Chelsio Communications Official Website</a>.</p>
+<div class="section" id="features">
+<h2>3.1. Features</h2>
+<p>CXGBE PMD has support for:</p>
+<ul class="simple">
+<li>Multiple queues for TX and RX</li>
+<li>Receiver Side Steering (RSS)</li>
+<li>VLAN filtering</li>
+<li>Checksum offload</li>
+<li>Promiscuous mode</li>
+<li>All multicast mode</li>
+<li>Port hardware statistics</li>
+<li>Jumbo frames</li>
+</ul>
+</div>
+<div class="section" id="limitations">
+<h2>3.2. Limitations</h2>
+<p>The Chelsio T5 devices provide two/four ports but expose a single PCI bus
+address, thus, librte_pmd_cxgbe registers itself as a
+PCI driver that allocates one Ethernet device per detected port.</p>
+<p>For this reason, one cannot whitelist/blacklist a single port without
+whitelisting/blacklisting the other ports on the same device.</p>
+</div>
+<div class="section" id="supported-chelsio-t5-nics">
+<h2>3.3. Supported Chelsio T5 NICs</h2>
+<ul class="simple">
+<li>1G NICs: T502-BT</li>
+<li>10G NICs: T520-BT, T520-CR, T520-LL-CR, T520-SO-CR, T540-CR</li>
+<li>40G NICs: T580-CR, T580-LP-CR, T580-SO-CR</li>
+<li>Other T5 NICs: T522-CR</li>
+</ul>
+</div>
+<div class="section" id="prerequisites">
+<h2>3.4. Prerequisites</h2>
+<ul>
+<li><p class="first">Requires firmware version <strong>1.13.32.0</strong> and higher. Visit
+<a class="reference external" href="http://service.chelsio.com">Chelsio Download Center</a> to get latest firmware
+bundled with the latest Chelsio Unified Wire package.</p>
+<p>For Linux, installing and loading the latest cxgb4 kernel driver from the
+Chelsio Unified Wire package should get you the latest firmware. More
+information can be obtained from the User Guide that is bundled with the
+Chelsio Unified Wire package.</p>
+<p>For FreeBSD, the latest firmware obtained from the Chelsio Unified Wire
+package must be manually flashed via cxgbetool available in FreeBSD source
+repository.</p>
+<p>Instructions on how to manually flash the firmware are given in section
+<a class="reference internal" href="#linux-installation"><span class="std std-ref">Linux Installation</span></a> for Linux and section <a class="reference internal" href="#freebsd-installation"><span class="std std-ref">FreeBSD Installation</span></a>
+for FreeBSD.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="pre-installation-configuration">
+<h2>3.5. Pre-Installation Configuration</h2>
+<div class="section" id="config-file-options">
+<h3>3.5.1. Config File Options</h3>
+<p>The following options can be modified in the <code class="docutils literal"><span class="pre">.config</span></code> file. Please note that
+enabling debugging options may affect system performance.</p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">CONFIG_RTE_LIBRTE_CXGBE_PMD</span></code> (default <strong>y</strong>)</p>
+<p>Toggle compilation of librte_pmd_cxgbe driver.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">CONFIG_RTE_LIBRTE_CXGBE_DEBUG</span></code> (default <strong>n</strong>)</p>
+<p>Toggle display of generic debugging messages.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">CONFIG_RTE_LIBRTE_CXGBE_DEBUG_REG</span></code> (default <strong>n</strong>)</p>
+<p>Toggle display of registers related run-time check messages.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">CONFIG_RTE_LIBRTE_CXGBE_DEBUG_MBOX</span></code> (default <strong>n</strong>)</p>
+<p>Toggle display of firmware mailbox related run-time check messages.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">CONFIG_RTE_LIBRTE_CXGBE_DEBUG_TX</span></code> (default <strong>n</strong>)</p>
+<p>Toggle display of transmission data path run-time check messages.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">CONFIG_RTE_LIBRTE_CXGBE_DEBUG_RX</span></code> (default <strong>n</strong>)</p>
+<p>Toggle display of receiving data path run-time check messages.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="driver-compilation">
+<span id="id1"></span><h3>3.5.2. Driver Compilation</h3>
+<p>To compile CXGBE PMD for Linux x86_64 gcc target, run the following &#8220;make&#8221;
+command:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">cd &lt;DPDK-source-directory&gt;</span>
+<span class="go">make config T=x86_64-native-linuxapp-gcc install</span>
+</pre></div>
+</div>
+<p>To compile CXGBE PMD for FreeBSD x86_64 clang target, run the following &#8220;gmake&#8221;
+command:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">cd &lt;DPDK-source-directory&gt;</span>
+<span class="go">gmake config T=x86_64-native-bsdapp-clang install</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="linux">
+<h2>3.6. Linux</h2>
+<div class="section" id="linux-installation">
+<span id="id2"></span><h3>3.6.1. Linux Installation</h3>
+<p>Steps to manually install the latest firmware from the downloaded Chelsio
+Unified Wire package for Linux operating system are as follows:</p>
+<ol class="arabic">
+<li><p class="first">Load the kernel module:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">modprobe cxgb4</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Use ifconfig to get the interface name assigned to Chelsio card:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">ifconfig -a | grep &quot;00:07:43&quot;</span>
+</pre></div>
+</div>
+<p>Example output:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">p1p1      Link encap:Ethernet  HWaddr 00:07:43:2D:EA:C0</span>
+<span class="go">p1p2      Link encap:Ethernet  HWaddr 00:07:43:2D:EA:C8</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Install cxgbtool:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">cd &lt;path_to_uwire&gt;/tools/cxgbtool</span>
+<span class="go">make install</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Use cxgbtool to load the firmware config file onto the card:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">cxgbtool p1p1 loadcfg &lt;path_to_uwire&gt;/src/network/firmware/t5-config.txt</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Use cxgbtool to load the firmware image onto the card:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">cxgbtool p1p1 loadfw &lt;path_to_uwire&gt;/src/network/firmware/t5fw-*.bin</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Unload and reload the kernel module:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">modprobe -r cxgb4</span>
+<span class="go">modprobe cxgb4</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Verify with ethtool:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">ethtool -i p1p1 | grep &quot;firmware&quot;</span>
+</pre></div>
+</div>
+<p>Example output:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">firmware-version: 1.13.32.0, TP 0.1.4.8</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="running-testpmd">
+<h3>3.6.2. Running testpmd</h3>
+<p>This section demonstrates how to launch <strong>testpmd</strong> with Chelsio T5
+devices managed by librte_pmd_cxgbe in Linux operating system.</p>
+<ol class="arabic">
+<li><p class="first">Change to DPDK source directory where the target has been compiled in
+section <a class="reference internal" href="#driver-compilation"><span class="std std-ref">Driver Compilation</span></a>:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">cd &lt;DPDK-source-directory&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Load the kernel module:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">modprobe cxgb4</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Get the PCI bus addresses of the interfaces bound to cxgb4 driver:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">dmesg | tail -2</span>
+</pre></div>
+</div>
+<p>Example output:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">cxgb4 0000:02:00.4 p1p1: renamed from eth0</span>
+<span class="go">cxgb4 0000:02:00.4 p1p2: renamed from eth1</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Both the interfaces of a Chelsio T5 2-port adapter are bound to the
+same PCI bus address.</p>
+</div>
+</li>
+<li><p class="first">Unload the kernel module:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">modprobe -ar cxgb4 csiostor</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Request huge pages:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">echo 1024 &gt; /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages/nr_hugepages</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Mount huge pages:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">mkdir /mnt/huge</span>
+<span class="go">mount -t hugetlbfs nodev /mnt/huge</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Load igb_uio or vfio-pci driver:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">insmod ./x86_64-native-linuxapp-gcc/kmod/igb_uio.ko</span>
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">modprobe vfio-pci</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Bind the Chelsio T5 adapters to igb_uio or vfio-pci loaded in the previous
+step:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./tools/dpdk_nic_bind.py --bind igb_uio 0000:02:00.4</span>
+</pre></div>
+</div>
+<p>or</p>
+<p>Setup VFIO permissions for regular users and then bind to vfio-pci:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">sudo chmod a+x /dev/vfio</span>
+
+<span class="go">sudo chmod 0666 /dev/vfio/*</span>
+
+<span class="go">./tools/dpdk_nic_bind.py --bind vfio-pci 0000:02:00.4</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Currently, CXGBE PMD only supports the binding of PF4 for Chelsio T5 NICs.</p>
+</div>
+</li>
+<li><p class="first">Start testpmd with basic parameters:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./x86_64-native-linuxapp-gcc/app/testpmd -c 0xf -n 4 -w 0000:02:00.4 -- -i</span>
+</pre></div>
+</div>
+<p>Example output:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">[...]</span>
+<span class="go">EAL: PCI device 0000:02:00.4 on NUMA socket -1</span>
+<span class="go">EAL:   probe driver: 1425:5401 rte_cxgbe_pmd</span>
+<span class="go">EAL:   PCI memory mapped at 0x7fd7c0200000</span>
+<span class="go">EAL:   PCI memory mapped at 0x7fd77cdfd000</span>
+<span class="go">EAL:   PCI memory mapped at 0x7fd7c10b7000</span>
+<span class="go">PMD: rte_cxgbe_pmd: fw: 1.13.32.0, TP: 0.1.4.8</span>
+<span class="go">PMD: rte_cxgbe_pmd: Coming up as MASTER: Initializing adapter</span>
+<span class="go">Interactive-mode selected</span>
+<span class="go">Configuring Port 0 (socket 0)</span>
+<span class="go">Port 0: 00:07:43:2D:EA:C0</span>
+<span class="go">Configuring Port 1 (socket 0)</span>
+<span class="go">Port 1: 00:07:43:2D:EA:C8</span>
+<span class="go">Checking link statuses...</span>
+<span class="go">PMD: rte_cxgbe_pmd: Port0: passive DA port module inserted</span>
+<span class="go">PMD: rte_cxgbe_pmd: Port1: passive DA port module inserted</span>
+<span class="go">Port 0 Link Up - speed 10000 Mbps - full-duplex</span>
+<span class="go">Port 1 Link Up - speed 10000 Mbps - full-duplex</span>
+<span class="go">Done</span>
+<span class="go">testpmd&gt;</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Flow control pause TX/RX is disabled by default and can be enabled via
+testpmd. Refer section <a class="reference internal" href="#flow-control"><span class="std std-ref">Enable/Disable Flow Control</span></a> for more details.</p>
+</div>
+</div>
+</div>
+<div class="section" id="freebsd">
+<h2>3.7. FreeBSD</h2>
+<div class="section" id="freebsd-installation">
+<span id="id3"></span><h3>3.7.1. FreeBSD Installation</h3>
+<p>Steps to manually install the latest firmware from the downloaded Chelsio
+Unified Wire package for FreeBSD operating system are as follows:</p>
+<ol class="arabic">
+<li><p class="first">Load the kernel module:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">kldload if_cxgbe</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Use dmesg to get the t5nex instance assigned to the Chelsio card:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">dmesg | grep &quot;t5nex&quot;</span>
+</pre></div>
+</div>
+<p>Example output:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">t5nex0: &lt;Chelsio T520-CR&gt; irq 16 at device 0.4 on pci2</span>
+<span class="go">cxl0: &lt;port 0&gt; on t5nex0</span>
+<span class="go">cxl1: &lt;port 1&gt; on t5nex0</span>
+<span class="go">t5nex0: PCIe x8, 2 ports, 14 MSI-X interrupts, 31 eq, 13 iq</span>
+</pre></div>
+</div>
+<p>In the example above, a Chelsio T520-CR card is bound to a t5nex0 instance.</p>
+</li>
+<li><p class="first">Install cxgbetool from FreeBSD source repository:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">cd &lt;path_to_FreeBSD_source&gt;/tools/tools/cxgbetool/</span>
+<span class="go">make &amp;&amp; make install</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Use cxgbetool to load the firmware image onto the card:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">cxgbetool t5nex0 loadfw &lt;path_to_uwire&gt;/src/network/firmware/t5fw-*.bin</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Unload and reload the kernel module:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">kldunload if_cxgbe</span>
+<span class="go">kldload if_cxgbe</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Verify with sysctl:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">sysctl -a | grep &quot;t5nex&quot; | grep &quot;firmware&quot;</span>
+</pre></div>
+</div>
+<p>Example output:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">dev.t5nex.0.firmware_version: 1.13.32.0</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="id4">
+<h3>3.7.2. Running testpmd</h3>
+<p>This section demonstrates how to launch <strong>testpmd</strong> with Chelsio T5
+devices managed by librte_pmd_cxgbe in FreeBSD operating system.</p>
+<ol class="arabic">
+<li><p class="first">Change to DPDK source directory where the target has been compiled in
+section <a class="reference internal" href="#driver-compilation"><span class="std std-ref">Driver Compilation</span></a>:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">cd &lt;DPDK-source-directory&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Copy the contigmem kernel module to /boot/kernel directory:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">cp x86_64-native-bsdapp-clang/kmod/contigmem.ko /boot/kernel/</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Add the following lines to /boot/loader.conf:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> reserve <span class="m">2</span> x 1G blocks of contiguous memory using contigmem driver
+<span class="go">hw.contigmem.num_buffers=2</span>
+<span class="go">hw.contigmem.buffer_size=1073741824</span>
+<span class="gp">#</span> load contigmem module during boot process
+<span class="go">contigmem_load=&quot;YES&quot;</span>
+</pre></div>
+</div>
+<p>The above lines load the contigmem kernel module during boot process and
+allocate 2 x 1G blocks of contiguous memory to be used for DPDK later on.
+This is to avoid issues with potential memory fragmentation during later
+system up time, which may result in failure of allocating the contiguous
+memory required for the contigmem kernel module.</p>
+</li>
+<li><p class="first">Restart the system and ensure the contigmem module is loaded successfully:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">reboot</span>
+<span class="go">kldstat | grep &quot;contigmem&quot;</span>
+</pre></div>
+</div>
+<p>Example output:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">2    1 0xffffffff817f1000 3118     contigmem.ko</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Repeat step 1 to ensure that you are in the DPDK source directory.</p>
+</li>
+<li><p class="first">Load the cxgbe kernel module:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">kldload if_cxgbe</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Get the PCI bus addresses of the interfaces bound to t5nex driver:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">pciconf -l | grep &quot;t5nex&quot;</span>
+</pre></div>
+</div>
+<p>Example output:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">t5nex0@pci0:2:0:4: class=0x020000 card=0x00001425 chip=0x54011425 rev=0x00</span>
+</pre></div>
+</div>
+<p>In the above example, the t5nex0 is bound to 2:0:4 bus address.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Both the interfaces of a Chelsio T5 2-port adapter are bound to the
+same PCI bus address.</p>
+</div>
+</li>
+<li><p class="first">Unload the kernel module:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">kldunload if_cxgbe</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Set the PCI bus addresses to hw.nic_uio.bdfs kernel environment parameter:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">kenv hw.nic_uio.bdfs=&quot;2:0:4&quot;</span>
+</pre></div>
+</div>
+<p>This automatically binds 2:0:4 to nic_uio kernel driver when it is loaded in
+the next step.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Currently, CXGBE PMD only supports the binding of PF4 for Chelsio T5 NICs.</p>
+</div>
+</li>
+<li><p class="first">Load nic_uio kernel driver:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">kldload ./x86_64-native-bsdapp-clang/kmod/nic_uio.ko</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Start testpmd with basic parameters:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./x86_64-native-bsdapp-clang/app/testpmd -c 0xf -n 4 -w 0000:02:00.4 -- -i</span>
+</pre></div>
+</div>
+<p>Example output:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">[...]</span>
+<span class="go">EAL: PCI device 0000:02:00.4 on NUMA socket 0</span>
+<span class="go">EAL:   probe driver: 1425:5401 rte_cxgbe_pmd</span>
+<span class="go">EAL:   PCI memory mapped at 0x8007ec000</span>
+<span class="go">EAL:   PCI memory mapped at 0x842800000</span>
+<span class="go">EAL:   PCI memory mapped at 0x80086c000</span>
+<span class="go">PMD: rte_cxgbe_pmd: fw: 1.13.32.0, TP: 0.1.4.8</span>
+<span class="go">PMD: rte_cxgbe_pmd: Coming up as MASTER: Initializing adapter</span>
+<span class="go">Interactive-mode selected</span>
+<span class="go">Configuring Port 0 (socket 0)</span>
+<span class="go">Port 0: 00:07:43:2D:EA:C0</span>
+<span class="go">Configuring Port 1 (socket 0)</span>
+<span class="go">Port 1: 00:07:43:2D:EA:C8</span>
+<span class="go">Checking link statuses...</span>
+<span class="go">PMD: rte_cxgbe_pmd: Port0: passive DA port module inserted</span>
+<span class="go">PMD: rte_cxgbe_pmd: Port1: passive DA port module inserted</span>
+<span class="go">Port 0 Link Up - speed 10000 Mbps - full-duplex</span>
+<span class="go">Port 1 Link Up - speed 10000 Mbps - full-duplex</span>
+<span class="go">Done</span>
+<span class="go">testpmd&gt;</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Flow control pause TX/RX is disabled by default and can be enabled via
+testpmd. Refer section <a class="reference internal" href="#flow-control"><span class="std std-ref">Enable/Disable Flow Control</span></a> for more details.</p>
+</div>
+</div>
+</div>
+<div class="section" id="sample-application-notes">
+<h2>3.8. Sample Application Notes</h2>
+<div class="section" id="enable-disable-flow-control">
+<span id="flow-control"></span><h3>3.8.1. Enable/Disable Flow Control</h3>
+<p>Flow control pause TX/RX is disabled by default and can be enabled via
+testpmd as follows:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">testpmd&gt; set flow_ctrl rx on tx on 0 0 0 0 mac_ctrl_frame_fwd off autoneg on 0</span>
+<span class="go">testpmd&gt; set flow_ctrl rx on tx on 0 0 0 0 mac_ctrl_frame_fwd off autoneg on 1</span>
+</pre></div>
+</div>
+<p>To disable again, run:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">testpmd&gt; set flow_ctrl rx off tx off 0 0 0 0 mac_ctrl_frame_fwd off autoneg off 0</span>
+<span class="go">testpmd&gt; set flow_ctrl rx off tx off 0 0 0 0 mac_ctrl_frame_fwd off autoneg off 1</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="jumbo-mode">
+<h3>3.8.2. Jumbo Mode</h3>
+<p>There are two ways to enable sending and receiving of jumbo frames via testpmd.
+One method involves using the <strong>mtu</strong> command, which changes the mtu of an
+individual port without having to stop the selected port. Another method
+involves stopping all the ports first and then running <strong>max-pkt-len</strong> command
+to configure the mtu of all the ports with a single command.</p>
+<ul>
+<li><p class="first">To configure each port individually, run the mtu command as follows:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">testpmd&gt; port config mtu 0 9000</span>
+<span class="go">testpmd&gt; port config mtu 1 9000</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">To configure all the ports at once, stop all the ports first and run the
+max-pkt-len command as follows:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">testpmd&gt; port stop all</span>
+<span class="go">testpmd&gt; port config all max-pkt-len 9000</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="e1000em.html" class="btn btn-neutral float-right" title="4. Driver for VM Emulated Devices" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="bnx2x.html" class="btn btn-neutral" title="2. BNX2X Poll Mode Driver" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

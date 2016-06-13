@@ -1,0 +1,541 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>36. VM Power Management Application &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Sample Applications User Guide" href="index.html"/>
+        <link rel="next" title="37. TEP termination Sample Application" href="tep_termination.html"/>
+        <link rel="prev" title="35. Distributor Sample Application" href="dist_app.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Sample Applications User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmd_line.html">2. Command Line Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethtool.html">3. Ethtool Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exception_path.html">4. Exception Path Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello_world.html">5. Hello World Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skeleton.html">6. Basic Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rxtx_callbacks.html">7. RX/TX Callbacks Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_frag.html">8. IP Fragmentation Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipv4_multicast.html">9. IPv4 Multicast Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_reassembly.html">10. IP Reassembly Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">11. Kernel NIC Interface Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keep_alive.html">12. Keep Alive Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_crypto.html">13. L2 Forwarding with Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_job_stats.html">14. L2 Forwarding Sample Application (in Real and Virtualized Environments) with core load statistics.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_real_virtual.html">15. L2 Forwarding Sample Application (in Real and Virtualized Environments)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_cat.html">16. L2 Forwarding Sample Application with Cache Allocation Technology (CAT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward.html">17. L3 Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_power_man.html">18. L3 Forwarding with Power Management Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_access_ctrl.html">19. L3 Forwarding with Access Control Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_virtual.html">20. L3 Forwarding in a Virtualization Environment Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_status_intr.html">21. Link Status Interrupt Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="load_balancer.html">22. Load Balancer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_process.html">23. Multi-process Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_metering.html">24. QoS Metering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_scheduler.html">25. QoS Scheduler Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intel_quickassist.html">26. Intel® QuickAssist Technology Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quota_watermark.html">27. Quota and Watermark Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer.html">28. Timer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_ordering.html">29. Packet Ordering Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_dcb_forwarding.html">30. VMDQ and DCB Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">31. Vhost Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="netmap_compatibility.html">32. Netmap Compatibility Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_pipeline.html">33. Internet Protocol (IP) Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_pipeline.html">34. Test Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dist_app.html">35. Distributor Sample Application</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">36. VM Power Management Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">36.1. Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#overview">36.2. Overview</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#performance-considerations">36.2.1. Performance Considerations</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration">36.3. Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#bios">36.3.1. BIOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#host-operating-system">36.3.2. Host Operating System</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hypervisor-channel-configuration">36.3.3. Hypervisor Channel Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#compiling-and-running-the-host-application">36.4. Compiling and Running the Host Application</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#compiling">36.4.1. Compiling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#running">36.4.2. Running</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#compiling-and-running-the-guest-applications">36.5. Compiling and Running the Guest Applications</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">36.5.1. Compiling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">36.5.2. Running</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tep_termination.html">37. TEP termination Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="proc_info.html">38. dpdk_proc_info Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ptpclient.html">39. PTP Client Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance_thread.html">40. Performance Thread Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_secgw.html">41. IPsec Security Gateway Sample Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Sample Applications User Guide</a> &raquo;</li>
+      
+    <li>36. VM Power Management Application</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/sample_app_ug/vm_power_management.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="vm-power-management-application">
+<h1>36. VM Power Management Application</h1>
+<div class="section" id="introduction">
+<h2>36.1. Introduction</h2>
+<p>Applications running in Virtual Environments have an abstract view of
+the underlying hardware on the Host, in particular applications cannot see
+the binding of virtual to physical hardware.
+When looking at CPU resourcing, the pinning of Virtual CPUs(vCPUs) to
+Host Physical CPUs(pCPUS) is not apparent to an application
+and this pinning may change over time.
+Furthermore, Operating Systems on virtual machines do not have the ability
+to govern their own power policy; the Machine Specific Registers (MSRs)
+for enabling P-State transitions are not exposed to Operating Systems
+running on Virtual Machines(VMs).</p>
+<p>The Virtual Machine Power Management solution shows an example of
+how a DPDK application can indicate its processing requirements using VM local
+only information(vCPU/lcore) to a Host based Monitor which is responsible
+for accepting requests for frequency changes for a vCPU, translating the vCPU
+to a pCPU via libvirt and affecting the change in frequency.</p>
+<p>The solution is comprised of two high-level components:</p>
+<ol class="arabic">
+<li><p class="first">Example Host Application</p>
+<p>Using a Command Line Interface(CLI) for VM-&gt;Host communication channel management
+allows adding channels to the Monitor, setting and querying the vCPU to pCPU pinning,
+inspecting and manually changing the frequency for each CPU.
+The CLI runs on a single lcore while the thread responsible for managing
+VM requests runs on a second lcore.</p>
+<p>VM requests arriving on a channel for frequency changes are passed
+to the librte_power ACPI cpufreq sysfs based library.
+The Host Application relies on both qemu-kvm and libvirt to function.</p>
+</li>
+<li><p class="first">librte_power for Virtual Machines</p>
+<p>Using an alternate implementation for the librte_power API, requests for
+frequency changes are forwarded to the host monitor rather than
+the APCI cpufreq sysfs interface used on the host.</p>
+<p>The l3fwd-power application will use this implementation when deployed on a VM
+(see <a class="reference internal" href="l3_forward_power_man.html"><span class="doc">L3 Forwarding with Power Management Sample Application</span></a>).</p>
+</li>
+</ol>
+<div class="figure" id="id3">
+<span id="figure-vm-power-mgr-highlevel"></span><img src="../_images/vm_power_mgr_highlevel.svg" /><p class="caption"><span class="caption-number">Fig. 36.1 </span><span class="caption-text">Highlevel Solution</span></p>
+</div>
+</div>
+<div class="section" id="overview">
+<h2>36.2. Overview</h2>
+<p>VM Power Management employs qemu-kvm to provide communications channels
+between the host and VMs in the form of Virtio-Serial which appears as
+a paravirtualized serial device on a VM and can be configured to use
+various backends on the host. For this example each Virtio-Serial endpoint
+on the host is configured as AF_UNIX file socket, supporting poll/select
+and epoll for event notification.
+In this example each channel endpoint on the host is monitored via
+epoll for EPOLLIN events.
+Each channel is specified as qemu-kvm arguments or as libvirt XML for each VM,
+where each VM can have a number of channels up to a maximum of 64 per VM,
+in this example each DPDK lcore on a VM has exclusive access to a channel.</p>
+<p>To enable frequency changes from within a VM, a request via the librte_power interface
+is forwarded via Virtio-Serial to the host, each request contains the vCPU
+and power command(scale up/down/min/max).
+The API for host and guest librte_power is consistent across environments,
+with the selection of VM or Host Implementation determined at automatically
+at runtime based on the environment.</p>
+<p>Upon receiving a request, the host translates the vCPU to a pCPU via
+the libvirt API before forwarding to the host librte_power.</p>
+<div class="figure" id="id4">
+<span id="figure-vm-power-mgr-vm-request-seq"></span><img src="../_images/vm_power_mgr_vm_request_seq.svg" /><p class="caption"><span class="caption-number">Fig. 36.2 </span><span class="caption-text">VM request to scale frequency</span></p>
+</div>
+<div class="section" id="performance-considerations">
+<h3>36.2.1. Performance Considerations</h3>
+<p>While Haswell Microarchitecture allows for independent power control for each core,
+earlier Microarchtectures do not offer such fine grained control.
+When deployed on pre-Haswell platforms greater care must be taken in selecting
+which cores are assigned to a VM, for instance a core will not scale down
+until its sibling is similarly scaled.</p>
+</div>
+</div>
+<div class="section" id="configuration">
+<h2>36.3. Configuration</h2>
+<div class="section" id="bios">
+<h3>36.3.1. BIOS</h3>
+<p>Enhanced Intel SpeedStep® Technology must be enabled in the platform BIOS
+if the power management feature of DPDK is to be used.
+Otherwise, the sys file folder /sys/devices/system/cpu/cpu0/cpufreq will not exist,
+and the CPU frequency-based power management cannot be used.
+Consult the relevant BIOS documentation to determine how these settings
+can be accessed.</p>
+</div>
+<div class="section" id="host-operating-system">
+<h3>36.3.2. Host Operating System</h3>
+<p>The Host OS must also have the <em>apci_cpufreq</em> module installed, in some cases
+the <em>intel_pstate</em> driver may be the default Power Management environment.
+To enable <em>acpi_cpufreq</em> and disable <em>intel_pstate</em>, add the following
+to the grub Linux command line:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">intel_pstate=disable</span>
+</pre></div>
+</div>
+<p>Upon rebooting, load the <em>acpi_cpufreq</em> module:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">modprobe acpi_cpufreq</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="hypervisor-channel-configuration">
+<h3>36.3.3. Hypervisor Channel Configuration</h3>
+<p>Virtio-Serial channels are configured via libvirt XML:</p>
+<div class="highlight-xml"><div class="highlight"><pre><span></span>&lt;name&gt;{vm_name}&lt;/name&gt;
+&lt;controller type=&#39;virtio-serial&#39; index=&#39;0&#39;&gt;
+  &lt;address type=&#39;pci&#39; domain=&#39;0x0000&#39; bus=&#39;0x00&#39; slot=&#39;0x06&#39; function=&#39;0x0&#39;/&gt;
+&lt;/controller&gt;
+&lt;channel type=&#39;unix&#39;&gt;
+  &lt;source mode=&#39;bind&#39; path=&#39;/tmp/powermonitor/{vm_name}.{channel_num}&#39;/&gt;
+  &lt;target type=&#39;virtio&#39; name=&#39;virtio.serial.port.poweragent.{vm_channel_num}/&gt;
+  &lt;address type=&#39;virtio-serial&#39; controller=&#39;0&#39; bus=&#39;0&#39; port=&#39;{N}&#39;/&gt;
+&lt;/channel&gt;
+</pre></div>
+</div>
+<p>Where a single controller of type <em>virtio-serial</em> is created and up to 32 channels
+can be associated with a single controller and multiple controllers can be specified.
+The convention is to use the name of the VM in the host path <em>{vm_name}</em> and
+to increment <em>{channel_num}</em> for each channel, likewise the port value <em>{N}</em>
+must be incremented for each channel.</p>
+<p>Each channel on the host will appear in <em>path</em>, the directory <em>/tmp/powermonitor/</em>
+must first be created and given qemu permissions</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">mkdir /tmp/powermonitor/</span>
+<span class="go">chown qemu:qemu /tmp/powermonitor</span>
+</pre></div>
+</div>
+<p>Note that files and directories within /tmp are generally removed upon
+rebooting the host and the above steps may need to be carried out after each reboot.</p>
+<p>The serial device as it appears on a VM is configured with the <em>target</em> element attribute <em>name</em>
+and must be in the form of <em>virtio.serial.port.poweragent.{vm_channel_num}</em>,
+where <em>vm_channel_num</em> is typically the lcore channel to be used in DPDK VM applications.</p>
+<p>Each channel on a VM will be present at <em>/dev/virtio-ports/virtio.serial.port.poweragent.{vm_channel_num}</em></p>
+</div>
+</div>
+<div class="section" id="compiling-and-running-the-host-application">
+<h2>36.4. Compiling and Running the Host Application</h2>
+<div class="section" id="compiling">
+<h3>36.4.1. Compiling</h3>
+<ol class="arabic simple">
+<li>export RTE_SDK=/path/to/rte_sdk</li>
+<li>cd ${RTE_SDK}/examples/vm_power_manager</li>
+<li>make</li>
+</ol>
+</div>
+<div class="section" id="running">
+<h3>36.4.2. Running</h3>
+<p>The application does not have any specific command line options other than <em>EAL</em>:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./build/vm_power_mgr [EAL options]</span>
+</pre></div>
+</div>
+<p>The application requires exactly two cores to run, one core is dedicated to the CLI,
+while the other is dedicated to the channel endpoint monitor, for example to run
+on cores 0 &amp; 1 on a system with 4 memory channels:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./build/vm_power_mgr -c 0x3 -n 4</span>
+</pre></div>
+</div>
+<p>After successful initialization the user is presented with VM Power Manager CLI:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">vm_power&gt;</span>
+</pre></div>
+</div>
+<p>Virtual Machines can now be added to the VM Power Manager:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">vm_power&gt; add_vm {vm_name}</span>
+</pre></div>
+</div>
+<p>When a {vm_name} is specified with the <em>add_vm</em> command a lookup is performed
+with libvirt to ensure that the VM exists, {vm_name} is used as an unique identifier
+to associate channels with a particular VM and for executing operations on a VM within the CLI.
+VMs do not have to be running in order to add them.</p>
+<p>A number of commands can be issued via the CLI in relation to VMs:</p>
+<blockquote>
+<div><p>Remove a Virtual Machine identified by {vm_name} from the VM Power Manager.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">rm_vm {vm_name}</span>
+</pre></div>
+</div>
+<p>Add communication channels for the specified VM, the virtio channels must be enabled
+in the VM configuration(qemu/libvirt) and the associated VM must be active.
+{list} is a comma-separated list of channel numbers to add, using the keyword &#8216;all&#8217;
+will attempt to add all channels for the VM:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">add_channels {vm_name} {list}|all</span>
+</pre></div>
+</div>
+<p>Enable or disable the communication channels in {list}(comma-separated)
+for the specified VM, alternatively list can be replaced with keyword &#8216;all&#8217;.
+Disabled channels will still receive packets on the host, however the commands
+they specify will be ignored. Set status to &#8216;enabled&#8217; to begin processing requests again:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">set_channel_status {vm_name} {list}|all enabled|disabled</span>
+</pre></div>
+</div>
+<p>Print to the CLI the information on the specified VM, the information
+lists the number of vCPUS, the pinning to pCPU(s) as a bit mask, along with
+any communication channels associated with each VM, along with the status of each channel:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">show_vm {vm_name}</span>
+</pre></div>
+</div>
+<p>Set the binding of Virtual CPU on VM with name {vm_name}  to the Physical CPU mask:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">set_pcpu_mask {vm_name} {vcpu} {pcpu}</span>
+</pre></div>
+</div>
+<p>Set the binding of Virtual CPU on VM to the Physical CPU:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">set_pcpu {vm_name} {vcpu} {pcpu}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Manual control and inspection can also be carried in relation CPU frequency scaling:</p>
+<blockquote>
+<div><p>Get the current frequency for each core specified in the mask:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">show_cpu_freq_mask {mask}</span>
+</pre></div>
+</div>
+<p>Set the current frequency for the cores specified in {core_mask} by scaling each up/down/min/max:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">set_cpu_freq {core_mask} up|down|min|max</span>
+</pre></div>
+</div>
+<p>Get the current frequency for the specified core:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">show_cpu_freq {core_num}</span>
+</pre></div>
+</div>
+<p>Set the current frequency for the specified core by scaling up/down/min/max:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">set_cpu_freq {core_num} up|down|min|max</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="compiling-and-running-the-guest-applications">
+<h2>36.5. Compiling and Running the Guest Applications</h2>
+<p>For compiling and running l3fwd-power, see <a class="reference internal" href="l3_forward_power_man.html"><span class="doc">L3 Forwarding with Power Management Sample Application</span></a>.</p>
+<p>A guest CLI is also provided for validating the setup.</p>
+<p>For both l3fwd-power and guest CLI, the channels for the VM must be monitored by the
+host application using the <em>add_channels</em> command on the host.</p>
+<div class="section" id="id1">
+<h3>36.5.1. Compiling</h3>
+<ol class="arabic simple">
+<li>export RTE_SDK=/path/to/rte_sdk</li>
+<li>cd ${RTE_SDK}/examples/vm_power_manager/guest_cli</li>
+<li>make</li>
+</ol>
+</div>
+<div class="section" id="id2">
+<h3>36.5.2. Running</h3>
+<p>The application does not have any specific command line options other than <em>EAL</em>:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./build/vm_power_mgr [EAL options]</span>
+</pre></div>
+</div>
+<p>The application for example purposes uses a channel for each lcore enabled,
+for example to run on cores 0,1,2,3 on a system with 4 memory channels:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./build/guest_vm_power_mgr -c 0xf -n 4</span>
+</pre></div>
+</div>
+<p>After successful initialization the user is presented with VM Power Manager Guest CLI:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">vm_power(guest)&gt;</span>
+</pre></div>
+</div>
+<p>To change the frequency of a lcore, use the set_cpu_freq command.
+Where {core_num} is the lcore and channel to change frequency by scaling up/down/min/max.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">set_cpu_freq {core_num} up|down|min|max</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="tep_termination.html" class="btn btn-neutral float-right" title="37. TEP termination Sample Application" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="dist_app.html" class="btn btn-neutral" title="35. Distributor Sample Application" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

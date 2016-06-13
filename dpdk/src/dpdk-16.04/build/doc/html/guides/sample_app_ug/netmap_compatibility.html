@@ -1,0 +1,383 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>32. Netmap Compatibility Sample Application &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Sample Applications User Guide" href="index.html"/>
+        <link rel="next" title="33. Internet Protocol (IP) Pipeline Application" href="ip_pipeline.html"/>
+        <link rel="prev" title="31. Vhost Sample Application" href="vhost.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Sample Applications User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmd_line.html">2. Command Line Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethtool.html">3. Ethtool Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exception_path.html">4. Exception Path Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello_world.html">5. Hello World Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skeleton.html">6. Basic Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rxtx_callbacks.html">7. RX/TX Callbacks Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_frag.html">8. IP Fragmentation Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipv4_multicast.html">9. IPv4 Multicast Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_reassembly.html">10. IP Reassembly Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">11. Kernel NIC Interface Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keep_alive.html">12. Keep Alive Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_crypto.html">13. L2 Forwarding with Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_job_stats.html">14. L2 Forwarding Sample Application (in Real and Virtualized Environments) with core load statistics.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_real_virtual.html">15. L2 Forwarding Sample Application (in Real and Virtualized Environments)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_cat.html">16. L2 Forwarding Sample Application with Cache Allocation Technology (CAT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward.html">17. L3 Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_power_man.html">18. L3 Forwarding with Power Management Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_access_ctrl.html">19. L3 Forwarding with Access Control Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_virtual.html">20. L3 Forwarding in a Virtualization Environment Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_status_intr.html">21. Link Status Interrupt Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="load_balancer.html">22. Load Balancer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_process.html">23. Multi-process Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_metering.html">24. QoS Metering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_scheduler.html">25. QoS Scheduler Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intel_quickassist.html">26. Intel® QuickAssist Technology Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quota_watermark.html">27. Quota and Watermark Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer.html">28. Timer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_ordering.html">29. Packet Ordering Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_dcb_forwarding.html">30. VMDQ and DCB Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">31. Vhost Sample Application</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">32. Netmap Compatibility Sample Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">32.1. Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#available-apis">32.2. Available APIs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#caveats">32.3. Caveats</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#porting-netmap-applications">32.4. Porting Netmap Applications</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compiling-the-bridge-sample-application">32.5. Compiling the &#8220;bridge&#8221; Sample Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-bridge-sample-application">32.6. Running the &#8220;bridge&#8221; Sample Application</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ip_pipeline.html">33. Internet Protocol (IP) Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_pipeline.html">34. Test Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dist_app.html">35. Distributor Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vm_power_management.html">36. VM Power Management Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tep_termination.html">37. TEP termination Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="proc_info.html">38. dpdk_proc_info Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ptpclient.html">39. PTP Client Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance_thread.html">40. Performance Thread Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_secgw.html">41. IPsec Security Gateway Sample Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Sample Applications User Guide</a> &raquo;</li>
+      
+    <li>32. Netmap Compatibility Sample Application</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/sample_app_ug/netmap_compatibility.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="netmap-compatibility-sample-application">
+<h1>32. Netmap Compatibility Sample Application</h1>
+<div class="section" id="introduction">
+<h2>32.1. Introduction</h2>
+<p>The Netmap compatibility library provides a minimal set of APIs to give programs written against the Netmap APIs
+the ability to be run, with minimal changes to their source code, using the DPDK to perform the actual packet I/O.</p>
+<p>Since Netmap applications use regular system calls, like <code class="docutils literal"><span class="pre">open()</span></code>, <code class="docutils literal"><span class="pre">ioctl()</span></code> and
+<code class="docutils literal"><span class="pre">mmap()</span></code> to communicate with the Netmap kernel module performing the packet I/O,
+the <code class="docutils literal"><span class="pre">compat_netmap</span></code> library provides a set of similar APIs to use in place of those system calls,
+effectively turning a Netmap application into a DPDK application.</p>
+<p>The provided library is currently minimal and doesn&#8217;t support all the features that Netmap supports,
+but is enough to run simple applications, such as the bridge example detailed below.</p>
+<p>Knowledge of Netmap is required to understand the rest of this section.
+Please refer to the Netmap distribution for details about Netmap.</p>
+</div>
+<div class="section" id="available-apis">
+<h2>32.2. Available APIs</h2>
+<p>The library provides the following drop-in replacements for system calls usually used in Netmap applications:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">rte_netmap_close()</span></code></li>
+<li><code class="docutils literal"><span class="pre">rte_netmap_ioctl()</span></code></li>
+<li><code class="docutils literal"><span class="pre">rte_netmap_open()</span></code></li>
+<li><code class="docutils literal"><span class="pre">rte_netmap_mmap()</span></code></li>
+<li><code class="docutils literal"><span class="pre">rte_netmap_poll()</span></code></li>
+</ul>
+<p>They use the same signature as their libc counterparts, and can be used as drop-in replacements in most cases.</p>
+</div>
+<div class="section" id="caveats">
+<h2>32.3. Caveats</h2>
+<p>Given the difference between the way Netmap and the DPDK approach packet I/O,
+there are caveats and limitations to be aware of when trying to use the <code class="docutils literal"><span class="pre">compat_netmap</span></code> library, the most important of these are listed below.
+These may change as the library is updated:</p>
+<ul class="simple">
+<li>Any system call that can potentially affect file descriptors cannot be used with a descriptor returned by the <code class="docutils literal"><span class="pre">rte_netmap_open()</span></code> function.</li>
+</ul>
+<p>Note that:</p>
+<ul class="simple">
+<li>The <code class="docutils literal"><span class="pre">rte_netmap_mmap()</span></code> function merely returns the address of a DPDK memzone.
+The address, length, flags, offset, and other arguments are ignored.</li>
+<li>The <code class="docutils literal"><span class="pre">rte_netmap_poll()</span></code> function only supports infinite (negative) or zero time outs.
+It effectively turns calls to the <code class="docutils literal"><span class="pre">poll()</span></code> system call made in a Netmap application into polling of the DPDK ports,
+changing the semantics of the usual POSIX defined poll.</li>
+<li>Not all of Netmap&#8217;s features are supported: host rings,
+slot flags and so on are not supported or are simply not relevant in the DPDK model.</li>
+<li>The Netmap manual page states that &#8220;<em>a device obtained through /dev/netmap also supports the ioctl supported by network devices</em>&#8221;.
+This is not the case with this compatibility layer.</li>
+<li>The Netmap kernel module exposes a sysfs interface to change some internal parameters, such as the size of the shared memory region.
+This interface is not available when using this compatibility layer.</li>
+</ul>
+</div>
+<div class="section" id="porting-netmap-applications">
+<h2>32.4. Porting Netmap Applications</h2>
+<p>Porting Netmap applications typically involves two major steps:</p>
+<ul class="simple">
+<li>Changing the system calls to use their <code class="docutils literal"><span class="pre">compat_netmap</span></code> library counterparts.</li>
+<li>Adding further DPDK initialization code.</li>
+</ul>
+<p>Since the <code class="docutils literal"><span class="pre">compat_netmap</span></code> functions have the same signature as the usual libc calls, the change is trivial in most cases.</p>
+<p>The usual DPDK initialization code involving <code class="docutils literal"><span class="pre">rte_eal_init()</span></code> and <code class="docutils literal"><span class="pre">rte_eal_pci_probe()</span></code>
+has to be added to the Netmap application in the same way it is used in all other DPDK sample applications.
+Please refer to the <em>DPDK Programmer&#8217;s Guide</em> and example source code for details about initialization.</p>
+<p>In addition of the regular DPDK initialization code,
+the ported application needs to call initialization functions for the <code class="docutils literal"><span class="pre">compat_netmap</span></code> library,
+namely <code class="docutils literal"><span class="pre">rte_netmap_init()</span></code> and <code class="docutils literal"><span class="pre">rte_netmap_init_port()</span></code>.</p>
+<p>These two initialization functions take <code class="docutils literal"><span class="pre">compat_netmap</span></code> specific data structures as parameters:
+<code class="docutils literal"><span class="pre">struct</span> <span class="pre">rte_netmap_conf</span></code> and <code class="docutils literal"><span class="pre">struct</span> <span class="pre">rte_netmap_port_conf</span></code>.
+The structures&#8217; fields are Netmap related and are self-explanatory for developers familiar with Netmap.
+They are defined in <code class="docutils literal"><span class="pre">$RTE_SDK/examples/netmap_compat/lib/compat_netmap.h</span></code>.</p>
+<p>The bridge application is an example largely based on the bridge example shipped with the Netmap distribution.
+It shows how a minimal Netmap application with minimal and straightforward source code changes can be run on top of the DPDK.
+Please refer to <code class="docutils literal"><span class="pre">$RTE_SDK/examples/netmap_compat/bridge/bridge.c</span></code> for an example of a ported application.</p>
+</div>
+<div class="section" id="compiling-the-bridge-sample-application">
+<h2>32.5. Compiling the &#8220;bridge&#8221; Sample Application</h2>
+<ol class="arabic">
+<li><p class="first">Go to the example directory:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export RTE_SDK=/path/to/rte_sdk</span>
+<span class="go">cd ${RTE_SDK}/examples/netmap_compat</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Set the target (a default target is used if not specified). For example:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export RTE_TARGET=x86_64-native-linuxapp-gcc</span>
+</pre></div>
+</div>
+<p>See the <em>DPDK Getting Started Guide for Linux</em> for possible <code class="docutils literal"><span class="pre">RTE_TARGET</span></code> values.</p>
+</li>
+<li><p class="first">Build the application:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">make</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="running-the-bridge-sample-application">
+<h2>32.6. Running the &#8220;bridge&#8221; Sample Application</h2>
+<p>The application requires a single command line option:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./build/bridge [EAL options] -- -i INTERFACE_A [-i INTERFACE_B]</span>
+</pre></div>
+</div>
+<p>where,</p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">-i</span> <span class="pre">INTERFACE</span></code>: Interface (DPDK port number) to use.</p>
+<p>If a single <code class="docutils literal"><span class="pre">-i</span></code> parameter is given, the interface will send back all the traffic it receives.
+If two <code class="docutils literal"><span class="pre">-i</span></code> parameters are given, the two interfaces form a bridge,
+where traffic received on one interface is replicated and sent to the other interface.</p>
+</li>
+</ul>
+<p>For example, to run the application in a linuxapp environment using port 0 and 2:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./build/bridge [EAL options] -- -i 0 -i 2</span>
+</pre></div>
+</div>
+<p>Refer to the <em>DPDK Getting Started Guide for Linux</em> for general information on running applications and
+the Environment Abstraction Layer (EAL) options.</p>
+<p>Note that unlike a traditional bridge or the <code class="docutils literal"><span class="pre">l2fwd</span></code> sample application, no MAC address changes are done on the frames.
+Do not forget to take this into account when configuring a traffic generators and testing this sample application.</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="ip_pipeline.html" class="btn btn-neutral float-right" title="33. Internet Protocol (IP) Pipeline Application" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="vhost.html" class="btn btn-neutral" title="31. Vhost Sample Application" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

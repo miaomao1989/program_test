@@ -1,0 +1,954 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>4. DPDK Documentation Guidelines &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Contributor’s Guidelines" href="index.html"/>
+        <link rel="next" title="5. Contributing Code to DPDK" href="patches.html"/>
+        <link rel="prev" title="3. Managing ABI updates" href="versioning.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Contributor&#8217;s Guidelines</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="coding_style.html">1. DPDK Coding Style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design.html">2. Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="versioning.html">3. Managing ABI updates</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4. DPDK Documentation Guidelines</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#structure-of-the-documentation">4.1. Structure of the Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#role-of-the-documentation">4.2. Role of the Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#building-the-documentation">4.3. Building the Documentation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dependencies">4.3.1. Dependencies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#build-commands">4.3.2. Build commands</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#document-guidelines">4.4. Document Guidelines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rst-guidelines">4.5. RST Guidelines</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#line-length">4.5.1. Line Length</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#whitespace">4.5.2. Whitespace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-headers">4.5.3. Section Headers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lists">4.5.4. Lists</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#code-and-literal-block-sections">4.5.5. Code and Literal block sections</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#images">4.5.6. Images</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tables">4.5.7. Tables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hyperlinks">4.5.8. Hyperlinks</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#doxygen-guidelines">4.6. Doxygen Guidelines</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="patches.html">5. Contributing Code to DPDK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cheatsheet.html">6. Patch Cheatsheet</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Contributor&#8217;s Guidelines</a> &raquo;</li>
+      
+    <li>4. DPDK Documentation Guidelines</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/contributing/documentation.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="dpdk-documentation-guidelines">
+<span id="doc-guidelines"></span><h1>4. DPDK Documentation Guidelines</h1>
+<p>This document outlines the guidelines for writing the DPDK Guides and API documentation in RST and Doxygen format.</p>
+<p>It also explains the structure of the DPDK documentation and shows how to build the Html and PDF versions of the documents.</p>
+<div class="section" id="structure-of-the-documentation">
+<h2>4.1. Structure of the Documentation</h2>
+<p>The DPDK source code repository contains input files to build the API documentation and User Guides.</p>
+<p>The main directories that contain files related to documentation are shown below:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>lib
+|-- librte_acl
+|-- librte_cfgfile
+|-- librte_cmdline
+|-- librte_compat
+|-- librte_eal
+|   |-- ...
+...
+doc
+|-- api
++-- guides
+    |-- freebsd_gsg
+    |-- linux_gsg
+    |-- prog_guide
+    |-- sample_app_ug
+    |-- guidelines
+    |-- testpmd_app_ug
+    |-- rel_notes
+    |-- nics
+    |-- xen
+    |-- ...
+</pre></div>
+</div>
+<p>The API documentation is built from <a class="reference external" href="http://www.stack.nl/~dimitri/doxygen/">Doxygen</a> comments in the header files.
+These files are mainly in the <code class="docutils literal"><span class="pre">lib/librte_*</span></code> directories although some of the Poll Mode Drivers in <code class="docutils literal"><span class="pre">drivers/net</span></code>
+are also documented with Doxygen.</p>
+<p>The configuration files that are used to control the Doxygen output are in the <code class="docutils literal"><span class="pre">doc/api</span></code> directory.</p>
+<p>The user guides such as <em>The Programmers Guide</em> and the <em>FreeBSD</em> and <em>Linux Getting Started</em> Guides are generated
+from RST markup text files using the <a class="reference external" href="http://sphinx-doc.org/index.html">Sphinx</a> Documentation Generator.</p>
+<p>These files are included in the <code class="docutils literal"><span class="pre">doc/guides/</span></code> directory.
+The output is controlled by the <code class="docutils literal"><span class="pre">doc/guides/conf.py</span></code> file.</p>
+</div>
+<div class="section" id="role-of-the-documentation">
+<h2>4.2. Role of the Documentation</h2>
+<p>The following items outline the roles of the different parts of the documentation and when they need to be updated or
+added to by the developer.</p>
+<ul>
+<li><p class="first"><strong>Release Notes</strong></p>
+<p>The Release Notes document which features have been added in the current and previous releases of DPDK and highlight
+any known issues.
+The Releases Notes also contain notifications of features that will change ABI compatibility in the next major release.</p>
+<p>Developers should include updates to the Release Notes with patch sets that relate to any of the following sections:</p>
+<ul class="simple">
+<li>New Features</li>
+<li>Resolved Issues (see below)</li>
+<li>Known Issues</li>
+<li>API Changes</li>
+<li>ABI Changes</li>
+<li>Shared Library Versions</li>
+</ul>
+<p>Resolved Issues should only include issues from previous releases that have been resolved in the current release.
+Issues that are introduced and then fixed within a release cycle do not have to be included here.</p>
+<p>Refer to the Release Notes from the previous DPDK release for the correct format of each section.</p>
+</li>
+<li><p class="first"><strong>API documentation</strong></p>
+<p>The API documentation explains how to use the public DPDK functions.
+The <a class="reference external" href="http://dpdk.org/doc/api/">API index page</a> shows the generated API documentation with related groups of functions.</p>
+<p>The API documentation should be updated via Doxygen comments when new functions are added.</p>
+</li>
+<li><p class="first"><strong>Getting Started Guides</strong></p>
+<p>The Getting Started Guides show how to install and configure DPDK and how to run DPDK based applications on different OSes.</p>
+<p>A Getting Started Guide should be added when DPDK is ported to a new OS.</p>
+</li>
+<li><p class="first"><strong>The Programmers Guide</strong></p>
+<p>The Programmers Guide explains how the API components of DPDK such as the EAL, Memzone, Rings and the Hash Library work.
+It also explains how some higher level functionality such as Packet Distributor, Packet Framework and KNI work.
+It also shows the build system and explains how to add applications.</p>
+<p>The Programmers Guide should be expanded when new functionality is added to DPDK.</p>
+</li>
+<li><p class="first"><strong>App Guides</strong></p>
+<p>The app guides document the DPDK applications in the <code class="docutils literal"><span class="pre">app</span></code> directory such as <code class="docutils literal"><span class="pre">testpmd</span></code>.</p>
+<p>The app guides should be updated if functionality is changed or added.</p>
+</li>
+<li><p class="first"><strong>Sample App Guides</strong></p>
+<p>The sample app guides document the DPDK example applications in the examples directory.
+Generally they demonstrate a major feature such as L2 or L3 Forwarding, Multi Process or Power Management.
+They explain the purpose of the sample application, how to run it and step through some of the code to explain the
+major functionality.</p>
+<p>A new sample application should be accompanied by a new sample app guide.
+The guide for the Skeleton Forwarding app is a good starting reference.</p>
+</li>
+<li><p class="first"><strong>Network Interface Controller Drivers</strong></p>
+<p>The NIC Drivers document explains the features of the individual Poll Mode Drivers, such as software requirements,
+configuration and initialization.</p>
+<p>New documentation should be added for new Poll Mode Drivers.</p>
+</li>
+<li><p class="first"><strong>Guidelines</strong></p>
+<p>The guideline documents record community process, expectations and design directions.</p>
+<p>They can be extended, amended or discussed by submitting a patch and getting community approval.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="building-the-documentation">
+<h2>4.3. Building the Documentation</h2>
+<div class="section" id="dependencies">
+<h3>4.3.1. Dependencies</h3>
+<p>The following dependencies must be installed to build the documentation:</p>
+<ul class="simple">
+<li>Doxygen.</li>
+<li>Sphinx (also called python-sphinx).</li>
+<li>TexLive (at least TexLive-core and the extra Latex support).</li>
+<li>Inkscape.</li>
+</ul>
+<p><a class="reference external" href="http://www.stack.nl/~dimitri/doxygen/">Doxygen</a> generates documentation from commented source code.
+It can be installed as follows:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> Ubuntu/Debian.
+<span class="go">sudo apt-get -y install doxygen</span>
+
+<span class="gp">#</span> Red Hat/Fedora.
+<span class="go">sudo yum     -y install doxygen</span>
+</pre></div>
+</div>
+<p><a class="reference external" href="http://sphinx-doc.org/index.html">Sphinx</a> is a Python documentation tool for converting RST files to Html or to PDF (via LaTeX).
+For full support with figure and table captioning the latest version of Sphinx can be installed as follows:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> Ubuntu/Debian.
+<span class="go">sudo apt-get -y install python-pip</span>
+<span class="go">sudo pip install --upgrade sphinx</span>
+
+<span class="gp">#</span> Red Hat/Fedora.
+<span class="go">sudo yum     -y install python-pip</span>
+<span class="go">sudo pip install --upgrade sphinx</span>
+</pre></div>
+</div>
+<p>For further information on getting started with Sphinx see the <a class="reference external" href="http://sphinx-doc.org/tutorial.html">Sphinx Tutorial</a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">To get full support for Figure and Table numbering it is best to install Sphinx 1.3.1 or later.</p>
+</div>
+<p><a class="reference external" href="http://inkscape.org">Inkscape</a> is a vector based graphics program which is used to create SVG images and also to convert SVG images to PDF images.
+It can be installed as follows:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> Ubuntu/Debian.
+<span class="go">sudo apt-get -y install inkscape</span>
+
+<span class="gp">#</span> Red Hat/Fedora.
+<span class="go">sudo yum     -y install inkscape</span>
+</pre></div>
+</div>
+<p><a class="reference external" href="http://www.tug.org/texlive/">TexLive</a> is an installation package for Tex/LaTeX.
+It is used to generate the PDF versions of the documentation.
+The main required packages can be installed as follows:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> Ubuntu/Debian.
+<span class="go">sudo apt-get -y install texlive-latex-extra</span>
+
+<span class="gp">#</span> Red Hat/Fedora, selective install.
+<span class="go">sudo yum     -y install texlive-collection-latexextra</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="build-commands">
+<h3>4.3.2. Build commands</h3>
+<p>The documentation is built using the standard DPDK build system.
+Some examples are shown below:</p>
+<ul>
+<li><p class="first">Generate all the documentation targets:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>make doc
+</pre></div>
+</div>
+</li>
+<li><p class="first">Generate the Doxygen API documentation in Html:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>make doc-api-html
+</pre></div>
+</div>
+</li>
+<li><p class="first">Generate the guides documentation in Html:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>make doc-guides-html
+</pre></div>
+</div>
+</li>
+<li><p class="first">Generate the guides documentation in Pdf:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>make doc-guides-pdf
+</pre></div>
+</div>
+</li>
+</ul>
+<p>The output of these commands is generated in the <code class="docutils literal"><span class="pre">build</span></code> directory:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>build/doc
+      |-- html
+      |   |-- api
+      |   +-- guides
+      |
+      +-- pdf
+          +-- guides
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Make sure to fix any Sphinx or Doxygen warnings when adding or updating documentation.</p>
+</div>
+<p>The documentation output files can be removed as follows:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>make doc-clean
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="document-guidelines">
+<h2>4.4. Document Guidelines</h2>
+<p>Here are some guidelines in relation to the style of the documentation:</p>
+<ul>
+<li><p class="first">Document the obvious as well as the obscure since it won&#8217;t always be obvious to the reader.
+For example an instruction like &#8220;Set up 64 2MB Hugepages&#8221; is better when followed by a sample commandline or a link to
+the appropriate section of the documentation.</p>
+</li>
+<li><p class="first">Use American English spellings throughout.
+This can be checked using the <code class="docutils literal"><span class="pre">aspell</span></code> utility:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>aspell --lang=en_US --check doc/guides/sample_app_ug/mydoc.rst
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="rst-guidelines">
+<h2>4.5. RST Guidelines</h2>
+<p>The RST (reStructuredText) format is a plain text markup format that can be converted to Html, PDF or other formats.
+It is most closely associated with Python but it can be used to document any language.
+It is used in DPDK to document everything apart from the API.</p>
+<p>The Sphinx documentation contains a very useful <a class="reference external" href="http://sphinx-doc.org/rest.html#rst-primer">RST Primer</a> which is a
+good place to learn the minimal set of syntax required to format a document.</p>
+<p>The official <a class="reference external" href="http://docutils.sourceforge.net/rst.html">reStructuredText</a> website contains the specification for the
+RST format and also examples of how to use it.
+However, for most developers the RST Primer is a better resource.</p>
+<p>The most common guidelines for writing RST text are detailed in the
+<a class="reference external" href="https://docs.python.org/devguide/documenting.html">Documenting Python</a> guidelines.
+The additional guidelines below reiterate or expand upon those guidelines.</p>
+<div class="section" id="line-length">
+<h3>4.5.1. Line Length</h3>
+<ul>
+<li><p class="first">The recommended style for the DPDK documentation is to put sentences on separate lines.
+This allows for easier reviewing of patches.
+Multiple sentences which are not separated by a blank line are joined automatically into paragraphs, for example:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>Here is an example sentence.
+Long sentences over the limit shown below can be wrapped onto
+a new line.
+These three sentences will be joined into the same paragraph.
+
+This is a new paragraph, since it is separated from the
+previous paragraph by a blank line.
+</pre></div>
+</div>
+<p>This would be rendered as follows:</p>
+<blockquote>
+<div><p><em>Here is an example sentence.
+Long sentences over the limit shown below can be wrapped onto
+a new line.
+These three sentences will be joined into the same paragraph.</em></p>
+<p><em>This is a new paragraph, since it is separated from the
+previous paragraph by a blank line.</em></p>
+</div></blockquote>
+</li>
+<li><p class="first">Long sentences should be wrapped at 120 characters +/- 10 characters. They should be wrapped at words.</p>
+</li>
+<li><p class="first">Lines in literal blocks must by less than 80 characters since they aren&#8217;t wrapped by the document formatters
+and can exceed the page width in PDF documents.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="whitespace">
+<h3>4.5.2. Whitespace</h3>
+<ul class="simple">
+<li>Standard RST indentation is 3 spaces.
+Code can be indented 4 spaces, especially if it is copied from source files.</li>
+<li>No tabs.
+Convert tabs in embedded code to 4 or 8 spaces.</li>
+<li>No trailing whitespace.</li>
+<li>Add 2 blank lines before each section header.</li>
+<li>Add 1 blank line after each section header.</li>
+<li>Add 1 blank line between each line of a list.</li>
+</ul>
+</div>
+<div class="section" id="section-headers">
+<h3>4.5.3. Section Headers</h3>
+<ul>
+<li><p class="first">Section headers should use the use the following underline formats:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>Level 1 Heading
+===============
+
+
+Level 2 Heading
+---------------
+
+
+Level 3 Heading
+~~~~~~~~~~~~~~~
+
+
+Level 4 Heading
+^^^^^^^^^^^^^^^
+</pre></div>
+</div>
+</li>
+<li><p class="first">Level 4 headings should be used sparingly.</p>
+</li>
+<li><p class="first">The underlines should match the length of the text.</p>
+</li>
+<li><p class="first">In general, the heading should be less than 80 characters, for conciseness.</p>
+</li>
+<li><p class="first">As noted above:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Add 2 blank lines before each section header.</li>
+<li>Add 1 blank line after each section header.</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div>
+<div class="section" id="lists">
+<h3>4.5.4. Lists</h3>
+<ul>
+<li><p class="first">Bullet lists should be formatted with a leading <code class="docutils literal"><span class="pre">*</span></code> as follows:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>* Item one.
+
+* Item two is a long line that is wrapped and then indented to match
+  the start of the previous line.
+
+* One space character between the bullet and the text is preferred.
+</pre></div>
+</div>
+</li>
+<li><p class="first">Numbered lists can be formatted with a leading number but the preference is to use <code class="docutils literal"><span class="pre">#.</span></code> which will give automatic numbering.
+This is more convenient when adding or removing items:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>#. Item one.
+
+#. Item two is a long line that is wrapped and then indented
+   to match the start of the e first line.
+
+#. Item two is a long line that is wrapped and then indented to match
+   the start of the previous line.
+</pre></div>
+</div>
+</li>
+<li><p class="first">Definition lists can be written with or without a bullet:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>* Item one.
+
+  Some text about item one.
+
+* Item two.
+
+  Some text about item two.
+</pre></div>
+</div>
+</li>
+<li><p class="first">All lists, and sub-lists, must be separated from the preceding text by a blank line.
+This is a syntax requirement.</p>
+</li>
+<li><p class="first">All list items should be separated by a blank line for readability.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="code-and-literal-block-sections">
+<h3>4.5.5. Code and Literal block sections</h3>
+<ul>
+<li><p class="first">Inline text that is required to be rendered with a fixed width font should be enclosed in backquotes like this:
+``text``, so that it appears like this: <code class="docutils literal"><span class="pre">text</span></code>.</p>
+</li>
+<li><p class="first">Fixed width, literal blocks of texts should be indented at least 3 spaces and prefixed with <code class="docutils literal"><span class="pre">::</span></code> like this:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>Here is some fixed width text::
+
+   0x0001 0x0001 0x00FF 0x00FF
+</pre></div>
+</div>
+</li>
+<li><p class="first">It is also possible to specify an encoding for a literal block using the <code class="docutils literal"><span class="pre">..</span> <span class="pre">code-block::</span></code> directive so that syntax
+highlighting can be applied.
+Examples of supported highlighting are:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>.. code-block:: console
+.. code-block:: c
+.. code-block:: python
+.. code-block:: diff
+.. code-block:: none
+</pre></div>
+</div>
+<p>That can be applied as follows:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>.. code-block:: c
+
+   #include&lt;stdio.h&gt;
+
+   int main() {
+
+      printf(&quot;Hello World\n&quot;);
+
+      return 0;
+   }
+</pre></div>
+</div>
+<p>Which would be rendered as:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+
+   <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Hello World</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+
+   <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">The default encoding for a literal block using the simplified <code class="docutils literal"><span class="pre">::</span></code>
+directive is <code class="docutils literal"><span class="pre">none</span></code>.</p>
+</li>
+<li><p class="first">Lines in literal blocks must be less than 80 characters since they can exceed the page width when converted to PDF documentation.
+For long literal lines that exceed that limit try to wrap the text at sensible locations.
+For example a long command line could be documented like this and still work if copied directly from the docs:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>build/app/testpmd -c7 -n3 --vdev=eth_pcap0,iface=eth0     \
+                          --vdev=eth_pcap1,iface=eth1     \
+                          -- -i --nb-cores=2 --nb-ports=2 \
+                             --total-num-mbufs=2048
+</pre></div>
+</div>
+</li>
+<li><p class="first">Long lines that cannot be wrapped, such as application output, should be truncated to be less than 80 characters.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="images">
+<h3>4.5.6. Images</h3>
+<ul>
+<li><p class="first">All images should be in SVG scalar graphics format.
+They should be true SVG XML files and should not include binary formats embedded in a SVG wrapper.</p>
+</li>
+<li><p class="first">The DPDK documentation contains some legacy images in PNG format.
+These will be converted to SVG in time.</p>
+</li>
+<li><p class="first"><a class="reference external" href="http://inkscape.org">Inkscape</a> is the recommended graphics editor for creating the images.
+Use some of the older images in <code class="docutils literal"><span class="pre">doc/guides/prog_guide/img/</span></code> as a template, for example <code class="docutils literal"><span class="pre">mbuf1.svg</span></code>
+or <code class="docutils literal"><span class="pre">ring-enqueue.svg</span></code>.</p>
+</li>
+<li><p class="first">The SVG images should include a copyright notice, as an XML comment.</p>
+</li>
+<li><p class="first">Images in the documentation should be formatted as follows:</p>
+<blockquote>
+<div><ul class="simple">
+<li>The image should be preceded by a label in the format <code class="docutils literal"><span class="pre">..</span> <span class="pre">_figure_XXXX:</span></code> with a leading underscore and
+where <code class="docutils literal"><span class="pre">XXXX</span></code> is a unique descriptive name.</li>
+<li>Images should be included using the <code class="docutils literal"><span class="pre">..</span> <span class="pre">figure::</span></code> directive and the file type should be set to <code class="docutils literal"><span class="pre">*</span></code> (not <code class="docutils literal"><span class="pre">.svg</span></code>).
+This allows the format of the image to be changed if required, without updating the documentation.</li>
+<li>Images must have a caption as part of the <code class="docutils literal"><span class="pre">..</span> <span class="pre">figure::</span></code> directive.</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Here is an example of the previous three guidelines:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>.. _figure_mempool:
+
+.. figure:: img/mempool.*
+
+   A mempool in memory with its associated ring.
+</pre></div>
+</div>
+</li>
+</ul>
+<ul id="mock-label">
+<li><p class="first">Images can then be linked to using the <code class="docutils literal"><span class="pre">:numref:</span></code> directive:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>The mempool layout is shown in :numref:`figure_mempool`.
+</pre></div>
+</div>
+<p>This would be rendered as: <em>The mempool layout is shown in</em> <a class="reference internal" href="#mock-label"><span class="std std-ref">Fig 6.3</span></a>.</p>
+<p><strong>Note</strong>: The <code class="docutils literal"><span class="pre">:numref:</span></code> directive requires Sphinx 1.3.1 or later.
+With earlier versions it will still be rendered as a link but won&#8217;t have an automatically generated number.</p>
+</li>
+<li><p class="first">The caption of the image can be generated, with a link, using the <code class="docutils literal"><span class="pre">:ref:</span></code> directive:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>:ref:`figure_mempool`
+</pre></div>
+</div>
+<p>This would be rendered as: <em>A mempool in memory with its associated ring.</em></p>
+</li>
+</ul>
+</div>
+<div class="section" id="tables">
+<h3>4.5.7. Tables</h3>
+<ul>
+<li><p class="first">RST tables should be used sparingly.
+They are hard to format and to edit, they are often rendered incorrectly in PDF format, and the same information
+can usually be shown just as clearly with a definition or bullet list.</p>
+</li>
+<li><p class="first">Tables in the documentation should be formatted as follows:</p>
+<blockquote>
+<div><ul class="simple">
+<li>The table should be preceded by a label in the format <code class="docutils literal"><span class="pre">..</span> <span class="pre">_table_XXXX:</span></code> with a leading underscore and where
+<code class="docutils literal"><span class="pre">XXXX</span></code> is a unique descriptive name.</li>
+<li>Tables should be included using the <code class="docutils literal"><span class="pre">..</span> <span class="pre">table::</span></code> directive and must have a caption.</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Here is an example of the previous two guidelines:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>.. _table_qos_pipes:
+
+.. table:: Sample configuration for QOS pipes.
+
+   +----------+----------+----------+
+   | Header 1 | Header 2 | Header 3 |
+   |          |          |          |
+   +==========+==========+==========+
+   | Text     | Text     | Text     |
+   +----------+----------+----------+
+   | ...      | ...      | ...      |
+   +----------+----------+----------+
+</pre></div>
+</div>
+</li>
+<li><p class="first">Tables can be linked to using the <code class="docutils literal"><span class="pre">:numref:</span></code> and <code class="docutils literal"><span class="pre">:ref:</span></code> directives, as shown in the previous section for images.
+For example:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>The QOS configuration is shown in :numref:`table_qos_pipes`.
+</pre></div>
+</div>
+</li>
+<li><p class="first">Tables should not include merged cells since they are not supported by the PDF renderer.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="hyperlinks">
+<span id="links"></span><h3>4.5.8. Hyperlinks</h3>
+<ul>
+<li><p class="first">Links to external websites can be plain URLs.
+The following is rendered as <a class="reference external" href="http://dpdk.org">http://dpdk.org</a>:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>http://dpdk.org
+</pre></div>
+</div>
+</li>
+<li><p class="first">They can contain alternative text.
+The following is rendered as <a class="reference external" href="http://dpdk.org">Check out DPDK</a>:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>`Check out DPDK &lt;http://dpdk.org&gt;`_
+</pre></div>
+</div>
+</li>
+<li><p class="first">An internal link can be generated by placing labels in the document with the format <code class="docutils literal"><span class="pre">..</span> <span class="pre">_label_name</span></code>.</p>
+</li>
+<li><p class="first">The following links to the top of this section: <a class="reference internal" href="#links"><span class="std std-ref">Hyperlinks</span></a>:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>.. _links:
+
+Hyperlinks
+~~~~~~~~~~
+
+* The following links to the top of this section: :ref:`links`:
+</pre></div>
+</div>
+</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The label must have a leading underscore but the reference to it must omit it.
+This is a frequent cause of errors and warnings.</p>
+</div>
+<ul class="simple">
+<li>The use of a label is preferred since it works across files and will still work if the header text changes.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="doxygen-guidelines">
+<span id="id1"></span><h2>4.6. Doxygen Guidelines</h2>
+<p>The DPDK API is documented using Doxygen comment annotations in the header files.
+Doxygen is a very powerful tool, it is extremely configurable and with a little effort can be used to create expressive documents.
+See the <a class="reference external" href="http://www.stack.nl/~dimitri/doxygen/">Doxygen website</a> for full details on how to use it.</p>
+<p>The following are some guidelines for use of Doxygen in the DPDK API documentation:</p>
+<ul>
+<li><p class="first">New libraries that are documented with Doxygen should be added to the Doxygen configuration file: <code class="docutils literal"><span class="pre">doc/api/doxy-api.conf</span></code>.
+It is only required to add the directory that contains the files.
+It isn&#8217;t necessary to explicitly name each file since the configuration matches all <code class="docutils literal"><span class="pre">rte_*.h</span></code> files in the directory.</p>
+</li>
+<li><p class="first">Use proper capitalization and punctuation in the Doxygen comments since they will become sentences in the documentation.
+This in particular applies to single line comments, which is the case the is most often forgotten.</p>
+</li>
+<li><p class="first">Use <code class="docutils literal"><span class="pre">&#64;</span></code> style Doxygen commands instead of <code class="docutils literal"><span class="pre">\</span></code> style commands.</p>
+</li>
+<li><p class="first">Add a general description of each library at the head of the main header files:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @file</span>
+<span class="cm"> * RTE Mempool.</span>
+<span class="cm"> *</span>
+<span class="cm"> * A memory pool is an allocator of fixed-size object. It is</span>
+<span class="cm"> * identified by its name, and uses a ring to store free objects.</span>
+<span class="cm"> * ...</span>
+<span class="cm"> */</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Document the purpose of a function, the parameters used and the return
+value:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * Attach a new Ethernet device specified by arguments.</span>
+<span class="cm"> *</span>
+<span class="cm"> * @param devargs</span>
+<span class="cm"> *  A pointer to a strings array describing the new device</span>
+<span class="cm"> *  to be attached. The strings should be a pci address like</span>
+<span class="cm"> *  `0000:01:00.0` or **virtual** device name like `eth_pcap0`.</span>
+<span class="cm"> * @param port_id</span>
+<span class="cm"> *  A pointer to a port identifier actually attached.</span>
+<span class="cm"> *</span>
+<span class="cm"> * @return</span>
+<span class="cm"> *  0 on success and port_id is filled, negative on error.</span>
+<span class="cm"> */</span>
+<span class="kt">int</span> <span class="nf">rte_eth_dev_attach</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">devargs</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="o">*</span><span class="n">port_id</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Doxygen supports Markdown style syntax such as bold, italics, fixed width text and lists.
+For example the second line in the <code class="docutils literal"><span class="pre">devargs</span></code> parameter in the previous example will be rendered as:</p>
+<blockquote>
+<div><p>The strings should be a pci address like <code class="docutils literal"><span class="pre">0000:01:00.0</span></code> or <strong>virtual</strong> device name like <code class="docutils literal"><span class="pre">eth_pcap0</span></code>.</p>
+</div></blockquote>
+</li>
+<li><p class="first">Use <code class="docutils literal"><span class="pre">-</span></code> instead of <code class="docutils literal"><span class="pre">*</span></code> for lists within the Doxygen comment since the latter can get confused with the comment delimiter.</p>
+</li>
+<li><p class="first">Add an empty line between the function description, the <code class="docutils literal"><span class="pre">&#64;params</span></code> and <code class="docutils literal"><span class="pre">&#64;return</span></code> for readability.</p>
+</li>
+<li><p class="first">Place the <code class="docutils literal"><span class="pre">&#64;params</span></code> description on separate line and indent it by 2 spaces.
+(It would be better to use no indentation since this is more common and also because checkpatch complains about leading
+whitespace in comments.
+However this is the convention used in the existing DPDK code.)</p>
+</li>
+<li><p class="first">Documented functions can be linked to simply by adding <code class="docutils literal"><span class="pre">()</span></code> to the function name:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * The functions exported by the application Ethernet API to setup</span>
+<span class="cm"> * a device designated by its port identifier must be invoked in</span>
+<span class="cm"> * the following order:</span>
+<span class="cm"> *     - rte_eth_dev_configure()</span>
+<span class="cm"> *     - rte_eth_tx_queue_setup()</span>
+<span class="cm"> *     - rte_eth_rx_queue_setup()</span>
+<span class="cm"> *     - rte_eth_dev_start()</span>
+<span class="cm"> */</span>
+</pre></div>
+</div>
+<p>In the API documentation the functions will be rendered as links, see the
+<a class="reference external" href="http://dpdk.org/doc/api/rte__ethdev_8h.html">online section of the rte_ethdev.h docs</a> that contains the above text.</p>
+</li>
+<li><p class="first">The <code class="docutils literal"><span class="pre">&#64;see</span></code> keyword can be used to create a <em>see also</em> link to another file or library.
+This directive should be placed on one line at the bottom of the documentation section.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * ...</span>
+<span class="cm"> *</span>
+<span class="cm"> * Some text that references mempools.</span>
+<span class="cm"> *</span>
+<span class="cm"> * @see eal_memzone.c</span>
+<span class="cm"> */</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Doxygen supports two types of comments for documenting variables, constants and members: prefix and postfix:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/** This is a prefix comment. */</span>
+<span class="cp">#define RTE_FOO_ERROR  0x023.</span>
+
+<span class="cp">#define RTE_BAR_ERROR  0x024. </span><span class="cm">/**&lt; This is a postfix comment. */</span><span class="cp"></span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Postfix comments are preferred for struct members and constants if they can be documented in the same way:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">rte_eth_stats</span> <span class="p">{</span>
+    <span class="kt">uint64_t</span> <span class="n">ipackets</span><span class="p">;</span> <span class="cm">/**&lt; Total number of received packets. */</span>
+    <span class="kt">uint64_t</span> <span class="n">opackets</span><span class="p">;</span> <span class="cm">/**&lt; Total number of transmitted packets.*/</span>
+    <span class="kt">uint64_t</span> <span class="n">ibytes</span><span class="p">;</span>   <span class="cm">/**&lt; Total number of received bytes. */</span>
+    <span class="kt">uint64_t</span> <span class="n">obytes</span><span class="p">;</span>   <span class="cm">/**&lt; Total number of transmitted bytes. */</span>
+    <span class="kt">uint64_t</span> <span class="n">imissed</span><span class="p">;</span>  <span class="cm">/**&lt; Total of RX missed packets. */</span>
+    <span class="kt">uint64_t</span> <span class="n">ibadcrc</span><span class="p">;</span>  <span class="cm">/**&lt; Total of RX packets with CRC error. */</span>
+    <span class="kt">uint64_t</span> <span class="n">ibadlen</span><span class="p">;</span>  <span class="cm">/**&lt; Total of RX packets with bad length. */</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Note: postfix comments should be aligned with spaces not tabs in accordance
+with the <a class="reference internal" href="coding_style.html#coding-style"><span class="std std-ref">DPDK Coding Style</span></a>.</p>
+</li>
+<li><p class="first">If a single comment type can&#8217;t be used, due to line length limitations then
+prefix comments should be preferred.
+For example this section of the code contains prefix comments, postfix comments on the same line and postfix
+comments on a separate line:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/** Number of elements in the elt_pa array. */</span>
+<span class="kt">uint32_t</span>    <span class="n">pg_num</span> <span class="n">__rte_cache_aligned</span><span class="p">;</span>
+<span class="kt">uint32_t</span>    <span class="n">pg_shift</span><span class="p">;</span>     <span class="cm">/**&lt; LOG2 of the physical pages. */</span>
+<span class="kt">uintptr_t</span>   <span class="n">pg_mask</span><span class="p">;</span>      <span class="cm">/**&lt; Physical page mask value. */</span>
+<span class="kt">uintptr_t</span>   <span class="n">elt_va_start</span><span class="p">;</span>
+<span class="cm">/**&lt; Virtual address of the first mempool object. */</span>
+<span class="kt">uintptr_t</span>   <span class="n">elt_va_end</span><span class="p">;</span>
+<span class="cm">/**&lt; Virtual address of the &lt;size + 1&gt; mempool object. */</span>
+<span class="n">phys_addr_t</span> <span class="n">elt_pa</span><span class="p">[</span><span class="n">MEMPOOL_PG_NUM_DEFAULT</span><span class="p">];</span>
+<span class="cm">/**&lt; Array of physical page addresses for the mempool buffer. */</span>
+</pre></div>
+</div>
+<p>This doesn&#8217;t have an effect on the rendered documentation but it is confusing for the developer reading the code.
+It this case it would be clearer to use prefix comments throughout:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/** Number of elements in the elt_pa array. */</span>
+<span class="kt">uint32_t</span>    <span class="n">pg_num</span> <span class="n">__rte_cache_aligned</span><span class="p">;</span>
+<span class="cm">/** LOG2 of the physical pages. */</span>
+<span class="kt">uint32_t</span>    <span class="n">pg_shift</span><span class="p">;</span>
+<span class="cm">/** Physical page mask value. */</span>
+<span class="kt">uintptr_t</span>   <span class="n">pg_mask</span><span class="p">;</span>
+<span class="cm">/** Virtual address of the first mempool object. */</span>
+<span class="kt">uintptr_t</span>   <span class="n">elt_va_start</span><span class="p">;</span>
+<span class="cm">/** Virtual address of the &lt;size + 1&gt; mempool object. */</span>
+<span class="kt">uintptr_t</span>   <span class="n">elt_va_end</span><span class="p">;</span>
+<span class="cm">/** Array of physical page addresses for the mempool buffer. */</span>
+<span class="n">phys_addr_t</span> <span class="n">elt_pa</span><span class="p">[</span><span class="n">MEMPOOL_PG_NUM_DEFAULT</span><span class="p">];</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Check for Doxygen warnings in new code by checking the API documentation build:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>make doc-api-html &gt;/dev/null
+</pre></div>
+</div>
+</li>
+<li><p class="first">Read the rendered section of the documentation that you have added for correctness, clarity and consistency
+with the surrounding text.</p>
+</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="patches.html" class="btn btn-neutral float-right" title="5. Contributing Code to DPDK" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="versioning.html" class="btn btn-neutral" title="3. Managing ABI updates" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

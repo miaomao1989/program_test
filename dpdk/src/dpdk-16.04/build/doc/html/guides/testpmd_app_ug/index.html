@@ -1,0 +1,379 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Testpmd Application User Guide &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="next" title="1. Introduction" href="intro.html"/>
+        <link rel="prev" title="41. IPsec Security Gateway Sample Application" href="../sample_app_ug/ipsec_secgw.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Testpmd Application User Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_app.html">2. Compiling the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="run_app.html">3. Running the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="testpmd_funcs.html">4. Testpmd Runtime Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+    <li>Testpmd Application User Guide</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/testpmd_app_ug/index.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="testpmd-application-user-guide">
+<h1>Testpmd Application User Guide</h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="build_app.html">2. Compiling the Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run_app.html">3. Running the Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="run_app.html#eal-command-line-options">3.1. EAL Command-line Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="run_app.html#testpmd-command-line-options">3.2. Testpmd Command-line Options</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="testpmd_funcs.html">4. Testpmd Runtime Functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="testpmd_funcs.html#help-functions">4.1. Help Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="testpmd_funcs.html#control-functions">4.2. Control Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#start">4.2.1. start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#start-tx-first">4.2.2. start tx_first</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#stop">4.2.3. stop</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#quit">4.2.4. quit</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="testpmd_funcs.html#display-functions">4.3. Display Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#show-port">4.3.1. show port</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#show-port-rss-reta">4.3.2. show port rss reta</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#show-port-rss-hash">4.3.3. show port rss-hash</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#clear-port">4.3.4. clear port</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#show-rxq-txq">4.3.5. show (rxq|txq)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#show-config">4.3.6. show config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#set-fwd">4.3.7. set fwd</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#read-rxd">4.3.8. read rxd</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#read-txd">4.3.9. read txd</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="testpmd_funcs.html#configuration-functions">4.4. Configuration Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#set-default">4.4.1. set default</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#set-verbose">4.4.2. set verbose</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#set-nbport">4.4.3. set nbport</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#set-nbcore">4.4.4. set nbcore</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#set-coremask">4.4.5. set coremask</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#set-portmask">4.4.6. set portmask</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#set-burst">4.4.7. set burst</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#set-txpkts">4.4.8. set txpkts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#set-txsplit">4.4.9. set txsplit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#set-corelist">4.4.10. set corelist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#set-portlist">4.4.11. set portlist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#vlan-set-strip">4.4.12. vlan set strip</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#vlan-set-stripq">4.4.13. vlan set stripq</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#vlan-set-filter">4.4.14. vlan set filter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#vlan-set-qinq">4.4.15. vlan set qinq</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#vlan-set-tpid">4.4.16. vlan set tpid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#rx-vlan-add">4.4.17. rx_vlan add</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#rx-vlan-rm">4.4.18. rx_vlan rm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#rx-vlan-add-for-vf">4.4.19. rx_vlan add (for VF)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#rx-vlan-rm-for-vf">4.4.20. rx_vlan rm (for VF)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#tunnel-filter-add">4.4.21. tunnel_filter add</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#tunnel-filter-remove">4.4.22. tunnel_filter remove</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#rx-vxlan-port-add">4.4.23. rx_vxlan_port add</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#rx-vxlan-port-remove">4.4.24. rx_vxlan_port remove</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#tx-vlan-set">4.4.25. tx_vlan set</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#tx-vlan-set-pvid">4.4.26. tx_vlan set pvid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#tx-vlan-reset">4.4.27. tx_vlan reset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#csum-set">4.4.28. csum set</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#csum-parse-tunnel">4.4.29. csum parse-tunnel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#csum-show">4.4.30. csum show</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#tso-set">4.4.31. tso set</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#tso-show">4.4.32. tso show</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#mac-addr-add">4.4.33. mac_addr add</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#mac-addr-remove">4.4.34. mac_addr remove</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#mac-addr-add-for-vf">4.4.35. mac_addr add(for VF)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#set-port-uta">4.4.36. set port-uta</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#set-promisc">4.4.37. set promisc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#set-allmulti">4.4.38. set allmulti</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#set-flow-ctrl-rx">4.4.39. set flow_ctrl rx</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#set-pfc-ctrl-rx">4.4.40. set pfc_ctrl rx</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#set-stat-qmap">4.4.41. set stat_qmap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#set-port-rx-tx-for-vf">4.4.42. set port - rx/tx (for VF)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#set-port-mac-address-filter-for-vf">4.4.43. set port - mac address filter (for VF)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#set-port-rx-mode-for-vf">4.4.44. set port - rx mode(for VF)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#set-port-tx-rate-for-queue">4.4.45. set port - tx_rate (for Queue)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#set-port-tx-rate-for-vf">4.4.46. set port - tx_rate (for VF)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#set-port-mirror-rule">4.4.47. set port - mirror rule</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#reset-port-mirror-rule">4.4.48. reset port - mirror rule</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#set-flush-rx">4.4.49. set flush_rx</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#set-bypass-mode">4.4.50. set bypass mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#set-bypass-event">4.4.51. set bypass event</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#set-bypass-timeout">4.4.52. set bypass timeout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#show-bypass-config">4.4.53. show bypass config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#set-link-up">4.4.54. set link up</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#set-link-down">4.4.55. set link down</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#e-tag-set">4.4.56. E-tag set</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="testpmd_funcs.html#port-functions">4.5. Port Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#port-attach">4.5.1. port attach</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#port-detach">4.5.2. port detach</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#port-start">4.5.3. port start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#port-stop">4.5.4. port stop</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#port-close">4.5.5. port close</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#port-start-stop-queue">4.5.6. port start/stop queue</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#port-config-speed">4.5.7. port config - speed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#port-config-queues-descriptors">4.5.8. port config - queues/descriptors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#port-config-max-pkt-len">4.5.9. port config - max-pkt-len</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#port-config-crc-strip">4.5.10. port config - CRC Strip</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#port-config-rx-checksum">4.5.11. port config - RX Checksum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#port-config-vlan">4.5.12. port config - VLAN</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#port-config-vlan-filter">4.5.13. port config - VLAN filter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#port-config-vlan-strip">4.5.14. port config - VLAN strip</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#port-config-vlan-extend">4.5.15. port config - VLAN extend</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#port-config-drop-packets">4.5.16. port config - Drop Packets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#port-config-rss">4.5.17. port config - RSS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#port-config-rss-reta">4.5.18. port config - RSS Reta</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#port-config-dcb">4.5.19. port config - DCB</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#port-config-burst">4.5.20. port config - Burst</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#port-config-threshold">4.5.21. port config - Threshold</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#port-config-e-tag">4.5.22. port config - E-tag</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="testpmd_funcs.html#link-bonding-functions">4.6. Link Bonding Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#create-bonded-device">4.6.1. create bonded device</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#add-bonding-slave">4.6.2. add bonding slave</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#remove-bonding-slave">4.6.3. remove bonding slave</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#set-bonding-mode">4.6.4. set bonding mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#set-bonding-primary">4.6.5. set bonding primary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#set-bonding-mac">4.6.6. set bonding mac</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#set-bonding-xmit-balance-policy">4.6.7. set bonding xmit_balance_policy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#set-bonding-mon-period">4.6.8. set bonding mon_period</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#show-bonding-config">4.6.9. show bonding config</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="testpmd_funcs.html#register-functions">4.7. Register Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#read-reg">4.7.1. read reg</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#read-regfield">4.7.2. read regfield</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#read-regbit">4.7.3. read regbit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#write-reg">4.7.4. write reg</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#write-regfield">4.7.5. write regfield</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#write-regbit">4.7.6. write regbit</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="testpmd_funcs.html#filter-functions">4.8. Filter Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#ethertype-filter">4.8.1. ethertype_filter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#tuple-filter">4.8.2. 2tuple_filter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#id1">4.8.3. 5tuple_filter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#syn-filter">4.8.4. syn_filter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#flex-filter">4.8.5. flex_filter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#flow-director-filter">4.8.6. flow_director_filter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#flush-flow-director">4.8.7. flush_flow_director</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#flow-director-mask">4.8.8. flow_director_mask</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#flow-director-flex-mask">4.8.9. flow_director_flex_mask</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#flow-director-flex-payload">4.8.10. flow_director_flex_payload</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#get-sym-hash-ena-per-port">4.8.11. get_sym_hash_ena_per_port</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#set-sym-hash-ena-per-port">4.8.12. set_sym_hash_ena_per_port</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#get-hash-global-config">4.8.13. get_hash_global_config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#set-hash-global-config">4.8.14. set_hash_global_config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#set-hash-input-set">4.8.15. set_hash_input_set</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#set-fdir-input-set">4.8.16. set_fdir_input_set</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testpmd_funcs.html#global-config">4.8.17. global_config</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="intro.html" class="btn btn-neutral float-right" title="1. Introduction" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../sample_app_ug/ipsec_secgw.html" class="btn btn-neutral" title="41. IPsec Security Gateway Sample Application" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

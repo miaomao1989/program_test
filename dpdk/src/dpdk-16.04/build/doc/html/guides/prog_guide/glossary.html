@@ -1,0 +1,424 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>36. Glossary &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Programmer’s Guide" href="index.html"/>
+        <link rel="next" title="Network Interface Controller Drivers" href="../nics/index.html"/>
+        <link rel="prev" title="35. Profile Your Application" href="profile_app.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Programmer&#8217;s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html">2. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="env_abstraction_layer.html">3. Environment Abstraction Layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ring_lib.html">4. Ring Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mempool_lib.html">5. Mempool Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mbuf_lib.html">6. Mbuf Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="poll_mode_drv.html">7. Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cryptodev_lib.html">8. Cryptography Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ivshmem_lib.html">9. IVSHMEM Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_bonding_poll_mode_drv_lib.html">10. Link Bonding Poll Mode Driver Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer_lib.html">11. Timer Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hash_lib.html">12. Hash Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm_lib.html">13. LPM Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm6_lib.html">14. LPM6 Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_distrib_lib.html">15. Packet Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reorder_lib.html">16. Reorder Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_fragment_reassembly_lib.html">17. IP Fragmentation and Reassembly Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_proc_support.html">18. Multi-process Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">19. Kernel NIC Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thread_safety_dpdk_functions.html">20. Thread Safety of DPDK Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_framework.html">21. Quality of Service (QoS) Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="power_man.html">22. Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_classif_access_ctrl.html">23. Packet Classification and Access Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_framework.html">24. Packet Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_lib.html">25. Vhost Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="port_hotplug_framework.html">26. Port Hotplug Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source_org.html">27. Source Organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_kit_build_system.html">28. Development Kit Build System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_kit_root_make_help.html">29. Development Kit Root Makefile Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extend_dpdk.html">30. Extending the DPDK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_app.html">31. Building Your Own Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ext_app_lib_make_help.html">32. External Application/Library Makefile help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perf_opt_guidelines.html">33. Performance Optimization Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing_efficient_code.html">34. Writing Efficient Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="profile_app.html">35. Profile Your Application</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">36. Glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Programmer&#8217;s Guide</a> &raquo;</li>
+      
+    <li>36. Glossary</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/prog_guide/glossary.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="glossary">
+<h1>36. Glossary</h1>
+<dl class="docutils">
+<dt>ACL</dt>
+<dd>Access Control List</dd>
+<dt>API</dt>
+<dd>Application Programming Interface</dd>
+<dt>ASLR</dt>
+<dd>Linux* kernel Address-Space Layout Randomization</dd>
+<dt>BSD</dt>
+<dd>Berkeley Software Distribution</dd>
+<dt>Clr</dt>
+<dd>Clear</dd>
+<dt>CIDR</dt>
+<dd>Classless Inter-Domain Routing</dd>
+<dt>Control Plane</dt>
+<dd>The control plane is concerned with the routing of packets and with
+providing a start or end point.</dd>
+<dt>Core</dt>
+<dd>A core may include several lcores or threads if the processor supports
+hyperthreading.</dd>
+<dt>Core Components</dt>
+<dd>A set of libraries provided by the DPDK, including eal, ring, mempool,
+mbuf, timers, and so on.</dd>
+<dt>CPU</dt>
+<dd>Central Processing Unit</dd>
+<dt>CRC</dt>
+<dd>Cyclic Redundancy Check</dd>
+<dt>ctrlmbuf</dt>
+<dd>An <em>mbuf</em> carrying control data.</dd>
+<dt>Data Plane</dt>
+<dd>In contrast to the control plane, the data plane in a network architecture
+are the layers involved when forwarding packets.  These layers must be
+highly optimized to achieve good performance.</dd>
+<dt>DIMM</dt>
+<dd>Dual In-line Memory Module</dd>
+<dt>Doxygen</dt>
+<dd>A documentation generator used in the DPDK to generate the API reference.</dd>
+<dt>DPDK</dt>
+<dd>Data Plane Development Kit</dd>
+<dt>DRAM</dt>
+<dd>Dynamic Random Access Memory</dd>
+<dt>EAL</dt>
+<dd>The Environment Abstraction Layer (EAL) provides a generic interface that
+hides the environment specifics from the applications and libraries.  The
+services expected from the EAL are: development kit loading and launching,
+core affinity/ assignment procedures, system memory allocation/description,
+PCI bus access, inter-partition communication.</dd>
+<dt>FIFO</dt>
+<dd>First In First Out</dd>
+<dt>FPGA</dt>
+<dd>Field Programmable Gate Array</dd>
+<dt>GbE</dt>
+<dd>Gigabit Ethernet</dd>
+<dt>HW</dt>
+<dd>Hardware</dd>
+<dt>HPET</dt>
+<dd>High Precision Event Timer; a hardware timer that provides a precise time
+reference on x86 platforms.</dd>
+<dt>ID</dt>
+<dd>Identifier</dd>
+<dt>IOCTL</dt>
+<dd>Input/Output Control</dd>
+<dt>I/O</dt>
+<dd>Input/Output</dd>
+<dt>IP</dt>
+<dd>Internet Protocol</dd>
+<dt>IPv4</dt>
+<dd>Internet Protocol version 4</dd>
+<dt>IPv6</dt>
+<dd>Internet Protocol version 6</dd>
+<dt>lcore</dt>
+<dd>A logical execution unit of the processor, sometimes called a <em>hardware
+thread</em>.</dd>
+<dt>KNI</dt>
+<dd>Kernel Network Interface</dd>
+<dt>L1</dt>
+<dd>Layer 1</dd>
+<dt>L2</dt>
+<dd>Layer 2</dd>
+<dt>L3</dt>
+<dd>Layer 3</dd>
+<dt>L4</dt>
+<dd>Layer 4</dd>
+<dt>LAN</dt>
+<dd>Local Area Network</dd>
+<dt>LPM</dt>
+<dd>Longest Prefix Match</dd>
+<dt>master lcore</dt>
+<dd>The execution unit that executes the main() function and that launches
+other lcores.</dd>
+<dt>mbuf</dt>
+<dd>An mbuf is a data structure used internally to carry messages (mainly
+network packets).  The name is derived from BSD stacks.  To understand the
+concepts of packet buffers or mbuf, refer to <em>TCP/IP Illustrated, Volume 2:
+The Implementation</em>.</dd>
+<dt>MESI</dt>
+<dd>Modified Exclusive Shared Invalid (CPU cache coherency protocol)</dd>
+<dt>MTU</dt>
+<dd>Maximum Transfer Unit</dd>
+<dt>NIC</dt>
+<dd>Network Interface Card</dd>
+<dt>OOO</dt>
+<dd>Out Of Order (execution of instructions within the CPU pipeline)</dd>
+<dt>NUMA</dt>
+<dd>Non-uniform Memory Access</dd>
+<dt>PCI</dt>
+<dd>Peripheral Connect Interface</dd>
+<dt>PHY</dt>
+<dd>An abbreviation for the physical layer of the OSI model.</dd>
+<dt>pktmbuf</dt>
+<dd>An <em>mbuf</em> carrying a network packet.</dd>
+<dt>PMD</dt>
+<dd>Poll Mode Driver</dd>
+<dt>QoS</dt>
+<dd>Quality of Service</dd>
+<dt>RCU</dt>
+<dd>Read-Copy-Update algorithm, an alternative to simple rwlocks.</dd>
+<dt>Rd</dt>
+<dd>Read</dd>
+<dt>RED</dt>
+<dd>Random Early Detection</dd>
+<dt>RSS</dt>
+<dd>Receive Side Scaling</dd>
+<dt>RTE</dt>
+<dd>Run Time Environment. Provides a fast and simple framework for fast packet
+processing, in a lightweight environment as a Linux* application and using
+Poll Mode Drivers (PMDs) to increase speed.</dd>
+<dt>Rx</dt>
+<dd>Reception</dd>
+<dt>Slave lcore</dt>
+<dd>Any <em>lcore</em> that is not the <em>master lcore</em>.</dd>
+<dt>Socket</dt>
+<dd>A physical CPU, that includes several <em>cores</em>.</dd>
+<dt>SLA</dt>
+<dd>Service Level Agreement</dd>
+<dt>srTCM</dt>
+<dd>Single Rate Three Color Marking</dd>
+<dt>SRTD</dt>
+<dd>Scheduler Round Trip Delay</dd>
+<dt>SW</dt>
+<dd>Software</dd>
+<dt>Target</dt>
+<dd>In the DPDK, the target is a combination of architecture, machine,
+executive environment and toolchain.  For example:
+i686-native-linuxapp-gcc.</dd>
+<dt>TCP</dt>
+<dd>Transmission Control Protocol</dd>
+<dt>TC</dt>
+<dd>Traffic Class</dd>
+<dt>TLB</dt>
+<dd>Translation Lookaside Buffer</dd>
+<dt>TLS</dt>
+<dd>Thread Local Storage</dd>
+<dt>trTCM</dt>
+<dd>Two Rate Three Color Marking</dd>
+<dt>TSC</dt>
+<dd>Time Stamp Counter</dd>
+<dt>Tx</dt>
+<dd>Transmission</dd>
+<dt>TUN/TAP</dt>
+<dd>TUN and TAP are virtual network kernel devices.</dd>
+<dt>VLAN</dt>
+<dd>Virtual Local Area Network</dd>
+<dt>Wr</dt>
+<dd>Write</dd>
+<dt>WRED</dt>
+<dd>Weighted Random Early Detection</dd>
+<dt>WRR</dt>
+<dd>Weighted Round Robin</dd>
+</dl>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../nics/index.html" class="btn btn-neutral float-right" title="Network Interface Controller Drivers" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="profile_app.html" class="btn btn-neutral" title="35. Profile Your Application" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

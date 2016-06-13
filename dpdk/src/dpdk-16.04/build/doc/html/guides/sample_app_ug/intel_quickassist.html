@@ -1,0 +1,428 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>26. Intel® QuickAssist Technology Sample Application &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Sample Applications User Guide" href="index.html"/>
+        <link rel="next" title="27. Quota and Watermark Sample Application" href="quota_watermark.html"/>
+        <link rel="prev" title="25. QoS Scheduler Sample Application" href="qos_scheduler.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Sample Applications User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmd_line.html">2. Command Line Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethtool.html">3. Ethtool Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exception_path.html">4. Exception Path Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello_world.html">5. Hello World Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skeleton.html">6. Basic Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rxtx_callbacks.html">7. RX/TX Callbacks Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_frag.html">8. IP Fragmentation Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipv4_multicast.html">9. IPv4 Multicast Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_reassembly.html">10. IP Reassembly Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">11. Kernel NIC Interface Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keep_alive.html">12. Keep Alive Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_crypto.html">13. L2 Forwarding with Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_job_stats.html">14. L2 Forwarding Sample Application (in Real and Virtualized Environments) with core load statistics.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_real_virtual.html">15. L2 Forwarding Sample Application (in Real and Virtualized Environments)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_cat.html">16. L2 Forwarding Sample Application with Cache Allocation Technology (CAT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward.html">17. L3 Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_power_man.html">18. L3 Forwarding with Power Management Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_access_ctrl.html">19. L3 Forwarding with Access Control Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_virtual.html">20. L3 Forwarding in a Virtualization Environment Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_status_intr.html">21. Link Status Interrupt Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="load_balancer.html">22. Load Balancer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_process.html">23. Multi-process Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_metering.html">24. QoS Metering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_scheduler.html">25. QoS Scheduler Sample Application</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">26. Intel® QuickAssist Technology Sample Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">26.1. Overview</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#setup">26.1.1. Setup</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#building-the-application">26.2. Building the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-application">26.3. Running the Application</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#intel-quickassist-technology-configuration-files">26.3.1. Intel® QuickAssist Technology Configuration Files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#traffic-generator-setup-and-application-startup">26.3.2. Traffic Generator Setup and Application Startup</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="quota_watermark.html">27. Quota and Watermark Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer.html">28. Timer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_ordering.html">29. Packet Ordering Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_dcb_forwarding.html">30. VMDQ and DCB Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">31. Vhost Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="netmap_compatibility.html">32. Netmap Compatibility Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_pipeline.html">33. Internet Protocol (IP) Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_pipeline.html">34. Test Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dist_app.html">35. Distributor Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vm_power_management.html">36. VM Power Management Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tep_termination.html">37. TEP termination Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="proc_info.html">38. dpdk_proc_info Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ptpclient.html">39. PTP Client Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance_thread.html">40. Performance Thread Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_secgw.html">41. IPsec Security Gateway Sample Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Sample Applications User Guide</a> &raquo;</li>
+      
+    <li>26. Intel® QuickAssist Technology Sample Application</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/sample_app_ug/intel_quickassist.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="intel-quickassist-technology-sample-application">
+<h1>26. Intel® QuickAssist Technology Sample Application</h1>
+<p>This sample application demonstrates the use of the cryptographic operations provided
+by the Intel® QuickAssist Technology from within the DPDK environment.
+Therefore, building and running this application requires having both the DPDK and
+the QuickAssist Technology Software Library installed, as well as at least one
+Intel® QuickAssist Technology hardware device present in the system.</p>
+<p>For this sample application, there is a dependency on either of:</p>
+<ul class="simple">
+<li>Intel® Communications Chipset 8900 to 8920 Series Software for Linux* package</li>
+<li>Intel® Communications Chipset 8925 to 8955 Series Software for Linux* package</li>
+</ul>
+<div class="section" id="overview">
+<h2>26.1. Overview</h2>
+<p>An overview of the application is provided in <a class="reference internal" href="#figure-quickassist-block-diagram"><span class="std std-numref">Fig. 26.1</span></a>.
+For simplicity, only two NIC ports and one Intel® QuickAssist Technology device are shown in this diagram,
+although the number of NIC ports and Intel® QuickAssist Technology devices can be different.</p>
+<div class="figure" id="id1">
+<span id="figure-quickassist-block-diagram"></span><img alt="../_images/quickassist_block_diagram.png" src="../_images/quickassist_block_diagram.png" />
+<p class="caption"><span class="caption-number">Fig. 26.1 </span><span class="caption-text">Intel® QuickAssist Technology Application Block Diagram</span></p>
+</div>
+<p>The application allows the configuration of the following items:</p>
+<ul class="simple">
+<li>Number of NIC ports</li>
+<li>Number of logical cores (lcores)</li>
+<li>Mapping of NIC RX queues to logical cores</li>
+</ul>
+<p>Each lcore communicates with every cryptographic acceleration engine in the system through a pair of dedicated input - output queues.
+Each lcore has a dedicated NIC TX queue with every NIC port in the system.
+Therefore, each lcore reads packets from its NIC RX queues and cryptographic accelerator output queues and
+writes packets to its NIC TX queues and cryptographic accelerator input queues.</p>
+<p>Each incoming packet that is read from a NIC RX queue is either directly forwarded to its destination NIC TX port (forwarding path)
+or first sent to one of the Intel® QuickAssist Technology devices for either encryption or decryption
+before being sent out on its destination NIC TX port (cryptographic path).</p>
+<p>The application supports IPv4 input packets only.
+For each input packet, the decision between the forwarding path and
+the cryptographic path is taken at the classification stage based on the value of the IP source address field read from the input packet.
+Assuming that the IP source address is A.B.C.D, then if:</p>
+<ul class="simple">
+<li>D = 0: the forwarding path is selected (the packet is forwarded out directly)</li>
+<li>D = 1: the cryptographic path for encryption is selected (the packet is first encrypted and then forwarded out)</li>
+<li>D = 2: the cryptographic path for decryption is selected (the packet is first decrypted and then forwarded out)</li>
+</ul>
+<p>For the cryptographic path cases (D = 1 or D = 2), byte C specifies the cipher algorithm and
+byte B the cryptographic hash algorithm to be used for the current packet.
+Byte A is not used and can be any value.
+The cipher and cryptographic hash algorithms supported by this application are listed in the crypto.h header file.</p>
+<p>For each input packet, the destination NIC TX port is decided at the forwarding stage (executed after the cryptographic stage,
+if enabled for the packet) by looking at the RX port index of the dst_ports[ ] array,
+which was initialized at startup, being the outport the adjacent enabled port.
+For example, if ports 1,3,5 and 6 are enabled, for input port 1, outport port will be 3 and vice versa,
+and for input port 5, output port will be 6 and vice versa.</p>
+<p>For the cryptographic path, it is the payload of the IPv4 packet that is encrypted or decrypted.</p>
+<div class="section" id="setup">
+<h3>26.1.1. Setup</h3>
+<p>Building and running this application requires having both the DPDK package and
+the QuickAssist Technology Software Library installed,
+as well as at least one Intel® QuickAssist Technology hardware device present in the system.</p>
+<p>For more details on how to build and run DPDK and Intel® QuickAssist Technology applications,
+please refer to the following documents:</p>
+<ul class="simple">
+<li><em>DPDK Getting Started Guide</em></li>
+<li>Intel® Communications Chipset 8900 to 8920 Series Software for Linux* Getting Started Guide (440005)</li>
+<li>Intel® Communications Chipset 8925 to 8955 Series Software for Linux* Getting Started Guide (523128)</li>
+</ul>
+<p>For more details on the actual platforms used to validate this application, as well as performance numbers,
+please refer to the Test Report, which is accessible by contacting your Intel representative.</p>
+</div>
+</div>
+<div class="section" id="building-the-application">
+<h2>26.2. Building the Application</h2>
+<p>Steps to build the application:</p>
+<ol class="arabic">
+<li><p class="first">Set up the following environment variables:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export RTE_SDK=&lt;Absolute path to the DPDK installation folder&gt;</span>
+<span class="go">export ICP_ROOT=&lt;Absolute path to the Intel QAT installation folder&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Set the target (a default target is used if not specified). For example:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export RTE_TARGET=x86_64-native-linuxapp-gcc</span>
+</pre></div>
+</div>
+<p>Refer to the <em>DPDK Getting Started Guide</em> for possible RTE_TARGET values.</p>
+</li>
+<li><p class="first">Build the application:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">cd ${RTE_SDK}/examples/dpdk_qat</span>
+<span class="go">make</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="running-the-application">
+<h2>26.3. Running the Application</h2>
+<div class="section" id="intel-quickassist-technology-configuration-files">
+<h3>26.3.1. Intel® QuickAssist Technology Configuration Files</h3>
+<p>The Intel® QuickAssist Technology configuration files used by the application are located in the config_files folder in the application folder.
+There following sets of configuration files are included in the DPDK package:</p>
+<ul class="simple">
+<li>Stargo CRB (single CPU socket): located in the stargo folder<ul>
+<li>dh89xxcc_qa_dev0.conf</li>
+</ul>
+</li>
+<li>Shumway CRB (dual CPU socket): located in the shumway folder<ul>
+<li>dh89xxcc_qa_dev0.conf</li>
+<li>dh89xxcc_qa_dev1.conf</li>
+</ul>
+</li>
+<li>Coleto Creek: located in the coleto folder<ul>
+<li>dh895xcc_qa_dev0.conf</li>
+</ul>
+</li>
+</ul>
+<p>The relevant configuration file(s) must be copied to the /etc/ directory.</p>
+<p>Please note that any change to these configuration files requires restarting the Intel®
+QuickAssist Technology driver using the following command:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> service qat_service restart
+</pre></div>
+</div>
+<p>Refer to the following documents for information on the Intel® QuickAssist Technology configuration files:</p>
+<ul class="simple">
+<li>Intel®  Communications Chipset 8900 to 8920 Series Software Programmer&#8217;s Guide</li>
+<li>Intel®  Communications Chipset 8925 to 8955 Series Software Programmer&#8217;s Guide</li>
+<li>Intel®  Communications Chipset 8900 to 8920 Series Software for Linux* Getting Started Guide.</li>
+<li>Intel®  Communications Chipset 8925 to 8955 Series Software for Linux* Getting Started Guide.</li>
+</ul>
+</div>
+<div class="section" id="traffic-generator-setup-and-application-startup">
+<h3>26.3.2. Traffic Generator Setup and Application Startup</h3>
+<p>The application has a number of command line options:</p>
+<blockquote>
+<div>dpdk_qat [EAL options] &#8211; -p PORTMASK [&#8211;no-promisc] [&#8211;config &#8216;(port,queue,lcore)[,(port,queue,lcore)]&#8217;]</div></blockquote>
+<p>where,</p>
+<ul class="simple">
+<li>-p PORTMASK: Hexadecimal bitmask of ports to configure</li>
+<li>&#8211;no-promisc: Disables promiscuous mode for all ports,
+so that only packets with the Ethernet MAC destination address set to the Ethernet address of the port are accepted.
+By default promiscuous mode is enabled so that packets are accepted regardless of the packet&#8217;s Ethernet MAC destination address.</li>
+<li>&#8211;config&#8217;(port,queue,lcore)[,(port,queue,lcore)]&#8217;:  determines which queues from which ports are mapped to which cores.</li>
+</ul>
+<p>Refer to the <a class="reference internal" href="l3_forward.html"><span class="doc">L3 Forwarding Sample Application</span></a> for more detailed descriptions of the &#8211;config command line option.</p>
+<p>As an example, to run the application with two ports and two cores,
+which are using different Intel® QuickAssist Technology execution engines,
+performing AES-CBC-128 encryption with AES-XCBC-MAC-96 hash, the following settings can be used:</p>
+<ul>
+<li><p class="first">Traffic generator source IP address: 0.9.6.1</p>
+</li>
+<li><p class="first">Command line:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./build/dpdk_qat -c 0xff -n 2 -- -p 0x3 --config &#39;(0,0,1),(1,0,2)&#39;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>Refer to the <em>DPDK Test Report</em> for more examples of traffic generator setup and the application startup command lines.
+If no errors are generated in response to the startup commands, the application is running correctly.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="quota_watermark.html" class="btn btn-neutral float-right" title="27. Quota and Watermark Sample Application" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="qos_scheduler.html" class="btn btn-neutral" title="25. QoS Scheduler Sample Application" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

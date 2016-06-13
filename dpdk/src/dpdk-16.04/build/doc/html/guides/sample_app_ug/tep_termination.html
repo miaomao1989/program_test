@@ -1,0 +1,514 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>37. TEP termination Sample Application &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Sample Applications User Guide" href="index.html"/>
+        <link rel="next" title="38. dpdk_proc_info Application" href="proc_info.html"/>
+        <link rel="prev" title="36. VM Power Management Application" href="vm_power_management.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Sample Applications User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmd_line.html">2. Command Line Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethtool.html">3. Ethtool Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exception_path.html">4. Exception Path Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello_world.html">5. Hello World Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skeleton.html">6. Basic Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rxtx_callbacks.html">7. RX/TX Callbacks Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_frag.html">8. IP Fragmentation Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipv4_multicast.html">9. IPv4 Multicast Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_reassembly.html">10. IP Reassembly Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">11. Kernel NIC Interface Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keep_alive.html">12. Keep Alive Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_crypto.html">13. L2 Forwarding with Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_job_stats.html">14. L2 Forwarding Sample Application (in Real and Virtualized Environments) with core load statistics.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_real_virtual.html">15. L2 Forwarding Sample Application (in Real and Virtualized Environments)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_cat.html">16. L2 Forwarding Sample Application with Cache Allocation Technology (CAT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward.html">17. L3 Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_power_man.html">18. L3 Forwarding with Power Management Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_access_ctrl.html">19. L3 Forwarding with Access Control Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_virtual.html">20. L3 Forwarding in a Virtualization Environment Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_status_intr.html">21. Link Status Interrupt Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="load_balancer.html">22. Load Balancer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_process.html">23. Multi-process Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_metering.html">24. QoS Metering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_scheduler.html">25. QoS Scheduler Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intel_quickassist.html">26. Intel® QuickAssist Technology Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quota_watermark.html">27. Quota and Watermark Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer.html">28. Timer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_ordering.html">29. Packet Ordering Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_dcb_forwarding.html">30. VMDQ and DCB Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">31. Vhost Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="netmap_compatibility.html">32. Netmap Compatibility Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_pipeline.html">33. Internet Protocol (IP) Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_pipeline.html">34. Test Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dist_app.html">35. Distributor Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vm_power_management.html">36. VM Power Management Application</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">37. TEP termination Sample Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#background">37.1. Background</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sample-code-overview">37.2. Sample Code Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#supported-distributions">37.3. Supported Distributions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prerequisites">37.4. Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compiling-the-sample-code">37.5. Compiling the Sample Code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-sample-code">37.6. Running the Sample Code</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#parameters">37.6.1. Parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-virtual-machine-qemu">37.7. Running the Virtual Machine (QEMU)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-dpdk-in-the-virtual-machine">37.8. Running DPDK in the Virtual Machine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#passing-traffic-to-the-virtual-machine-device">37.9. Passing Traffic to the Virtual Machine Device</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="proc_info.html">38. dpdk_proc_info Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ptpclient.html">39. PTP Client Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance_thread.html">40. Performance Thread Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_secgw.html">41. IPsec Security Gateway Sample Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Sample Applications User Guide</a> &raquo;</li>
+      
+    <li>37. TEP termination Sample Application</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/sample_app_ug/tep_termination.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="tep-termination-sample-application">
+<h1>37. TEP termination Sample Application</h1>
+<p>The TEP (Tunnel End point) termination sample application simulates a VXLAN
+Tunnel Endpoint (VTEP) termination in DPDK, which is used to demonstrate
+the offload and filtering capabilities of Intel® XL710 10/40 Gigabit Ethernet
+Controller for VXLAN packet.
+This sample uses the basic virtio devices management mechanism from vhost example,
+and also uses the us-vHost interface and tunnel filtering mechanism to direct
+a specified traffic to a specific VM.
+In addition, this sample is also designed to show how tunneling protocols can be handled.</p>
+<div class="section" id="background">
+<h2>37.1. Background</h2>
+<p>With virtualization, overlay networks allow a network structure to be built
+or imposed across physical nodes which is abstracted away from the actual
+underlining physical network connections.
+This allows network isolation, QOS, etc to be provided on a per client basis.</p>
+<div class="figure" id="id1">
+<span id="figure-overlay-networking"></span><img src="../_images/overlay_networking.svg" /><p class="caption"><span class="caption-number">Fig. 37.1 </span><span class="caption-text">Overlay Networking.</span></p>
+</div>
+<p>In a typical setup, the network overlay tunnel is terminated at the Virtual/Tunnel End Point (VEP/TEP).
+The TEP is normally located at the physical host level ideally in the software switch.
+Due to processing constraints and the inevitable bottleneck that the switch
+becomes the ability to offload overlay support features becomes an important requirement.
+Intel® XL710 10/40 G Ethernet network card provides hardware filtering
+and offload capabilities to support overlay networks implementations such as MAC in UDP and MAC in GRE.</p>
+</div>
+<div class="section" id="sample-code-overview">
+<h2>37.2. Sample Code Overview</h2>
+<p>The DPDK TEP termination sample code demonstrates the offload and filtering
+capabilities of Intel® XL710 10/40 Gigabit Ethernet Controller for VXLAN packet.</p>
+<p>The sample code is based on vhost library.
+The vhost library is developed for user space Ethernet switch to easily integrate with vhost functionality.</p>
+<p>The sample will support the followings:</p>
+<ul>
+<li><p class="first">Tunneling packet recognition.</p>
+</li>
+<li><p class="first">The port of UDP tunneling is configurable</p>
+</li>
+<li><p class="first">Directing incoming traffic to the correct queue based on the tunnel filter type.
+The supported filter type are listed below.</p>
+<ul class="simple">
+<li>Inner MAC and VLAN and tenant ID</li>
+<li>Inner MAC and tenant ID, and Outer MAC</li>
+<li>Inner MAC and tenant ID</li>
+</ul>
+<p>The tenant ID will be assigned from a static internal table based on the us-vhost device ID.
+Each device will receive a unique device ID.
+The inner MAC will be learned by the first packet transmitted from a device.</p>
+</li>
+<li><p class="first">Decapsulation of RX VXLAN traffic. This is a software only operation.</p>
+</li>
+<li><p class="first">Encapsulation of TX VXLAN traffic. This is a software only operation.</p>
+</li>
+<li><p class="first">Inner IP and inner L4 checksum offload.</p>
+</li>
+<li><p class="first">TSO offload support for tunneling packet.</p>
+</li>
+</ul>
+<p>The following figure shows the framework of the TEP termination sample application based on vhost-cuse.</p>
+<div class="figure" id="id2">
+<span id="figure-tep-termination-arch"></span><img src="../_images/tep_termination_arch.svg" /><p class="caption"><span class="caption-number">Fig. 37.2 </span><span class="caption-text">TEP termination Framework Overview</span></p>
+</div>
+</div>
+<div class="section" id="supported-distributions">
+<h2>37.3. Supported Distributions</h2>
+<p>The example in this section have been validated with the following distributions:</p>
+<ul class="simple">
+<li>Fedora* 18</li>
+<li>Fedora* 19</li>
+<li>Fedora* 20</li>
+</ul>
+</div>
+<div class="section" id="prerequisites">
+<h2>37.4. Prerequisites</h2>
+<p>Refer to <a class="reference internal" href="vhost.html#vhost-app-prerequisites"><span class="std std-ref">Prerequisites</span></a>.</p>
+</div>
+<div class="section" id="compiling-the-sample-code">
+<h2>37.5. Compiling the Sample Code</h2>
+<ol class="arabic">
+<li><p class="first">Compile vhost lib:</p>
+<p>To enable vhost, turn on vhost library in the configure file config/common_linuxapp.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">CONFIG_RTE_LIBRTE_VHOST=n</span>
+</pre></div>
+</div>
+<p>vhost user is turned on by default in the configure file config/common_linuxapp.
+To enable vhost cuse, disable vhost user.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">   CONFIG_RTE_LIBRTE_VHOST_USER=y</span>
+
+<span class="go">After vhost is enabled and the implementation is selected, build the vhost library.</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Go to the examples directory:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export RTE_SDK=/path/to/rte_sdk</span>
+<span class="go">cd ${RTE_SDK}/examples/tep_termination</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Set the target (a default target is used if not specified). For example:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export RTE_TARGET=x86_64-native-linuxapp-gcc</span>
+</pre></div>
+</div>
+<p>See the DPDK Getting Started Guide for possible RTE_TARGET values.</p>
+</li>
+<li><p class="first">Build the application:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">cd ${RTE_SDK}</span>
+<span class="go">make config ${RTE_TARGET}</span>
+<span class="go">make install ${RTE_TARGET}</span>
+<span class="go">cd ${RTE_SDK}/examples/tep_termination</span>
+<span class="go">make</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Go to the eventfd_link directory(vhost cuse required):</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">cd ${RTE_SDK}/lib/librte_vhost/eventfd_link</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Build the eventfd_link kernel module(vhost cuse required):</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">make</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="running-the-sample-code">
+<h2>37.6. Running the Sample Code</h2>
+<ol class="arabic">
+<li><p class="first">Install the cuse kernel module(vhost cuse required):</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">modprobe cuse</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Go to the eventfd_link directory(vhost cuse required):</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export RTE_SDK=/path/to/rte_sdk</span>
+<span class="go">cd ${RTE_SDK}/lib/librte_vhost/eventfd_link</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Install the eventfd_link module(vhost cuse required):</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">insmod ./eventfd_link.ko</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Go to the examples directory:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export RTE_SDK=/path/to/rte_sdk</span>
+<span class="go">cd ${RTE_SDK}/examples/tep_termination</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Run the tep_termination sample code:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">user@target:~$</span> ./build/app/tep_termination -c f -n <span class="m">4</span> --huge-dir /mnt/huge --
+<span class="go">                -p 0x1 --dev-basename tep-termination --nb-devices 4</span>
+<span class="go">                --udp-port 4789 --filter-type 1</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Please note the huge-dir parameter instructs the DPDK to allocate its memory from the 2 MB page hugetlbfs.</p>
+</div>
+<div class="section" id="parameters">
+<h3>37.6.1. Parameters</h3>
+<p><strong>The same parameters with the vhost sample.</strong></p>
+<p>Refer to <a class="reference internal" href="vhost.html#vhost-app-parameters"><span class="std std-ref">Parameters</span></a> for the meanings of &#8216;Basename&#8217;,
+&#8216;Stats&#8217;, &#8216;RX Retry&#8217;, &#8216;RX Retry Number&#8217; and &#8216;RX Retry Delay Time&#8217;.</p>
+<p><strong>Number of Devices.</strong></p>
+<p>The nb-devices option specifies the number of virtIO device.
+The default value is 2.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">user@target:~$</span> ./build/app/tep_termination -c f -n <span class="m">4</span> --huge-dir /mnt/huge --
+<span class="go">                --nb-devices 2</span>
+</pre></div>
+</div>
+<p><strong>Tunneling UDP port.</strong></p>
+<p>The udp-port option is used to specify the destination UDP number for UDP tunneling packet.
+The default value is 4789.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">user@target:~$</span> ./build/app/tep_termination -c f -n <span class="m">4</span> --huge-dir /mnt/huge --
+<span class="go">                --nb-devices 2 --udp-port 4789</span>
+</pre></div>
+</div>
+<p><strong>Filter Type.</strong></p>
+<p>The filter-type option is used to specify which filter type is used to
+filter UDP tunneling packet to a specified queue.
+The default value is 1, which means the filter type of inner MAC and tenant ID is used.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">user@target:~$</span> ./build/app/tep_termination -c f -n <span class="m">4</span> --huge-dir /mnt/huge --
+<span class="go">            --nb-devices 2 --udp-port 4789 --filter-type 1</span>
+</pre></div>
+</div>
+<p><strong>TX Checksum.</strong></p>
+<p>The tx-checksum option is used to enable or disable the inner header checksum offload.
+The default value is 0, which means the checksum offload is disabled.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">user@target:~$</span> ./build/app/tep_termination -c f -n <span class="m">4</span> --huge-dir /mnt/huge --
+<span class="go">            --nb-devices 2 --tx-checksum</span>
+</pre></div>
+</div>
+<p><strong>TCP segment size.</strong></p>
+<p>The tso-segsz option specifies the TCP segment size for TSO offload for tunneling packet.
+The default value is 0, which means TSO offload is disabled.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">user@target:~$</span> ./build/app/tep_termination -c f -n <span class="m">4</span> --huge-dir /mnt/huge --
+<span class="go">            --tx-checksum --tso-segsz 800</span>
+</pre></div>
+</div>
+<p><strong>Decapsulation option.</strong></p>
+<p>The decap option is used to enable or disable decapsulation operation for received VXLAN packet.
+The default value is 1.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">user@target:~$</span> ./build/app/tep_termination -c f -n <span class="m">4</span> --huge-dir /mnt/huge --
+<span class="go">            --nb-devices 4 --udp-port 4789 --decap 1</span>
+</pre></div>
+</div>
+<p><strong>Encapsulation option.</strong></p>
+<p>The encap option is used to enable or disable encapsulation operation for transmitted packet.
+The default value is 1.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">user@target:~$</span> ./build/app/tep_termination -c f -n <span class="m">4</span> --huge-dir /mnt/huge --
+<span class="go">            --nb-devices 4 --udp-port 4789 --encap 1</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="running-the-virtual-machine-qemu">
+<h2>37.7. Running the Virtual Machine (QEMU)</h2>
+<p>Refer to <a class="reference internal" href="vhost.html#vhost-app-running"><span class="std std-ref">Running the Virtual Machine (QEMU)</span></a>.</p>
+</div>
+<div class="section" id="running-dpdk-in-the-virtual-machine">
+<h2>37.8. Running DPDK in the Virtual Machine</h2>
+<p>Refer to <a class="reference internal" href="vhost.html#vhost-app-running-dpdk"><span class="std std-ref">Running DPDK in the Virtual Machine</span></a>.</p>
+</div>
+<div class="section" id="passing-traffic-to-the-virtual-machine-device">
+<h2>37.9. Passing Traffic to the Virtual Machine Device</h2>
+<p>For a virtio-net device to receive traffic, the traffic&#8217;s Layer 2 header must include
+both the virtio-net device&#8217;s MAC address.
+The DPDK sample code behaves in a similar manner to a learning switch in that
+it learns the MAC address of the virtio-net devices from the first transmitted packet.
+On learning the MAC address,
+the DPDK vhost sample code prints a message with the MAC address and tenant ID virtio-net device.
+For example:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">DATA: (0) MAC_ADDRESS cc:bb:bb:bb:bb:bb and VNI 1000 registered</span>
+</pre></div>
+</div>
+<p>The above message indicates that device 0 has been registered with MAC address cc:bb:bb:bb:bb:bb and VNI 1000.
+Any packets received on the NIC with these values are placed on the devices receive queue.</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="proc_info.html" class="btn btn-neutral float-right" title="38. dpdk_proc_info Application" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="vm_power_management.html" class="btn btn-neutral" title="36. VM Power Management Application" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

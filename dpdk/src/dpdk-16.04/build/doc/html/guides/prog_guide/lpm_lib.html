@@ -1,0 +1,425 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>13. LPM Library &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Programmer’s Guide" href="index.html"/>
+        <link rel="next" title="14. LPM6 Library" href="lpm6_lib.html"/>
+        <link rel="prev" title="12. Hash Library" href="hash_lib.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Programmer&#8217;s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html">2. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="env_abstraction_layer.html">3. Environment Abstraction Layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ring_lib.html">4. Ring Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mempool_lib.html">5. Mempool Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mbuf_lib.html">6. Mbuf Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="poll_mode_drv.html">7. Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cryptodev_lib.html">8. Cryptography Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ivshmem_lib.html">9. IVSHMEM Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_bonding_poll_mode_drv_lib.html">10. Link Bonding Poll Mode Driver Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer_lib.html">11. Timer Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hash_lib.html">12. Hash Library</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">13. LPM Library</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#lpm-api-overview">13.1. LPM API Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#implementation-details">13.2. Implementation Details</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#addition">13.2.1. Addition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lookup">13.2.2. Lookup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#limitations-in-the-number-of-rules">13.2.3. Limitations in the Number of Rules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#use-case-ipv4-forwarding">13.2.4. Use Case: IPv4 Forwarding</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#references">13.2.5. References</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="lpm6_lib.html">14. LPM6 Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_distrib_lib.html">15. Packet Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reorder_lib.html">16. Reorder Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_fragment_reassembly_lib.html">17. IP Fragmentation and Reassembly Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_proc_support.html">18. Multi-process Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">19. Kernel NIC Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thread_safety_dpdk_functions.html">20. Thread Safety of DPDK Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_framework.html">21. Quality of Service (QoS) Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="power_man.html">22. Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_classif_access_ctrl.html">23. Packet Classification and Access Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_framework.html">24. Packet Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_lib.html">25. Vhost Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="port_hotplug_framework.html">26. Port Hotplug Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source_org.html">27. Source Organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_kit_build_system.html">28. Development Kit Build System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_kit_root_make_help.html">29. Development Kit Root Makefile Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extend_dpdk.html">30. Extending the DPDK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_app.html">31. Building Your Own Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ext_app_lib_make_help.html">32. External Application/Library Makefile help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perf_opt_guidelines.html">33. Performance Optimization Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing_efficient_code.html">34. Writing Efficient Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="profile_app.html">35. Profile Your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">36. Glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Programmer&#8217;s Guide</a> &raquo;</li>
+      
+    <li>13. LPM Library</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/prog_guide/lpm_lib.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="lpm-library">
+<span id="id1"></span><h1>13. LPM Library</h1>
+<p>The DPDK LPM library component implements the Longest Prefix Match (LPM) table search method for 32-bit keys
+that is typically used to find the best route match in IP forwarding applications.</p>
+<div class="section" id="lpm-api-overview">
+<h2>13.1. LPM API Overview</h2>
+<p>The main configuration parameter for LPM component instances is the maximum number of rules to support.
+An LPM prefix is represented by a pair of parameters (32- bit key, depth), with depth in the range of 1 to 32.
+An LPM rule is represented by an LPM prefix and some user data associated with the prefix.
+The prefix serves as the unique identifier of the LPM rule.
+In this implementation, the user data is 1-byte long and is called next hop,
+in correlation with its main use of storing the ID of the next hop in a routing table entry.</p>
+<p>The main methods exported by the LPM component are:</p>
+<ul class="simple">
+<li>Add LPM rule: The LPM rule is provided as input.
+If there is no rule with the same prefix present in the table, then the new rule is added to the LPM table.
+If a rule with the same prefix is already present in the table, the next hop of the rule is updated.
+An error is returned when there is no available rule space left.</li>
+<li>Delete LPM rule: The prefix of the LPM rule is provided as input.
+If a rule with the specified prefix is present in the LPM table, then it is removed.</li>
+<li>Lookup LPM key: The 32-bit key is provided as input.
+The algorithm selects the rule that represents the best match for the given key and returns the next hop of that rule.
+In the case that there are multiple rules present in the LPM table that have the same 32-bit key,
+the algorithm picks the rule with the highest depth as the best match rule,
+which means that the rule has the highest number of most significant bits matching between the input key and the rule key.</li>
+</ul>
+</div>
+<div class="section" id="implementation-details">
+<span id="lpm4-details"></span><h2>13.2. Implementation Details</h2>
+<p>The current implementation uses a variation of the DIR-24-8 algorithm that trades memory usage for improved LPM lookup speed.
+The algorithm allows the lookup operation to be performed with typically a single memory read access.
+In the statistically rare case when the best match rule is having a depth bigger than 24,
+the lookup operation requires two memory read accesses.
+Therefore, the performance of the LPM lookup operation is greatly influenced by
+whether the specific memory location is present in the processor cache or not.</p>
+<p>The main data structure is built using the following elements:</p>
+<ul class="simple">
+<li>A table with 2^24 entries.</li>
+<li>A number of tables (RTE_LPM_TBL8_NUM_GROUPS) with 2^8 entries.</li>
+</ul>
+<p>The first table, called tbl24, is indexed using the first 24 bits of the IP address to be looked up,
+while the second table(s), called tbl8, is indexed using the last 8 bits of the IP address.
+This means that depending on the outcome of trying to match the IP address of an incoming packet to the rule stored in the tbl24
+we might need to continue the lookup process in the second level.</p>
+<p>Since every entry of the tbl24 can potentially point to a tbl8, ideally, we would have 2^24 tbl8s,
+which would be the same as having a single table with 2^32 entries.
+This is not feasible due to resource restrictions.
+Instead, this approach takes advantage of the fact that rules longer than 24 bits are very rare.
+By splitting the process in two different tables/levels and limiting the number of tbl8s,
+we can greatly reduce memory consumption while maintaining a very good lookup speed (one memory access, most of the times).</p>
+<div class="figure" id="id2">
+<img alt="../_images/tbl24_tbl8.png" src="../_images/tbl24_tbl8.png" />
+<p class="caption"><span class="caption-number">Fig. 13.1 </span><span class="caption-text">Table split into different levels</span></p>
+</div>
+<p>An entry in tbl24 contains the following fields:</p>
+<ul class="simple">
+<li>next hop / index to the tbl8</li>
+<li>valid flag</li>
+<li>external entry flag</li>
+<li>depth of the rule (length)</li>
+</ul>
+<p>The first field can either contain a number indicating the tbl8 in which the lookup process should continue
+or the next hop itself if the longest prefix match has already been found.
+The two flags are used to determine whether the entry is valid or not and
+whether the search process have finished or not respectively.
+The depth or length of the rule is the number of bits of the rule that is stored in a specific entry.</p>
+<p>An entry in a tbl8 contains the following fields:</p>
+<ul class="simple">
+<li>next hop</li>
+<li>valid</li>
+<li>valid group</li>
+<li>depth</li>
+</ul>
+<p>Next hop and depth contain the same information as in the tbl24.
+The two flags show whether the entry and the table are valid respectively.</p>
+<p>The other main data structure is a table containing the main information about the rules (IP and next hop).
+This is a higher level table, used for different things:</p>
+<ul class="simple">
+<li>Check whether a rule already exists or not, prior to addition or deletion,
+without having to actually perform a lookup.</li>
+<li>When deleting, to check whether there is a rule containing the one that is to be deleted.
+This is important, since the main data structure will have to be updated accordingly.</li>
+</ul>
+<div class="section" id="addition">
+<h3>13.2.1. Addition</h3>
+<p>When adding a rule, there are different possibilities.
+If the rule&#8217;s depth is exactly 24 bits, then:</p>
+<ul class="simple">
+<li>Use the rule (IP address) as an index to the tbl24.</li>
+<li>If the entry is invalid (i.e. it doesn&#8217;t already contain a rule) then set its next hop to its value,
+the valid flag to 1 (meaning this entry is in use),
+and the external entry flag to 0
+(meaning the lookup process ends at this point, since this is the longest prefix that matches).</li>
+</ul>
+<p>If the rule&#8217;s depth is exactly 32 bits, then:</p>
+<ul class="simple">
+<li>Use the first 24 bits of the rule as an index to the tbl24.</li>
+<li>If the entry is invalid (i.e. it doesn&#8217;t already contain a rule) then look for a free tbl8,
+set the index to the tbl8 to this value,
+the valid flag to 1 (meaning this entry is in use), and the external entry flag to 1
+(meaning the lookup process must continue since the rule hasn&#8217;t been explored completely).</li>
+</ul>
+<p>If the rule&#8217;s depth is any other value, prefix expansion must be performed.
+This means the rule is copied to all the entries (as long as they are not in use) which would also cause a match.</p>
+<p>As a simple example, let&#8217;s assume the depth is 20 bits.
+This means that there are 2^(24 - 20) = 16 different combinations of the first 24 bits of an IP address that
+would cause a match.
+Hence, in this case, we copy the exact same entry to every position indexed by one of these combinations.</p>
+<p>By doing this we ensure that during the lookup process, if a rule matching the IP address exists,
+it is found in either one or two memory accesses,
+depending on whether we need to move to the next table or not.
+Prefix expansion is one of the keys of this algorithm,
+since it improves the speed dramatically by adding redundancy.</p>
+</div>
+<div class="section" id="lookup">
+<h3>13.2.2. Lookup</h3>
+<p>The lookup process is much simpler and quicker. In this case:</p>
+<ul class="simple">
+<li>Use the first 24 bits of the IP address as an index to the tbl24.
+If the entry is not in use, then it means we don&#8217;t have a rule matching this IP.
+If it is valid and the external entry flag is set to 0, then the next hop is returned.</li>
+<li>If it is valid and the external entry flag is set to 1,
+then we use the tbl8 index to find out the tbl8 to be checked,
+and the last 8 bits of the IP address as an index to this table.
+Similarly, if the entry is not in use, then we don&#8217;t have a rule matching this IP address.
+If it is valid then the next hop is returned.</li>
+</ul>
+</div>
+<div class="section" id="limitations-in-the-number-of-rules">
+<h3>13.2.3. Limitations in the Number of Rules</h3>
+<p>There are different things that limit the number of rules that can be added.
+The first one is the maximum number of rules, which is a parameter passed through the API.
+Once this number is reached,
+it is not possible to add any more rules to the routing table unless one or more are removed.</p>
+<p>The second reason is an intrinsic limitation of the algorithm.
+As explained before, to avoid high memory consumption, the number of tbl8s is limited in compilation time
+(this value is by default 256).
+If we exhaust tbl8s, we won&#8217;t be able to add any more rules.
+How many of them are necessary for a specific routing table is hard to determine in advance.</p>
+<p>A tbl8 is consumed whenever we have a new rule with depth bigger than 24,
+and the first 24 bits of this rule are not the same as the first 24 bits of a rule previously added.
+If they are, then the new rule will share the same tbl8 than the previous one,
+since the only difference between the two rules is within the last byte.</p>
+<p>With the default value of 256, we can have up to 256 rules longer than 24 bits that differ on their first three bytes.
+Since routes longer than 24 bits are unlikely, this shouldn&#8217;t be a problem in most setups.
+Even if it is, however, the number of tbl8s can be modified.</p>
+</div>
+<div class="section" id="use-case-ipv4-forwarding">
+<h3>13.2.4. Use Case: IPv4 Forwarding</h3>
+<p>The LPM algorithm is used to implement Classless Inter-Domain Routing (CIDR) strategy used by routers implementing IPv4 forwarding.</p>
+</div>
+<div class="section" id="references">
+<h3>13.2.5. References</h3>
+<ul class="simple">
+<li>RFC1519 Classless Inter-Domain Routing (CIDR): an Address Assignment and Aggregation Strategy,
+<a class="reference external" href="http://www.ietf.org/rfc/rfc1519">http://www.ietf.org/rfc/rfc1519</a></li>
+<li>Pankaj Gupta, Algorithms for Routing Lookups and Packet Classification, PhD Thesis, Stanford University,
+2000  (<a class="reference external" href="http://klamath.stanford.edu/~pankaj/thesis/%20thesis_1sided.pdf">http://klamath.stanford.edu/~pankaj/thesis/ thesis_1sided.pdf</a> )</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="lpm6_lib.html" class="btn btn-neutral float-right" title="14. LPM6 Library" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="hash_lib.html" class="btn btn-neutral" title="12. Hash Library" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

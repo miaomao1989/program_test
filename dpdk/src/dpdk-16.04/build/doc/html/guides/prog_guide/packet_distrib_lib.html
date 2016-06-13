@@ -1,0 +1,327 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>15. Packet Distributor Library &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Programmer’s Guide" href="index.html"/>
+        <link rel="next" title="16. Reorder Library" href="reorder_lib.html"/>
+        <link rel="prev" title="14. LPM6 Library" href="lpm6_lib.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Programmer&#8217;s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html">2. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="env_abstraction_layer.html">3. Environment Abstraction Layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ring_lib.html">4. Ring Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mempool_lib.html">5. Mempool Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mbuf_lib.html">6. Mbuf Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="poll_mode_drv.html">7. Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cryptodev_lib.html">8. Cryptography Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ivshmem_lib.html">9. IVSHMEM Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_bonding_poll_mode_drv_lib.html">10. Link Bonding Poll Mode Driver Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer_lib.html">11. Timer Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hash_lib.html">12. Hash Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm_lib.html">13. LPM Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm6_lib.html">14. LPM6 Library</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">15. Packet Distributor Library</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#distributor-core-operation">15.1. Distributor Core Operation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#worker-operation">15.2. Worker Operation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reorder_lib.html">16. Reorder Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_fragment_reassembly_lib.html">17. IP Fragmentation and Reassembly Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_proc_support.html">18. Multi-process Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">19. Kernel NIC Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thread_safety_dpdk_functions.html">20. Thread Safety of DPDK Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_framework.html">21. Quality of Service (QoS) Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="power_man.html">22. Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_classif_access_ctrl.html">23. Packet Classification and Access Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_framework.html">24. Packet Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_lib.html">25. Vhost Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="port_hotplug_framework.html">26. Port Hotplug Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source_org.html">27. Source Organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_kit_build_system.html">28. Development Kit Build System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_kit_root_make_help.html">29. Development Kit Root Makefile Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extend_dpdk.html">30. Extending the DPDK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_app.html">31. Building Your Own Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ext_app_lib_make_help.html">32. External Application/Library Makefile help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perf_opt_guidelines.html">33. Performance Optimization Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing_efficient_code.html">34. Writing Efficient Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="profile_app.html">35. Profile Your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">36. Glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Programmer&#8217;s Guide</a> &raquo;</li>
+      
+    <li>15. Packet Distributor Library</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/prog_guide/packet_distrib_lib.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="packet-distributor-library">
+<h1>15. Packet Distributor Library</h1>
+<p>The DPDK Packet Distributor library is a library designed to be used for dynamic load balancing of traffic
+while supporting single packet at a time operation.
+When using this library, the logical cores in use are to be considered in two roles: firstly a distributor lcore,
+which is responsible for load balancing or distributing packets,
+and a set of worker lcores which are responsible for receiving the packets from the distributor and operating on them.
+The model of operation is shown in the diagram below.</p>
+<div class="figure" id="id1">
+<img alt="../_images/packet_distributor1.png" src="../_images/packet_distributor1.png" />
+<p class="caption"><span class="caption-number">Fig. 15.1 </span><span class="caption-text">Packet Distributor mode of operation</span></p>
+</div>
+<div class="section" id="distributor-core-operation">
+<h2>15.1. Distributor Core Operation</h2>
+<p>The distributor core does the majority of the processing for ensuring that packets are fairly shared among workers.
+The operation of the distributor is as follows:</p>
+<ol class="arabic simple">
+<li>Packets are passed to the distributor component by having the distributor lcore thread call the &#8220;rte_distributor_process()&#8221; API</li>
+<li>The worker lcores all share a single cache line with the distributor core in order to pass messages and packets to and from the worker.
+The process API call will poll all the worker cache lines to see what workers are requesting packets.</li>
+<li>As workers request packets, the distributor takes packets from the set of packets passed in and distributes them to the workers.
+As it does so, it examines the &#8220;tag&#8221; &#8211; stored in the RSS hash field in the mbuf &#8211; for each packet
+and records what tags are being processed by each  worker.</li>
+<li>If the next packet in the input set has a tag which is already being processed by a worker,
+then that packet will be queued up for processing by that worker
+and given to it in preference to other packets when that work next makes a request for work.
+This ensures that no two packets with the same tag are processed in parallel,
+and that all packets with the same tag are processed in input order.</li>
+<li>Once all input packets passed to the process API have either been distributed to workers
+or been queued up for a worker which is processing a given tag,
+then the process API returns to the caller.</li>
+</ol>
+<p>Other functions which are available to the distributor lcore are:</p>
+<ul class="simple">
+<li>rte_distributor_returned_pkts()</li>
+<li>rte_distributor_flush()</li>
+<li>rte_distributor_clear_returns()</li>
+</ul>
+<p>Of these the most important API call is &#8220;rte_distributor_returned_pkts()&#8221;
+which should only be called on the lcore which also calls the process API.
+It returns to the caller all packets which have finished processing by all worker cores.
+Within this set of returned packets, all packets sharing the same tag will be returned in their original order.</p>
+<p><strong>NOTE:</strong>
+If worker lcores buffer up packets internally for transmission in bulk afterwards,
+the packets sharing a tag will likely get out of order.
+Once a worker lcore requests a new packet, the distributor assumes that it has completely finished with the previous packet and
+therefore that additional packets with the same tag can safely be distributed to other workers &#8211;
+who may then flush their buffered packets sooner and cause packets to get out of order.</p>
+<p><strong>NOTE:</strong>
+No packet ordering guarantees are made about packets which do not share a common packet tag.</p>
+<p>Using the process and returned_pkts API, the following application workflow can be used,
+while allowing packet order within a packet flow &#8211; identified by a tag &#8211; to be maintained.</p>
+<div class="figure" id="id2">
+<img alt="../_images/packet_distributor2.png" src="../_images/packet_distributor2.png" />
+<p class="caption"><span class="caption-number">Fig. 15.2 </span><span class="caption-text">Application workflow</span></p>
+</div>
+<p>The flush and clear_returns API calls, mentioned previously,
+are likely of less use that the process and returned_pkts APIS, and are principally provided to aid in unit testing of the library.
+Descriptions of these functions and their use can be found in the DPDK API Reference document.</p>
+</div>
+<div class="section" id="worker-operation">
+<h2>15.2. Worker Operation</h2>
+<p>Worker cores are the cores which do the actual manipulation of the packets distributed by the packet distributor.
+Each worker calls &#8220;rte_distributor_get_pkt()&#8221; API to request a new packet when it has finished processing the previous one.
+[The previous packet should be returned to the distributor component by passing it as the final parameter to this API call.]</p>
+<p>Since it may be desirable to vary the number of worker cores, depending on the traffic load
+i.e. to save power at times of lighter load,
+it is possible to have a worker stop processing packets by calling &#8220;rte_distributor_return_pkt()&#8221; to indicate that
+it has finished the current packet and does not want a new one.</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="reorder_lib.html" class="btn btn-neutral float-right" title="16. Reorder Library" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="lpm6_lib.html" class="btn btn-neutral" title="14. LPM6 Library" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

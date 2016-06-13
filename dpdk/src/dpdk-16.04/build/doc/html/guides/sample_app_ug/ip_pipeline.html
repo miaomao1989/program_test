@@ -1,0 +1,1748 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>33. Internet Protocol (IP) Pipeline Application &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Sample Applications User Guide" href="index.html"/>
+        <link rel="next" title="34. Test Pipeline Application" href="test_pipeline.html"/>
+        <link rel="prev" title="32. Netmap Compatibility Sample Application" href="netmap_compatibility.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Sample Applications User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmd_line.html">2. Command Line Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethtool.html">3. Ethtool Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exception_path.html">4. Exception Path Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello_world.html">5. Hello World Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skeleton.html">6. Basic Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rxtx_callbacks.html">7. RX/TX Callbacks Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_frag.html">8. IP Fragmentation Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipv4_multicast.html">9. IPv4 Multicast Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_reassembly.html">10. IP Reassembly Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">11. Kernel NIC Interface Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keep_alive.html">12. Keep Alive Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_crypto.html">13. L2 Forwarding with Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_job_stats.html">14. L2 Forwarding Sample Application (in Real and Virtualized Environments) with core load statistics.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_real_virtual.html">15. L2 Forwarding Sample Application (in Real and Virtualized Environments)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_cat.html">16. L2 Forwarding Sample Application with Cache Allocation Technology (CAT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward.html">17. L3 Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_power_man.html">18. L3 Forwarding with Power Management Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_access_ctrl.html">19. L3 Forwarding with Access Control Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_virtual.html">20. L3 Forwarding in a Virtualization Environment Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_status_intr.html">21. Link Status Interrupt Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="load_balancer.html">22. Load Balancer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_process.html">23. Multi-process Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_metering.html">24. QoS Metering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_scheduler.html">25. QoS Scheduler Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intel_quickassist.html">26. Intel® QuickAssist Technology Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quota_watermark.html">27. Quota and Watermark Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer.html">28. Timer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_ordering.html">29. Packet Ordering Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_dcb_forwarding.html">30. VMDQ and DCB Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">31. Vhost Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="netmap_compatibility.html">32. Netmap Compatibility Sample Application</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">33. Internet Protocol (IP) Pipeline Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#application-overview">33.1. Application overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#design-goals">33.2. Design goals</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#rapid-development">33.2.1. Rapid development</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flexibility">33.2.2. Flexibility</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#performance">33.2.3. Performance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#debug-capabilities">33.2.4. Debug capabilities</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-application">33.3. Running the application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#application-stages">33.4. Application stages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#configuration">33.4.1. Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuration-checking">33.4.2. Configuration checking</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#initialization">33.4.3. Initialization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#run-time">33.4.4. Run-time</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration-file-syntax">33.5. Configuration file syntax</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#syntax-overview">33.5.1. Syntax overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#application-resources-present-in-the-configuration-file">33.5.2. Application resources present in the configuration file</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rules-to-parse-the-configuration-file">33.5.3. Rules to parse the configuration file</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pipeline-section">33.5.4. PIPELINE section</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mempool-section">33.5.5. MEMPOOL section</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#link-section">33.5.6. LINK section</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rxq-section">33.5.7. RXQ section</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#txq-section">33.5.8. TXQ section</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#swq-section">33.5.9. SWQ section</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tm-section">33.5.10. TM section</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#source-section">33.5.11. SOURCE section</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sink-section">33.5.12. SINK section</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#msgq-section">33.5.13. MSGQ section</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#eal-section">33.5.14. EAL section</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#library-of-pipeline-types">33.6. Library of pipeline types</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pipeline-module">33.6.1. Pipeline module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#list-of-pipeline-types">33.6.2. List of pipeline types</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#command-line-interface-cli">33.7. Command Line Interface (CLI)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#global-cli-commands">33.7.1. Global CLI commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cli-commands-for-link-configuration">33.7.2. CLI commands for link configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cli-commands-common-for-all-pipeline-types">33.7.3. CLI commands common for all pipeline types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pipeline-type-specific-cli-commands">33.7.4. Pipeline type specific CLI commands</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="test_pipeline.html">34. Test Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dist_app.html">35. Distributor Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vm_power_management.html">36. VM Power Management Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tep_termination.html">37. TEP termination Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="proc_info.html">38. dpdk_proc_info Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ptpclient.html">39. PTP Client Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance_thread.html">40. Performance Thread Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_secgw.html">41. IPsec Security Gateway Sample Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Sample Applications User Guide</a> &raquo;</li>
+      
+    <li>33. Internet Protocol (IP) Pipeline Application</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/sample_app_ug/ip_pipeline.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="internet-protocol-ip-pipeline-application">
+<h1>33. Internet Protocol (IP) Pipeline Application</h1>
+<div class="section" id="application-overview">
+<h2>33.1. Application overview</h2>
+<p>The <em>Internet Protocol (IP) Pipeline</em> application is intended to be a vehicle for rapid development of packet processing
+applications running on multi-core CPUs.</p>
+<p>The application provides a library of reusable functional blocks called pipelines.
+These pipelines can be seen as prefabricated blocks that can be instantiated and inter-connected through packet queues
+to create complete applications (super-pipelines).</p>
+<p>Pipelines are created and inter-connected through the application configuration file.
+By using different configuration files, different applications are effectively created, therefore this application
+can be seen as an application generator.
+The configuration of each pipeline can be updated at run-time through the application Command Line Interface (CLI).</p>
+<p>Main application components are:</p>
+<p><strong>A Library of reusable pipelines</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>Each pipeline represents a functional block, e.g. flow classification, firewall, routing, master, etc.</li>
+<li>Each pipeline type can be instantiated several times in the same application, which each instance configured
+separately and mapped to a single CPU core.
+Each CPU core can run one or several pipeline instances, which can be of same or different type.</li>
+<li>Pipeline instances are inter-connected through packet queues (for packet processing) and message queues
+(for run-time configuration).</li>
+<li>Pipelines are implemented using DPDK Packet Framework.</li>
+<li>More pipeline types can always be built and added to the existing pipeline types.</li>
+</ul>
+</div></blockquote>
+<p><strong>The Configuration file</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>The configuration file defines the application structure.
+By using different configuration files, different applications are created.</li>
+<li>All the application resources are created and configured through the application configuration file:
+pipeline instances, buffer pools, links (i.e. network interfaces), hardware device RX/TX queues,
+software queues, traffic manager devices, EAL startup arguments, etc.</li>
+<li>The configuration file syntax is “define by reference”, meaning that resources are defined as they are referenced.
+First time a resource name is detected, it is registered with default parameters.
+Optionally, the resource parameters can be further refined through a configuration file section dedicated to
+that resource.</li>
+<li>Command Line Interface (CLI)</li>
+</ul>
+</div></blockquote>
+<p><strong>Global CLI commands: link configuration, etc.</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>Common pipeline CLI commands: ping (keep-alive), statistics, etc.</li>
+<li>Pipeline type specific CLI commands: used to configure instances of specific pipeline type.
+These commands are registered with the application when the pipeline type is registered.
+For example, the commands for routing pipeline instances include: route add, route delete, route list, etc.</li>
+<li>CLI commands can be grouped into scripts that can be invoked at initialization and at runtime.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="design-goals">
+<h2>33.2. Design goals</h2>
+<div class="section" id="rapid-development">
+<h3>33.2.1. Rapid development</h3>
+<p>This application enables rapid development through quick connectivity of standard components called pipelines.
+These components are built using DPDK Packet Framework and encapsulate packet processing features at different levels:
+ports, tables, actions, pipelines and complete applications.</p>
+<p>Pipeline instances are instantiated, configured and inter-connected through low complexity configuration files loaded
+during application initialization.
+Each pipeline instance is mapped to a single CPU core, with each CPU core able to run one or multiple pipeline
+instances of same or different types. By loading a different configuration file, a different application is
+effectively started.</p>
+</div>
+<div class="section" id="flexibility">
+<h3>33.2.2. Flexibility</h3>
+<p>Each packet processing application is typically represented as a chain of functional stages which is often called
+the functional pipeline of the application.
+These stages are mapped to CPU cores to create chains of CPU cores (pipeline model), clusters of CPU cores
+(run-to-completion model) or chains of clusters of CPU cores (hybrid model).</p>
+<p>This application allows all the above programming models.
+By applying changes to the configuration file, the application provides the flexibility to reshuffle its
+building blocks in different ways until the configuration providing the best performance is identified.</p>
+<div class="section" id="move-pipelines-around">
+<h4>33.2.2.1. Move pipelines around</h4>
+<p>The mapping of pipeline instances to CPU cores can be reshuffled through the configuration file.
+One or several pipeline instances can be mapped to the same CPU core.</p>
+<div class="figure" id="id1">
+<span id="figure-ip-pipelines-1"></span><img src="../_images/ip_pipelines_1.svg" /><p class="caption"><span class="caption-number">Fig. 33.1 </span><span class="caption-text">Example of moving pipeline instances across different CPU cores</span></p>
+</div>
+</div>
+<div class="section" id="move-tables-around">
+<h4>33.2.2.2. Move tables around</h4>
+<p>There is some degree of flexibility for moving tables from one pipeline instance to another.
+Based on the configuration arguments passed to each pipeline instance in the configuration file, specific tables
+can be enabled or disabled.
+This way, a specific table can be “moved” from pipeline instance A to pipeline instance B by simply disabling its
+associated functionality for pipeline instance A while enabling it for pipeline instance B.</p>
+<p>Due to requirement to have simple syntax for the configuration file, moving tables across different pipeline
+instances is not as flexible as the mapping of pipeline instances to CPU cores, or mapping actions to pipeline tables.
+Complete flexibility in moving tables from one pipeline to another could be achieved through a complex pipeline
+description language that would detail the structural elements of the pipeline (ports, tables and actions) and
+their connectivity, resulting in complex syntax for the configuration file, which is not acceptable.
+Good configuration file readability through simple syntax is preferred.</p>
+<p><em>Example</em>: the IP routing pipeline can run the routing function only (with ARP function run by a different
+pipeline instance), or it can run both the routing and ARP functions as part of the same pipeline instance.</p>
+<div class="figure" id="id2">
+<span id="figure-ip-pipelines-2"></span><img src="../_images/ip_pipelines_2.svg" /><p class="caption"><span class="caption-number">Fig. 33.2 </span><span class="caption-text">Example of moving tables across different pipeline instances</span></p>
+</div>
+</div>
+<div class="section" id="move-actions-around">
+<h4>33.2.2.3. Move actions around</h4>
+<p>When it makes sense, packet processing actions can be moved from one pipeline instance to another.
+Based on the configuration arguments passed to each pipeline instance in the configuration file, specific actions
+can be enabled or disabled.
+This way, a specific action can be &#8220;moved&#8221; from pipeline instance A to pipeline instance B by simply disabling its
+associated functionality for pipeline instance A while enabling it for pipeline instance B.</p>
+<p><em>Example</em>: The flow actions of accounting, traffic metering, application identification, NAT, etc can be run as part
+of the flow classification pipeline instance or split across several flow actions pipeline instances, depending on
+the number of flow instances and their compute requirements.</p>
+<div class="figure" id="id3">
+<span id="figure-ip-pipelines-3"></span><img src="../_images/ip_pipelines_3.svg" /><p class="caption"><span class="caption-number">Fig. 33.3 </span><span class="caption-text">Example of moving actions across different tables and pipeline instances</span></p>
+</div>
+</div>
+</div>
+<div class="section" id="performance">
+<h3>33.2.3. Performance</h3>
+<p>Performance of the application is the highest priority requirement.
+Flexibility is not provided at the expense of performance.</p>
+<p>The purpose of flexibility is to provide an incremental development methodology that allows monitoring the
+performance evolution:</p>
+<ul class="simple">
+<li>Apply incremental changes in the configuration (e.g. mapping on pipeline instances to CPU cores)
+in order to identify the configuration providing the best performance for a given application;</li>
+<li>Add more processing incrementally (e.g. by enabling more actions for specific pipeline instances) until
+the application is feature complete while checking the performance impact at each step.</li>
+</ul>
+</div>
+<div class="section" id="debug-capabilities">
+<h3>33.2.4. Debug capabilities</h3>
+<p>The application provides a significant set of debug capabilities:</p>
+<ul class="simple">
+<li>Command Line Interface (CLI) support for statistics polling: pipeline instance ping (keep-alive checks),
+pipeline instance statistics per input port/output port/table, link statistics, etc;</li>
+<li>Logging: Turn on/off application log messages based on priority level;</li>
+</ul>
+</div>
+</div>
+<div class="section" id="running-the-application">
+<h2>33.3. Running the application</h2>
+<p>The application startup command line is:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>ip_pipeline [-f CONFIG_FILE] [-s SCRIPT_FILE] -p PORT_MASK [-l LOG_LEVEL]
+</pre></div>
+</div>
+<p>The application startup arguments are:</p>
+<p><code class="docutils literal"><span class="pre">-f</span> <span class="pre">CONFIG_FILE</span></code></p>
+<blockquote>
+<div><ul class="simple">
+<li>Optional: Yes</li>
+<li>Default: <code class="docutils literal"><span class="pre">./config/ip_pipeline.cfg</span></code></li>
+<li>Argument: Path to the configuration file to be loaded by the application.
+Please refer to the <a class="reference internal" href="#ip-pipeline-configuration-file"><span class="std std-ref">Configuration file syntax</span></a> for details on how to write the configuration file.</li>
+</ul>
+</div></blockquote>
+<p><code class="docutils literal"><span class="pre">-s</span> <span class="pre">SCRIPT_FILE</span></code></p>
+<blockquote>
+<div><ul class="simple">
+<li>Optional: Yes</li>
+<li>Default: Not present</li>
+<li>Argument: Path to the CLI script file to be run by the master pipeline at application startup.
+No CLI script file will be run at startup of this argument is not present.</li>
+</ul>
+</div></blockquote>
+<p><code class="docutils literal"><span class="pre">-p</span> <span class="pre">PORT_MASK</span></code></p>
+<blockquote>
+<div><ul class="simple">
+<li>Optional: No</li>
+<li>Default: N/A</li>
+<li>Argument: Hexadecimal mask of NIC port IDs to be used by the application.
+First port enabled in this mask will be referenced as LINK0 as part of the application configuration file,
+next port as LINK1, etc.</li>
+</ul>
+</div></blockquote>
+<p><code class="docutils literal"><span class="pre">-l</span> <span class="pre">LOG_LEVEL</span></code></p>
+<blockquote>
+<div><ul class="simple">
+<li>Optional: Yes</li>
+<li>Default: 1 (High priority)</li>
+<li>Argument: Log level to determine which application messages are to be printed to standard output.
+Available log levels are: 0 (None), 1 (High priority), 2 (Low priority).
+Only application messages whose priority is higher than or equal to the application log level will be printed.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="application-stages">
+<h2>33.4. Application stages</h2>
+<div class="section" id="configuration">
+<h3>33.4.1. Configuration</h3>
+<p>During this stage, the application configuration file is parsed and its content is loaded into the application data
+structures.
+In case of any configuration file parse error, an error message is displayed and the application is terminated.
+Please refer to the <a class="reference internal" href="#ip-pipeline-configuration-file"><span class="std std-ref">Configuration file syntax</span></a> for a description of the application configuration file format.</p>
+</div>
+<div class="section" id="configuration-checking">
+<h3>33.4.2. Configuration checking</h3>
+<p>In the absence of any parse errors, the loaded content of application data structures is checked for overall consistency.
+In case of any configuration check error, an error message is displayed and the application is terminated.</p>
+</div>
+<div class="section" id="initialization">
+<h3>33.4.3. Initialization</h3>
+<p>During this stage, the application resources are initialized and the handles to access them are saved into the
+application data structures.
+In case of any initialization error, an error message is displayed and the application is terminated.</p>
+<p>The typical resources to be initialized are: pipeline instances, buffer pools, links (i.e. network interfaces),
+hardware device RX/TX queues, software queues, traffic management devices, etc.</p>
+</div>
+<div class="section" id="run-time">
+<span id="ip-pipeline-runtime"></span><h3>33.4.4. Run-time</h3>
+<p>Each CPU core runs the pipeline instances assigned to it in time sharing mode and in round robin order:</p>
+<ol class="arabic simple">
+<li><em>Packet processing task</em>: The pipeline run-time code is typically a packet <em>processing</em> task built on top of
+DPDK Packet Framework rte_pipeline library, which reads bursts of packets from the pipeline input ports,
+performs table lookups and executes the identified actions for all tables in the pipeline, with packet
+eventually written to pipeline output ports or dropped.</li>
+<li><em>Message handling task</em>: Each CPU core will also periodically execute the <em>message handling</em> code of each
+of the pipelines mapped to it.
+The pipeline message handling code is processing the messages that are pending in the pipeline input message
+queues, which are typically sent by the master CPU core for the on-the-fly pipeline configuration: check
+that pipeline is still alive (ping), add/delete entries in the pipeline tables, get statistics, etc.
+The frequency of executing the message handling code is usually much smaller than the frequency of executing
+the packet processing work.</li>
+</ol>
+<p>Please refer to the <a class="reference internal" href="#ip-pipeline-pipeline-section"><span class="std std-ref">PIPELINE section</span></a> for more details about the application pipeline module encapsulation.</p>
+</div>
+</div>
+<div class="section" id="configuration-file-syntax">
+<span id="ip-pipeline-configuration-file"></span><h2>33.5. Configuration file syntax</h2>
+<div class="section" id="syntax-overview">
+<h3>33.5.1. Syntax overview</h3>
+<p>The syntax of the configuration file is designed to be simple, which favors readability.
+The configuration file is parsed using the DPDK library librte_cfgfile, which supports simple
+<a class="reference external" href="http://en.wikipedia.org/wiki/INI_file">INI file format</a> for configuration files.</p>
+<p>As result, the configuration file is split into several sections, with each section containing one or more entries.
+The scope of each entry is its section, and each entry specifies a variable that is assigned a specific value.
+Any text after the <code class="docutils literal"><span class="pre">;</span></code> character is considered a comment and is therefore ignored.</p>
+<p>The following are application specific: number of sections, name of each section, number of entries of each section,
+name of the variables used for each section entry, the value format (e.g. signed/unsigned integer, string, etc)
+and range of each section entry variable.</p>
+<p>Generic example of configuration file section:</p>
+<div class="highlight-ini"><div class="highlight"><pre><span></span>[&lt;section_name&gt;]
+
+&lt;variable_name_1&gt; = &lt;value_1&gt;
+
+...
+
+&lt;variable_name_N&gt; = &lt;value_N&gt;
+</pre></div>
+</div>
+</div>
+<div class="section" id="application-resources-present-in-the-configuration-file">
+<h3>33.5.2. Application resources present in the configuration file</h3>
+<table border="1" class="docutils" id="id4">
+<caption><span class="caption-number">Table 33.1 </span><span class="caption-text">Application resource names in the configuration file</caption>
+<colgroup>
+<col width="25%" />
+<col width="28%" />
+<col width="47%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Resource type</th>
+<th class="head">Format</th>
+<th class="head">Examples</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Pipeline</td>
+<td><code class="docutils literal"><span class="pre">PIPELINE&lt;ID&gt;</span></code></td>
+<td><code class="docutils literal"><span class="pre">PIPELINE0</span></code>, <code class="docutils literal"><span class="pre">PIPELINE1</span></code></td>
+</tr>
+<tr class="row-odd"><td>Mempool</td>
+<td><code class="docutils literal"><span class="pre">MEMPOOL&lt;ID&gt;</span></code></td>
+<td><code class="docutils literal"><span class="pre">MEMPOOL0</span></code>, <code class="docutils literal"><span class="pre">MEMPOOL1</span></code></td>
+</tr>
+<tr class="row-even"><td>Link (network interface)</td>
+<td><code class="docutils literal"><span class="pre">LINK&lt;ID&gt;</span></code></td>
+<td><code class="docutils literal"><span class="pre">LINK0</span></code>, <code class="docutils literal"><span class="pre">LINK1</span></code></td>
+</tr>
+<tr class="row-odd"><td>Link RX queue</td>
+<td><code class="docutils literal"><span class="pre">RXQ&lt;LINK_ID&gt;.&lt;QUEUE_ID&gt;</span></code></td>
+<td><code class="docutils literal"><span class="pre">RXQ0.0</span></code>, <code class="docutils literal"><span class="pre">RXQ1.5</span></code></td>
+</tr>
+<tr class="row-even"><td>Link TX queue</td>
+<td><code class="docutils literal"><span class="pre">TXQ&lt;LINK_ID&gt;.&lt;QUEUE_ID&gt;</span></code></td>
+<td><code class="docutils literal"><span class="pre">TXQ0.0</span></code>, <code class="docutils literal"><span class="pre">TXQ1.5</span></code></td>
+</tr>
+<tr class="row-odd"><td>Software queue</td>
+<td><code class="docutils literal"><span class="pre">SWQ&lt;ID&gt;</span></code></td>
+<td><code class="docutils literal"><span class="pre">SWQ0</span></code>, <code class="docutils literal"><span class="pre">SWQ1</span></code></td>
+</tr>
+<tr class="row-even"><td>Traffic Manager</td>
+<td><code class="docutils literal"><span class="pre">TM&lt;LINK_ID&gt;</span></code></td>
+<td><code class="docutils literal"><span class="pre">TM0</span></code>, <code class="docutils literal"><span class="pre">TM1</span></code></td>
+</tr>
+<tr class="row-odd"><td>Source</td>
+<td><code class="docutils literal"><span class="pre">SOURCE&lt;ID&gt;</span></code></td>
+<td><code class="docutils literal"><span class="pre">SOURCE0</span></code>, <code class="docutils literal"><span class="pre">SOURCE1</span></code></td>
+</tr>
+<tr class="row-even"><td>Sink</td>
+<td><code class="docutils literal"><span class="pre">SINK&lt;ID&gt;</span></code></td>
+<td><code class="docutils literal"><span class="pre">SINK0</span></code>, <code class="docutils literal"><span class="pre">SINK1</span></code></td>
+</tr>
+<tr class="row-odd"><td>Message queue</td>
+<td><code class="docutils literal"><span class="pre">MSGQ&lt;ID&gt;</span></code>
+<code class="docutils literal"><span class="pre">MSGQ-REQ-PIPELINE&lt;ID&gt;</span></code>
+<code class="docutils literal"><span class="pre">MSGQ-RSP-PIPELINE&lt;ID&gt;</span></code>
+<code class="docutils literal"><span class="pre">MSGQ-REQ-CORE-&lt;CORE_ID&gt;</span></code>
+<code class="docutils literal"><span class="pre">MSGQ-RSP-CORE-&lt;CORE_ID&gt;</span></code></td>
+<td><code class="docutils literal"><span class="pre">MSGQ0</span></code>, <code class="docutils literal"><span class="pre">MSGQ1</span></code>,
+<code class="docutils literal"><span class="pre">MSGQ-REQ-PIPELINE2</span></code>, <code class="docutils literal"><span class="pre">MSGQ-RSP-PIPELINE2,</span></code>
+<code class="docutils literal"><span class="pre">MSGQ-REQ-CORE-s0c1</span></code>, <code class="docutils literal"><span class="pre">MSGQ-RSP-CORE-s0c1</span></code></td>
+</tr>
+</tbody>
+</table>
+<p><code class="docutils literal"><span class="pre">LINK</span></code> instances are created implicitly based on the <code class="docutils literal"><span class="pre">PORT_MASK</span></code> application startup argument.
+<code class="docutils literal"><span class="pre">LINK0</span></code> is the first port enabled in the <code class="docutils literal"><span class="pre">PORT_MASK</span></code>, port 1 is the next one, etc.
+The LINK ID is different than the DPDK PMD-level NIC port ID, which is the actual position in the bitmask mentioned above.
+For example, if bit 5 is the first bit set in the bitmask, then <code class="docutils literal"><span class="pre">LINK0</span></code> is having the PMD ID of 5.
+This mechanism creates a contiguous LINK ID space and isolates the configuration file against changes in the board
+PCIe slots where NICs are plugged in.</p>
+<p><code class="docutils literal"><span class="pre">RXQ</span></code>, <code class="docutils literal"><span class="pre">TXQ</span></code> and <code class="docutils literal"><span class="pre">TM</span></code> instances have the LINK ID as part of their name.
+For example, <code class="docutils literal"><span class="pre">RXQ2.1</span></code>, <code class="docutils literal"><span class="pre">TXQ2.1</span></code> and <code class="docutils literal"><span class="pre">TM2</span></code> are all associated with <code class="docutils literal"><span class="pre">LINK2</span></code>.</p>
+</div>
+<div class="section" id="rules-to-parse-the-configuration-file">
+<h3>33.5.3. Rules to parse the configuration file</h3>
+<p>The main rules used to parse the configuration file are:</p>
+<ol class="arabic">
+<li><p class="first">Application resource name determines the type of resource based on the name prefix.</p>
+<p><em>Example</em>: all software queues need to start with <code class="docutils literal"><span class="pre">SWQ</span></code> prefix, so <code class="docutils literal"><span class="pre">SWQ0</span></code> and <code class="docutils literal"><span class="pre">SWQ5</span></code> are valid software
+queue names.</p>
+</li>
+<li><p class="first">An application resource is defined by creating a configuration file section with its name.
+The configuration file section allows fine tuning on any of the resource parameters.
+Some resource parameters are mandatory, in which case it is required to have them specified as part of the
+section, while some others are optional, in which case they get assigned their default value when not present.</p>
+<p><em>Example</em>: section <code class="docutils literal"><span class="pre">SWQ0</span></code> defines a software queue named SWQ0, whose parameters are detailed as part of this section.</p>
+</li>
+<li><p class="first">An application resource can also be defined by referencing it.
+Referencing a resource takes place by simply using its name as part of the value assigned to a variable in any
+configuration file section.
+In this case, the resource is registered with all its parameters having their default values.
+Optionally, a section with the resource name can be added to the configuration file to fine tune some or all
+of the resource parameters.</p>
+<p><em>Example</em>: in section <code class="docutils literal"><span class="pre">PIPELINE3</span></code>, variable <code class="docutils literal"><span class="pre">pktq_in</span></code> includes <code class="docutils literal"><span class="pre">SWQ5</span></code> as part of its list, which results
+in defining a software queue named <code class="docutils literal"><span class="pre">SWQ5</span></code>; when there is no <code class="docutils literal"><span class="pre">SWQ5</span></code> section present in the configuration file,
+<code class="docutils literal"><span class="pre">SWQ5</span></code> gets registered with default parameters.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="pipeline-section">
+<span id="ip-pipeline-pipeline-section"></span><h3>33.5.4. PIPELINE section</h3>
+<table border="1" class="docutils" id="id5">
+<caption><span class="caption-number">Table 33.2 </span><span class="caption-text">Configuration file PIPELINE section (1/2)</caption>
+<colgroup>
+<col width="12%" />
+<col width="46%" />
+<col width="12%" />
+<col width="19%" />
+<col width="12%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Section</th>
+<th class="head">Description</th>
+<th class="head">Optional</th>
+<th class="head">Range</th>
+<th class="head">Default value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>type</td>
+<td>Pipeline type. Defines the functionality to be
+executed.</td>
+<td>NO</td>
+<td>See &#8220;List
+of pipeline types&#8221;</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>core</td>
+<td>CPU core to run the current pipeline.</td>
+<td>YES</td>
+<td>See &#8220;CPU Core
+notation&#8221;</td>
+<td>CPU socket 0,
+core 0,
+hyper-thread 0</td>
+</tr>
+<tr class="row-even"><td>pktq_in</td>
+<td>Packet queues to serve as input ports for the
+current pipeline instance. The acceptable packet
+queue types are: <code class="docutils literal"><span class="pre">RXQ</span></code>, <code class="docutils literal"><span class="pre">SWQ</span></code>, <code class="docutils literal"><span class="pre">TM</span></code> and <code class="docutils literal"><span class="pre">SOURCE</span></code>.
+First device in this list is used as pipeline input port
+0, second as pipeline input port 1, etc.</td>
+<td>YES</td>
+<td>List of input
+packet queue IDs</td>
+<td>Empty list</td>
+</tr>
+<tr class="row-odd"><td>pktq_out</td>
+<td>Packet queues to serve as output ports for the
+current pipeline instance. The acceptable packet
+queue types are: <code class="docutils literal"><span class="pre">TXQ</span></code>, <code class="docutils literal"><span class="pre">SWQ</span></code>, <code class="docutils literal"><span class="pre">TM</span></code> and <code class="docutils literal"><span class="pre">SINK</span></code>.
+First device in this list is used as pipeline output
+port 0, second as pipeline output port 1, etc.</td>
+<td>YES</td>
+<td>List of output
+packet queue IDs.</td>
+<td>Empty list</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils" id="id6">
+<caption><span class="caption-number">Table 33.3 </span><span class="caption-text">Configuration file PIPELINE section (2/2)</caption>
+<colgroup>
+<col width="12%" />
+<col width="46%" />
+<col width="12%" />
+<col width="19%" />
+<col width="12%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Section</th>
+<th class="head">Description</th>
+<th class="head">Optional</th>
+<th class="head">Range</th>
+<th class="head">Default value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>msgq_in</td>
+<td>Input message queues. These queues contain
+request messages that need to be handled by the
+current pipeline instance. The type and format of
+request messages is defined by the pipeline type.
+For each pipeline instance, there is an input
+message queue defined implicitly, whose name is:
+<code class="docutils literal"><span class="pre">MSGQ-REQ-&lt;PIPELINE_ID&gt;</span></code>. This message queue
+should not be mentioned as part of msgq_in list.</td>
+<td>YES</td>
+<td>List of message
+queue IDs</td>
+<td>Empty list</td>
+</tr>
+<tr class="row-odd"><td>msgq_out</td>
+<td>Output message queues. These queues are used by
+the current pipeline instance to write response
+messages as result of request messages being
+handled. The type and format of response
+messages is defined by the pipeline type.
+For each pipeline instance, there is an output
+message queue defined implicitly, whose name is:
+<code class="docutils literal"><span class="pre">MSGQ-RSP-&lt;PIPELINE_ID&gt;</span></code>. This message queue
+should not be mentioned as part of msgq_out list.</td>
+<td>YES</td>
+<td>List of message
+queue IDs</td>
+<td>Empty list</td>
+</tr>
+<tr class="row-even"><td>timer_period</td>
+<td>Time period, measured in milliseconds,
+for handling the input message queues.</td>
+<td>YES</td>
+<td>milliseconds</td>
+<td>1 ms</td>
+</tr>
+<tr class="row-odd"><td>&lt;any other&gt;</td>
+<td>Arguments to be passed to the current pipeline
+instance. Format of the arguments, their type,
+whether each argument is optional or mandatory
+and its default value (when optional) are defined
+by the pipeline type.
+The value of the arguments is applicable to the
+current pipeline instance only.</td>
+<td>Depends on
+pipeline type</td>
+<td>Depends on
+pipeline type</td>
+<td>Depends on
+pipeline type</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="cpu-core-notation">
+<h4>33.5.4.1. CPU core notation</h4>
+<p>The CPU Core notation is:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>&lt;CPU core&gt; ::= [s|S&lt;CPU socket ID&gt;][c|C]&lt;CPU core ID&gt;[h|H]
+</pre></div>
+</div>
+<p>For example:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>CPU socket 0, core 0, hyper-thread 0: 0, c0, s0c0
+
+CPU socket 0, core 0, hyper-thread 1: 0h, c0h, s0c0h
+
+CPU socket 3, core 9, hyper-thread 1: s3c9h
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="mempool-section">
+<h3>33.5.5. MEMPOOL section</h3>
+<table border="1" class="docutils" id="id7">
+<caption><span class="caption-number">Table 33.4 </span><span class="caption-text">Configuration file MEMPOOL section</caption>
+<colgroup>
+<col width="14%" />
+<col width="43%" />
+<col width="9%" />
+<col width="9%" />
+<col width="25%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Section</th>
+<th class="head">Description</th>
+<th class="head">Optional</th>
+<th class="head">Type</th>
+<th class="head">Default value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>buffer_size</td>
+<td>Buffer size (in bytes) for the current
+buffer pool.</td>
+<td>YES</td>
+<td>uint32_t</td>
+<td>2048
++ sizeof(struct rte_mbuf)
++ HEADROOM</td>
+</tr>
+<tr class="row-odd"><td>pool_size</td>
+<td>Number of buffers in the current buffer pool.</td>
+<td>YES</td>
+<td>uint32_t</td>
+<td>32K</td>
+</tr>
+<tr class="row-even"><td>cache_size</td>
+<td>Per CPU thread cache size (in number of
+buffers) for the current buffer pool.</td>
+<td>YES</td>
+<td>uint32_t</td>
+<td>256</td>
+</tr>
+<tr class="row-odd"><td>cpu</td>
+<td>CPU socket ID where to allocate memory for
+the current buffer pool.</td>
+<td>YES</td>
+<td>uint32_t</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="link-section">
+<h3>33.5.6. LINK section</h3>
+<table border="1" class="docutils" id="id8">
+<caption><span class="caption-number">Table 33.5 </span><span class="caption-text">Configuration file LINK section</caption>
+<colgroup>
+<col width="17%" />
+<col width="45%" />
+<col width="10%" />
+<col width="10%" />
+<col width="19%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Section entry</th>
+<th class="head">Description</th>
+<th class="head">Optional</th>
+<th class="head">Type</th>
+<th class="head">Default value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>arp_q</td>
+<td>NIC RX queue where ARP packets should
+be filtered.</td>
+<td>YES</td>
+<td>0 .. 127</td>
+<td>0 (default queue)</td>
+</tr>
+<tr class="row-odd"><td>tcp_syn_local_q</td>
+<td>NIC RX queue where TCP packets with SYN
+flag should be filtered.</td>
+<td>YES</td>
+<td>0 .. 127</td>
+<td>0 (default queue)</td>
+</tr>
+<tr class="row-even"><td>ip_local_q</td>
+<td>NIC RX queue where IP packets with local
+destination should be filtered.
+When TCP, UDP and SCTP local queues are
+defined, they take higher priority than this
+queue.</td>
+<td>YES</td>
+<td>0 .. 127</td>
+<td>0 (default queue)</td>
+</tr>
+<tr class="row-odd"><td>tcp_local_q</td>
+<td>NIC RX queue where TCP packets with local
+destination should be filtered.</td>
+<td>YES</td>
+<td>0 .. 127</td>
+<td>0 (default queue)</td>
+</tr>
+<tr class="row-even"><td>udp_local_q</td>
+<td>NIC RX queue where TCP packets with local
+destination should be filtered.</td>
+<td>YES</td>
+<td>0 .. 127</td>
+<td>0 (default queue)</td>
+</tr>
+<tr class="row-odd"><td>sctp_local_q</td>
+<td>NIC RX queue where TCP packets with local
+destination should be filtered.</td>
+<td>YES</td>
+<td>0 .. 127</td>
+<td>0 (default queue)</td>
+</tr>
+<tr class="row-even"><td>promisc</td>
+<td>Indicates whether current link should be
+started in promiscuous mode.</td>
+<td>YES</td>
+<td>YES/NO</td>
+<td>YES</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="rxq-section">
+<h3>33.5.7. RXQ section</h3>
+<table border="1" class="docutils" id="id9">
+<caption><span class="caption-number">Table 33.6 </span><span class="caption-text">Configuration file RXQ section</caption>
+<colgroup>
+<col width="16%" />
+<col width="47%" />
+<col width="11%" />
+<col width="11%" />
+<col width="16%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Section</th>
+<th class="head">Description</th>
+<th class="head">Optional</th>
+<th class="head">Type</th>
+<th class="head">Default value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>mempool</td>
+<td>Mempool to use for buffer allocation for
+current NIC RX queue. The mempool ID has
+to be associated with a valid instance
+defined in the mempool entry of the global
+section.</td>
+<td>YES</td>
+<td>uint32_t</td>
+<td>MEMPOOL0</td>
+</tr>
+<tr class="row-odd"><td>Size</td>
+<td>NIC RX queue size (number of descriptors)</td>
+<td>YES</td>
+<td>uint32_t</td>
+<td>128</td>
+</tr>
+<tr class="row-even"><td>burst</td>
+<td>Read burst size (number of descriptors)</td>
+<td>YES</td>
+<td>uint32_t</td>
+<td>32</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="txq-section">
+<h3>33.5.8. TXQ section</h3>
+<table border="1" class="docutils" id="id10">
+<caption><span class="caption-number">Table 33.7 </span><span class="caption-text">Configuration file TXQ section</caption>
+<colgroup>
+<col width="14%" />
+<col width="44%" />
+<col width="10%" />
+<col width="17%" />
+<col width="14%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Section</th>
+<th class="head">Description</th>
+<th class="head">Optional</th>
+<th class="head">Type</th>
+<th class="head">Default value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>size</td>
+<td>NIC TX queue size (number of descriptors)</td>
+<td>YES</td>
+<td>uint32_t
+power of 2
+&gt; 0</td>
+<td>512</td>
+</tr>
+<tr class="row-odd"><td>burst</td>
+<td>Write burst size (number of descriptors)</td>
+<td>YES</td>
+<td>uint32_t
+power of 2
+0 &lt; burst &lt; size</td>
+<td>32</td>
+</tr>
+<tr class="row-even"><td>dropless</td>
+<td>When dropless is set to NO, packets can be
+dropped if not enough free slots are
+currently available in the queue, so the
+write operation to the queue is non-
+blocking.
+When dropless is set to YES, packets cannot
+be dropped if not enough free slots are
+currently available in the queue, so the
+write operation to the queue is blocking, as
+the write operation is retried until enough
+free slots become available and all the
+packets are successfully written to the
+queue.</td>
+<td>YES</td>
+<td>YES/NO</td>
+<td>NO</td>
+</tr>
+<tr class="row-odd"><td>n_retries</td>
+<td>Number of retries. Valid only when dropless
+is set to YES. When set to 0, it indicates
+unlimited number of retries.</td>
+<td>YES</td>
+<td>uint32_t</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="swq-section">
+<h3>33.5.9. SWQ section</h3>
+<table border="1" class="docutils" id="id11">
+<caption><span class="caption-number">Table 33.8 </span><span class="caption-text">Configuration file SWQ section</caption>
+<colgroup>
+<col width="14%" />
+<col width="44%" />
+<col width="10%" />
+<col width="17%" />
+<col width="14%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Section</th>
+<th class="head">Description</th>
+<th class="head">Optional</th>
+<th class="head">Type</th>
+<th class="head">Default value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>size</td>
+<td>Queue size (number of packets)</td>
+<td>YES</td>
+<td>uint32_t
+power of 2</td>
+<td>256</td>
+</tr>
+<tr class="row-odd"><td>burst_read</td>
+<td>Read burst size (number of packets)</td>
+<td>YES</td>
+<td>uint32_t
+power of 2
+0 &lt; burst &lt; size</td>
+<td>32</td>
+</tr>
+<tr class="row-even"><td>burst_write</td>
+<td>Write burst size (number of packets)</td>
+<td>YES</td>
+<td>uint32_t
+power of 2
+0 &lt; burst &lt; size</td>
+<td>32</td>
+</tr>
+<tr class="row-odd"><td>dropless</td>
+<td>When dropless is set to NO, packets can be
+dropped if not enough free slots are
+currently available in the queue, so the
+write operation to the queue is non-
+blocking.
+When dropless is set to YES, packets cannot
+be dropped if not enough free slots are
+currently available in the queue, so the
+write operation to the queue is blocking, as
+the write operation is retried until enough
+free slots become available and all the
+packets are successfully written to the
+queue.</td>
+<td>YES</td>
+<td>YES/NO</td>
+<td>NO</td>
+</tr>
+<tr class="row-even"><td>n_retries</td>
+<td>Number of retries. Valid only when dropless
+is set to YES. When set to 0, it indicates
+unlimited number of retries.</td>
+<td>YES</td>
+<td>uint32_t</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>cpu</td>
+<td>CPU socket ID where to allocate memory
+for this SWQ.</td>
+<td>YES</td>
+<td>uint32_t</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="tm-section">
+<h3>33.5.10. TM section</h3>
+<table border="1" class="docutils" id="id12">
+<caption><span class="caption-number">Table 33.9 </span><span class="caption-text">Configuration file TM section</caption>
+<colgroup>
+<col width="16%" />
+<col width="47%" />
+<col width="11%" />
+<col width="11%" />
+<col width="16%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Section</th>
+<th class="head">Description</th>
+<th class="head">Optional</th>
+<th class="head">Type</th>
+<th class="head">Default value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Cfg</td>
+<td>File name to parse for the TM configuration
+to be applied. The syntax of this file is
+described in the examples/qos_sched DPDK
+application documentation.</td>
+<td>YES</td>
+<td>string</td>
+<td>tm_profile</td>
+</tr>
+<tr class="row-odd"><td>burst_read</td>
+<td>Read burst size (number of packets)</td>
+<td>YES</td>
+<td>uint32_t</td>
+<td>64</td>
+</tr>
+<tr class="row-even"><td>burst_write</td>
+<td>Write burst size (number of packets)</td>
+<td>YES</td>
+<td>uint32_t</td>
+<td>32</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="source-section">
+<h3>33.5.11. SOURCE section</h3>
+<table border="1" class="docutils" id="id13">
+<caption><span class="caption-number">Table 33.10 </span><span class="caption-text">Configuration file SOURCE section</caption>
+<colgroup>
+<col width="17%" />
+<col width="44%" />
+<col width="11%" />
+<col width="11%" />
+<col width="17%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Section</th>
+<th class="head">Description</th>
+<th class="head">Optional</th>
+<th class="head">Type</th>
+<th class="head">Default value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Mempool</td>
+<td>Mempool to use for buffer allocation.</td>
+<td>YES</td>
+<td>uint32_t</td>
+<td>MEMPOOL0</td>
+</tr>
+<tr class="row-odd"><td>Burst</td>
+<td>Read burst size (number of packets)</td>
+<td>&nbsp;</td>
+<td>uint32_t</td>
+<td>32</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="sink-section">
+<h3>33.5.12. SINK section</h3>
+<p>Currently, there are no parameters to be passed to a sink device, so
+SINK section is not allowed.</p>
+</div>
+<div class="section" id="msgq-section">
+<h3>33.5.13. MSGQ section</h3>
+<table border="1" class="docutils" id="id14">
+<caption><span class="caption-number">Table 33.11 </span><span class="caption-text">Configuration file MSGQ section</caption>
+<colgroup>
+<col width="10%" />
+<col width="49%" />
+<col width="11%" />
+<col width="13%" />
+<col width="17%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Section</th>
+<th class="head">Description</th>
+<th class="head">Optional</th>
+<th class="head">Type</th>
+<th class="head">Default value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>size</td>
+<td>Queue size (number of packets)</td>
+<td>YES</td>
+<td>uint32_t
+!= 0
+power of 2</td>
+<td>64</td>
+</tr>
+<tr class="row-odd"><td>cpu</td>
+<td>CPU socket ID where to allocate memory for
+the current queue.</td>
+<td>YES</td>
+<td>uint32_t</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="eal-section">
+<h3>33.5.14. EAL section</h3>
+<p>The application generates the EAL parameters rather than reading them from the command line.</p>
+<p>The CPU core mask parameter is generated based on the core entry of all PIPELINE sections.
+All the other EAL parameters can be set from this section of the application configuration file.</p>
+</div>
+</div>
+<div class="section" id="library-of-pipeline-types">
+<h2>33.6. Library of pipeline types</h2>
+<div class="section" id="pipeline-module">
+<h3>33.6.1. Pipeline module</h3>
+<p>A pipeline is a self-contained module that implements a packet processing function and is typically implemented on
+top of the DPDK Packet Framework <em>librte_pipeline</em> library.
+The application provides a run-time mechanism to register different pipeline types.</p>
+<p>Depending on the required configuration, each registered pipeline type (pipeline class) is instantiated one or
+several times, with each pipeline instance (pipeline object) assigned to one of the available CPU cores.
+Each CPU core can run one or more pipeline instances, which might be of same or different types.
+For more information of the CPU core threading model, please refer to the <a class="reference internal" href="#ip-pipeline-runtime"><span class="std std-ref">Run-time</span></a> section.</p>
+<div class="section" id="pipeline-type">
+<h4>33.6.1.1. Pipeline type</h4>
+<p>Each pipeline type is made up of a back-end and a front-end. The back-end represents the packet processing engine
+of the pipeline, typically implemented using the DPDK Packet Framework libraries, which reads packets from the
+input packet queues, handles them and eventually writes them to the output packet queues or drops them.
+The front-end represents the run-time configuration interface of the pipeline, which is exposed as CLI commands.
+The front-end communicates with the back-end through message queues.</p>
+<table border="1" class="docutils" id="id15">
+<caption><span class="caption-number">Table 33.12 </span><span class="caption-text">Pipeline back-end</caption>
+<colgroup>
+<col width="12%" />
+<col width="18%" />
+<col width="69%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field name</th>
+<th class="head">Field type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>f_init</td>
+<td>Function pointer</td>
+<td>Function to initialize the back-end of the current pipeline
+instance. Typical work implemented by this function for the
+current pipeline instance:
+Memory allocation;
+Parse the pipeline type specific arguments;
+Initialize the pipeline input ports, output ports and tables,
+interconnect input ports to tables;
+Set the message handlers.</td>
+</tr>
+<tr class="row-odd"><td>f_free</td>
+<td>Function pointer</td>
+<td>Function to free the resources allocated by the back-end of the
+current pipeline instance.</td>
+</tr>
+<tr class="row-even"><td>f_run</td>
+<td>Function pointer</td>
+<td>Set to NULL for pipelines implemented using the DPDK library
+librte_pipeline (typical case), and to non-NULL otherwise. This
+mechanism is made available to support quick integration of
+legacy code.
+This function is expected to provide the packet processing
+related code to be called as part of the CPU thread dispatch
+loop, so this function is not allowed to contain an infinite loop.</td>
+</tr>
+<tr class="row-odd"><td>f_timer</td>
+<td>Function pointer</td>
+<td>Function to read the pipeline input message queues, handle
+the request messages, create response messages and write
+the response queues. The format of request and response
+messages is defined by each pipeline type, with the exception
+of some requests which are mandatory for all pipelines (e.g.
+ping, statistics).</td>
+</tr>
+<tr class="row-even"><td>f_track</td>
+<td>Function pointer</td>
+<td>See section Tracking pipeline output port to physical link</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils" id="id16">
+<caption><span class="caption-number">Table 33.13 </span><span class="caption-text">Pipeline front-end</caption>
+<colgroup>
+<col width="12%" />
+<col width="23%" />
+<col width="66%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field name</th>
+<th class="head">Field type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>f_init</td>
+<td>Function pointer</td>
+<td>Function to initialize the front-end of the current pipeline
+instance.</td>
+</tr>
+<tr class="row-odd"><td>f_free</td>
+<td>Function pointer</td>
+<td>Function to free the resources allocated by the front-end of
+the current pipeline instance.</td>
+</tr>
+<tr class="row-even"><td>cmds</td>
+<td>Array of CLI commands</td>
+<td>Array of CLI commands to be registered to the application CLI
+for the current pipeline type. Even though the CLI is executed
+by a different pipeline (typically, this is the master pipeline),
+from modularity perspective is more efficient to keep the
+message client side (part of the front-end) together with the
+message server side (part of the back-end).</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="tracking-pipeline-output-port-to-physical-link">
+<h4>33.6.1.2. Tracking pipeline output port to physical link</h4>
+<p>Each pipeline instance is a standalone block that does not have visibility into the other pipeline instances or
+the application-level pipeline inter-connectivity.
+In some cases, it is useful for a pipeline instance to get application level information related to pipeline
+connectivity, such as to identify the output link (e.g. physical NIC port) where one of its output ports connected,
+either directly or indirectly by traversing other pipeline instances.</p>
+<p>Tracking can be successful or unsuccessful.
+Typically, tracking for a specific pipeline instance is successful when each one of its input ports can be mapped
+to a single output port, meaning that all packets read from the current input port can only go out on a single
+output port.
+Depending on the pipeline type, some exceptions may be allowed: a small portion of the packets, considered exception
+packets, are sent out on an output port that is pre-configured for this purpose.</p>
+<p>For pass-through pipeline type, the tracking is always successful.
+For pipeline types as flow classification, firewall or routing, the tracking is only successful when the number of
+output ports for the current pipeline instance is 1.</p>
+<p>This feature is used by the IP routing pipeline for adding/removing implicit routes every time a link is brought
+up/down.</p>
+</div>
+<div class="section" id="table-copies">
+<h4>33.6.1.3. Table copies</h4>
+<p>Fast table copy: pipeline table used by pipeline for the packet processing task, updated through messages, table
+data structures are optimized for lookup operation.</p>
+<p>Slow table copy: used by the configuration layer, typically updated through CLI commands, kept in sync with the fast
+copy (its update triggers the fast copy update).
+Required for executing advanced table queries without impacting the packet processing task, therefore the slow copy
+is typically organized using different criteria than the fast copy.</p>
+<p>Examples:</p>
+<ul class="simple">
+<li>Flow classification: Search through current set of flows (e.g. list all flows with a specific source IP address);</li>
+<li>Firewall: List rules in descending order of priority;</li>
+<li>Routing table: List routes sorted by prefix depth and their type (local, remote, default);</li>
+<li>ARP: List entries sorted per output interface.</li>
+</ul>
+</div>
+<div class="section" id="packet-meta-data">
+<h4>33.6.1.4. Packet meta-data</h4>
+<p>Packet meta-data field offsets provided as argument to pipeline instances are essentially defining the data structure
+for the packet meta-data used by the current application use-case.
+It is very useful to put it in the configuration file as a comment in order to facilitate the readability of the
+configuration file.</p>
+<p>The reason to use field offsets for defining the data structure for the packet meta-data is due to the C language
+limitation of not being able to define data structures at run-time.
+Feature to consider: have the configuration file parser automatically generate and print the data structure defining
+the packet meta-data for the current application use-case.</p>
+<p>Packet meta-data typically contains:</p>
+<ol class="arabic simple">
+<li>Pure meta-data: intermediate data per packet that is computed internally, passed between different tables of
+the same pipeline instance (e.g. lookup key for the ARP table is obtained from the routing table), or between
+different pipeline instances (e.g. flow ID, traffic metering color, etc);</li>
+<li>Packet fields: typically, packet header fields that are read directly from the packet, or read from the packet
+and saved (duplicated) as a working copy at a different location within the packet meta-data (e.g. Diffserv
+5-tuple, IP destination address, etc).</li>
+</ol>
+<p>Several strategies are used to design the packet meta-data, as described in the next subsections.</p>
+<div class="section" id="store-packet-meta-data-in-a-different-cache-line-as-the-packet-headers">
+<h5>33.6.1.4.1. Store packet meta-data in a different cache line as the packet headers</h5>
+<p>This approach is able to support protocols with variable header length, like MPLS, where the offset of IP header
+from the start of the packet (and, implicitly, the offset of the IP header in the packet buffer) is not fixed.
+Since the pipelines typically require the specification of a fixed offset to the packet fields (e.g. Diffserv
+5-tuple, used by the flow classification pipeline, or the IP destination address, used by the IP routing pipeline),
+the workaround is to have the packet RX pipeline copy these fields at fixed offsets within the packet meta-data.</p>
+<p>As this approach duplicates some of the packet fields, it requires accessing more cache lines per packet for filling
+in selected packet meta-data fields (on RX), as well as flushing selected packet meta-data fields into the
+packet (on TX).</p>
+<p>Example:</p>
+<div class="highlight-ini"><div class="highlight"><pre><span></span><span class="c1">; struct app_pkt_metadata {</span>
+<span class="c1">;   uint32_t ip_da;</span>
+<span class="c1">;      uint32_t hash;</span>
+<span class="c1">;      uint32_t flow_id;</span>
+<span class="c1">;      uint32_t color;</span>
+<span class="c1">; } __attribute__((__packed__));</span>
+<span class="c1">;</span>
+
+<span class="k">[PIPELINE1]</span>
+<span class="c1">; Packet meta-data offsets</span>
+<span class="na">ip_da_offset</span> <span class="o">=</span> <span class="s">0;   Used by: routing</span>
+<span class="na">hash_offset</span> <span class="o">=</span> <span class="s">4;    Used by: RX, flow classification</span>
+<span class="na">flow_id_offset</span> <span class="o">=</span> <span class="s">8; Used by: flow classification, flow actions</span>
+<span class="na">color_offset</span> <span class="o">=</span> <span class="s">12;  Used by: flow actions, routing</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="overlay-the-packet-meta-data-in-the-same-cache-line-with-the-packet-headers">
+<h5>33.6.1.4.2. Overlay the packet meta-data in the same cache line with the packet headers</h5>
+<p>This approach is minimizing the number of cache line accessed per packet by storing the packet metadata in the
+same cache line with the packet headers.
+To enable this strategy, either some headroom is reserved for meta-data at the beginning of the packet headers
+cache line (e.g. if 16 bytes are needed for meta-data, then the packet headroom can be set to 128+16 bytes, so
+that NIC writes the first byte of the packet at offset 16 from the start of the first packet cache line),
+or meta-data is reusing the space of some packet headers that are discarded from the packet (e.g. input Ethernet
+header).</p>
+<p>Example:</p>
+<div class="highlight-ini"><div class="highlight"><pre><span></span><span class="c1">; struct app_pkt_metadata {</span>
+<span class="c1">;     uint8_t headroom[RTE_PKTMBUF_HEADROOM]; /* 128 bytes (default) */</span>
+<span class="c1">;     union {</span>
+<span class="c1">;         struct {</span>
+<span class="c1">;             struct ether_hdr ether; /* 14 bytes */</span>
+<span class="c1">;             struct qinq_hdr qinq; /* 8 bytes */</span>
+<span class="c1">;         };</span>
+<span class="c1">;         struct {</span>
+<span class="c1">;             uint32_t hash;</span>
+<span class="c1">;             uint32_t flow_id;</span>
+<span class="c1">;             uint32_t color;</span>
+<span class="c1">;         };</span>
+<span class="c1">;     };</span>
+<span class="c1">;     struct ipv4_hdr ip; /* 20 bytes */</span>
+<span class="c1">; } __attribute__((__packed__));</span>
+<span class="c1">;</span>
+<span class="k">[PIPELINE2]</span>
+<span class="c1">; Packet meta-data offsets</span>
+<span class="na">qinq_offset</span> <span class="o">=</span> <span class="s">142;    Used by: RX, flow classification</span>
+<span class="na">ip_da_offset</span> <span class="o">=</span> <span class="s">166;   Used by: routing</span>
+<span class="na">hash_offset</span> <span class="o">=</span> <span class="s">128;    Used by: RX, flow classification</span>
+<span class="na">flow_id_offset</span> <span class="o">=</span> <span class="s">132; Used by: flow classification, flow actions</span>
+<span class="na">color_offset</span> <span class="o">=</span> <span class="s">136;   Used by: flow actions, routing</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="list-of-pipeline-types">
+<h3>33.6.2. List of pipeline types</h3>
+<table border="1" class="docutils" id="id17">
+<caption><span class="caption-number">Table 33.14 </span><span class="caption-text">List of pipeline types provided with the application</caption>
+<colgroup>
+<col width="20%" />
+<col width="25%" />
+<col width="20%" />
+<col width="36%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Table(s)</th>
+<th class="head">Actions</th>
+<th class="head">Messages</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><p class="first">Pass-through</p>
+<p class="last">Note: depending on
+port type, can be
+used for RX, TX, IP
+fragmentation, IP
+reassembly or Traffic
+Management</p>
+</td>
+<td>Passthrough</td>
+<td><ol class="first last arabic simple">
+<li>Pkt metadata build</li>
+<li>Flow hash</li>
+<li>Pkt checks</li>
+<li>Load balancing</li>
+</ol>
+</td>
+<td><ol class="first last arabic simple">
+<li>Ping</li>
+<li>Stats</li>
+</ol>
+</td>
+</tr>
+<tr class="row-odd"><td>Flow classification</td>
+<td><p class="first">Exact match</p>
+<ul class="last simple">
+<li>Key = byte array
+(source: pkt metadata)</li>
+<li>Data = action dependent</li>
+</ul>
+</td>
+<td><ol class="first last arabic simple">
+<li>Flow ID</li>
+<li>Flow stats</li>
+<li>Metering</li>
+<li>Network Address</li>
+<li>Translation (NAT)</li>
+</ol>
+</td>
+<td><ol class="first last arabic simple">
+<li>Ping</li>
+<li>Stats</li>
+<li>Flow stats</li>
+<li>Action stats</li>
+<li>Flow add/ update/ delete</li>
+<li>Default flow add/ update/ delete</li>
+<li>Action update</li>
+</ol>
+</td>
+</tr>
+<tr class="row-even"><td>Flow actions</td>
+<td><p class="first">Array</p>
+<ul class="last simple">
+<li>Key = Flow ID
+(source: pkt metadata)</li>
+<li>Data = action dependent</li>
+</ul>
+</td>
+<td><ol class="first last arabic simple">
+<li>Flow stats</li>
+<li>Metering</li>
+<li>Network Address</li>
+<li>Translation (NAT)</li>
+</ol>
+</td>
+<td><ol class="first last arabic simple">
+<li>Ping</li>
+<li>Stats</li>
+<li>Action stats</li>
+<li>Action update</li>
+</ol>
+</td>
+</tr>
+<tr class="row-odd"><td>Firewall</td>
+<td><p class="first">ACL</p>
+<ul class="last simple">
+<li>Key = n-tuple
+(source: pkt headers)</li>
+<li>Data = none</li>
+</ul>
+</td>
+<td><ol class="first last arabic simple">
+<li>Allow/Drop</li>
+</ol>
+</td>
+<td><ol class="first last arabic simple">
+<li>Ping</li>
+<li>Stats</li>
+<li>Rule add/ update/ delete</li>
+<li>Default rule add/ update/ delete</li>
+</ol>
+</td>
+</tr>
+<tr class="row-even"><td>IP routing</td>
+<td><p class="first">LPM (IPv4 or IPv6,
+depending on pipeline type)</p>
+<ul class="simple">
+<li>Key = IP destination
+(source: pkt metadata)</li>
+<li>Data = Dependent on
+actions and next hop
+type</li>
+</ul>
+<p>Hash table (for ARP, only</p>
+<p>when ARP is enabled)</p>
+<ul class="last simple">
+<li>Key = (Port ID,
+next hop IP address)
+(source: pkt meta-data)</li>
+<li>Data: MAC address</li>
+</ul>
+</td>
+<td><ol class="first last arabic simple">
+<li>TTL decrement and</li>
+<li>IPv4 checksum</li>
+<li>update</li>
+<li>Header</li>
+<li>encapsulation</li>
+<li>(based on next hop</li>
+<li>type)</li>
+</ol>
+</td>
+<td><ol class="first last arabic simple">
+<li>Ping</li>
+<li>Stats</li>
+<li>Route add/ update/ delete</li>
+<li>Default route add/ update/ delete</li>
+<li>ARP entry add/ update/ delete</li>
+<li>Default ARP entry add/ update/ delete</li>
+</ol>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="command-line-interface-cli">
+<h2>33.7. Command Line Interface (CLI)</h2>
+<div class="section" id="global-cli-commands">
+<h3>33.7.1. Global CLI commands</h3>
+<table border="1" class="docutils" id="id18">
+<caption><span class="caption-number">Table 33.15 </span><span class="caption-text">Global CLI commands</caption>
+<colgroup>
+<col width="10%" />
+<col width="42%" />
+<col width="48%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Command</th>
+<th class="head">Description</th>
+<th class="head">Syntax</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>run</td>
+<td>Run CLI commands script file.</td>
+<td>run &lt;file&gt;
+&lt;file&gt; = path to file with CLI commands to
+execute</td>
+</tr>
+<tr class="row-odd"><td>quit</td>
+<td>Gracefully terminate the application.</td>
+<td>quit</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="cli-commands-for-link-configuration">
+<h3>33.7.2. CLI commands for link configuration</h3>
+<table border="1" class="docutils" id="id19">
+<caption><span class="caption-number">Table 33.16 </span><span class="caption-text">List of run-time configuration commands for link configuration</caption>
+<colgroup>
+<col width="17%" />
+<col width="26%" />
+<col width="57%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Command</th>
+<th class="head">Description</th>
+<th class="head">Syntax</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>link config</td>
+<td>Link configuration</td>
+<td>link &lt;link ID&gt; config &lt;IP address&gt; &lt;depth&gt;</td>
+</tr>
+<tr class="row-odd"><td>link up</td>
+<td>Link up</td>
+<td>link &lt;link ID&gt; up</td>
+</tr>
+<tr class="row-even"><td>link down</td>
+<td>Link down</td>
+<td>link &lt;link ID&gt; down</td>
+</tr>
+<tr class="row-odd"><td>link ls</td>
+<td>Link list</td>
+<td>link ls</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="cli-commands-common-for-all-pipeline-types">
+<h3>33.7.3. CLI commands common for all pipeline types</h3>
+<table border="1" class="docutils" id="id20">
+<caption><span class="caption-number">Table 33.17 </span><span class="caption-text">CLI commands mandatory for all pipelines</caption>
+<colgroup>
+<col width="17%" />
+<col width="45%" />
+<col width="38%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Command</th>
+<th class="head">Description</th>
+<th class="head">Syntax</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>ping</td>
+<td>Check whether specific pipeline instance is alive.
+The master pipeline sends a ping request
+message to given pipeline instance and waits for
+a response message back.
+Timeout message is displayed when the response
+message is not received before the timer
+expires.</td>
+<td>p &lt;pipeline ID&gt; ping</td>
+</tr>
+<tr class="row-odd"><td>stats</td>
+<td>Display statistics for specific pipeline input port,
+output port or table.</td>
+<td>p &lt;pipeline ID&gt; stats port in &lt;port in ID&gt;
+p &lt;pipeline ID&gt; stats port out &lt;port out ID&gt;
+p &lt;pipeline ID&gt; stats table &lt;table ID&gt;</td>
+</tr>
+<tr class="row-even"><td>input port enable</td>
+<td>Enable given input port for specific pipeline
+instance.</td>
+<td>p &lt;pipeline ID&gt; port in &lt;port ID&gt; enable</td>
+</tr>
+<tr class="row-odd"><td>input port disable</td>
+<td>Disable given input port for specific pipeline
+instance.</td>
+<td>p &lt;pipeline ID&gt; port in &lt;port ID&gt; disable</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="pipeline-type-specific-cli-commands">
+<h3>33.7.4. Pipeline type specific CLI commands</h3>
+<p>The pipeline specific CLI commands are part of the pipeline type front-end.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="test_pipeline.html" class="btn btn-neutral float-right" title="34. Test Pipeline Application" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="netmap_compatibility.html" class="btn btn-neutral" title="32. Netmap Compatibility Sample Application" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

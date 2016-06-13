@@ -1,0 +1,453 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>6. ENIC Poll Mode Driver &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Network Interface Controller Drivers" href="index.html"/>
+        <link rel="next" title="7. FM10K Poll Mode Driver" href="fm10k.html"/>
+        <link rel="prev" title="5. ENA Poll Mode Driver" href="ena.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Network Interface Controller Drivers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">1. Overview of Networking Drivers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bnx2x.html">2. BNX2X Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cxgbe.html">3. CXGBE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="e1000em.html">4. Driver for VM Emulated Devices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ena.html">5. ENA Poll Mode Driver</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">6. ENIC Poll Mode Driver</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#version-information">6.1. Version Information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-obtain-enic-pmd-integrated-dpdk">6.2. How to obtain ENIC PMD integrated DPDK</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration-information">6.3. Configuration information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#limitations">6.4. Limitations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-build-the-suite">6.5. How to build the suite?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#supported-cisco-vic-adapters">6.6. Supported Cisco VIC adapters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#supported-operating-systems">6.7. Supported Operating Systems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#supported-features">6.8. Supported features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#known-bugs-and-unsupported-features-in-this-release">6.9. Known bugs and Unsupported features in this release</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prerequisites">6.10. Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#additional-reference">6.11. Additional Reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#contact-information">6.12. Contact Information</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="fm10k.html">7. FM10K Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="i40e.html">8. I40E Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ixgbe.html">9. IXGBE Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intel_vf.html">10. I40E/IXGBE/IGB Virtual Function Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mlx4.html">11. MLX4 poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mlx5.html">12. MLX5 poll mode driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nfp.html">13. NFP poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="szedata2.html">14. SZEDATA2 poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="virtio.html">15. Poll Mode Driver for Emulated Virtio NIC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">16. Poll Mode Driver that wraps vhost library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmxnet3.html">17. Poll Mode Driver for Paravirtual VMXNET3 NIC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pcap_ring.html">18. Libpcap and Ring Based Poll Mode Drivers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Network Interface Controller Drivers</a> &raquo;</li>
+      
+    <li>6. ENIC Poll Mode Driver</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/nics/enic.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="enic-poll-mode-driver">
+<h1>6. ENIC Poll Mode Driver</h1>
+<p>ENIC PMD is the DPDK poll-mode driver for the Cisco System Inc. VIC Ethernet
+NICs. These adapters are also referred to as vNICs below. If you are running
+or would like to run DPDK software applications on Cisco UCS servers using
+Cisco VIC adapters the following documentation is relevant.</p>
+<div class="section" id="version-information">
+<h2>6.1. Version Information</h2>
+<p>The version of the ENIC PMD driver is 1.0.0.6 and will be printed by ENIC PMD
+during the initialization.</p>
+</div>
+<div class="section" id="how-to-obtain-enic-pmd-integrated-dpdk">
+<h2>6.2. How to obtain ENIC PMD integrated DPDK</h2>
+<p>ENIC PMD support is integrated into the DPDK suite. dpdk-&lt;version&gt;.tar.gz
+should be downloaded from <a class="reference external" href="http://dpdk.org">http://dpdk.org</a></p>
+</div>
+<div class="section" id="configuration-information">
+<h2>6.3. Configuration information</h2>
+<ul>
+<li><p class="first"><strong>DPDK Configuration Parameters</strong></p>
+<p>The following configuration options are available for the ENIC PMD:</p>
+<ul class="simple">
+<li><strong>CONFIG_RTE_LIBRTE_ENIC_PMD</strong> (default y): Enables or disables inclusion
+of the ENIC PMD driver in the DPDK compilation.</li>
+<li><strong>CONFIG_RTE_LIBRTE_ENIC_DEBUG</strong> (default n): Enables or disables debug
+logging within the ENIC PMD driver.</li>
+</ul>
+</li>
+<li><p class="first"><strong>vNIC Configuration Parameters</strong></p>
+<ul>
+<li><p class="first"><strong>Number of Queues</strong></p>
+<p>The maximum number of receive and transmit queues are configurable on a per
+vNIC basis through the Cisco UCS Manager (CIMC or UCSM). These values
+should be configured to be greater than or equal to the nb_rx_q and nb_tx_q
+parameters expected to  used in the call to the rte_eth_dev_configure()
+function.</p>
+</li>
+<li><p class="first"><strong>Size of Queues</strong></p>
+<p>Likewise, the number of receive and transmit descriptors are configurable on
+a per vNIC bases via the UCS Manager and should be greater than or equal to
+the nb_rx_desc and   nb_tx_desc parameters expected to be used in the calls
+to rte_eth_rx_queue_setup() and rte_eth_tx_queue_setup() respectively.</p>
+</li>
+<li><p class="first"><strong>Interrupts</strong></p>
+<p>Only one interrupt per vNIC interface should be configured in the UCS
+manager regardless of the number receive/transmit queues. The ENIC PMD
+uses this interrupt to   get information about errors in the fast path.</p>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="limitations">
+<h2>6.4. Limitations</h2>
+<ul>
+<li><p class="first"><strong>VLAN 0 Priority Tagging</strong></p>
+<p>If a vNIC is configured in TRUNK mode by the UCS manager, the adapter will
+priority tag egress packets according to 802.1Q if they were not already
+VLAN tagged by software. If the adapter is connected to a properly configured
+switch, there will be no unexpected behavior.</p>
+<p>In test setups where an Ethernet port of a Cisco adapter in TRUNK mode is
+connected point-to-point to another adapter port or connected though a router
+instead of a switch, all ingress packets will be VLAN tagged. Programs such
+as l3fwd which do not account for VLAN tags in packets will misbehave. The
+solution is to enable VLAN stripping on ingress. The follow code fragment is
+example of how to accomplish this:</p>
+</li>
+</ul>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">vlan_offload = rte_eth_dev_get_vlan_offload(port);</span>
+<span class="go">vlan_offload |= ETH_VLAN_STRIP_OFFLOAD;</span>
+<span class="go">rte_eth_dev_set_vlan_offload(port, vlan_offload);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="how-to-build-the-suite">
+<h2>6.5. How to build the suite?</h2>
+<p>The build instructions for the DPDK suite should be followed. By default
+the ENIC PMD library will be built into the DPDK library.</p>
+<p>For configuring and using UIO and VFIO frameworks, please refer the
+documentation that comes with DPDK suite.</p>
+</div>
+<div class="section" id="supported-cisco-vic-adapters">
+<h2>6.6. Supported Cisco VIC adapters</h2>
+<p>ENIC PMD supports all recent generations of Cisco VIC adapters including:</p>
+<ul>
+<li><p class="first">VIC 1280</p>
+</li>
+<li><p class="first">VIC 1240</p>
+</li>
+<li><p class="first">VIC 1225</p>
+</li>
+<li><p class="first">VIC 1285</p>
+</li>
+<li><p class="first">VIC 1225T</p>
+</li>
+<li><p class="first">VIC 1227</p>
+</li>
+<li><p class="first">VIC 1227T</p>
+</li>
+<li><p class="first">VIC 1380</p>
+</li>
+<li><p class="first">VIC 1340</p>
+</li>
+<li><p class="first">VIC 1385</p>
+</li>
+<li><p class="first">VIC 1387</p>
+</li>
+<li><dl class="first docutils">
+<dt>Flow director features are not supported on generation 1 Cisco VIC adapters</dt>
+<dd><p class="first last">(M81KR and P81E)</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="supported-operating-systems">
+<h2>6.7. Supported Operating Systems</h2>
+<p>Any Linux distribution fulfilling the conditions described in Dependencies
+section of DPDK documentation.</p>
+</div>
+<div class="section" id="supported-features">
+<h2>6.8. Supported features</h2>
+<ul class="simple">
+<li>Unicast, multicast and broadcast transmission and reception</li>
+<li>Receive queue polling</li>
+<li>Port Hardware Statistics</li>
+<li>Hardware VLAN acceleration</li>
+<li>IP checksum offload</li>
+<li>Receive side VLAN stripping</li>
+<li>Multiple receive and transmit queues</li>
+<li>Flow Director ADD, UPDATE, DELETE, STATS operation support for IPV4 5-TUPLE
+flows</li>
+<li>Promiscuous mode</li>
+<li>Setting RX VLAN (supported via UCSM/CIMC only)</li>
+<li>VLAN filtering (supported via UCSM/CIMC only)</li>
+<li>Execution of application by unprivileged system users</li>
+<li>IPV4, IPV6 and TCP RSS hashing</li>
+</ul>
+</div>
+<div class="section" id="known-bugs-and-unsupported-features-in-this-release">
+<h2>6.9. Known bugs and Unsupported features in this release</h2>
+<ul class="simple">
+<li>Signature or flex byte based flow direction</li>
+<li>Drop feature of flow direction</li>
+<li>VLAN based flow direction</li>
+<li>non-IPV4 flow direction</li>
+<li>Setting of extended VLAN</li>
+<li>UDP RSS hashing</li>
+</ul>
+</div>
+<div class="section" id="prerequisites">
+<h2>6.10. Prerequisites</h2>
+<ul class="simple">
+<li>Prepare the system as recommended by DPDK suite.  This includes environment
+variables, hugepages configuration, tool-chains and configuration</li>
+<li>Insert vfio-pci kernel module using the command &#8216;modprobe vfio-pci&#8217; if the
+user wants to use VFIO framework</li>
+<li>Insert uio kernel module using the command &#8216;modprobe uio&#8217; if the user wants
+to use UIO framework</li>
+<li>DPDK suite should be configured based on the user&#8217;s decision to use VFIO or
+UIO framework</li>
+<li>If the vNIC device(s) to be used is bound to the kernel mode Ethernet driver
+(enic), use &#8216;ifconfig&#8217; to bring the interface down. The dpdk_nic_bind.py tool
+can then be used to unbind the device&#8217;s bus id from the enic kernel mode
+driver.</li>
+<li>Bind the intended vNIC to vfio-pci in case the user wants ENIC PMD to use
+VFIO framework using dpdk_nic_bind.py.</li>
+<li>Bind the intended vNIC to igb_uio in case the user wants ENIC PMD to use
+UIO framework using dpdk_nic_bind.py.</li>
+</ul>
+<p>At this point the system should be ready to run DPDK applications. Once the
+application runs to completion, the vNIC can be detached from vfio-pci or
+igb_uio if necessary.</p>
+<p>Root privilege is required to bind and unbind vNICs to/from VFIO/UIO.
+VFIO framework helps an unprivileged user to run the applications.
+For an unprivileged user to run the applications on DPDK and ENIC PMD,
+it may be necessary to increase the maximum locked memory of the user.
+The following command could be used to do this.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">sudo sh -c &quot;ulimit -l &lt;value in Kilo Bytes&gt;&quot;</span>
+</pre></div>
+</div>
+<p>The value depends on the memory configuration of the application, DPDK and
+PMD.  Typically, the limit has to be raised to higher than 2GB.
+e.g., 2621440</p>
+<p>The compilation of any unused drivers can be disabled using the
+configuration file in config/ directory (e.g., config/common_linuxapp).
+This would help in bringing down the time taken for building the
+libraries and the initialization time of the application.</p>
+</div>
+<div class="section" id="additional-reference">
+<h2>6.11. Additional Reference</h2>
+<ul class="simple">
+<li><a class="reference external" href="http://www.cisco.com/c/en/us/products/servers-unified-computing">http://www.cisco.com/c/en/us/products/servers-unified-computing</a></li>
+</ul>
+</div>
+<div class="section" id="contact-information">
+<h2>6.12. Contact Information</h2>
+<p>Any questions or bugs should be reported to DPDK community and to the ENIC PMD
+maintainers:</p>
+<ul class="simple">
+<li>John Daley &lt;<a class="reference external" href="mailto:johndale&#37;&#52;&#48;cisco&#46;com">johndale<span>&#64;</span>cisco<span>&#46;</span>com</a>&gt;</li>
+<li>Nelson Escobar &lt;<a class="reference external" href="mailto:neescoba&#37;&#52;&#48;cisco&#46;com">neescoba<span>&#64;</span>cisco<span>&#46;</span>com</a>&gt;</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="fm10k.html" class="btn btn-neutral float-right" title="7. FM10K Poll Mode Driver" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ena.html" class="btn btn-neutral" title="5. ENA Poll Mode Driver" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

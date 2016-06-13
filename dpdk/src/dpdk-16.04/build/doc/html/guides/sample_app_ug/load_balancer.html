@@ -1,0 +1,472 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>22. Load Balancer Sample Application &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Sample Applications User Guide" href="index.html"/>
+        <link rel="next" title="23. Multi-process Sample Application" href="multi_process.html"/>
+        <link rel="prev" title="21. Link Status Interrupt Sample Application" href="link_status_intr.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Sample Applications User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmd_line.html">2. Command Line Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethtool.html">3. Ethtool Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exception_path.html">4. Exception Path Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello_world.html">5. Hello World Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skeleton.html">6. Basic Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rxtx_callbacks.html">7. RX/TX Callbacks Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_frag.html">8. IP Fragmentation Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipv4_multicast.html">9. IPv4 Multicast Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_reassembly.html">10. IP Reassembly Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">11. Kernel NIC Interface Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keep_alive.html">12. Keep Alive Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_crypto.html">13. L2 Forwarding with Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_job_stats.html">14. L2 Forwarding Sample Application (in Real and Virtualized Environments) with core load statistics.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_real_virtual.html">15. L2 Forwarding Sample Application (in Real and Virtualized Environments)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_cat.html">16. L2 Forwarding Sample Application with Cache Allocation Technology (CAT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward.html">17. L3 Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_power_man.html">18. L3 Forwarding with Power Management Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_access_ctrl.html">19. L3 Forwarding with Access Control Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_virtual.html">20. L3 Forwarding in a Virtualization Environment Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_status_intr.html">21. Link Status Interrupt Sample Application</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">22. Load Balancer Sample Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">22.1. Overview</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#i-o-rx-logical-cores">22.1.1. I/O RX Logical Cores</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#i-o-tx-logical-cores">22.1.2. I/O TX Logical Cores</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#worker-logical-cores">22.1.3. Worker Logical Cores</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#compiling-the-application">22.2. Compiling the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-application">22.3. Running the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#explanation">22.4. Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#application-configuration">22.4.1. Application Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#numa-support">22.4.2. NUMA Support</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="multi_process.html">23. Multi-process Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_metering.html">24. QoS Metering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_scheduler.html">25. QoS Scheduler Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intel_quickassist.html">26. Intel® QuickAssist Technology Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quota_watermark.html">27. Quota and Watermark Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer.html">28. Timer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_ordering.html">29. Packet Ordering Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_dcb_forwarding.html">30. VMDQ and DCB Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">31. Vhost Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="netmap_compatibility.html">32. Netmap Compatibility Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_pipeline.html">33. Internet Protocol (IP) Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_pipeline.html">34. Test Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dist_app.html">35. Distributor Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vm_power_management.html">36. VM Power Management Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tep_termination.html">37. TEP termination Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="proc_info.html">38. dpdk_proc_info Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ptpclient.html">39. PTP Client Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance_thread.html">40. Performance Thread Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_secgw.html">41. IPsec Security Gateway Sample Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Sample Applications User Guide</a> &raquo;</li>
+      
+    <li>22. Load Balancer Sample Application</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/sample_app_ug/load_balancer.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="load-balancer-sample-application">
+<h1>22. Load Balancer Sample Application</h1>
+<p>The Load Balancer sample application demonstrates the concept of isolating the packet I/O task
+from the application-specific workload.
+Depending on the performance target,
+a number of logical cores (lcores) are dedicated to handle the interaction with the NIC ports (I/O lcores),
+while the rest of the lcores are dedicated to performing the application processing (worker lcores).
+The worker lcores are totally oblivious to the intricacies of the packet I/O activity and
+use the NIC-agnostic interface provided by software rings to exchange packets with the I/O cores.</p>
+<div class="section" id="overview">
+<h2>22.1. Overview</h2>
+<p>The architecture of the Load Balance application is presented in the following figure.</p>
+<div class="figure" id="id1">
+<span id="figure-load-bal-app-arch"></span><img alt="../_images/load_bal_app_arch.png" src="../_images/load_bal_app_arch.png" />
+<p class="caption"><span class="caption-number">Fig. 22.1 </span><span class="caption-text">Load Balancer Application Architecture</span></p>
+</div>
+<p>For the sake of simplicity, the diagram illustrates a specific case of two I/O RX and two I/O TX lcores off loading the packet I/O
+overhead incurred by four NIC ports from four worker cores, with each I/O lcore handling RX/TX for two NIC ports.</p>
+<div class="section" id="i-o-rx-logical-cores">
+<h3>22.1.1. I/O RX Logical Cores</h3>
+<p>Each I/O RX lcore performs packet RX from its assigned NIC RX rings and then distributes the received packets to the worker threads.
+The application allows each I/O RX lcore to communicate with any of the worker threads,
+therefore each (I/O RX lcore, worker lcore) pair is connected through a dedicated single producer - single consumer software ring.</p>
+<p>The worker lcore to handle the current packet is determined by reading a predefined 1-byte field from the input packet:</p>
+<p>worker_id = packet[load_balancing_field] % n_workers</p>
+<p>Since all the packets that are part of the same traffic flow are expected to have the same value for the load balancing field,
+this scheme also ensures that all the packets that are part of the same traffic flow are directed to the same worker lcore (flow affinity)
+in the same order they enter the system (packet ordering).</p>
+</div>
+<div class="section" id="i-o-tx-logical-cores">
+<h3>22.1.2. I/O TX Logical Cores</h3>
+<p>Each I/O lcore owns the packet TX for a predefined set of NIC ports. To enable each worker thread to send packets to any NIC TX port,
+the application creates a software ring for each (worker lcore, NIC TX port) pair,
+with each I/O TX core handling those software rings that are associated with NIC ports that it handles.</p>
+</div>
+<div class="section" id="worker-logical-cores">
+<h3>22.1.3. Worker Logical Cores</h3>
+<p>Each worker lcore reads packets from its set of input software rings and
+routes them to the NIC ports for transmission by dispatching them to output software rings.
+The routing logic is LPM based, with all the worker threads sharing the same LPM rules.</p>
+</div>
+</div>
+<div class="section" id="compiling-the-application">
+<h2>22.2. Compiling the Application</h2>
+<p>The sequence of steps used to build the application is:</p>
+<ol class="arabic">
+<li><p class="first">Export the required environment variables:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export RTE_SDK=&lt;Path to the DPDK installation folder&gt;</span>
+<span class="go">export RTE_TARGET=x86_64-native-linuxapp-gcc</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Build the application executable file:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">cd ${RTE_SDK}/examples/load_balancer</span>
+<span class="go">make</span>
+</pre></div>
+</div>
+<p>For more details on how to build the DPDK libraries and sample applications,
+please refer to the <em>DPDK Getting Started Guide.</em></p>
+</li>
+</ol>
+</div>
+<div class="section" id="running-the-application">
+<h2>22.3. Running the Application</h2>
+<p>To successfully run the application,
+the command line used to start the application has to be in sync with the traffic flows configured on the traffic generator side.</p>
+<p>For examples of application command lines and traffic generator flows, please refer to the DPDK Test Report.
+For more details on how to set up and run the sample applications provided with DPDK package,
+please refer to the <em>DPDK Getting Started Guide</em>.</p>
+</div>
+<div class="section" id="explanation">
+<h2>22.4. Explanation</h2>
+<div class="section" id="application-configuration">
+<h3>22.4.1. Application Configuration</h3>
+<p>The application run-time configuration is done through the application command line parameters.
+Any parameter that is not specified as mandatory is optional,
+with the default value hard-coded in the main.h header file from the application folder.</p>
+<p>The list of application command line parameters is listed below:</p>
+<ol class="arabic simple">
+<li>&#8211;rx &#8220;(PORT, QUEUE, LCORE), ...&#8221;: The list of NIC RX ports and queues handled by the I/O RX lcores.
+This parameter also implicitly defines the list of I/O RX lcores. This is a mandatory parameter.</li>
+<li>&#8211;tx &#8220;(PORT, LCORE), ... &#8221;: The list of NIC TX ports handled by the I/O TX lcores.
+This parameter also implicitly defines the list of I/O TX lcores.
+This is a mandatory parameter.</li>
+<li>&#8211;w &#8220;LCORE, ...&#8221;: The list of the worker lcores. This is a mandatory parameter.</li>
+<li>&#8211;lpm &#8220;IP / PREFIX =&gt; PORT; ...&#8221;: The list of LPM rules used by the worker lcores for packet forwarding.
+This is a mandatory parameter.</li>
+<li>&#8211;rsz &#8220;A, B, C, D&#8221;: Ring sizes:<ol class="arabic">
+<li>A = The size (in number of buffer descriptors) of each of the NIC RX rings read by the I/O RX lcores.</li>
+<li>B = The size (in number of elements) of each of the software rings used by the I/O RX lcores to send packets to worker lcores.</li>
+<li>C = The size (in number of elements) of each of the software rings used by the worker lcores to send packets to I/O TX lcores.</li>
+<li>D = The size (in number of buffer descriptors) of each of the NIC TX rings written by I/O TX lcores.</li>
+</ol>
+</li>
+<li>&#8211;bsz &#8220;(A, B), (C, D), (E, F)&#8221;: Burst sizes:<ol class="arabic">
+<li>A = The I/O RX lcore read burst size from NIC RX.</li>
+<li>B = The I/O RX lcore write burst size to the output software rings.</li>
+<li>C = The worker lcore read burst size from the input software rings.</li>
+<li>D = The worker lcore write burst size to the output software rings.</li>
+<li>E = The I/O TX lcore read burst size from the input software rings.</li>
+<li>F = The I/O TX lcore write burst size to the NIC TX.</li>
+</ol>
+</li>
+<li>&#8211;pos-lb POS: The position of the 1-byte field within the input packet used by the I/O RX lcores
+to identify the worker lcore for the current packet.
+This field needs to be within the first 64 bytes of the input packet.</li>
+</ol>
+<p>The infrastructure of software rings connecting I/O lcores and worker lcores is built by the application
+as a result of the application configuration provided by the user through the application command line parameters.</p>
+<p>A specific lcore performing the I/O RX role for a specific set of NIC ports can also perform the I/O TX role
+for the same or a different set of NIC ports.
+A specific lcore cannot perform both the I/O role (either RX or TX) and the worker role during the same session.</p>
+<p>Example:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./load_balancer -c 0xf8 -n 4 -- --rx &quot;(0,0,3),(1,0,3)&quot; --tx &quot;(0,3),(1,3)&quot; --w &quot;4,5,6,7&quot; --lpm &quot;1.0.0.0/24=&gt;0; 1.0.1.0/24=&gt;1;&quot; --pos-lb 29</span>
+</pre></div>
+</div>
+<p>There is a single I/O lcore (lcore 3) that handles RX and TX for two NIC ports (ports 0 and 1) that
+handles packets to/from four worker lcores (lcores 4, 5, 6 and 7) that
+are assigned worker IDs 0 to 3 (worker ID for lcore 4 is 0, for lcore 5 is 1, for lcore 6 is 2 and for lcore 7 is 3).</p>
+<p>Assuming that all the input packets are IPv4 packets with no VLAN label and the source IP address of the current packet is A.B.C.D,
+the worker lcore for the current packet is determined by byte D (which is byte 29).
+There are two LPM rules that are used by each worker lcore to route packets to the output NIC ports.</p>
+<p>The following table illustrates the packet flow through the system for several possible traffic flows:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="18%" />
+<col width="19%" />
+<col width="34%" />
+<col width="16%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><strong>Flow #</strong></th>
+<th class="head"><strong>Source</strong>
+<strong>IP Address</strong></th>
+<th class="head"><strong>Destination</strong>
+<strong>IP Address</strong></th>
+<th class="head"><strong>Worker ID (Worker lcore)</strong></th>
+<th class="head"><strong>Output</strong>
+<strong>NIC Port</strong></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>0.0.0.0</td>
+<td>1.0.0.1</td>
+<td>0 (4)</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>0.0.0.1</td>
+<td>1.0.1.2</td>
+<td>1 (5)</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>3</td>
+<td>0.0.0.14</td>
+<td>1.0.0.3</td>
+<td>2 (6)</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>4</td>
+<td>0.0.0.15</td>
+<td>1.0.1.4</td>
+<td>3 (7)</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="numa-support">
+<h3>22.4.2. NUMA Support</h3>
+<p>The application has built-in performance enhancements for the NUMA case:</p>
+<ol class="arabic simple">
+<li>One buffer pool per each CPU socket.</li>
+<li>One LPM table per each CPU socket.</li>
+<li>Memory for the NIC RX or TX rings is allocated on the same socket with the lcore handling the respective ring.</li>
+</ol>
+<p>In the case where multiple CPU sockets are used in the system,
+it is recommended to enable at least one lcore to fulfill the I/O role for the NIC ports that
+are directly attached to that CPU socket through the PCI Express* bus.
+It is always recommended to handle the packet I/O with lcores from the same CPU socket as the NICs.</p>
+<p>Depending on whether the I/O RX lcore (same CPU socket as NIC RX),
+the worker lcore and the I/O TX lcore (same CPU socket as NIC TX) handling a specific input packet,
+are on the same or different CPU sockets, the following run-time scenarios are possible:</p>
+<ol class="arabic simple">
+<li>AAA: The packet is received, processed and transmitted without going across CPU sockets.</li>
+<li>AAB: The packet is received and processed on socket A,
+but as it has to be transmitted on a NIC port connected to socket B,
+the packet is sent to socket B through software rings.</li>
+<li>ABB: The packet is received on socket A, but as it has to be processed by a worker lcore on socket B,
+the packet is sent to socket B through software rings.
+The packet is transmitted by a NIC port connected to the same CPU socket as the worker lcore that processed it.</li>
+<li>ABC: The packet is received on socket A, it is processed by an lcore on socket B,
+then it has to be transmitted out by a NIC connected to socket C.
+The performance price for crossing the CPU socket boundary is paid twice for this packet.</li>
+</ol>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="multi_process.html" class="btn btn-neutral float-right" title="23. Multi-process Sample Application" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="link_status_intr.html" class="btn btn-neutral" title="21. Link Status Interrupt Sample Application" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

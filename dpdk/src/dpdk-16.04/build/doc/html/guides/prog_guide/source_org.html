@@ -1,0 +1,389 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>27. Source Organization &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Programmer’s Guide" href="index.html"/>
+        <link rel="next" title="28. Development Kit Build System" href="dev_kit_build_system.html"/>
+        <link rel="prev" title="26. Port Hotplug Framework" href="port_hotplug_framework.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Programmer&#8217;s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html">2. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="env_abstraction_layer.html">3. Environment Abstraction Layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ring_lib.html">4. Ring Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mempool_lib.html">5. Mempool Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mbuf_lib.html">6. Mbuf Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="poll_mode_drv.html">7. Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cryptodev_lib.html">8. Cryptography Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ivshmem_lib.html">9. IVSHMEM Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_bonding_poll_mode_drv_lib.html">10. Link Bonding Poll Mode Driver Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer_lib.html">11. Timer Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hash_lib.html">12. Hash Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm_lib.html">13. LPM Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm6_lib.html">14. LPM6 Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_distrib_lib.html">15. Packet Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reorder_lib.html">16. Reorder Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_fragment_reassembly_lib.html">17. IP Fragmentation and Reassembly Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_proc_support.html">18. Multi-process Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">19. Kernel NIC Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thread_safety_dpdk_functions.html">20. Thread Safety of DPDK Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_framework.html">21. Quality of Service (QoS) Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="power_man.html">22. Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_classif_access_ctrl.html">23. Packet Classification and Access Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_framework.html">24. Packet Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_lib.html">25. Vhost Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="port_hotplug_framework.html">26. Port Hotplug Framework</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">27. Source Organization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#makefiles-and-config">27.1. Makefiles and Config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#libraries">27.2. Libraries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#drivers">27.3. Drivers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#applications">27.4. Applications</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dev_kit_build_system.html">28. Development Kit Build System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_kit_root_make_help.html">29. Development Kit Root Makefile Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extend_dpdk.html">30. Extending the DPDK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_app.html">31. Building Your Own Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ext_app_lib_make_help.html">32. External Application/Library Makefile help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perf_opt_guidelines.html">33. Performance Optimization Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing_efficient_code.html">34. Writing Efficient Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="profile_app.html">35. Profile Your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">36. Glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Programmer&#8217;s Guide</a> &raquo;</li>
+      
+    <li>27. Source Organization</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/prog_guide/source_org.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <p><strong>Part 2: Development Environment</strong></p>
+<div class="section" id="source-organization">
+<h1>27. Source Organization</h1>
+<p>This section describes the organization of sources in the DPDK framework.</p>
+<div class="section" id="makefiles-and-config">
+<h2>27.1. Makefiles and Config</h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In the following descriptions,
+<code class="docutils literal"><span class="pre">RTE_SDK</span></code> is the environment variable that points to the base directory into which the tarball was extracted.
+See
+<a class="reference internal" href="dev_kit_build_system.html#useful-variables-provided-by-the-build-system"><span class="std std-ref">Useful Variables Provided by the Build System</span></a>
+for descriptions of other variables.</p>
+</div>
+<p>Makefiles that are provided by the DPDK libraries and applications are located in <code class="docutils literal"><span class="pre">$(RTE_SDK)/mk</span></code>.</p>
+<p>Config templates are located in <code class="docutils literal"><span class="pre">$(RTE_SDK)/config</span></code>. The templates describe the options that are enabled for each target.
+The config file also contains items that can be enabled and disabled for many of the DPDK libraries,
+including debug options.
+The user should look at the config file and become familiar with these options.
+The config file is also used to create a header file, which will be located in the new build directory.</p>
+</div>
+<div class="section" id="libraries">
+<h2>27.2. Libraries</h2>
+<p>Libraries are located in subdirectories of <code class="docutils literal"><span class="pre">$(RTE_SDK)/lib</span></code>.
+By convention a library refers to any code that provides an API to an application.
+Typically, it generates an archive file (<code class="docutils literal"><span class="pre">.a</span></code>), but a kernel module would also go in the same directory.</p>
+<p>The lib directory contains:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>lib
++-- librte_cmdline      # Command line interface helper
++-- librte_distributor  # Packet distributor
++-- librte_eal          # Environment abstraction layer
++-- librte_ether        # Generic interface to poll mode driver
++-- librte_hash         # Hash library
++-- librte_ip_frag      # IP fragmentation library
++-- librte_ivshmem      # QEMU IVSHMEM library
++-- librte_kni          # Kernel NIC interface
++-- librte_kvargs       # Argument parsing library
++-- librte_lpm          # Longest prefix match library
++-- librte_mbuf         # Packet and control mbuf manipulation
++-- librte_mempool      # Memory pool manager (fixed sized objects)
++-- librte_meter        # QoS metering library
++-- librte_net          # Various IP-related headers
++-- librte_power        # Power management library
++-- librte_ring         # Software rings (act as lockless FIFOs)
++-- librte_sched        # QoS scheduler and dropper library
++-- librte_timer        # Timer library
+</pre></div>
+</div>
+</div>
+<div class="section" id="drivers">
+<h2>27.3. Drivers</h2>
+<p>Drivers are special libraries which provide poll-mode driver implementations for
+devices: either hardware devices or pseudo/virtual devices. They are contained
+in the <em>drivers</em> subdirectory, classified by type, and each compiles to a
+library with the format <code class="docutils literal"><span class="pre">librte_pmd_X.a</span></code> where <code class="docutils literal"><span class="pre">X</span></code> is the driver name.</p>
+<p>The drivers directory has a <em>net</em> subdirectory which contains:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>drivers/net
++-- af_packet          # Poll mode driver based on Linux af_packet
++-- bonding            # Bonding poll mode driver
++-- cxgbe              # Chelsio Terminator 10GbE/40GbE poll mode driver
++-- e1000              # 1GbE poll mode drivers (igb and em)
++-- enic               # Cisco VIC Ethernet NIC Poll-mode Driver
++-- fm10k              # Host interface PMD driver for FM10000 Series
++-- i40e               # 40GbE poll mode driver
++-- ixgbe              # 10GbE poll mode driver
++-- mlx4               # Mellanox ConnectX-3 poll mode driver
++-- null               # NULL poll mode driver for testing
++-- pcap               # PCAP poll mode driver
++-- ring               # Ring poll mode driver
++-- szedata2           # SZEDATA2 poll mode driver
++-- virtio             # Virtio poll mode driver
++-- vmxnet3            # VMXNET3 poll mode driver
++-- xenvirt            # Xen virtio poll mode driver
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Several of the <code class="docutils literal"><span class="pre">driver/net</span></code> directories contain a <code class="docutils literal"><span class="pre">base</span></code>
+sub-directory. The <code class="docutils literal"><span class="pre">base</span></code> directory generally contains code the shouldn&#8217;t
+be modified directly by the user. Any enhancements should be done via the
+<code class="docutils literal"><span class="pre">X_osdep.c</span></code> and/or <code class="docutils literal"><span class="pre">X_osdep.h</span></code> files in that directory. Refer to the
+local README in the base directories for driver specific instructions.</p>
+</div>
+</div>
+<div class="section" id="applications">
+<h2>27.4. Applications</h2>
+<p>Applications are source files that contain a <code class="docutils literal"><span class="pre">main()</span></code> function.
+They are located in the <code class="docutils literal"><span class="pre">$(RTE_SDK)/app</span></code> and <code class="docutils literal"><span class="pre">$(RTE_SDK)/examples</span></code> directories.</p>
+<p>The app directory contains sample applications that are used to test DPDK (such as autotests)
+or the Poll Mode Drivers (test-pmd):</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>app
++-- chkincs            # Test program to check include dependencies
++-- cmdline_test       # Test the commandline library
++-- test               # Autotests to validate DPDK features
++-- test-acl           # Test the ACL library
++-- test-pipeline      # Test the IP Pipeline framework
++-- test-pmd           # Test and benchmark poll mode drivers
+</pre></div>
+</div>
+<p>The examples directory contains sample applications that show how libraries can be used:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>examples
++-- cmdline            # Example of using the cmdline library
++-- dpdk_qat           # Sample integration with Intel QuickAssist
++-- exception_path     # Sending packets to and from Linux TAP device
++-- helloworld         # Basic Hello World example
++-- ip_reassembly      # Example showing IP reassembly
++-- ip_fragmentation   # Example showing IPv4 fragmentation
++-- ipv4_multicast     # Example showing IPv4 multicast
++-- kni                # Kernel NIC Interface (KNI) example
++-- l2fwd              # L2 forwarding with and without SR-IOV
++-- l3fwd              # L3 forwarding example
++-- l3fwd-power        # L3 forwarding example with power management
++-- l3fwd-vf           # L3 forwarding example with SR-IOV
++-- link_status_interrupt # Link status change interrupt example
++-- load_balancer      # Load balancing across multiple cores/sockets
++-- multi_process      # Example apps using multiple DPDK processes
++-- qos_meter          # QoS metering example
++-- qos_sched          # QoS scheduler and dropper example
++-- timer              # Example of using librte_timer library
++-- vmdq_dcb           # Example of VMDQ and DCB receiving
++-- vmdq               # Example of VMDQ receiving
++-- vhost              # Example of userspace vhost and switch
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The actual examples directory may contain additional sample applications to those shown above.
+Check the latest DPDK source files for details.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="dev_kit_build_system.html" class="btn btn-neutral float-right" title="28. Development Kit Build System" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="port_hotplug_framework.html" class="btn btn-neutral" title="26. Port Hotplug Framework" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

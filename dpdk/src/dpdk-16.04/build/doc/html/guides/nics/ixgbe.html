@@ -1,0 +1,400 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>9. IXGBE Driver &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Network Interface Controller Drivers" href="index.html"/>
+        <link rel="next" title="10. I40E/IXGBE/IGB Virtual Function Driver" href="intel_vf.html"/>
+        <link rel="prev" title="8. I40E Poll Mode Driver" href="i40e.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Network Interface Controller Drivers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">1. Overview of Networking Drivers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bnx2x.html">2. BNX2X Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cxgbe.html">3. CXGBE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="e1000em.html">4. Driver for VM Emulated Devices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ena.html">5. ENA Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="enic.html">6. ENIC Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fm10k.html">7. FM10K Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="i40e.html">8. I40E Poll Mode Driver</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">9. IXGBE Driver</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#vector-pmd-for-ixgbe">9.1. Vector PMD for IXGBE</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#rx-constraints">9.1.1. RX Constraints</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tx-constraint">9.1.2. TX Constraint</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sample-application-notes">9.1.3. Sample Application Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#malicious-driver-detection-not-supported">9.2. Malicious Driver Detection not Supported</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#statistics">9.3. Statistics</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="intel_vf.html">10. I40E/IXGBE/IGB Virtual Function Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mlx4.html">11. MLX4 poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mlx5.html">12. MLX5 poll mode driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nfp.html">13. NFP poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="szedata2.html">14. SZEDATA2 poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="virtio.html">15. Poll Mode Driver for Emulated Virtio NIC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">16. Poll Mode Driver that wraps vhost library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmxnet3.html">17. Poll Mode Driver for Paravirtual VMXNET3 NIC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pcap_ring.html">18. Libpcap and Ring Based Poll Mode Drivers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Network Interface Controller Drivers</a> &raquo;</li>
+      
+    <li>9. IXGBE Driver</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/nics/ixgbe.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="ixgbe-driver">
+<h1>9. IXGBE Driver</h1>
+<div class="section" id="vector-pmd-for-ixgbe">
+<h2>9.1. Vector PMD for IXGBE</h2>
+<p>Vector PMD uses Intel® SIMD instructions to optimize packet I/O.
+It improves load/store bandwidth efficiency of L1 data cache by using a wider SSE/AVX register 1 (1).
+The wider register gives space to hold multiple packet buffers so as to save instruction number when processing bulk of packets.</p>
+<p>There is no change to PMD API. The RX/TX handler are the only two entries for vPMD packet I/O.
+They are transparently registered at runtime RX/TX execution if all condition checks pass.</p>
+<ol class="arabic simple">
+<li>To date, only an SSE version of IX GBE vPMD is available.
+To ensure that vPMD is in the binary code, ensure that the option CONFIG_RTE_IXGBE_INC_VECTOR=y is in the configure file.</li>
+</ol>
+<p>Some constraints apply as pre-conditions for specific optimizations on bulk packet transfers.
+The following sections explain RX and TX constraints in the vPMD.</p>
+<div class="section" id="rx-constraints">
+<h3>9.1.1. RX Constraints</h3>
+<div class="section" id="prerequisites-and-pre-conditions">
+<h4>9.1.1.1. Prerequisites and Pre-conditions</h4>
+<p>The following prerequisites apply:</p>
+<ul class="simple">
+<li>To enable vPMD to work for RX, bulk allocation for Rx must be allowed.</li>
+</ul>
+<p>Ensure that the following pre-conditions are satisfied:</p>
+<ul class="simple">
+<li>rxq-&gt;rx_free_thresh &gt;= RTE_PMD_IXGBE_RX_MAX_BURST</li>
+<li>rxq-&gt;rx_free_thresh &lt; rxq-&gt;nb_rx_desc</li>
+<li>(rxq-&gt;nb_rx_desc % rxq-&gt;rx_free_thresh) == 0</li>
+<li>rxq-&gt;nb_rx_desc  &lt; (IXGBE_MAX_RING_DESC - RTE_PMD_IXGBE_RX_MAX_BURST)</li>
+</ul>
+<p>These conditions are checked in the code.</p>
+<p>Scattered packets are not supported in this mode.
+If an incoming packet is greater than the maximum acceptable length of one &#8220;mbuf&#8221; data size (by default, the size is 2 KB),
+vPMD for RX would be disabled.</p>
+<p>By default, IXGBE_MAX_RING_DESC is set to 4096 and RTE_PMD_IXGBE_RX_MAX_BURST is set to 32.</p>
+</div>
+<div class="section" id="feature-not-supported-by-rx-vector-pmd">
+<h4>9.1.1.2. Feature not Supported by RX Vector PMD</h4>
+<p>Some features are not supported when trying to increase the throughput in vPMD.
+They are:</p>
+<ul class="simple">
+<li>IEEE1588</li>
+<li>FDIR</li>
+<li>Header split</li>
+<li>RX checksum off load</li>
+</ul>
+<p>Other features are supported using optional MACRO configuration. They include:</p>
+<ul class="simple">
+<li>HW VLAN strip</li>
+<li>HW extend dual VLAN</li>
+<li>Enabled by RX_OLFLAGS (RTE_IXGBE_RX_OLFLAGS_ENABLE=y)</li>
+</ul>
+<p>To guarantee the constraint, configuration flags in dev_conf.rxmode will be checked:</p>
+<ul class="simple">
+<li>hw_vlan_strip</li>
+<li>hw_vlan_extend</li>
+<li>hw_ip_checksum</li>
+<li>header_split</li>
+<li>dev_conf</li>
+</ul>
+<p>fdir_conf-&gt;mode will also be checked.</p>
+</div>
+<div class="section" id="rx-burst-size">
+<h4>9.1.1.3. RX Burst Size</h4>
+<p>As vPMD is focused on high throughput, it assumes that the RX burst size is equal to or greater than 32 per burst.
+It returns zero if using nb_pkt &lt; 32 as the expected packet number in the receive handler.</p>
+</div>
+</div>
+<div class="section" id="tx-constraint">
+<h3>9.1.2. TX Constraint</h3>
+<div class="section" id="prerequisite">
+<h4>9.1.2.1. Prerequisite</h4>
+<p>The only prerequisite is related to tx_rs_thresh.
+The tx_rs_thresh value must be greater than or equal to RTE_PMD_IXGBE_TX_MAX_BURST,
+but less or equal to RTE_IXGBE_TX_MAX_FREE_BUF_SZ.
+Consequently, by default the tx_rs_thresh value is in the range 32 to 64.</p>
+</div>
+<div class="section" id="id1">
+<h4>9.1.2.2. Feature not Supported by RX Vector PMD</h4>
+<p>TX vPMD only works when txq_flags is set to IXGBE_SIMPLE_FLAGS.</p>
+<p>This means that it does not support TX multi-segment, VLAN offload and TX csum offload.
+The following MACROs are used for these three features:</p>
+<ul class="simple">
+<li>ETH_TXQ_FLAGS_NOMULTSEGS</li>
+<li>ETH_TXQ_FLAGS_NOVLANOFFL</li>
+<li>ETH_TXQ_FLAGS_NOXSUMSCTP</li>
+<li>ETH_TXQ_FLAGS_NOXSUMUDP</li>
+<li>ETH_TXQ_FLAGS_NOXSUMTCP</li>
+</ul>
+</div>
+</div>
+<div class="section" id="sample-application-notes">
+<h3>9.1.3. Sample Application Notes</h3>
+<div class="section" id="testpmd">
+<h4>9.1.3.1. testpmd</h4>
+<p>By default, using CONFIG_RTE_IXGBE_RX_OLFLAGS_ENABLE=y:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./x86_64-native-linuxapp-gcc/app/testpmd -c 300 -n 4 -- -i --burst=32 --rxfreet=32 --mbcache=250 --txpt=32 --rxht=8 --rxwt=0 --txfreet=32 --txrst=32 --txqflags=0xf01</span>
+</pre></div>
+</div>
+<p>When CONFIG_RTE_IXGBE_RX_OLFLAGS_ENABLE=n, better performance can be achieved:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./x86_64-native-linuxapp-gcc/app/testpmd -c 300 -n 4 -- -i --burst=32 --rxfreet=32 --mbcache=250 --txpt=32 --rxht=8 --rxwt=0 --txfreet=32 --txrst=32 --txqflags=0xf01 --disable-hw-vlan</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="l3fwd">
+<h4>9.1.3.2. l3fwd</h4>
+<p>When running l3fwd with vPMD, there is one thing to note.
+In the configuration, ensure that port_conf.rxmode.hw_ip_checksum=0.
+Otherwise, by default, RX vPMD is disabled.</p>
+</div>
+<div class="section" id="load-balancer">
+<h4>9.1.3.3. load_balancer</h4>
+<p>As in the case of l3fwd, set configure port_conf.rxmode.hw_ip_checksum=0 to enable vPMD.
+In addition, for improved performance, use -bsz &#8220;(32,32),(64,64),(32,32)&#8221; in load_balancer to avoid using the default burst size of 144.</p>
+</div>
+</div>
+</div>
+<div class="section" id="malicious-driver-detection-not-supported">
+<h2>9.2. Malicious Driver Detection not Supported</h2>
+<p>The Intel x550 series NICs support a feature called MDD (Malicious
+Driver Detection) which checks the behavior of the VF driver.
+If this feature is enabled, the VF must use the advanced context descriptor
+correctly and set the CC (Check Context) bit.
+DPDK PF doesn&#8217;t support MDD, but kernel PF does. We may hit problem in this
+scenario kernel PF + DPDK VF. If user enables MDD in kernel PF, DPDK VF will
+not work. Because kernel PF thinks the VF is malicious. But actually it&#8217;s not.
+The only reason is the VF doesn&#8217;t act as MDD required.
+There&#8217;s significant performance impact to support MDD. DPDK should check if
+the advanced context descriptor should be set and set it. And DPDK has to ask
+the info about the header length from the upper layer, because parsing the
+packet itself is not acceptable. So, it&#8217;s too expensive to support MDD.
+When using kernel PF + DPDK VF on x550, please make sure using the kernel
+driver that disables MDD or can disable MDD. (Some kernel driver can use
+this CLI &#8216;insmod ixgbe.ko MDD=0,0&#8217; to disable MDD. Some kernel driver disables
+it by default.)</p>
+</div>
+<div class="section" id="statistics">
+<h2>9.3. Statistics</h2>
+<p>The statistics of ixgbe hardware must be polled regularly in order for it to
+remain consistent. Running a DPDK application without polling the statistics will
+cause registers on hardware to count to the maximum value, and &#8220;stick&#8221; at
+that value.</p>
+<p>In order to avoid statistic registers every reaching the maximum value,
+read the statistics from the hardware using <code class="docutils literal"><span class="pre">rte_eth_stats_get()</span></code> or
+<code class="docutils literal"><span class="pre">rte_eth_xstats_get()</span></code>.</p>
+<p>The maximum time between statistics polls that ensures consistent results can
+be calculated as follows:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="n">max_read_interval</span> <span class="o">=</span> <span class="n">UINT_MAX</span> <span class="o">/</span> <span class="n">max_packets_per_second</span>
+<span class="n">max_read_interval</span> <span class="o">=</span> <span class="mi">4294967295</span> <span class="o">/</span> <span class="mi">14880952</span>
+<span class="n">max_read_interval</span> <span class="o">=</span> <span class="mf">288.6218096127183</span> <span class="p">(</span><span class="n">seconds</span><span class="p">)</span>
+<span class="n">max_read_interval</span> <span class="o">=</span> <span class="o">~</span><span class="mi">4</span> <span class="n">mins</span> <span class="mi">48</span> <span class="n">sec</span><span class="p">.</span>
+</pre></div>
+</div>
+<p>In order to ensure valid results, it is recommended to poll every 4 minutes.</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="intel_vf.html" class="btn btn-neutral float-right" title="10. I40E/IXGBE/IGB Virtual Function Driver" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="i40e.html" class="btn btn-neutral" title="8. I40E Poll Mode Driver" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

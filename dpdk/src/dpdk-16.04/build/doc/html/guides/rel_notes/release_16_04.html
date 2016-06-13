@@ -1,0 +1,808 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>2. DPDK Release 16.04 &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Release Notes" href="index.html"/>
+        <link rel="next" title="3. DPDK Release 2.2" href="release_2_2.html"/>
+        <link rel="prev" title="1. Description of Release" href="rel_description.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Release Notes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="rel_description.html">1. Description of Release</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2. DPDK Release 16.04</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#new-features">2.1. New Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#resolved-issues">2.2. Resolved Issues</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#drivers">2.2.1. Drivers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#libraries">2.2.2. Libraries</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#examples">2.2.3. Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#api-changes">2.3. API Changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#abi-changes">2.4. ABI Changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#shared-library-versions">2.5. Shared Library Versions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tested-platforms">2.6. Tested Platforms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tested-nics">2.7. Tested NICs</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="release_2_2.html">3. DPDK Release 2.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_2_1.html">4. DPDK Release 2.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_2_0.html">5. DPDK Release 2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_1_8.html">6. DPDK Release 1.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="supported_os.html">7. Supported Operating Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="known_issues.html">8. Known Issues and Limitations in Legacy Releases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deprecation.html">9. ABI and API Deprecation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Release Notes</a> &raquo;</li>
+      
+    <li>2. DPDK Release 16.04</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/rel_notes/release_16_04.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="dpdk-release-16-04">
+<h1>2. DPDK Release 16.04</h1>
+<div class="section" id="new-features">
+<h2>2.1. New Features</h2>
+<ul>
+<li><p class="first"><strong>Added function to check primary process state.</strong></p>
+<p>A new function <code class="docutils literal"><span class="pre">rte_eal_primary_proc_alive()</span></code> has been added
+to allow the user to detect if a primary process is running.
+Use cases for this feature include fault detection, and monitoring
+using secondary processes.</p>
+</li>
+<li><p class="first"><strong>Enabled bulk allocation of mbufs.</strong></p>
+<p>A new function <code class="docutils literal"><span class="pre">rte_pktmbuf_alloc_bulk()</span></code> has been added to allow the user
+to bulk allocate mbufs.</p>
+</li>
+<li><p class="first"><strong>Added device link speed capabilities.</strong></p>
+<p>The structure <code class="docutils literal"><span class="pre">rte_eth_dev_info</span></code> now has a <code class="docutils literal"><span class="pre">speed_capa</span></code> bitmap, which
+allows the application to determine the supported speeds of each device.</p>
+</li>
+<li><p class="first"><strong>Added bitmap of link speeds to advertise.</strong></p>
+<p>Added a feature to allow the definition of a set of advertised speeds for auto-negotiation,
+explicitly disabling link auto-negotiation (single speed)
+and full auto-negotiation.</p>
+</li>
+<li><p class="first"><strong>Added new poll-mode driver for Amazon Elastic Network Adapters (ENA).</strong></p>
+<p>The driver operates for a variety of ENA adapters through feature negotiation
+with the adapter and upgradable commands set.
+The ENA driver handles PCI Physical and Virtual ENA functions.</p>
+</li>
+<li><p class="first"><strong>Restored vmxnet3 TX data ring.</strong></p>
+<p>TX data ring has been shown to improve small packet forwarding performance
+on the vSphere environment.</p>
+</li>
+<li><p class="first"><strong>Added vmxnet3 TX L4 checksum offload.</strong></p>
+<p>Added support for TCP/UDP checksum offload to vmxnet3.</p>
+</li>
+<li><p class="first"><strong>Added vmxnet3 TSO support.</strong></p>
+<p>Added support for TSO to vmxnet3.</p>
+</li>
+<li><p class="first"><strong>Added vmxnet3 support for jumbo frames.</strong></p>
+<p>Added support for linking multi-segment buffers together to
+handle Jumbo packets.</p>
+</li>
+<li><p class="first"><strong>Enabled Virtio 1.0 support.</strong></p>
+<p>Enabled Virtio 1.0 support for Virtio pmd driver.</p>
+</li>
+<li><p class="first"><strong>Supported Virtio for ARM.</strong></p>
+<p>Enabled Virtio support for ARMv7/v8. Tested for ARM64.
+Virtio for ARM supports VFIO-noiommu mode only.
+Virtio can work with other non-x86 architectures as well, like PowerPC.</p>
+</li>
+<li><p class="first"><strong>Supported Virtio offload in vhost-user.</strong></p>
+<p>Added the offload and negotiation of checksum and TSO between vhost-user and
+vanilla Linux Virtio guest.</p>
+</li>
+<li><p class="first"><strong>Added vhost-user live migration support.</strong></p>
+</li>
+<li><p class="first"><strong>Added vhost driver.</strong></p>
+<p>Added a virtual PMD that wraps <code class="docutils literal"><span class="pre">librte_vhost</span></code>.</p>
+</li>
+<li><p class="first"><strong>Added multicast promiscuous mode support on VF for ixgbe.</strong></p>
+<p>Added multicast promiscuous mode support for the ixgbe VF driver so all VFs
+can receive the multicast packets.</p>
+<p>Please note if you want to use this promiscuous mode, you need both PF and VF
+driver to support it. The reason is that this VF feature is configured in the PF.
+If you use kernel PF driver and the dpdk VF driver, make sure the kernel PF driver supports
+VF multicast promiscuous mode. If you use dpdk PF and  dpdk VF ensure the PF
+driver is the same version as the VF.</p>
+</li>
+<li><p class="first"><strong>Added support for E-tag on X550.</strong></p>
+<p>E-tag is defined in <a class="reference external" href="http://www.ieee802.org/1/pages/802.1br.html">802.1BR - Bridge Port Extension</a>.</p>
+<p>This feature is for the VF, but the settings are on the PF. It means
+the CLIs should be used on the PF, but some of their effects will be shown on the VF.
+The forwarding of E-tag packets based on GRP and E-CID_base will have an effect
+on the PF. Theoretically, the E-tag packets can be forwarded to any pool/queue
+but normally we&#8217;d like to forward the packets to the pools/queues belonging
+to the VFs. And E-tag insertion and stripping will have an effect on VFs. When
+a VF receives E-tag packets it should strip the E-tag. When the VF transmits
+packets, it should insert the E-tag. Both actions can be offloaded.</p>
+<p>When we want to use this E-tag support feature, the forwarding should be
+enabled to forward the packets received by the PF to the indicated VFs. And insertion
+and stripping should be enabled for VFs to offload the effort to hardware.</p>
+<p>Features added:</p>
+<ul class="simple">
+<li>Support E-tag offloading of insertion and stripping.</li>
+<li>Support Forwarding E-tag packets to pools based on
+GRP and E-CID_base.</li>
+</ul>
+</li>
+<li><p class="first"><strong>Added support for VxLAN and NVGRE checksum off-load on X550.</strong></p>
+<ul class="simple">
+<li>Added support for VxLAN and NVGRE RX/TX checksum off-load on
+X550. RX/TX checksum off-load is provided on both inner and
+outer IP header and TCP header.</li>
+<li>Added functions to support VxLAN port configuration. The
+default VxLAN port number is 4789 but this can be updated
+programmatically.</li>
+</ul>
+</li>
+<li><p class="first"><strong>Added support for new X550EM_a devices.</strong></p>
+<p>Added support for new X550EM_a devices and their MAC types, X550EM_a and X550EM_a_vf.
+Updated the relevant PMD to use the new devices and MAC types.</p>
+</li>
+<li><p class="first"><strong>Added x550em_x V2 device support.</strong></p>
+<p>Added support for x550em_x V2 device. Only x550em_x V1 was supported before.
+A mask for V1 and V2 is defined and used to support both.</p>
+</li>
+<li><p class="first"><strong>Supported link speed auto-negotiation on X550EM_X</strong></p>
+<p>Normally the auto-negotiation is supported by firmware and software doesn&#8217;t care about
+it. But on x550em_x, firmware doesn&#8217;t support auto-negotiation. As the ports of x550em_x
+are 10GbE, if we connect the port with a peer which is 1GbE, the link will always
+be down.
+We added the support for auto-negotiation by software to avoid this link down issue.</p>
+</li>
+<li><p class="first"><strong>Added software-firmware sync on X550EM_a.</strong></p>
+<p>Added support for software-firmware sync for resource sharing.
+Use the PHY token, shared between software-firmware for PHY access on X550EM_a.</p>
+</li>
+<li><p class="first"><strong>Updated the i40e base driver.</strong></p>
+<p>The i40e base driver was updated with changes including the
+following:</p>
+<ul class="simple">
+<li>Use RX control AQ commands to read/write RX control registers.</li>
+<li>Add new X722 device IDs, and removed X710 one was never used.</li>
+<li>Expose registers for HASH/FD input set configuring.</li>
+</ul>
+</li>
+<li><p class="first"><strong>Enabled PCI extended tag for i40e.</strong></p>
+<p>Enabled extended tag for i40e by checking and writing corresponding PCI config
+space bytes, to boost the performance.
+The legacy method of reading/writing sysfile supported by kernel module igb_uio
+is now deprecated.</p>
+</li>
+<li><p class="first"><strong>Added i40e support for setting mac addresses.</strong></p>
+</li>
+<li><p class="first"><strong>Added dump of i40e registers and EEPROM.</strong></p>
+</li>
+<li><p class="first"><strong>Supported ether type setting of single and double VLAN for i40e</strong></p>
+</li>
+<li><p class="first"><strong>Added VMDQ DCB mode in i40e.</strong></p>
+<p>Added support for DCB in VMDQ mode to i40e driver.</p>
+</li>
+<li><p class="first"><strong>Added i40e VEB switching support.</strong></p>
+</li>
+<li><p class="first"><strong>Added Flow director enhancements in i40e.</strong></p>
+</li>
+<li><p class="first"><strong>Added PF reset event reporting in i40e VF driver.</strong></p>
+</li>
+<li><p class="first"><strong>Added fm10k RX interrupt support.</strong></p>
+</li>
+<li><p class="first"><strong>Optimized fm10k TX.</strong></p>
+<p>Optimized fm10k TX by freeing multiple mbufs at a time.</p>
+</li>
+<li><p class="first"><strong>Handled error flags in fm10k vector RX.</strong></p>
+<p>Parse error flags in RX descriptor and set error bits in mbuf with vector instructions.</p>
+</li>
+<li><p class="first"><strong>Added fm10k FTAG based forwarding support.</strong></p>
+</li>
+<li><p class="first"><strong>Added mlx5 flow director support.</strong></p>
+<p>Added flow director support (<code class="docutils literal"><span class="pre">RTE_FDIR_MODE_PERFECT</span></code> and
+<code class="docutils literal"><span class="pre">RTE_FDIR_MODE_PERFECT_MAC_VLAN</span></code>).</p>
+<p>Only available with Mellanox OFED &gt;= 3.2.</p>
+</li>
+<li><p class="first"><strong>Added mlx5 RX VLAN stripping support.</strong></p>
+<p>Added support for RX VLAN stripping.</p>
+<p>Only available with Mellanox OFED &gt;= 3.2.</p>
+</li>
+<li><p class="first"><strong>Added mlx5 link up/down callbacks.</strong></p>
+<p>Implemented callbacks to bring link up and down.</p>
+</li>
+<li><p class="first"><strong>Added mlx5 support for operation in secondary processes.</strong></p>
+<p>Implemented TX support in secondary processes (like mlx4).</p>
+</li>
+<li><p class="first"><strong>Added mlx5 RX CRC stripping configuration.</strong></p>
+<p>Until now, CRC was always stripped. It can now be configured.</p>
+<p>Only available with Mellanox OFED &gt;= 3.2.</p>
+</li>
+<li><p class="first"><strong>Added mlx5 optional packet padding by HW.</strong></p>
+<p>Added an option to make PCI bus transactions rounded to a multiple of a
+cache line size for better alignment.</p>
+<p>Only available with Mellanox OFED &gt;= 3.2.</p>
+</li>
+<li><p class="first"><strong>Added mlx5 TX VLAN insertion support.</strong></p>
+<p>Added support for TX VLAN insertion.</p>
+<p>Only available with Mellanox OFED &gt;= 3.2.</p>
+</li>
+<li><p class="first"><strong>Changed szedata2 driver type from vdev to pdev.</strong></p>
+<p>Previously szedata2 device had to be added by <code class="docutils literal"><span class="pre">--vdev</span></code> option.
+Now szedata2 PMD recognizes the device automatically during EAL
+initialization.</p>
+</li>
+<li><p class="first"><strong>Added szedata2 functions for setting link up/down.</strong></p>
+</li>
+<li><p class="first"><strong>Added szedata2 promiscuous and allmulticast modes.</strong></p>
+</li>
+<li><p class="first"><strong>Added af_packet dynamic removal function.</strong></p>
+<p>An af_packet device can now be detached using the API, like other PMD devices.</p>
+</li>
+<li><p class="first"><strong>Increased number of next hops for LPM IPv4 to 2^24.</strong></p>
+<p>The <code class="docutils literal"><span class="pre">next_hop</span></code> field has been extended from 8 bits to 24 bits for IPv4.</p>
+</li>
+<li><p class="first"><strong>Added support of SNOW 3G (UEA2 and UIA2) for Intel Quick Assist devices.</strong></p>
+<p>Enabled support for the SNOW 3G wireless algorithm for Intel Quick Assist devices.
+Support for cipher-only and  hash-only is also provided
+along with algorithm-chaining operations.</p>
+</li>
+<li><p class="first"><strong>Added SNOW3G SW PMD.</strong></p>
+<p>A new Crypto PMD has been added, which provides SNOW 3G UEA2 ciphering
+and SNOW3G UIA2 hashing.</p>
+</li>
+<li><p class="first"><strong>Added AES GCM PMD.</strong></p>
+<p>Added new Crypto PMD to support AES-GCM authenticated encryption and
+authenticated decryption in software.</p>
+</li>
+<li><p class="first"><strong>Added NULL Crypto PMD</strong></p>
+<p>Added new Crypto PMD to support null crypto operations in software.</p>
+</li>
+<li><p class="first"><strong>Improved IP Pipeline Application.</strong></p>
+<p>The following features have been added to ip_pipeline application;</p>
+<ul class="simple">
+<li>Added CPU utilization measurement and idle cycle rate computation.</li>
+<li>Added link identification support through existing port-mask option or by
+specifying PCI device in every LINK section in the configuration file.</li>
+<li>Added load balancing support in passthrough pipeline.</li>
+</ul>
+</li>
+<li><p class="first"><strong>Added IPsec security gateway example.</strong></p>
+<p>Added a new application implementing an IPsec Security Gateway.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="resolved-issues">
+<h2>2.2. Resolved Issues</h2>
+<div class="section" id="drivers">
+<h3>2.2.1. Drivers</h3>
+<ul>
+<li><p class="first"><strong>ethdev: Fixed overflow for 100Gbps.</strong></p>
+<p>100Gbps in Mbps (100000) was exceeding the 16-bit max value of <code class="docutils literal"><span class="pre">link_speed</span></code>
+in <code class="docutils literal"><span class="pre">rte_eth_link</span></code>.</p>
+</li>
+<li><p class="first"><strong>ethdev: Fixed byte order consistency between fdir flow and mask.</strong></p>
+<p>Fixed issue in ethdev library where the structure for setting
+fdir&#8217;s mask and flow entry was not consistent in byte ordering.</p>
+</li>
+<li><p class="first"><strong>cxgbe: Fixed crash due to incorrect size allocated for RSS table.</strong></p>
+<p>Fixed a segfault that occurs when accessing part of port 0&#8217;s RSS
+table that gets overwritten by subsequent port 1&#8217;s part of the RSS
+table due to incorrect size allocated for each entry in the table.</p>
+</li>
+<li><p class="first"><strong>cxgbe: Fixed setting wrong device MTU.</strong></p>
+<p>Fixed an incorrect device MTU being set due to the Ethernet header and
+CRC lengths being added twice.</p>
+</li>
+<li><p class="first"><strong>ixgbe: Fixed zeroed VF mac address.</strong></p>
+<p>Resolved an issue where the VF MAC address is zeroed out in cases where the VF
+driver is loaded while the PF interface is down.
+The solution is to only set it when we get an ACK from the PF.</p>
+</li>
+<li><p class="first"><strong>ixgbe: Fixed setting flow director flag twice.</strong></p>
+<p>Resolved an issue where packets were being dropped when switching to perfect
+filters mode.</p>
+</li>
+<li><p class="first"><strong>ixgbe: Set MDIO speed after MAC reset.</strong></p>
+<p>The MDIO clock speed must be reconfigured after the MAC reset. The MDIO clock
+speed becomes invalid, therefore the driver reads invalid PHY register values.
+The driver now set the MDIO clock speed prior to initializing PHY ops and
+again after the MAC reset.</p>
+</li>
+<li><p class="first"><strong>ixgbe: Fixed maximum number of available TX queues.</strong></p>
+<p>In IXGBE, the maximum number of TX queues varies depending on the NIC operating
+mode. This was not being updated in the device information, providing
+an incorrect number in some cases.</p>
+</li>
+<li><p class="first"><strong>i40e: Generated MAC address for each VFs.</strong></p>
+<p>It generates a MAC address for each VFs during PF host initialization,
+and keeps the VF MAC address the same among different VF launch.</p>
+</li>
+<li><p class="first"><strong>i40e: Fixed failure of reading/writing RX control registers.</strong></p>
+<p>Fixed i40e issue of failing to read/write rx control registers when
+under stress with traffic, which might result in application launch
+failure.</p>
+</li>
+<li><p class="first"><strong>i40e: Enabled vector driver by default.</strong></p>
+<p>Previously, vector driver was disabled by default as it couldn&#8217;t fill packet type
+info for l3fwd to work well. Now there is an option for l3fwd to analyze
+the packet type so the vector driver is enabled by default.</p>
+</li>
+<li><p class="first"><strong>i40e: Fixed link info of VF.</strong></p>
+<p>Previously, the VF&#8217;s link speed stayed at 10GbE and status always was up.
+It did not change even when the physical link&#8217;s status changed.
+Now this issue is fixed to make VF&#8217;s link info consistent with physical link.</p>
+</li>
+<li><p class="first"><strong>mlx5: Fixed possible crash during initialization.</strong></p>
+<p>A crash could occur when failing to allocate private device context.</p>
+</li>
+<li><p class="first"><strong>mlx5: Added port type check.</strong></p>
+<p>Added port type check to prevent port initialization on non-Ethernet link layers and
+to report an error.</p>
+</li>
+<li><p class="first"><strong>mlx5: Applied VLAN filtering to broadcast and IPv6 multicast flows.</strong></p>
+<p>Prevented reception of multicast frames outside of configured VLANs.</p>
+</li>
+<li><p class="first"><strong>mlx5: Fixed RX checksum offload in non L3/L4 packets.</strong></p>
+<p>Fixed report of bad checksum for packets of unknown type.</p>
+</li>
+<li><p class="first"><strong>aesni_mb: Fixed wrong return value when creating a device.</strong></p>
+<p>The <code class="docutils literal"><span class="pre">cryptodev_aesni_mb_init()</span></code> function was returning the device id of the device created,
+instead of 0 (on success) that <code class="docutils literal"><span class="pre">rte_eal_vdev_init()</span></code> expects.
+This made it impossible to create more than one aesni_mb device
+from the command line.</p>
+</li>
+<li><p class="first"><strong>qat: Fixed AES GCM decryption.</strong></p>
+<p>Allowed AES GCM on the cryptodev API, but in some cases gave invalid results
+due to incorrect IV setting.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="libraries">
+<h3>2.2.2. Libraries</h3>
+<ul>
+<li><p class="first"><strong>hash: Fixed CRC32c hash computation for non multiple of 4 bytes sizes.</strong></p>
+<p>Fix crc32c hash functions to return a valid crc32c value for data lengths
+not a multiple of 4 bytes.</p>
+</li>
+<li><p class="first"><strong>hash: Fixed hash library to support multi-process mode.</strong></p>
+<p>Fix hash library to support multi-process mode, using a jump table,
+instead of storing a function pointer to the key compare function.
+Multi-process mode only works with the built-in compare functions,
+however a custom compare function (not in the jump table) can only
+be used in single-process mode.</p>
+</li>
+<li><p class="first"><strong>hash: Fixed return value when allocating an existing hash table.</strong></p>
+<p>Changed the <code class="docutils literal"><span class="pre">rte_hash*_create()</span></code> functions to return <code class="docutils literal"><span class="pre">NULL</span></code> and set
+<code class="docutils literal"><span class="pre">rte_errno</span></code> to <code class="docutils literal"><span class="pre">EEXIST</span></code> when the object name already exists. This is
+the behavior described in the API documentation in the header file.
+The previous behavior was to return a pointer to the existing object in
+that case, preventing the caller from knowing if the object had to be freed
+or not.</p>
+</li>
+<li><p class="first"><strong>lpm: Fixed return value when allocating an existing object.</strong></p>
+<p>Changed the <code class="docutils literal"><span class="pre">rte_lpm*_create()</span></code> functions to return <code class="docutils literal"><span class="pre">NULL</span></code> and set
+<code class="docutils literal"><span class="pre">rte_errno</span></code> to <code class="docutils literal"><span class="pre">EEXIST</span></code> when the object name already exists. This is
+the behavior described in the API documentation in the header file.
+The previous behavior was to return a pointer to the existing object in
+that case, preventing the caller from knowing if the object had to be freed
+or not.</p>
+</li>
+<li><p class="first"><strong>librte_port: Fixed segmentation fault for ring and ethdev writer nodrop.</strong></p>
+<p>Fixed core dump issue on txq and swq when dropless is set to yes.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="examples">
+<h3>2.2.3. Examples</h3>
+<ul>
+<li><p class="first"><strong>l3fwd-power: Fixed memory leak for non-IP packet.</strong></p>
+<p>Fixed issue in l3fwd-power where, on receiving packets of types
+other than IPv4 or IPv6, the mbuf was not released, and caused
+a memory leak.</p>
+</li>
+<li><p class="first"><strong>l3fwd: Fixed using packet type blindly.</strong></p>
+<p>l3fwd makes use of packet type information without querying if devices or PMDs
+really set it. For those devices that don&#8217;t set ptypes, add an option to parse it.</p>
+</li>
+<li><p class="first"><strong>examples/vhost: Fixed frequent mbuf allocation failure.</strong></p>
+<p>The vhost-switch often fails to allocate mbuf when dequeue from vring because it
+wrongly calculates the number of mbufs needed.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="api-changes">
+<h2>2.3. API Changes</h2>
+<ul class="simple">
+<li>The ethdev statistics counter <code class="docutils literal"><span class="pre">imissed</span></code> is considered to be independent of <code class="docutils literal"><span class="pre">ierrors</span></code>.
+All drivers are now counting the missed packets only once, i.e. drivers will
+not increment ierrors anymore for missed packets.</li>
+<li>The ethdev structure <code class="docutils literal"><span class="pre">rte_eth_dev_info</span></code> was changed to support device
+speed capabilities.</li>
+<li>The ethdev structures <code class="docutils literal"><span class="pre">rte_eth_link</span></code> and <code class="docutils literal"><span class="pre">rte_eth_conf</span></code> were changed to
+support the new link API.</li>
+<li>The functions <code class="docutils literal"><span class="pre">rte_eth_dev_udp_tunnel_add</span></code> and <code class="docutils literal"><span class="pre">rte_eth_dev_udp_tunnel_delete</span></code>
+have been renamed into <code class="docutils literal"><span class="pre">rte_eth_dev_udp_tunnel_port_add</span></code> and
+<code class="docutils literal"><span class="pre">rte_eth_dev_udp_tunnel_port_delete</span></code>.</li>
+<li>The <code class="docutils literal"><span class="pre">outer_mac</span></code> and <code class="docutils literal"><span class="pre">inner_mac</span></code> fields in structure
+<code class="docutils literal"><span class="pre">rte_eth_tunnel_filter_conf</span></code> are changed from pointer to struct in order
+to keep code&#8217;s readability.</li>
+<li>The fields in ethdev structure <code class="docutils literal"><span class="pre">rte_eth_fdir_masks</span></code> were changed
+to be in big endian.</li>
+<li>A parameter <code class="docutils literal"><span class="pre">vlan_type</span></code> has been added to the function
+<code class="docutils literal"><span class="pre">rte_eth_dev_set_vlan_ether_type</span></code>.</li>
+<li>The af_packet device init function is no longer public. The device should be attached
+via the API.</li>
+<li>The LPM <code class="docutils literal"><span class="pre">next_hop</span></code> field is extended from 8 bits to 24 bits for IPv4
+while keeping ABI compatibility.</li>
+<li>A new <code class="docutils literal"><span class="pre">rte_lpm_config</span></code> structure is used so the LPM library will allocate
+exactly the amount of memory which is necessary to hold application’s rules.
+The previous ABI is kept for compatibility.</li>
+<li>The prototype for the pipeline input port, output port and table action
+handlers are updated: the pipeline parameter is added,
+the packets mask parameter has been either removed or made input-only.</li>
+</ul>
+</div>
+<div class="section" id="abi-changes">
+<h2>2.4. ABI Changes</h2>
+<ul class="simple">
+<li>The RETA entry size in <code class="docutils literal"><span class="pre">rte_eth_rss_reta_entry64</span></code> has been increased
+from 8-bit to 16-bit.</li>
+<li>The ethdev flow director structure <code class="docutils literal"><span class="pre">rte_eth_fdir_flow</span></code> structure was
+changed. New fields were added to extend flow director&#8217;s input set.</li>
+<li>The cmdline buffer size has been increase from 256 to 512.</li>
+</ul>
+</div>
+<div class="section" id="shared-library-versions">
+<h2>2.5. Shared Library Versions</h2>
+<p>The libraries prepended with a plus sign were incremented in this version.</p>
+<div class="highlight-diff"><div class="highlight"><pre><span></span><span class="gi">+ libethdev.so.3</span>
+  librte_acl.so.2
+  librte_cfgfile.so.2
+<span class="gi">+ librte_cmdline.so.2</span>
+  librte_distributor.so.1
+  librte_eal.so.2
+  librte_hash.so.2
+  librte_ip_frag.so.1
+  librte_ivshmem.so.1
+  librte_jobstats.so.1
+  librte_kni.so.2
+  librte_kvargs.so.1
+  librte_lpm.so.2
+  librte_mbuf.so.2
+  librte_mempool.so.1
+  librte_meter.so.1
+<span class="gi">+ librte_pipeline.so.3</span>
+  librte_pmd_bond.so.1
+  librte_pmd_ring.so.2
+  librte_port.so.2
+  librte_power.so.1
+  librte_reorder.so.1
+  librte_ring.so.1
+  librte_sched.so.1
+  librte_table.so.2
+  librte_timer.so.1
+  librte_vhost.so.2
+</pre></div>
+</div>
+</div>
+<div class="section" id="tested-platforms">
+<h2>2.6. Tested Platforms</h2>
+<ol class="arabic simple">
+<li>SuperMicro 1U<ul>
+<li>BIOS: 1.0c</li>
+<li>Processor: Intel(R) Atom(TM) CPU C2758 &#64; 2.40GHz</li>
+</ul>
+</li>
+<li>SuperMicro 1U<ul>
+<li>BIOS: 1.0a</li>
+<li>Processor: Intel(R) Xeon(R) CPU D-1540 &#64; 2.00GHz</li>
+<li>Onboard NIC: Intel(R) X552/X557-AT (2x10G)<ul>
+<li>Firmware-version: 0x800001cf</li>
+<li>Device ID (PF/VF): 8086:15ad /8086:15a8</li>
+</ul>
+</li>
+<li>kernel driver version: 4.2.5 (ixgbe)</li>
+</ul>
+</li>
+<li>SuperMicro 1U<ul>
+<li>BIOS: 1.0a</li>
+<li>Processor: Intel(R) Xeon(R) CPU E5-4667 v3 &#64; 2.00GHz</li>
+</ul>
+</li>
+<li>Intel(R) Server board S2600GZ<ul>
+<li>BIOS: SE5C600.86B.02.02.0002.122320131210</li>
+<li>Processor: Intel(R) Xeon(R) CPU E5-2680 v2 &#64; 2.80GHz</li>
+</ul>
+</li>
+<li>Intel(R) Server board W2600CR<ul>
+<li>BIOS: SE5C600.86B.02.01.0002.082220131453</li>
+<li>Processor: Intel(R) Xeon(R) CPU E5-2680 v2 &#64; 2.80GHz</li>
+</ul>
+</li>
+<li>Intel(R) Server board S2600CWT<ul>
+<li>BIOS: SE5C610.86B.01.01.0009.060120151350</li>
+<li>Processor: Intel(R) Xeon(R) CPU E5-2699 v3 &#64; 2.30GHz</li>
+</ul>
+</li>
+<li>Intel(R) Server board S2600WTT<ul>
+<li>BIOS: SE5C610.86B.01.01.0005.101720141054</li>
+<li>Processor: Intel(R) Xeon(R) CPU E5-2699 v3 &#64; 2.30GHz</li>
+</ul>
+</li>
+<li>Intel(R) Server board S2600WTT<ul>
+<li>BIOS: SE5C610.86B.11.01.0044.090120151156</li>
+<li>Processor: Intel(R) Xeon(R) CPU E5-2695 v4 &#64; 2.10GHz</li>
+</ul>
+</li>
+</ol>
+</div>
+<div class="section" id="tested-nics">
+<h2>2.7. Tested NICs</h2>
+<ol class="arabic simple">
+<li>Intel(R) Ethernet Controller X540-AT2<ul>
+<li>Firmware version: 0x80000389</li>
+<li>Device id (pf): 8086:1528</li>
+<li>Driver version: 3.23.2 (ixgbe)</li>
+</ul>
+</li>
+<li>Intel(R) 82599ES 10 Gigabit Ethernet Controller<ul>
+<li>Firmware version: 0x61bf0001</li>
+<li>Device id (pf/vf): 8086:10fb / 8086:10ed</li>
+<li>Driver version: 4.0.1-k (ixgbe)</li>
+</ul>
+</li>
+<li>Intel(R) Corporation Ethernet Connection X552/X557-AT 10GBASE-T<ul>
+<li>Firmware version: 0x800001cf</li>
+<li>Device id (pf/vf): 8086:15ad / 8086:15a8</li>
+<li>Driver version: 4.2.5 (ixgbe)</li>
+</ul>
+</li>
+<li>Intel(R) Ethernet Converged Network Adapter X710-DA4 (4x10G)<ul>
+<li>Firmware version: 5.02 0x80002284</li>
+<li>Device id (pf/vf): 8086:1572 / 8086:154c</li>
+<li>Driver version: 1.4.26 (i40e)</li>
+</ul>
+</li>
+<li>Intel(R) Ethernet Converged Network Adapter X710-DA2 (2x10G)<ul>
+<li>Firmware version: 5.02 0x80002282</li>
+<li>Device id (pf/vf): 8086:1572 / 8086:154c</li>
+<li>Driver version: 1.4.25 (i40e)</li>
+</ul>
+</li>
+<li>Intel(R) Ethernet Converged Network Adapter XL710-QDA1 (1x40G)<ul>
+<li>Firmware version: 5.02 0x80002281</li>
+<li>Device id (pf/vf): 8086:1584 / 8086:154c</li>
+<li>Driver version: 1.4.25 (i40e)</li>
+</ul>
+</li>
+<li>Intel(R) Ethernet Converged Network Adapter XL710-QDA2 (2X40G)<ul>
+<li>Firmware version: 5.02 0x80002285</li>
+<li>Device id (pf/vf): 8086:1583 / 8086:154c</li>
+<li>Driver version: 1.4.25 (i40e)</li>
+</ul>
+</li>
+<li>Intel(R) 82576EB Gigabit Ethernet Controller<ul>
+<li>Firmware version: 1.2.1</li>
+<li>Device id (pf): 8086:1526</li>
+<li>Driver version: 5.2.13-k (igb)</li>
+</ul>
+</li>
+<li>Intel(R) Ethernet Controller I210<ul>
+<li>Firmware version: 3.16, 0x80000500, 1.304.0</li>
+<li>Device id (pf): 8086:1533</li>
+<li>Driver version: 5.2.13-k (igb)</li>
+</ul>
+</li>
+<li>Intel(R) Corporation I350 Gigabit Network Connection<ul>
+<li>Firmware version: 1.48, 0x800006e7</li>
+<li>Device id (pf/vf): 8086:1521 / 8086:1520</li>
+<li>Driver version: 5.2.13-k (igb)</li>
+</ul>
+</li>
+<li>Intel(R) Ethernet Multi-host Controller FM10000<ul>
+<li>Firmware version: N/A</li>
+<li>Device id (pf/vf): 8086:15d0</li>
+<li>Driver version: 0.17.0.9 (fm10k)</li>
+</ul>
+</li>
+</ol>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="release_2_2.html" class="btn btn-neutral float-right" title="3. DPDK Release 2.2" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="rel_description.html" class="btn btn-neutral" title="1. Description of Release" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

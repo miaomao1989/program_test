@@ -1,0 +1,537 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>8. I40E Poll Mode Driver &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Network Interface Controller Drivers" href="index.html"/>
+        <link rel="next" title="9. IXGBE Driver" href="ixgbe.html"/>
+        <link rel="prev" title="7. FM10K Poll Mode Driver" href="fm10k.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Network Interface Controller Drivers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">1. Overview of Networking Drivers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bnx2x.html">2. BNX2X Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cxgbe.html">3. CXGBE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="e1000em.html">4. Driver for VM Emulated Devices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ena.html">5. ENA Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="enic.html">6. ENIC Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fm10k.html">7. FM10K Poll Mode Driver</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">8. I40E Poll Mode Driver</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#features">8.1. Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prerequisites">8.2. Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pre-installation-configuration">8.3. Pre-Installation Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#config-file-options">8.3.1. Config File Options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#driver-compilation">8.3.2. Driver Compilation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#linux">8.4. Linux</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#running-testpmd">8.4.1. Running testpmd</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sr-iov-prerequisites-and-sample-application-notes">8.4.2. SR-IOV: Prerequisites and sample Application Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#sample-application-notes">8.5. Sample Application Notes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#vlan-filter">8.5.1. Vlan filter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow-director">8.5.2. Flow Director</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ixgbe.html">9. IXGBE Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intel_vf.html">10. I40E/IXGBE/IGB Virtual Function Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mlx4.html">11. MLX4 poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mlx5.html">12. MLX5 poll mode driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nfp.html">13. NFP poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="szedata2.html">14. SZEDATA2 poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="virtio.html">15. Poll Mode Driver for Emulated Virtio NIC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">16. Poll Mode Driver that wraps vhost library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmxnet3.html">17. Poll Mode Driver for Paravirtual VMXNET3 NIC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pcap_ring.html">18. Libpcap and Ring Based Poll Mode Drivers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Network Interface Controller Drivers</a> &raquo;</li>
+      
+    <li>8. I40E Poll Mode Driver</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/nics/i40e.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="i40e-poll-mode-driver">
+<h1>8. I40E Poll Mode Driver</h1>
+<p>The I40E PMD (librte_pmd_i40e) provides poll mode driver support
+for the Intel X710/XL710/X722 10/40 Gbps family of adapters.</p>
+<div class="section" id="features">
+<h2>8.1. Features</h2>
+<p>Features of the I40E PMD are:</p>
+<ul class="simple">
+<li>Multiple queues for TX and RX</li>
+<li>Receiver Side Scaling (RSS)</li>
+<li>MAC/VLAN filtering</li>
+<li>Packet type information</li>
+<li>Flow director</li>
+<li>Cloud filter</li>
+<li>Checksum offload</li>
+<li>VLAN/QinQ stripping and inserting</li>
+<li>TSO offload</li>
+<li>Promiscuous mode</li>
+<li>Multicast mode</li>
+<li>Port hardware statistics</li>
+<li>Jumbo frames</li>
+<li>Link state information</li>
+<li>Link flow control</li>
+<li>Mirror on port, VLAN and VSI</li>
+<li>Interrupt mode for RX</li>
+<li>Scattered and gather for TX and RX</li>
+<li>Vector Poll mode driver</li>
+<li>DCB</li>
+<li>VMDQ</li>
+<li>SR-IOV VF</li>
+<li>Hot plug</li>
+<li>IEEE1588/802.1AS timestamping</li>
+</ul>
+</div>
+<div class="section" id="prerequisites">
+<h2>8.2. Prerequisites</h2>
+<ul class="simple">
+<li>Identifying your adapter using <a class="reference external" href="http://www.intel.com/support">Intel Support</a> and get the latest NVM/FW images.</li>
+<li>Follow the DPDK <a class="reference internal" href="../linux_gsg/index.html#linux-gsg"><span class="std std-ref">Getting Started Guide for Linux</span></a> to setup the basic DPDK environment.</li>
+<li>To get better performance on Intel platforms, please follow the &#8220;How to get best performance with NICs on Intel platforms&#8221;
+section of the <a class="reference internal" href="../linux_gsg/index.html#linux-gsg"><span class="std std-ref">Getting Started Guide for Linux</span></a>.</li>
+</ul>
+</div>
+<div class="section" id="pre-installation-configuration">
+<h2>8.3. Pre-Installation Configuration</h2>
+<div class="section" id="config-file-options">
+<h3>8.3.1. Config File Options</h3>
+<p>The following options can be modified in the <code class="docutils literal"><span class="pre">config</span></code> file.
+Please note that enabling debugging options may affect system performance.</p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">CONFIG_RTE_LIBRTE_I40E_PMD</span></code> (default <code class="docutils literal"><span class="pre">y</span></code>)</p>
+<p>Toggle compilation of the <code class="docutils literal"><span class="pre">librte_pmd_i40e</span></code> driver.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">CONFIG_RTE_LIBRTE_I40E_DEBUG_*</span></code> (default <code class="docutils literal"><span class="pre">n</span></code>)</p>
+<p>Toggle display of generic debugging messages.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">CONFIG_RTE_LIBRTE_I40E_RX_ALLOW_BULK_ALLOC</span></code> (default <code class="docutils literal"><span class="pre">y</span></code>)</p>
+<p>Toggle bulk allocation for RX.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">CONFIG_RTE_LIBRTE_I40E_INC_VECTOR</span></code> (default <code class="docutils literal"><span class="pre">n</span></code>)</p>
+<p>Toggle the use of Vector PMD instead of normal RX/TX path.
+To enable vPMD for RX, bulk allocation for Rx must be allowed.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">CONFIG_RTE_LIBRTE_I40E_RX_OLFLAGS_ENABLE</span></code> (default <code class="docutils literal"><span class="pre">y</span></code>)</p>
+<p>Toggle to enable RX <code class="docutils literal"><span class="pre">olflags</span></code>.
+This is only meaningful when Vector PMD is used.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">CONFIG_RTE_LIBRTE_I40E_16BYTE_RX_DESC</span></code> (default <code class="docutils literal"><span class="pre">n</span></code>)</p>
+<p>Toggle to use a 16-byte RX descriptor, by default the RX descriptor is 32 byte.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">CONFIG_RTE_LIBRTE_I40E_QUEUE_NUM_PER_PF</span></code> (default <code class="docutils literal"><span class="pre">64</span></code>)</p>
+<p>Number of queues reserved for PF.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">CONFIG_RTE_LIBRTE_I40E_QUEUE_NUM_PER_VF</span></code> (default <code class="docutils literal"><span class="pre">4</span></code>)</p>
+<p>Number of queues reserved for each SR-IOV VF.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">CONFIG_RTE_LIBRTE_I40E_QUEUE_NUM_PER_VM</span></code> (default <code class="docutils literal"><span class="pre">4</span></code>)</p>
+<p>Number of queues reserved for each VMDQ Pool.</p>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">CONFIG_RTE_LIBRTE_I40E_ITR_INTERVAL</span></code> (default <code class="docutils literal"><span class="pre">-1</span></code>)</p>
+<p>Interrupt Throttling interval.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="driver-compilation">
+<h3>8.3.2. Driver Compilation</h3>
+<p>To compile the I40E PMD see <a class="reference internal" href="../linux_gsg/index.html#linux-gsg"><span class="std std-ref">Getting Started Guide for Linux</span></a> or
+<a class="reference internal" href="../freebsd_gsg/index.html#freebsd-gsg"><span class="std std-ref">Getting Started Guide for FreeBSD</span></a> depending on your platform.</p>
+</div>
+</div>
+<div class="section" id="linux">
+<h2>8.4. Linux</h2>
+<div class="section" id="running-testpmd">
+<h3>8.4.1. Running testpmd</h3>
+<p>This section demonstrates how to launch <code class="docutils literal"><span class="pre">testpmd</span></code> with Intel XL710/X710
+devices managed by <code class="docutils literal"><span class="pre">librte_pmd_i40e</span></code> in the Linux operating system.</p>
+<ol class="arabic">
+<li><p class="first">Load <code class="docutils literal"><span class="pre">igb_uio</span></code> or <code class="docutils literal"><span class="pre">vfio-pci</span></code> driver:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">modprobe uio</span>
+<span class="go">insmod ./x86_64-native-linuxapp-gcc/kmod/igb_uio.ko</span>
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">modprobe vfio-pci</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Bind the XL710/X710 adapters to <code class="docutils literal"><span class="pre">igb_uio</span></code> or <code class="docutils literal"><span class="pre">vfio-pci</span></code> loaded in the previous step:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./tools/dpdk_nic_bind.py --bind igb_uio 0000:83:00.0</span>
+</pre></div>
+</div>
+<p>Or setup VFIO permissions for regular users and then bind to <code class="docutils literal"><span class="pre">vfio-pci</span></code>:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./tools/dpdk_nic_bind.py --bind vfio-pci 0000:83:00.0</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Start <code class="docutils literal"><span class="pre">testpmd</span></code> with basic parameters:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./x86_64-native-linuxapp-gcc/app/testpmd -c 0xf -n 4 -w 83:00.0 -- -i</span>
+</pre></div>
+</div>
+<p>Example output:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">...</span>
+<span class="go">EAL: PCI device 0000:83:00.0 on NUMA socket 1</span>
+<span class="go">EAL: probe driver: 8086:1572 rte_i40e_pmd</span>
+<span class="go">EAL: PCI memory mapped at 0x7f7f80000000</span>
+<span class="go">EAL: PCI memory mapped at 0x7f7f80800000</span>
+<span class="go">PMD: eth_i40e_dev_init(): FW 5.0 API 1.5 NVM 05.00.02 eetrack 8000208a</span>
+<span class="go">Interactive-mode selected</span>
+<span class="go">Configuring Port 0 (socket 0)</span>
+<span class="go">...</span>
+
+<span class="go">PMD: i40e_dev_rx_queue_setup(): Rx Burst Bulk Alloc Preconditions are</span>
+<span class="go">satisfied.Rx Burst Bulk Alloc function will be used on port=0, queue=0.</span>
+
+<span class="go">...</span>
+<span class="go">Port 0: 68:05:CA:26:85:84</span>
+<span class="go">Checking link statuses...</span>
+<span class="go">Port 0 Link Up - speed 10000 Mbps - full-duplex</span>
+<span class="go">Done</span>
+
+<span class="go">testpmd&gt;</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="sr-iov-prerequisites-and-sample-application-notes">
+<h3>8.4.2. SR-IOV: Prerequisites and sample Application Notes</h3>
+<ol class="arabic">
+<li><p class="first">Load the kernel module:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">modprobe i40e</span>
+</pre></div>
+</div>
+<p>Check the output in dmesg:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">i40e 0000:83:00.1 ens802f0: renamed from eth0</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Bring up the PF ports:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">ifconfig ens802f0 up</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Create VF device(s):</p>
+<p>Echo the number of VFs to be created into the <code class="docutils literal"><span class="pre">sriov_numvfs</span></code> sysfs entry
+of the parent PF.</p>
+<p>Example:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">echo 2 &gt; /sys/devices/pci0000:00/0000:00:03.0/0000:81:00.0/sriov_numvfs</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Assign VF MAC address:</p>
+<p>Assign MAC address to the VF using iproute2 utility. The syntax is:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">ip link set &lt;PF netdev id&gt; vf &lt;VF id&gt; mac &lt;macaddr&gt;</span>
+</pre></div>
+</div>
+<p>Example:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">ip link set ens802f0 vf 0 mac a0:b0:c0:d0:e0:f0</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Assign VF to VM, and bring up the VM.
+Please see the documentation for the <em>I40E/IXGBE/IGB Virtual Function Driver</em>.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="section" id="sample-application-notes">
+<h2>8.5. Sample Application Notes</h2>
+<div class="section" id="vlan-filter">
+<h3>8.5.1. Vlan filter</h3>
+<p>Vlan filter only works when Promiscuous mode is off.</p>
+<p>To start <code class="docutils literal"><span class="pre">testpmd</span></code>, and add vlan 10 to port 0:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./app/testpmd -c ffff -n 4 -- -i --forward-mode=mac</span>
+<span class="go">...</span>
+
+<span class="go">testpmd&gt; set promisc 0 off</span>
+<span class="go">testpmd&gt; rx_vlan add 10 0</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="flow-director">
+<h3>8.5.2. Flow Director</h3>
+<p>The Flow Director works in receive mode to identify specific flows or sets of flows and route them to specific queues.
+The Flow Director filters can match the different fields for different type of packet: flow type, specific input set per flow type and the flexible payload.</p>
+<p>The default input set of each flow type is:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>ipv4-other : src_ip_address, dst_ip_address
+ipv4-frag  : src_ip_address, dst_ip_address
+ipv4-tcp   : src_ip_address, dst_ip_address, src_port, dst_port
+ipv4-udp   : src_ip_address, dst_ip_address, src_port, dst_port
+ipv4-sctp  : src_ip_address, dst_ip_address, src_port, dst_port,
+             verification_tag
+ipv6-other : src_ip_address, dst_ip_address
+ipv6-frag  : src_ip_address, dst_ip_address
+ipv6-tcp   : src_ip_address, dst_ip_address, src_port, dst_port
+ipv6-udp   : src_ip_address, dst_ip_address, src_port, dst_port
+ipv6-sctp  : src_ip_address, dst_ip_address, src_port, dst_port,
+             verification_tag
+l2_payload : ether_type
+</pre></div>
+</div>
+<p>The flex payload is selected from offset 0 to 15 of packet&#8217;s payload by default, while it is masked out from matching.</p>
+<p>Start <code class="docutils literal"><span class="pre">testpmd</span></code> with <code class="docutils literal"><span class="pre">--disable-rss</span></code> and <code class="docutils literal"><span class="pre">--pkt-filter-mode=perfect</span></code>:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./app/testpmd -c ffff -n 4 -- -i --disable-rss --pkt-filter-mode=perfect \</span>
+<span class="go">              --rxq=8 --txq=8 --nb-cores=8 --nb-ports=1</span>
+</pre></div>
+</div>
+<p>Add a rule to direct <code class="docutils literal"><span class="pre">ipv4-udp</span></code> packet whose <code class="docutils literal"><span class="pre">dst_ip=2.2.2.5,</span> <span class="pre">src_ip=2.2.2.3,</span> <span class="pre">src_port=32,</span> <span class="pre">dst_port=32</span></code> to queue 1:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">testpmd&gt; flow_director_filter 0 mode IP add flow ipv4-udp  \</span>
+<span class="go">         src 2.2.2.3 32 dst 2.2.2.5 32 vlan 0 flexbytes () \</span>
+<span class="go">         fwd pf queue 1 fd_id 1</span>
+</pre></div>
+</div>
+<p>Check the flow director status:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">testpmd&gt; show port fdir 0</span>
+
+<span class="gp">#</span><span class="c1">####################### FDIR infos for port 0      ####################</span>
+<span class="go">  MODE:   PERFECT</span>
+<span class="go">  SUPPORTED FLOW TYPE:  ipv4-frag ipv4-tcp ipv4-udp ipv4-sctp ipv4-other</span>
+<span class="go">                        ipv6-frag ipv6-tcp ipv6-udp ipv6-sctp ipv6-other</span>
+<span class="go">                        l2_payload</span>
+<span class="go">  FLEX PAYLOAD INFO:</span>
+<span class="go">  max_len:       16          payload_limit: 480</span>
+<span class="go">  payload_unit:  2           payload_seg:   3</span>
+<span class="go">  bitmask_unit:  2           bitmask_num:   2</span>
+<span class="go">  MASK:</span>
+<span class="go">    vlan_tci: 0x0000,</span>
+<span class="go">    src_ipv4: 0x00000000,</span>
+<span class="go">    dst_ipv4: 0x00000000,</span>
+<span class="go">    src_port: 0x0000,</span>
+<span class="go">    dst_port: 0x0000</span>
+<span class="go">    src_ipv6: 0x00000000,0x00000000,0x00000000,0x00000000,</span>
+<span class="go">    dst_ipv6: 0x00000000,0x00000000,0x00000000,0x00000000</span>
+<span class="go">  FLEX PAYLOAD SRC OFFSET:</span>
+<span class="go">    L2_PAYLOAD:    0      1      2      3      4      5      6  ...</span>
+<span class="go">    L3_PAYLOAD:    0      1      2      3      4      5      6  ...</span>
+<span class="go">    L4_PAYLOAD:    0      1      2      3      4      5      6  ...</span>
+<span class="go">  FLEX MASK CFG:</span>
+<span class="go">    ipv4-udp:    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</span>
+<span class="go">    ipv4-tcp:    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</span>
+<span class="go">    ipv4-sctp:   00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</span>
+<span class="go">    ipv4-other:  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</span>
+<span class="go">    ipv4-frag:   00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</span>
+<span class="go">    ipv6-udp:    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</span>
+<span class="go">    ipv6-tcp:    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</span>
+<span class="go">    ipv6-sctp:   00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</span>
+<span class="go">    ipv6-other:  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</span>
+<span class="go">    ipv6-frag:   00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</span>
+<span class="go">    l2_payload:  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</span>
+<span class="go">  guarant_count: 1           best_count:    0</span>
+<span class="go">  guarant_space: 512         best_space:    7168</span>
+<span class="go">  collision:     0           free:          0</span>
+<span class="go">  maxhash:       0           maxlen:        0</span>
+<span class="go">  add:           0           remove:        0</span>
+<span class="go">  f_add:         0           f_remove:      0</span>
+</pre></div>
+</div>
+<p>Delete all flow director rules on a port:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">testpmd&gt; flush_flow_director 0</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="ixgbe.html" class="btn btn-neutral float-right" title="9. IXGBE Driver" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="fm10k.html" class="btn btn-neutral" title="7. FM10K Poll Mode Driver" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

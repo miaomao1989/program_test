@@ -1,0 +1,746 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>8. Known Issues and Limitations in Legacy Releases &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Release Notes" href="index.html"/>
+        <link rel="next" title="9. ABI and API Deprecation" href="deprecation.html"/>
+        <link rel="prev" title="7. Supported Operating Systems" href="supported_os.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Release Notes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="rel_description.html">1. Description of Release</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_16_04.html">2. DPDK Release 16.04</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_2_2.html">3. DPDK Release 2.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_2_1.html">4. DPDK Release 2.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_2_0.html">5. DPDK Release 2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_1_8.html">6. DPDK Release 1.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="supported_os.html">7. Supported Operating Systems</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">8. Known Issues and Limitations in Legacy Releases</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#unit-test-for-link-bonding-may-fail-at-test-tlb-tx-burst">8.1. Unit Test for Link Bonding may fail at test_tlb_tx_burst()</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pause-frame-forwarding-does-not-work-properly-on-igb">8.2. Pause Frame Forwarding does not work properly on igb</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#in-packets-provided-by-the-pmd-some-flags-are-missing">8.3. In packets provided by the PMD, some flags are missing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-rte-malloc-library-is-not-fully-implemented">8.4. The rte_malloc library is not fully implemented</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hpet-reading-is-slow">8.5. HPET reading is slow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hpet-timers-do-not-work-on-the-osage-customer-reference-platform">8.6. HPET timers do not work on the Osage customer reference platform</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#not-all-variants-of-supported-nic-types-have-been-used-in-testing">8.7. Not all variants of supported NIC types have been used in testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#multi-process-sample-app-requires-exact-memory-mapping">8.8. Multi-process sample app requires exact memory mapping</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#packets-are-not-sent-by-the-1-gbe-10-gbe-sr-iov-driver-when-the-source-mac-is-not-the-mac-assigned-to-the-vf-nic">8.9. Packets are not sent by the 1 GbE/10 GbE SR-IOV driver when the source MAC is not the MAC assigned to the VF NIC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sr-iov-drivers-do-not-fully-implement-the-rte-ethdev-api">8.10. SR-IOV drivers do not fully implement the rte_ethdev API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pmd-does-not-work-with-no-huge-eal-command-line-parameter">8.11. PMD does not work with &#8211;no-huge EAL command line parameter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#some-hardware-off-load-functions-are-not-supported-by-the-vf-driver">8.12. Some hardware off-load functions are not supported by the VF Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#kernel-crash-on-igb-port-unbinding">8.13. Kernel crash on IGB port unbinding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#twinpond-and-ironpond-nics-do-not-report-link-status-correctly">8.14. Twinpond and Ironpond NICs do not report link status correctly</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#discrepancies-between-statistics-reported-by-different-nics">8.15. Discrepancies between statistics reported by different NICs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#error-reported-opening-files-on-dpdk-initialization">8.16. Error reported opening files on DPDK initialization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#intel-quickassist-technology-sample-application-does-not-work-on-a-32-bit-os-on-shumway">8.17. Intel® QuickAssist Technology sample application does not work on a 32-bit OS on Shumway</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#differences-in-how-different-intel-nics-handle-maximum-packet-length-for-jumbo-frame">8.18. Differences in how different Intel NICs handle maximum packet length for jumbo frame</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#binding-pci-devices-to-igb-uio-fails-on-linux-kernel-3-9-when-more-than-one-device-is-used">8.19. Binding PCI devices to igb_uio fails on Linux kernel 3.9 when more than one device is used</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gcc-might-generate-intel-avx-instructions-for-processors-without-intel-avx-support">8.20. GCC might generate Intel® AVX instructions for processors without Intel® AVX support</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethertype-filter-could-receive-other-packets-non-assigned-in-niantic">8.21. Ethertype filter could receive other packets (non-assigned) in Niantic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cannot-set-link-speed-on-intel-40g-ethernet-controller">8.22. Cannot set link speed on Intel® 40G Ethernet controller</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#stopping-the-port-does-not-down-the-link-on-intel-40g-ethernet-controller">8.23. Stopping the port does not down the link on Intel® 40G Ethernet controller</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#devices-bound-to-igb-uio-with-vt-d-enabled-do-not-work-on-linux-kernel-3-15-3-17">8.24. Devices bound to igb_uio with VT-d enabled do not work on Linux kernel 3.15-3.17</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#vm-power-manager-may-not-work-on-systems-with-more-than-64-cores">8.25. VM power manager may not work on systems with more than 64 cores</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dpdk-may-not-build-on-some-intel-cpus-using-clang-3-7-0">8.26. DPDK may not build on some Intel CPUs using clang &lt; 3.7.0</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="deprecation.html">9. ABI and API Deprecation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Release Notes</a> &raquo;</li>
+      
+    <li>8. Known Issues and Limitations in Legacy Releases</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/rel_notes/known_issues.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="known-issues-and-limitations-in-legacy-releases">
+<h1>8. Known Issues and Limitations in Legacy Releases</h1>
+<p>This section describes known issues with the DPDK software that aren&#8217;t covered in the version specific release
+notes sections.</p>
+<div class="section" id="unit-test-for-link-bonding-may-fail-at-test-tlb-tx-burst">
+<h2>8.1. Unit Test for Link Bonding may fail at test_tlb_tx_burst()</h2>
+<dl class="docutils">
+<dt><strong>Description</strong>:</dt>
+<dd>Unit tests will fail in <code class="docutils literal"><span class="pre">test_tlb_tx_burst()</span></code> function with error for uneven distribution of packets.</dd>
+<dt><strong>Implication</strong>:</dt>
+<dd>Unit test link_bonding_autotest will fail.</dd>
+<dt><strong>Resolution/Workaround</strong>:</dt>
+<dd>There is no workaround available.</dd>
+<dt><strong>Affected Environment/Platform</strong>:</dt>
+<dd>Fedora 20.</dd>
+<dt><strong>Driver/Module</strong>:</dt>
+<dd>Link Bonding.</dd>
+</dl>
+</div>
+<div class="section" id="pause-frame-forwarding-does-not-work-properly-on-igb">
+<h2>8.2. Pause Frame Forwarding does not work properly on igb</h2>
+<dl class="docutils">
+<dt><strong>Description</strong>:</dt>
+<dd>For igb devices rte_eth_flow_ctrl_set does not work as expected.
+Pause frames are always forwarded on igb, regardless of the <code class="docutils literal"><span class="pre">RFCE</span></code>, <code class="docutils literal"><span class="pre">MPMCF</span></code> and <code class="docutils literal"><span class="pre">DPF</span></code> registers.</dd>
+<dt><strong>Implication</strong>:</dt>
+<dd>Pause frames will never be rejected by the host on 1G NICs and they will always be forwarded.</dd>
+<dt><strong>Resolution/Workaround</strong>:</dt>
+<dd>There is no workaround available.</dd>
+<dt><strong>Affected Environment/Platform</strong>:</dt>
+<dd>All.</dd>
+<dt><strong>Driver/Module</strong>:</dt>
+<dd>Poll Mode Driver (PMD).</dd>
+</dl>
+</div>
+<div class="section" id="in-packets-provided-by-the-pmd-some-flags-are-missing">
+<h2>8.3. In packets provided by the PMD, some flags are missing</h2>
+<dl class="docutils">
+<dt><strong>Description</strong>:</dt>
+<dd>In packets provided by the PMD, some flags are missing.
+The application does not have access to information provided by the hardware
+(packet is broadcast, packet is multicast, packet is IPv4 and so on).</dd>
+<dt><strong>Implication</strong>:</dt>
+<dd>The <code class="docutils literal"><span class="pre">ol_flags</span></code> field in the <code class="docutils literal"><span class="pre">rte_mbuf</span></code> structure is not correct and should not be used.</dd>
+<dt><strong>Resolution/Workaround</strong>:</dt>
+<dd>The application has to parse the Ethernet header itself to get the information, which is slower.</dd>
+<dt><strong>Affected Environment/Platform</strong>:</dt>
+<dd>All.</dd>
+<dt><strong>Driver/Module</strong>:</dt>
+<dd>Poll Mode Driver (PMD).</dd>
+</dl>
+</div>
+<div class="section" id="the-rte-malloc-library-is-not-fully-implemented">
+<h2>8.4. The rte_malloc library is not fully implemented</h2>
+<dl class="docutils">
+<dt><strong>Description</strong>:</dt>
+<dd>The <code class="docutils literal"><span class="pre">rte_malloc</span></code> library is not fully implemented.</dd>
+<dt><strong>Implication</strong>:</dt>
+<dd>All debugging features of rte_malloc library described in architecture documentation are not yet implemented.</dd>
+<dt><strong>Resolution/Workaround</strong>:</dt>
+<dd>No workaround available.</dd>
+<dt><strong>Affected Environment/Platform</strong>:</dt>
+<dd>All.</dd>
+<dt><strong>Driver/Module</strong>:</dt>
+<dd><code class="docutils literal"><span class="pre">rte_malloc</span></code>.</dd>
+</dl>
+</div>
+<div class="section" id="hpet-reading-is-slow">
+<h2>8.5. HPET reading is slow</h2>
+<dl class="docutils">
+<dt><strong>Description</strong>:</dt>
+<dd>Reading the HPET chip is slow.</dd>
+<dt><strong>Implication</strong>:</dt>
+<dd>An application that calls <code class="docutils literal"><span class="pre">rte_get_hpet_cycles()</span></code> or <code class="docutils literal"><span class="pre">rte_timer_manage()</span></code> runs slower.</dd>
+<dt><strong>Resolution/Workaround</strong>:</dt>
+<dd>The application should not call these functions too often in the main loop.
+An alternative is to use the TSC register through <code class="docutils literal"><span class="pre">rte_rdtsc()</span></code> which is faster,
+but specific to an lcore and is a cycle reference, not a time reference.</dd>
+<dt><strong>Affected Environment/Platform</strong>:</dt>
+<dd>All.</dd>
+<dt><strong>Driver/Module</strong>:</dt>
+<dd>Environment Abstraction Layer (EAL).</dd>
+</dl>
+</div>
+<div class="section" id="hpet-timers-do-not-work-on-the-osage-customer-reference-platform">
+<h2>8.6. HPET timers do not work on the Osage customer reference platform</h2>
+<dl class="docutils">
+<dt><strong>Description</strong>:</dt>
+<dd>HPET timers do not work on the Osage customer reference platform which includes an Intel® Xeon® processor 5500
+series processor) using the released BIOS from Intel.</dd>
+<dt><strong>Implication</strong>:</dt>
+<dd>On Osage boards, the implementation of the <code class="docutils literal"><span class="pre">rte_delay_us()</span></code> function must be changed to not use the HPET timer.</dd>
+<dt><strong>Resolution/Workaround</strong>:</dt>
+<dd>This can be addressed by building the system with the <code class="docutils literal"><span class="pre">CONFIG_RTE_LIBEAL_USE_HPET=n</span></code>
+configuration option or by using the <code class="docutils literal"><span class="pre">--no-hpet</span></code> EAL option.</dd>
+<dt><strong>Affected Environment/Platform</strong>:</dt>
+<dd>The Osage customer reference platform.
+Other vendor platforms with Intel®  Xeon® processor 5500 series processors should
+work correctly, provided the BIOS supports HPET.</dd>
+<dt><strong>Driver/Module</strong>:</dt>
+<dd><code class="docutils literal"><span class="pre">lib/librte_eal/common/include/rte_cycles.h</span></code></dd>
+</dl>
+</div>
+<div class="section" id="not-all-variants-of-supported-nic-types-have-been-used-in-testing">
+<h2>8.7. Not all variants of supported NIC types have been used in testing</h2>
+<dl class="docutils">
+<dt><strong>Description</strong>:</dt>
+<dd><p class="first">The supported network interface cards can come in a number of variants with different device ID&#8217;s.
+Not all of these variants have been tested with the DPDK.</p>
+<p>The NIC device identifiers used during testing:</p>
+<ul class="last simple">
+<li>Intel® Ethernet Controller XL710 for 40GbE QSFP+ [8086:1584]</li>
+<li>Intel® Ethernet Controller XL710 for 40GbE QSFP+ [8086:1583]</li>
+<li>Intel® Ethernet Controller X710 for 10GbE SFP+ [8086:1572]</li>
+<li>Intel® 82576 Gigabit Ethernet Controller [8086:10c9]</li>
+<li>Intel® 82576 Quad Copper Gigabit Ethernet Controller [8086:10e8]</li>
+<li>Intel® 82580 Dual Copper Gigabit Ethernet Controller [8086:150e]</li>
+<li>Intel® I350 Quad Copper Gigabit Ethernet Controller [8086:1521]</li>
+<li>Intel® 82599 Dual Fibre 10 Gigabit Ethernet Controller [8086:10fb]</li>
+<li>Intel® Ethernet Server Adapter X520-T2 [8086: 151c]</li>
+<li>Intel® Ethernet Controller X540-T2 [8086:1528]</li>
+<li>Intel® 82574L Gigabit Network Connection [8086:10d3]</li>
+<li>Emulated Intel® 82540EM Gigabit Ethernet Controller [8086:100e]</li>
+<li>Emulated Intel® 82545EM Gigabit Ethernet Controller [8086:100f]</li>
+<li>Intel® Ethernet Server Adapter X520-4 [8086:154a]</li>
+<li>Intel® Ethernet Controller I210 [8086:1533]</li>
+</ul>
+</dd>
+<dt><strong>Implication</strong>:</dt>
+<dd>Risk of issues with untested variants.</dd>
+<dt><strong>Resolution/Workaround</strong>:</dt>
+<dd>Use tested NIC variants. For those supported Ethernet controllers, additional device
+IDs may be added to the software if required.</dd>
+<dt><strong>Affected Environment/Platform</strong>:</dt>
+<dd>All.</dd>
+<dt><strong>Driver/Module</strong>:</dt>
+<dd>Poll-mode drivers</dd>
+</dl>
+</div>
+<div class="section" id="multi-process-sample-app-requires-exact-memory-mapping">
+<h2>8.8. Multi-process sample app requires exact memory mapping</h2>
+<dl class="docutils">
+<dt><strong>Description</strong>:</dt>
+<dd>The multi-process example application assumes that
+it is possible to map the hugepage memory to the same virtual addresses in client and server applications.
+Occasionally, very rarely with 64-bit, this does not occur and a client application will fail on startup.
+The Linux &#8220;address-space layout randomization&#8221; security feature can sometimes cause this to occur.</dd>
+<dt><strong>Implication</strong>:</dt>
+<dd>A multi-process client application fails to initialize.</dd>
+<dt><strong>Resolution/Workaround</strong>:</dt>
+<dd>See the &#8220;Multi-process Limitations&#8221; section in the DPDK Programmer&#8217;s Guide for more information.</dd>
+<dt><strong>Affected Environment/Platform</strong>:</dt>
+<dd>All.</dd>
+<dt><strong>Driver/Module</strong>:</dt>
+<dd>Multi-process example application</dd>
+</dl>
+</div>
+<div class="section" id="packets-are-not-sent-by-the-1-gbe-10-gbe-sr-iov-driver-when-the-source-mac-is-not-the-mac-assigned-to-the-vf-nic">
+<h2>8.9. Packets are not sent by the 1 GbE/10 GbE SR-IOV driver when the source MAC is not the MAC assigned to the VF NIC</h2>
+<dl class="docutils">
+<dt><strong>Description</strong>:</dt>
+<dd>The 1 GbE/10 GbE SR-IOV driver can only send packets when the Ethernet header&#8217;s source MAC address is the same as
+that of the VF NIC.
+The reason for this is that the Linux <code class="docutils literal"><span class="pre">ixgbe</span></code> driver module in the host OS has its anti-spoofing feature enabled.</dd>
+<dt><strong>Implication</strong>:</dt>
+<dd>Packets sent using the 1 GbE/10 GbE SR-IOV driver must have the source MAC address correctly set to that of the VF NIC.
+Packets with other source address values are dropped by the NIC if the application attempts to transmit them.</dd>
+<dt><strong>Resolution/Workaround</strong>:</dt>
+<dd>Configure the Ethernet source address in each packet to match that of the VF NIC.</dd>
+<dt><strong>Affected Environment/Platform</strong>:</dt>
+<dd>All.</dd>
+<dt><strong>Driver/Module</strong>:</dt>
+<dd>1 GbE/10 GbE VF Poll Mode Driver (PMD).</dd>
+</dl>
+</div>
+<div class="section" id="sr-iov-drivers-do-not-fully-implement-the-rte-ethdev-api">
+<h2>8.10. SR-IOV drivers do not fully implement the rte_ethdev API</h2>
+<dl class="docutils">
+<dt><strong>Description</strong>:</dt>
+<dd><p class="first">The SR-IOV drivers only supports the following rte_ethdev API functions:</p>
+<ul class="last simple">
+<li>rte_eth_dev_configure()</li>
+<li>rte_eth_tx_queue_setup()</li>
+<li>rte_eth_rx_queue_setup()</li>
+<li>rte_eth_dev_info_get()</li>
+<li>rte_eth_dev_start()</li>
+<li>rte_eth_tx_burst()</li>
+<li>rte_eth_rx_burst()</li>
+<li>rte_eth_dev_stop()</li>
+<li>rte_eth_stats_get()</li>
+<li>rte_eth_stats_reset()</li>
+<li>rte_eth_link_get()</li>
+<li>rte_eth_link_get_no_wait()</li>
+</ul>
+</dd>
+<dt><strong>Implication</strong>:</dt>
+<dd>Calling an unsupported function will result in an application error.</dd>
+<dt><strong>Resolution/Workaround</strong>:</dt>
+<dd>Do not use other rte_ethdev API functions in applications that use the SR-IOV drivers.</dd>
+<dt><strong>Affected Environment/Platform</strong>:</dt>
+<dd>All.</dd>
+<dt><strong>Driver/Module</strong>:</dt>
+<dd>VF Poll Mode Driver (PMD).</dd>
+</dl>
+</div>
+<div class="section" id="pmd-does-not-work-with-no-huge-eal-command-line-parameter">
+<h2>8.11. PMD does not work with &#8211;no-huge EAL command line parameter</h2>
+<dl class="docutils">
+<dt><strong>Description</strong>:</dt>
+<dd>Currently, the DPDK does not store any information about memory allocated by <code class="docutils literal"><span class="pre">malloc()`</span> <span class="pre">(for</span> <span class="pre">example,</span> <span class="pre">NUMA</span> <span class="pre">node,</span>
+<span class="pre">physical</span> <span class="pre">address),</span> <span class="pre">hence</span> <span class="pre">PMD</span> <span class="pre">drivers</span> <span class="pre">do</span> <span class="pre">not</span> <span class="pre">work</span> <span class="pre">when</span> <span class="pre">the</span> <span class="pre">``--no-huge</span></code> command line parameter is supplied to EAL.</dd>
+<dt><strong>Implication</strong>:</dt>
+<dd>Sending and receiving data with PMD will not work.</dd>
+<dt><strong>Resolution/Workaround</strong>:</dt>
+<dd>Use huge page memory or use VFIO to map devices.</dd>
+<dt><strong>Affected Environment/Platform</strong>:</dt>
+<dd>Systems running the DPDK on Linux</dd>
+<dt><strong>Driver/Module</strong>:</dt>
+<dd>Poll Mode Driver (PMD).</dd>
+</dl>
+</div>
+<div class="section" id="some-hardware-off-load-functions-are-not-supported-by-the-vf-driver">
+<h2>8.12. Some hardware off-load functions are not supported by the VF Driver</h2>
+<dl class="docutils">
+<dt><strong>Description</strong>:</dt>
+<dd><p class="first">Currently, configuration of the following items is not supported by the VF driver:</p>
+<ul class="last simple">
+<li>IP/UDP/TCP checksum offload</li>
+<li>Jumbo Frame Receipt</li>
+<li>HW Strip CRC</li>
+</ul>
+</dd>
+<dt><strong>Implication</strong>:</dt>
+<dd>Any configuration for these items in the VF register will be ignored.
+The behavior is dependent on the current PF setting.</dd>
+<dt><strong>Resolution/Workaround</strong>:</dt>
+<dd>For the PF (Physical Function) status on which the VF driver depends, there is an option item under PMD in the
+config file.
+For others, the VF will keep the same behavior as PF setting.</dd>
+<dt><strong>Affected Environment/Platform</strong>:</dt>
+<dd>All.</dd>
+<dt><strong>Driver/Module</strong>:</dt>
+<dd>VF (SR-IOV) Poll Mode Driver (PMD).</dd>
+</dl>
+</div>
+<div class="section" id="kernel-crash-on-igb-port-unbinding">
+<h2>8.13. Kernel crash on IGB port unbinding</h2>
+<dl class="docutils">
+<dt><strong>Description</strong>:</dt>
+<dd>Kernel crash may occur when unbinding 1G ports from the igb_uio driver, on 2.6.3x kernels such as shipped
+with Fedora 14.</dd>
+<dt><strong>Implication</strong>:</dt>
+<dd>Kernel crash occurs.</dd>
+<dt><strong>Resolution/Workaround</strong>:</dt>
+<dd>Use newer kernels or do not unbind ports.</dd>
+<dt><strong>Affected Environment/Platform</strong>:</dt>
+<dd>2.6.3x kernels such as  shipped with Fedora 14</dd>
+<dt><strong>Driver/Module</strong>:</dt>
+<dd>IGB Poll Mode Driver (PMD).</dd>
+</dl>
+</div>
+<div class="section" id="twinpond-and-ironpond-nics-do-not-report-link-status-correctly">
+<h2>8.14. Twinpond and Ironpond NICs do not report link status correctly</h2>
+<dl class="docutils">
+<dt><strong>Description</strong>:</dt>
+<dd>Twin Pond/Iron Pond NICs do not bring the physical link down when shutting down the port.</dd>
+<dt><strong>Implication</strong>:</dt>
+<dd>The link is reported as up even after issuing <code class="docutils literal"><span class="pre">shutdown</span></code> command unless the cable is physically disconnected.</dd>
+<dt><strong>Resolution/Workaround</strong>:</dt>
+<dd>None.</dd>
+<dt><strong>Affected Environment/Platform</strong>:</dt>
+<dd>Twin Pond and Iron Pond NICs</dd>
+<dt><strong>Driver/Module</strong>:</dt>
+<dd>Poll Mode Driver (PMD).</dd>
+</dl>
+</div>
+<div class="section" id="discrepancies-between-statistics-reported-by-different-nics">
+<h2>8.15. Discrepancies between statistics reported by different NICs</h2>
+<dl class="docutils">
+<dt><strong>Description</strong>:</dt>
+<dd>Gigabit Ethernet devices from Intel include CRC bytes when calculating packet reception statistics regardless
+of hardware CRC stripping state, while 10-Gigabit Ethernet devices from Intel do so only when hardware CRC
+stripping is disabled.</dd>
+<dt><strong>Implication</strong>:</dt>
+<dd>There may be a  discrepancy in how different NICs display packet reception statistics.</dd>
+<dt><strong>Resolution/Workaround</strong>:</dt>
+<dd>None</dd>
+<dt><strong>Affected Environment/Platform</strong>:</dt>
+<dd>All.</dd>
+<dt><strong>Driver/Module</strong>:</dt>
+<dd>Poll Mode Driver (PMD).</dd>
+</dl>
+</div>
+<div class="section" id="error-reported-opening-files-on-dpdk-initialization">
+<h2>8.16. Error reported opening files on DPDK initialization</h2>
+<dl class="docutils">
+<dt><strong>Description</strong>:</dt>
+<dd>On DPDK application startup, errors may be reported when opening files as part of the initialization process.
+This occurs if a large number, for example, 500 or more, or if hugepages are used, due to the per-process
+limit on the number of open files.</dd>
+<dt><strong>Implication</strong>:</dt>
+<dd>The DPDK application may fail to run.</dd>
+<dt><strong>Resolution/Workaround</strong>:</dt>
+<dd>If using 2 MB hugepages, consider switching to a fewer number of 1 GB pages.
+Alternatively, use the <code class="docutils literal"><span class="pre">ulimit</span></code> command to increase the number of files which can be opened by a process.</dd>
+<dt><strong>Affected Environment/Platform</strong>:</dt>
+<dd>All.</dd>
+<dt><strong>Driver/Module</strong>:</dt>
+<dd>Environment Abstraction Layer (EAL).</dd>
+</dl>
+</div>
+<div class="section" id="intel-quickassist-technology-sample-application-does-not-work-on-a-32-bit-os-on-shumway">
+<h2>8.17. Intel® QuickAssist Technology sample application does not work on a 32-bit OS on Shumway</h2>
+<dl class="docutils">
+<dt><strong>Description</strong>:</dt>
+<dd>The Intel® Communications Chipset 89xx Series device does not fully support NUMA on a 32-bit OS.
+Consequently, the sample application cannot work properly on Shumway, since it requires NUMA on both nodes.</dd>
+<dt><strong>Implication</strong>:</dt>
+<dd>The sample application cannot work in 32-bit mode with emulated NUMA, on multi-socket boards.</dd>
+<dt><strong>Resolution/Workaround</strong>:</dt>
+<dd>There is no workaround available.</dd>
+<dt><strong>Affected Environment/Platform</strong>:</dt>
+<dd>Shumway</dd>
+<dt><strong>Driver/Module</strong>:</dt>
+<dd>All.</dd>
+</dl>
+</div>
+<div class="section" id="differences-in-how-different-intel-nics-handle-maximum-packet-length-for-jumbo-frame">
+<h2>8.18. Differences in how different Intel NICs handle maximum packet length for jumbo frame</h2>
+<dl class="docutils">
+<dt><strong>Description</strong>:</dt>
+<dd>10 Gigabit Ethernet devices from Intel do not take VLAN tags into account when calculating packet size
+while Gigabit Ethernet devices do so for jumbo frames.</dd>
+<dt><strong>Implication</strong>:</dt>
+<dd>When receiving packets with VLAN tags, the actual maximum size of useful payload that Intel Gigabit Ethernet
+devices are able to receive is 4 bytes (or 8 bytes in the case of packets with extended VLAN tags) less than
+that of Intel 10 Gigabit Ethernet devices.</dd>
+<dt><strong>Resolution/Workaround</strong>:</dt>
+<dd>Increase the configured maximum packet size when using Intel Gigabit Ethernet devices.</dd>
+<dt><strong>Affected Environment/Platform</strong>:</dt>
+<dd>All.</dd>
+<dt><strong>Driver/Module</strong>:</dt>
+<dd>Poll Mode Driver (PMD).</dd>
+</dl>
+</div>
+<div class="section" id="binding-pci-devices-to-igb-uio-fails-on-linux-kernel-3-9-when-more-than-one-device-is-used">
+<h2>8.19. Binding PCI devices to igb_uio fails on Linux kernel 3.9 when more than one device is used</h2>
+<dl class="docutils">
+<dt><strong>Description</strong>:</dt>
+<dd>A known bug in the uio driver included in Linux kernel version 3.9 prevents more than one PCI device to be
+bound to the igb_uio driver.</dd>
+<dt><strong>Implication</strong>:</dt>
+<dd>The Poll Mode Driver (PMD) will crash on initialization.</dd>
+<dt><strong>Resolution/Workaround</strong>:</dt>
+<dd>Use earlier or later kernel versions, or apply the following
+<a class="reference external" href="https://github.com/torvalds/linux/commit/5ed0505c713805f89473cdc0bbfb5110dfd840cb">patch</a>.</dd>
+<dt><strong>Affected Environment/Platform</strong>:</dt>
+<dd>Linux systems with kernel version 3.9</dd>
+<dt><strong>Driver/Module</strong>:</dt>
+<dd>igb_uio module</dd>
+</dl>
+</div>
+<div class="section" id="gcc-might-generate-intel-avx-instructions-for-processors-without-intel-avx-support">
+<h2>8.20. GCC might generate Intel® AVX instructions for processors without Intel® AVX support</h2>
+<dl class="docutils">
+<dt><strong>Description</strong>:</dt>
+<dd>When compiling DPDK (and any DPDK app), gcc may generate Intel® AVX instructions, even when the
+processor does not support Intel® AVX.</dd>
+<dt><strong>Implication</strong>:</dt>
+<dd>Any DPDK app might crash while starting up.</dd>
+<dt><strong>Resolution/Workaround</strong>:</dt>
+<dd>Either compile using icc or set <code class="docutils literal"><span class="pre">EXTRA_CFLAGS='-O3'</span></code> prior to compilation.</dd>
+<dt><strong>Affected Environment/Platform</strong>:</dt>
+<dd>Platforms which processor does not support Intel® AVX.</dd>
+<dt><strong>Driver/Module</strong>:</dt>
+<dd>Environment Abstraction Layer (EAL).</dd>
+</dl>
+</div>
+<div class="section" id="ethertype-filter-could-receive-other-packets-non-assigned-in-niantic">
+<h2>8.21. Ethertype filter could receive other packets (non-assigned) in Niantic</h2>
+<dl class="docutils">
+<dt><strong>Description</strong>:</dt>
+<dd><p class="first">On Intel®  Ethernet Controller 82599EB When Ethertype filter (priority enable) was set, unmatched packets also
+could be received on the assigned queue, such as ARP packets without 802.1q tags or with the user priority not
+equal to set value.
+Launch the testpmd by disabling RSS and with multiply queues, then add the ethertype filter like the following
+and then start forwarding:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>add_ethertype_filter 0 ethertype 0x0806 priority enable 3 queue 2 index 1
+</pre></div>
+</div>
+<p class="last">When sending ARP packets without 802.1q tag and with user priority as non-3 by tester, all the ARP packets can
+be received on the assigned queue.</p>
+</dd>
+<dt><strong>Implication</strong>:</dt>
+<dd>The user priority comparing in Ethertype filter cannot work probably.
+It is a NIC&#8217;s issue due to the following: &#8220;In fact, ETQF.UP is not functional, and the information will
+be added in errata of 82599 and X540.&#8221;</dd>
+<dt><strong>Resolution/Workaround</strong>:</dt>
+<dd>None</dd>
+<dt><strong>Affected Environment/Platform</strong>:</dt>
+<dd>All.</dd>
+<dt><strong>Driver/Module</strong>:</dt>
+<dd>Poll Mode Driver (PMD).</dd>
+</dl>
+</div>
+<div class="section" id="cannot-set-link-speed-on-intel-40g-ethernet-controller">
+<h2>8.22. Cannot set link speed on Intel® 40G Ethernet controller</h2>
+<dl class="docutils">
+<dt><strong>Description</strong>:</dt>
+<dd>On Intel® 40G Ethernet Controller you cannot set the link to specific speed.</dd>
+<dt><strong>Implication</strong>:</dt>
+<dd>The link speed cannot be changed forcibly, though it can be configured by application.</dd>
+<dt><strong>Resolution/Workaround</strong>:</dt>
+<dd>None</dd>
+<dt><strong>Affected Environment/Platform</strong>:</dt>
+<dd>All.</dd>
+<dt><strong>Driver/Module</strong>:</dt>
+<dd>Poll Mode Driver (PMD).</dd>
+</dl>
+</div>
+<div class="section" id="stopping-the-port-does-not-down-the-link-on-intel-40g-ethernet-controller">
+<h2>8.23. Stopping the port does not down the link on Intel® 40G Ethernet controller</h2>
+<dl class="docutils">
+<dt><strong>Description</strong>:</dt>
+<dd>On Intel® 40G Ethernet Controller stopping the port does not really down the port link.</dd>
+<dt><strong>Implication</strong>:</dt>
+<dd>The port link will be still up after stopping the port.</dd>
+<dt><strong>Resolution/Workaround</strong>:</dt>
+<dd>None</dd>
+<dt><strong>Affected Environment/Platform</strong>:</dt>
+<dd>All.</dd>
+<dt><strong>Driver/Module</strong>:</dt>
+<dd>Poll Mode Driver (PMD).</dd>
+</dl>
+</div>
+<div class="section" id="devices-bound-to-igb-uio-with-vt-d-enabled-do-not-work-on-linux-kernel-3-15-3-17">
+<h2>8.24. Devices bound to igb_uio with VT-d enabled do not work on Linux kernel 3.15-3.17</h2>
+<dl class="docutils">
+<dt><strong>Description</strong>:</dt>
+<dd>When VT-d is enabled (<code class="docutils literal"><span class="pre">iommu=pt</span> <span class="pre">intel_iommu=on</span></code>), devices are 1:1 mapped.
+In the Linux kernel unbinding devices from drivers removes that mapping which result in IOMMU errors.
+Introduced in Linux <a class="reference external" href="https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/drivers/iommu/intel-iommu.c?id=816997d03bca9fabcee65f3481eb0297103eceb7">kernel 3.15 commit</a>,
+solved in Linux <a class="reference external" href="https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/drivers/iommu/intel-iommu.c?id=1196c2fb0407683c2df92d3d09f9144d42830894">kernel 3.18 commit</a>.</dd>
+<dt><strong>Implication</strong>:</dt>
+<dd><p class="first">Devices will not be allowed to access memory, resulting in following kernel errors:</p>
+<div class="last highlight-none"><div class="highlight"><pre><span></span>dmar: DRHD: handling fault status reg 2
+dmar: DMAR:[DMA Read] Request device [02:00.0] fault addr a0c58000
+DMAR:[fault reason 02] Present bit in context entry is clear
+</pre></div>
+</div>
+</dd>
+<dt><strong>Resolution/Workaround</strong>:</dt>
+<dd>Use earlier or later kernel versions, or avoid driver binding on boot by blacklisting the driver modules.
+I.e., in the case of <code class="docutils literal"><span class="pre">ixgbe</span></code>, we can pass the kernel command line option: <code class="docutils literal"><span class="pre">modprobe.blacklist=ixgbe</span></code>.
+This way we do not need to unbind the device to bind it to igb_uio.</dd>
+<dt><strong>Affected Environment/Platform</strong>:</dt>
+<dd>Linux systems with kernel versions 3.15 to 3.17.</dd>
+<dt><strong>Driver/Module</strong>:</dt>
+<dd><code class="docutils literal"><span class="pre">igb_uio</span></code> module.</dd>
+</dl>
+</div>
+<div class="section" id="vm-power-manager-may-not-work-on-systems-with-more-than-64-cores">
+<h2>8.25. VM power manager may not work on systems with more than 64 cores</h2>
+<dl class="docutils">
+<dt><strong>Description</strong>:</dt>
+<dd>When using VM power manager on a system with more than 64 cores, VM(s) should not use cores 64 or higher.</dd>
+<dt><strong>Implication</strong>:</dt>
+<dd>VM power manager should not be used with VM(s) that are using cores 64 or above.</dd>
+<dt><strong>Resolution/Workaround</strong>:</dt>
+<dd>Do not use cores 64 or above.</dd>
+<dt><strong>Affected Environment/Platform</strong>:</dt>
+<dd>Platforms with more than 64 cores.</dd>
+<dt><strong>Driver/Module</strong>:</dt>
+<dd>VM power manager application.</dd>
+</dl>
+</div>
+<div class="section" id="dpdk-may-not-build-on-some-intel-cpus-using-clang-3-7-0">
+<h2>8.26. DPDK may not build on some Intel CPUs using clang &lt; 3.7.0</h2>
+<dl class="docutils">
+<dt><strong>Description</strong>:</dt>
+<dd>When compiling DPDK with an earlier version than 3.7.0 of clang, CPU flags are not detected on some Intel platforms
+such as Intel Broadwell/Skylake (and possibly future CPUs), and therefore compilation fails due to missing intrinsics.</dd>
+<dt><strong>Implication</strong>:</dt>
+<dd>DPDK will not build when using a clang version &lt; 3.7.0.</dd>
+<dt><strong>Resolution/Workaround</strong>:</dt>
+<dd>Use clang 3.7.0 or higher, or gcc.</dd>
+<dt><strong>Affected Environment/Platform</strong>:</dt>
+<dd>Platforms with Intel Broadwell/Skylake using an old clang version.</dd>
+<dt><strong>Driver/Module</strong>:</dt>
+<dd>Environment Abstraction Layer (EAL).</dd>
+</dl>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="deprecation.html" class="btn btn-neutral float-right" title="9. ABI and API Deprecation" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="supported_os.html" class="btn btn-neutral" title="7. Supported Operating Systems" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

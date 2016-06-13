@@ -1,0 +1,375 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>4. Compiling and Running Sample Applications &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Getting Started Guide for FreeBSD" href="index.html"/>
+        <link rel="next" title="Xen Guide" href="../xen/index.html"/>
+        <link rel="prev" title="3. Compiling the DPDK Target from Source" href="build_dpdk.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Getting Started Guide for FreeBSD</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install_from_ports.html">2. Installing DPDK from the Ports Collection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_dpdk.html">3. Compiling the DPDK Target from Source</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4. Compiling and Running Sample Applications</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#compiling-a-sample-application">4.1. Compiling a Sample Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-a-sample-application">4.2. Running a Sample Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-dpdk-applications-without-root-privileges">4.3. Running DPDK Applications Without Root Privileges</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Getting Started Guide for FreeBSD</a> &raquo;</li>
+      
+    <li>4. Compiling and Running Sample Applications</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/freebsd_gsg/build_sample_apps.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="compiling-and-running-sample-applications">
+<span id="compiling-sample-apps"></span><h1>4. Compiling and Running Sample Applications</h1>
+<p>The chapter describes how to compile and run applications in a DPDK
+environment. It also provides a pointer to where sample applications are stored.</p>
+<div class="section" id="compiling-a-sample-application">
+<h2>4.1. Compiling a Sample Application</h2>
+<p>Once a DPDK target environment directory has been created (such as
+<code class="docutils literal"><span class="pre">x86_64-native-bsdapp-clang</span></code>), it contains all libraries and header files required
+to build an application.</p>
+<p>When compiling an application in the FreeBSD environment on the DPDK,
+the following variables must be exported:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">RTE_SDK</span></code> - Points to the DPDK installation directory.</li>
+<li><code class="docutils literal"><span class="pre">RTE_TARGET</span></code> - Points to the DPDK target environment directory.
+For FreeBSD, this is the <code class="docutils literal"><span class="pre">x86_64-native-bsdapp-clang</span></code> or
+<code class="docutils literal"><span class="pre">x86_64-native-bsdapp-gcc</span></code> directory.</li>
+</ul>
+<p>The following is an example of creating the <code class="docutils literal"><span class="pre">helloworld</span></code> application, which runs
+in the DPDK FreeBSD environment. While the example demonstrates compiling
+using gcc version 4.8, compiling with clang will be similar, except that the <code class="docutils literal"><span class="pre">CC=</span></code>
+parameter can probably be omitted. The <code class="docutils literal"><span class="pre">helloworld</span></code> example may be found in the
+<code class="docutils literal"><span class="pre">${RTE_SDK}/examples</span></code> directory.</p>
+<p>The directory contains the <code class="docutils literal"><span class="pre">main.c</span></code> file. This file, when combined with the
+libraries in the DPDK target environment, calls the various functions to
+initialize the DPDK environment, then launches an entry point (dispatch
+application) for each core to be utilized. By default, the binary is generated
+in the build directory.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">setenv RTE_SDK /home/user/DPDK</span>
+<span class="go">cd $(RTE_SDK)</span>
+<span class="go">cd examples/helloworld/</span>
+<span class="go">setenv RTE_SDK $HOME/DPDK</span>
+<span class="go">setenv RTE_TARGET x86_64-native-bsdapp-gcc</span>
+
+<span class="go">gmake CC=gcc48</span>
+<span class="go">  CC main.o</span>
+<span class="go">  LD helloworld</span>
+<span class="go">  INSTALL-APP helloworld</span>
+<span class="go">  INSTALL-MAP helloworld.map</span>
+
+<span class="go">ls build/app</span>
+<span class="go">  helloworld helloworld.map</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In the above example, <code class="docutils literal"><span class="pre">helloworld</span></code> was in the directory structure of the
+DPDK. However, it could have been located outside the directory
+structure to keep the DPDK structure intact.  In the following case,
+the <code class="docutils literal"><span class="pre">helloworld</span></code> application is copied to a new directory as a new starting
+point.</p>
+</div>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">setenv RTE_SDK /home/user/DPDK</span>
+<span class="go">cp -r $(RTE_SDK)/examples/helloworld my_rte_app</span>
+<span class="go">cd my_rte_app/</span>
+<span class="go">setenv RTE_TARGET x86_64-native-bsdapp-gcc</span>
+
+<span class="go">gmake CC=gcc48</span>
+<span class="go">  CC main.o</span>
+<span class="go">  LD helloworld</span>
+<span class="go">  INSTALL-APP helloworld</span>
+<span class="go">  INSTALL-MAP helloworld.map</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="running-a-sample-application">
+<span id="running-sample-app"></span><h2>4.2. Running a Sample Application</h2>
+<ol class="arabic simple">
+<li>The <code class="docutils literal"><span class="pre">contigmem</span></code> and <code class="docutils literal"><span class="pre">nic_uio</span></code> modules must be set up prior to running an application.</li>
+<li>Any ports to be used by the application must be already bound to the <code class="docutils literal"><span class="pre">nic_uio</span></code> module,
+as described in section <a class="reference internal" href="build_dpdk.html#binding-network-ports"><span class="std std-ref">Binding Network Ports to the nic_uio Module</span></a>, prior to running the application.
+The application is linked with the DPDK target environment&#8217;s Environment
+Abstraction Layer (EAL) library, which provides some options that are generic
+to every DPDK application.</li>
+</ol>
+<p>The following is the list of options that can be given to the EAL:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./rte-app -c COREMASK [-n NUM] [-b &lt;domain:bus:devid.func&gt;] \</span>
+<span class="go">          [-r NUM] [-v] [--proc-type &lt;primary|secondary|auto&gt;]</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">EAL has a common interface between all operating systems and is based on the
+Linux notation for PCI devices. For example, a FreeBSD device selector of
+<code class="docutils literal"><span class="pre">pci0:2:0:1</span></code> is referred to as <code class="docutils literal"><span class="pre">02:00.1</span></code> in EAL.</p>
+</div>
+<p>The EAL options for FreeBSD are as follows:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-c</span> <span class="pre">COREMASK</span></code>:
+A hexadecimal bit mask of the cores to run on.  Note that core numbering
+can change between platforms and should be determined beforehand.</li>
+<li><code class="docutils literal"><span class="pre">-n</span> <span class="pre">NUM</span></code>:
+Number of memory channels per processor socket.</li>
+<li><code class="docutils literal"><span class="pre">-b</span> <span class="pre">&lt;domain:bus:devid.func&gt;</span></code>:
+Blacklisting of ports; prevent EAL from using specified PCI device
+(multiple <code class="docutils literal"><span class="pre">-b</span></code> options are allowed).</li>
+<li><code class="docutils literal"><span class="pre">--use-device</span></code>:
+Use the specified Ethernet device(s) only.  Use comma-separate
+<code class="docutils literal"><span class="pre">[domain:]bus:devid.func</span></code> values. Cannot be used with <code class="docutils literal"><span class="pre">-b</span></code> option.</li>
+<li><code class="docutils literal"><span class="pre">-r</span> <span class="pre">NUM</span></code>:
+Number of memory ranks.</li>
+<li><code class="docutils literal"><span class="pre">-v</span></code>:
+Display version information on startup.</li>
+<li><code class="docutils literal"><span class="pre">--proc-type</span></code>:
+The type of process instance.</li>
+</ul>
+<p>Other options, specific to Linux and are not supported under FreeBSD are as follows:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">socket-mem</span></code>:
+Memory to allocate from hugepages on specific sockets.</li>
+<li><code class="docutils literal"><span class="pre">--huge-dir</span></code>:
+The directory where hugetlbfs is mounted.</li>
+<li><code class="docutils literal"><span class="pre">--file-prefix</span></code>:
+The prefix text used for hugepage filenames.</li>
+<li><code class="docutils literal"><span class="pre">-m</span> <span class="pre">MB</span></code>:
+Memory to allocate from hugepages, regardless of processor socket.
+It is recommended that <code class="docutils literal"><span class="pre">--socket-mem</span></code> be used instead of this option.</li>
+</ul>
+<p>The <code class="docutils literal"><span class="pre">-c</span></code> option is mandatory; the others are optional.</p>
+<p>Copy the DPDK application binary to your target, then run the application
+as follows (assuming the platform has four memory channels, and that cores 0-3
+are present and are to be used for running the application):</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>./helloworld -c f -n 4
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <code class="docutils literal"><span class="pre">--proc-type</span></code> and <code class="docutils literal"><span class="pre">--file-prefix</span></code> EAL options are used for running multiple
+DPDK processes.  See the &#8220;Multi-process Sample Application&#8221; chapter
+in the <em>DPDK Sample Applications User Guide and the DPDK
+Programmers Guide</em> for more details.</p>
+</div>
+</div>
+<div class="section" id="running-dpdk-applications-without-root-privileges">
+<span id="running-non-root"></span><h2>4.3. Running DPDK Applications Without Root Privileges</h2>
+<p>Although applications using the DPDK use network ports and other hardware
+resources directly, with a number of small permission adjustments, it is possible
+to run these applications as a user other than &#8220;root&#8221;.  To do so, the ownership,
+or permissions, on the following file system objects should be adjusted to ensure
+that the user account being used to run the DPDK application has access
+to them:</p>
+<ul class="simple">
+<li>The userspace-io device files in <code class="docutils literal"><span class="pre">/dev</span></code>, for example, <code class="docutils literal"><span class="pre">/dev/uio0</span></code>, <code class="docutils literal"><span class="pre">/dev/uio1</span></code>, and so on</li>
+<li>The userspace contiguous memory device: <code class="docutils literal"><span class="pre">/dev/contigmem</span></code></li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Please refer to the DPDK Release Notes for supported applications.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../xen/index.html" class="btn btn-neutral float-right" title="Xen Guide" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="build_dpdk.html" class="btn btn-neutral" title="3. Compiling the DPDK Target from Source" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

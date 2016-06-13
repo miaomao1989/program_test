@@ -1,0 +1,308 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>9. ABI and API Deprecation &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Release Notes" href="index.html"/>
+        <link rel="next" title="Contributor’s Guidelines" href="../contributing/index.html"/>
+        <link rel="prev" title="8. Known Issues and Limitations in Legacy Releases" href="known_issues.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Release Notes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="rel_description.html">1. Description of Release</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_16_04.html">2. DPDK Release 16.04</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_2_2.html">3. DPDK Release 2.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_2_1.html">4. DPDK Release 2.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_2_0.html">5. DPDK Release 2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_1_8.html">6. DPDK Release 1.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="supported_os.html">7. Supported Operating Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="known_issues.html">8. Known Issues and Limitations in Legacy Releases</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">9. ABI and API Deprecation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#deprecation-notices">9.1. Deprecation Notices</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Release Notes</a> &raquo;</li>
+      
+    <li>9. ABI and API Deprecation</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/rel_notes/deprecation.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="abi-and-api-deprecation">
+<h1>9. ABI and API Deprecation</h1>
+<p>See the <a class="reference internal" href="../contributing/versioning.html"><span class="doc">guidelines document for details of the ABI policy</span></a>.
+API and ABI deprecation notices are to be posted here.</p>
+<div class="section" id="deprecation-notices">
+<h2>9.1. Deprecation Notices</h2>
+<ul class="simple">
+<li>The ethdev hotplug API is going to be moved to EAL with a notification
+mechanism added to crypto and ethdev libraries so that hotplug is now
+available to both of them. This API will be stripped of the device arguments
+so that it only cares about hotplugging.</li>
+<li>Structures embodying pci and vdev devices are going to be reworked to
+integrate new common rte_device / rte_driver objects (see
+<a class="reference external" href="http://dpdk.org/ml/archives/dev/2016-January/031390.html">http://dpdk.org/ml/archives/dev/2016-January/031390.html</a>).
+ethdev and crypto libraries will then only handle those objects so that they
+do not need to care about the kind of devices that are being used, making it
+easier to add new buses later.</li>
+<li>The EAL function pci_config_space_set is deprecated in release 16.04
+and will be removed from 16.07.
+Macros CONFIG_RTE_PCI_CONFIG, CONFIG_RTE_PCI_EXTENDED_TAG and
+CONFIG_RTE_PCI_MAX_READ_REQUEST_SIZE will be removed.
+The /sys entries extended_tag and max_read_request_size created by igb_uio
+will be removed.</li>
+<li>ABI changes are planned for struct rte_pci_id, i.e., add new field <code class="docutils literal"><span class="pre">class</span></code>.
+This new added <code class="docutils literal"><span class="pre">class</span></code> field can be used to probe pci device by class
+related info. This change should impact size of struct rte_pci_id and struct
+rte_pci_device. The release 16.04 does not contain these ABI changes, but
+release 16.07 will.</li>
+<li>The following fields have been deprecated in rte_eth_stats:
+ibadcrc, ibadlen, imcasts, fdirmatch, fdirmiss,
+tx_pause_xon, rx_pause_xon, tx_pause_xoff, rx_pause_xoff</li>
+<li>The xstats API and rte_eth_xstats struct will be changed to allow retrieval
+of values without any string copies or parsing.
+No backwards compatibility is planned, as it would require code duplication
+in every PMD that supports xstats.</li>
+<li>ABI changes are planned for adding four new flow types. This impacts
+RTE_ETH_FLOW_MAX. The release 2.2 does not contain these ABI changes,
+but release 2.3 will. [postponed]</li>
+<li>ABI change is planned for the rte_mempool structure to allow mempool
+cache support to be dynamic depending on the mempool being created
+needing cache support. Saves about 1.5M of memory per rte_mempool structure
+by removing the per lcore cache memory. Change will occur in DPDK 16.07
+release and will skip the define RTE_NEXT_ABI in DPDK 16.04 release. The
+code affected is app/test/test_mempool.c and librte_mempool/rte_mempool.[ch].
+The rte_mempool.local_cache will be converted from an array to a pointer to
+allow for dynamic allocation of the per lcore cache memory.</li>
+<li>ABI will change for rte_mempool struct to move the cache-related fields
+to the more appropriate rte_mempool_cache struct. The mempool API is
+also changed to enable external cache management that is not tied to EAL
+threads. Some mempool get and put calls are removed in favor of a more
+compact API. The ones that remain are backwards compatible and use the
+per-lcore default cache if available. This change targets release 16.07.</li>
+<li>The rte_mempool struct will be changed in 16.07 to facilitate the new
+external mempool manager functionality.
+The ring element will be replaced with a more generic &#8216;pool&#8217; opaque pointer
+to allow new mempool handlers to use their own user-defined mempool
+layout. Also newly added to rte_mempool is a handler index.
+The existing API will be backward compatible, but there will be new API
+functions added to facilitate the creation of mempools using an external
+handler. The 16.07 release will contain these changes.</li>
+<li>The rte_mempool allocation will be changed in 16.07:
+allocation of large mempool in several virtual memory chunks, new API
+to populate a mempool, new API to free a mempool, allocation in
+anonymous mapping, drop of specific dom0 code. These changes will
+induce a modification of the rte_mempool structure, plus a
+modification of the API of rte_mempool_obj_iter(), implying a breakage
+of the ABI.</li>
+<li>ABI changes are planned for struct rte_port_source_params in order to
+support PCAP file reading feature. The release 16.04 contains this ABI
+change wrapped by RTE_NEXT_ABI macro. Release 16.07 will contain this
+change, and no backwards compatibility is planned.</li>
+<li>A librte_vhost public structures refactor is planned for DPDK 16.07
+that requires both ABI and API change.
+The proposed refactor would expose DPDK vhost dev to applications as
+a handle, like the way kernel exposes an fd to user for locating a
+specific file, and to keep all major structures internally, so that
+we are likely to be free from ABI violations in future.</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../contributing/index.html" class="btn btn-neutral float-right" title="Contributor’s Guidelines" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="known_issues.html" class="btn btn-neutral" title="8. Known Issues and Limitations in Legacy Releases" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

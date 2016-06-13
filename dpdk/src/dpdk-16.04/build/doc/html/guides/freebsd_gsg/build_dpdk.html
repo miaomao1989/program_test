@@ -1,0 +1,524 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>3. Compiling the DPDK Target from Source &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Getting Started Guide for FreeBSD" href="index.html"/>
+        <link rel="next" title="4. Compiling and Running Sample Applications" href="build_sample_apps.html"/>
+        <link rel="prev" title="2. Installing DPDK from the Ports Collection" href="install_from_ports.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Getting Started Guide for FreeBSD</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install_from_ports.html">2. Installing DPDK from the Ports Collection</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3. Compiling the DPDK Target from Source</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#system-requirements">3.1. System Requirements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#install-the-dpdk-and-browse-sources">3.2. Install the DPDK and Browse Sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#installation-of-the-dpdk-target-environments">3.3. Installation of the DPDK Target Environments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#browsing-the-installed-dpdk-environment-target">3.4. Browsing the Installed DPDK Environment Target</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#loading-the-dpdk-contigmem-module">3.5. Loading the DPDK contigmem Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#loading-the-dpdk-nic-uio-module">3.6. Loading the DPDK nic_uio Module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#binding-network-ports-to-the-nic-uio-module">3.6.1. Binding Network Ports to the nic_uio Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#binding-network-ports-back-to-their-original-kernel-driver">3.6.2. Binding Network Ports Back to their Original Kernel Driver</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="build_sample_apps.html">4. Compiling and Running Sample Applications</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Getting Started Guide for FreeBSD</a> &raquo;</li>
+      
+    <li>3. Compiling the DPDK Target from Source</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/freebsd_gsg/build_dpdk.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="compiling-the-dpdk-target-from-source">
+<span id="building-from-source"></span><h1>3. Compiling the DPDK Target from Source</h1>
+<div class="section" id="system-requirements">
+<h2>3.1. System Requirements</h2>
+<p>The DPDK and its applications require the GNU make system (gmake)
+to build on FreeBSD. Optionally, gcc may also be used in place of clang
+to build the DPDK, in which case it too must be installed prior to
+compiling the DPDK. The installation of these tools is covered in this
+section.</p>
+<p>Compiling the DPDK requires the FreeBSD kernel sources, which should be
+included during the installation of FreeBSD on the development platform.
+The DPDK also requires the use of FreeBSD ports to compile and function.</p>
+<p>To use the FreeBSD ports system, it is required to update and extract the FreeBSD
+ports tree by issuing the following commands:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">portsnap fetch</span>
+<span class="go">portsnap extract</span>
+</pre></div>
+</div>
+<p>If the environment requires proxies for external communication, these can be set
+using:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">setenv http_proxy &lt;my_proxy_host&gt;:&lt;port&gt;</span>
+<span class="go">setenv ftp_proxy &lt;my_proxy_host&gt;:&lt;port&gt;</span>
+</pre></div>
+</div>
+<p>The FreeBSD ports below need to be installed prior to building the DPDK.
+In general these can be installed using the following set of commands:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>cd /usr/ports/&lt;port_location&gt;
+
+make config-recursive
+
+make install
+
+make clean
+</pre></div>
+</div>
+<p>Each port location can be found using:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>whereis &lt;port_name&gt;
+</pre></div>
+</div>
+<p>The ports required and their locations are as follows:</p>
+<ul class="simple">
+<li>dialog4ports: <code class="docutils literal"><span class="pre">/usr/ports/ports-mgmt/dialog4ports</span></code></li>
+<li>GNU make(gmake): <code class="docutils literal"><span class="pre">/usr/ports/devel/gmake</span></code></li>
+<li>coreutils: <code class="docutils literal"><span class="pre">/usr/ports/sysutils/coreutils</span></code></li>
+</ul>
+<p>For compiling and using the DPDK with gcc, the compiler must be installed
+from the ports collection:</p>
+<ul class="simple">
+<li>gcc: version 4.8 is recommended <code class="docutils literal"><span class="pre">/usr/ports/lang/gcc48</span></code>.
+Ensure that <code class="docutils literal"><span class="pre">CPU_OPTS</span></code> is selected (default is OFF).</li>
+</ul>
+<p>When running the make config-recursive command, a dialog may be presented to the
+user. For the installation of the DPDK, the default options were used.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">To avoid multiple dialogs being presented to the user during make install,
+it is advisable before running the make install command to re-run the
+make config-recursive command until no more dialogs are seen.</p>
+</div>
+</div>
+<div class="section" id="install-the-dpdk-and-browse-sources">
+<h2>3.2. Install the DPDK and Browse Sources</h2>
+<p>First, uncompress the archive and move to the DPDK source directory:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">unzip DPDK-&lt;version&gt;.zip</span>
+<span class="go">cd DPDK-&lt;version&gt;</span>
+
+<span class="go">ls</span>
+<span class="go">app/ config/ examples/ lib/ LICENSE.GPL LICENSE.LGPL Makefile</span>
+<span class="go">mk/ scripts/ tools/</span>
+</pre></div>
+</div>
+<p>The DPDK is composed of several directories:</p>
+<ul class="simple">
+<li>lib: Source code of DPDK libraries</li>
+<li>app: Source code of DPDK applications (automatic tests)</li>
+<li>examples: Source code of DPDK applications</li>
+<li>config, tools, scripts, mk: Framework-related makefiles, scripts and configuration</li>
+</ul>
+</div>
+<div class="section" id="installation-of-the-dpdk-target-environments">
+<h2>3.3. Installation of the DPDK Target Environments</h2>
+<p>The format of a DPDK target is:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>ARCH-MACHINE-EXECENV-TOOLCHAIN
+</pre></div>
+</div>
+<p>Where:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">ARCH</span></code> is: <code class="docutils literal"><span class="pre">x86_64</span></code></li>
+<li><code class="docutils literal"><span class="pre">MACHINE</span></code> is: <code class="docutils literal"><span class="pre">native</span></code></li>
+<li><code class="docutils literal"><span class="pre">EXECENV</span></code> is: <code class="docutils literal"><span class="pre">bsdapp</span></code></li>
+<li><code class="docutils literal"><span class="pre">TOOLCHAIN</span></code> is: <code class="docutils literal"><span class="pre">gcc</span></code> | <code class="docutils literal"><span class="pre">clang</span></code></li>
+</ul>
+<p>The configuration files for the DPDK targets can be found in the DPDK/config
+directory in the form of:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>defconfig_ARCH-MACHINE-EXECENV-TOOLCHAIN
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Configuration files are provided with the <code class="docutils literal"><span class="pre">RTE_MACHINE</span></code> optimization level set.
+Within the configuration files, the <code class="docutils literal"><span class="pre">RTE_MACHINE</span></code> configuration value is set
+to native, which means that the compiled software is tuned for the platform
+on which it is built.  For more information on this setting, and its
+possible values, see the <em>DPDK Programmers Guide</em>.</p>
+</div>
+<p>To make the target, use <code class="docutils literal"><span class="pre">gmake</span> <span class="pre">install</span> <span class="pre">T=&lt;target&gt;</span></code>.</p>
+<p>For example to compile for FreeBSD use:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">gmake install T=x86_64-native-bsdapp-clang</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If the compiler binary to be used does not correspond to that given in the
+TOOLCHAIN part of the target, the compiler command may need to be explicitly
+specified. For example, if compiling for gcc, where the gcc binary is called
+gcc4.8, the command would need to be <code class="docutils literal"><span class="pre">gmake</span> <span class="pre">install</span> <span class="pre">T=&lt;target&gt;</span> <span class="pre">CC=gcc4.8</span></code>.</p>
+</div>
+</div>
+<div class="section" id="browsing-the-installed-dpdk-environment-target">
+<h2>3.4. Browsing the Installed DPDK Environment Target</h2>
+<p>Once a target is created, it contains all the libraries and header files for the
+DPDK environment that are required to build customer applications.
+In addition, the test and testpmd applications are built under the build/app
+directory, which may be used for testing.  A kmod directory is also present that
+contains the kernel modules to install:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">ls x86_64-native-bsdapp-gcc</span>
+
+<span class="go">app build hostapp include kmod lib Makefile</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="loading-the-dpdk-contigmem-module">
+<span id="loading-contigmem"></span><h2>3.5. Loading the DPDK contigmem Module</h2>
+<p>To run a DPDK application, physically contiguous memory is required.
+In the absence of non-transparent superpages, the included sources for the
+contigmem kernel module provides the ability to present contiguous blocks of
+memory for the DPDK to use. The contigmem module must be loaded into the
+running kernel before any DPDK is run.  The module is found in the kmod
+sub-directory of the DPDK target directory.</p>
+<p>The amount of physically contiguous memory along with the number of physically
+contiguous blocks to be reserved by the module can be set at runtime prior to
+module loading using:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">kenv hw.contigmem.num_buffers=n</span>
+<span class="go">kenv hw.contigmem.buffer_size=m</span>
+</pre></div>
+</div>
+<p>The kernel environment variables can also be specified during boot by placing the
+following in <code class="docutils literal"><span class="pre">/boot/loader.conf</span></code>:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>hw.contigmem.num_buffers=n hw.contigmem.buffer_size=m
+</pre></div>
+</div>
+<p>The variables can be inspected using the following command:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">sysctl -a hw.contigmem</span>
+</pre></div>
+</div>
+<p>Where n is the number of blocks and m is the size in bytes of each area of
+contiguous memory.  A default of two buffers of size 1073741824 bytes (1 Gigabyte)
+each is set during module load if they are not specified in the environment.</p>
+<p>The module can then be loaded using kldload (assuming that the current directory
+is the DPDK target directory):</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">kldload ./kmod/contigmem.ko</span>
+</pre></div>
+</div>
+<p>It is advisable to include the loading of the contigmem module during the boot
+process to avoid issues with potential memory fragmentation during later system
+up time.  This can be achieved by copying the module to the <code class="docutils literal"><span class="pre">/boot/kernel/</span></code>
+directory and placing the following into <code class="docutils literal"><span class="pre">/boot/loader.conf</span></code>:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>contigmem_load=&quot;YES&quot;
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The contigmem_load directive should be placed after any definitions of
+<code class="docutils literal"><span class="pre">hw.contigmem.num_buffers</span></code> and <code class="docutils literal"><span class="pre">hw.contigmem.buffer_size</span></code> if the default values
+are not to be used.</p>
+</div>
+<p>An error such as:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">kldload: can&#39;t load ./x86_64-native-bsdapp-gcc/kmod/contigmem.ko:</span>
+<span class="go">         Exec format error</span>
+</pre></div>
+</div>
+<p>is generally attributed to not having enough contiguous memory
+available and can be verified via dmesg or <code class="docutils literal"><span class="pre">/var/log/messages</span></code>:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">kernel: contigmalloc failed for buffer &lt;n&gt;</span>
+</pre></div>
+</div>
+<p>To avoid this error, reduce the number of buffers or the buffer size.</p>
+</div>
+<div class="section" id="loading-the-dpdk-nic-uio-module">
+<span id="loading-nic-uio"></span><h2>3.6. Loading the DPDK nic_uio Module</h2>
+<p>After loading the contigmem module, the <code class="docutils literal"><span class="pre">nic_uio</span> <span class="pre">must</span></code> also be loaded into the
+running kernel prior to running any DPDK application.  This module must
+be loaded using the kldload command as shown below (assuming that the current
+directory is the DPDK target directory).</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">kldload ./kmod/nic_uio.ko</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If the ports to be used are currently bound to a existing kernel driver
+then the <code class="docutils literal"><span class="pre">hw.nic_uio.bdfs</span> <span class="pre">sysctl</span></code> value will need to be set before loading the
+module. Setting this value is described in the next section below.</p>
+</div>
+<p>Currently loaded modules can be seen by using the <code class="docutils literal"><span class="pre">kldstat</span></code> command and a module
+can be removed from the running kernel by using <code class="docutils literal"><span class="pre">kldunload</span> <span class="pre">&lt;module_name&gt;</span></code>.</p>
+<p>To load the module during boot, copy the <code class="docutils literal"><span class="pre">nic_uio</span></code> module to <code class="docutils literal"><span class="pre">/boot/kernel</span></code>
+and place the following into <code class="docutils literal"><span class="pre">/boot/loader.conf</span></code>:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>nic_uio_load=&quot;YES&quot;
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><code class="docutils literal"><span class="pre">nic_uio_load=&quot;YES&quot;</span></code> must appear after the contigmem_load directive, if it exists.</p>
+</div>
+<p>By default, the <code class="docutils literal"><span class="pre">nic_uio</span></code> module will take ownership of network ports if they are
+recognized DPDK devices and are not owned by another module. However, since
+the FreeBSD kernel includes support, either built-in, or via a separate driver
+module, for most network card devices, it is likely that the ports to be used are
+already bound to a driver other than <code class="docutils literal"><span class="pre">nic_uio</span></code>. The following sub-section describe
+how to query and modify the device ownership of the ports to be used by
+DPDK applications.</p>
+<div class="section" id="binding-network-ports-to-the-nic-uio-module">
+<span id="binding-network-ports"></span><h3>3.6.1. Binding Network Ports to the nic_uio Module</h3>
+<p>Device ownership can be viewed using the pciconf -l command. The example below shows
+four Intel® 82599 network ports under <code class="docutils literal"><span class="pre">if_ixgbe</span></code> module ownership.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">pciconf -l</span>
+<span class="go">ix0@pci0:1:0:0: class=0x020000 card=0x00038086 chip=0x10fb8086 rev=0x01 hdr=0x00</span>
+<span class="go">ix1@pci0:1:0:1: class=0x020000 card=0x00038086 chip=0x10fb8086 rev=0x01 hdr=0x00</span>
+<span class="go">ix2@pci0:2:0:0: class=0x020000 card=0x00038086 chip=0x10fb8086 rev=0x01 hdr=0x00</span>
+<span class="go">ix3@pci0:2:0:1: class=0x020000 card=0x00038086 chip=0x10fb8086 rev=0x01 hdr=0x00</span>
+</pre></div>
+</div>
+<p>The first column constitutes three components:</p>
+<ol class="arabic simple">
+<li>Device name: <code class="docutils literal"><span class="pre">ixN</span></code></li>
+<li>Unit name: <code class="docutils literal"><span class="pre">pci0</span></code></li>
+<li>Selector (Bus:Device:Function): <code class="docutils literal"><span class="pre">1:0:0</span></code></li>
+</ol>
+<p>Where no driver is associated with a device, the device name will be <code class="docutils literal"><span class="pre">none</span></code>.</p>
+<p>By default, the FreeBSD kernel will include built-in drivers for the most common
+devices; a kernel rebuild would normally be required to either remove the drivers
+or configure them as loadable modules.</p>
+<p>To avoid building a custom kernel, the <code class="docutils literal"><span class="pre">nic_uio</span></code> module can detach a network port
+from its current device driver. This is achieved by setting the <code class="docutils literal"><span class="pre">hw.nic_uio.bdfs</span></code>
+kernel environment variable prior to loading <code class="docutils literal"><span class="pre">nic_uio</span></code>, as follows:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>hw.nic_uio.bdfs=&quot;b:d:f,b:d:f,...&quot;
+</pre></div>
+</div>
+<p>Where a comma separated list of selectors is set, the list must not contain any
+whitespace.</p>
+<p>For example to re-bind <code class="docutils literal"><span class="pre">ix2&#64;pci0:2:0:0</span></code> and <code class="docutils literal"><span class="pre">ix3&#64;pci0:2:0:1</span></code> to the <code class="docutils literal"><span class="pre">nic_uio</span></code> module
+upon loading, use the following command:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>kenv hw.nic_uio.bdfs=&quot;2:0:0,2:0:1&quot;
+</pre></div>
+</div>
+<p>The variable can also be specified during boot by placing the following into
+<code class="docutils literal"><span class="pre">/boot/loader.conf</span></code>, before the previously-described <code class="docutils literal"><span class="pre">nic_uio_load</span></code> line - as
+shown:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>hw.nic_uio.bdfs=&quot;2:0:0,2:0:1&quot;
+nic_uio_load=&quot;YES&quot;
+</pre></div>
+</div>
+</div>
+<div class="section" id="binding-network-ports-back-to-their-original-kernel-driver">
+<h3>3.6.2. Binding Network Ports Back to their Original Kernel Driver</h3>
+<p>If the original driver for a network port has been compiled into the kernel,
+it is necessary to reboot FreeBSD to restore the original device binding. Before
+doing so, update or remove the <code class="docutils literal"><span class="pre">hw.nic_uio.bdfs</span></code> in <code class="docutils literal"><span class="pre">/boot/loader.conf</span></code>.</p>
+<p>If rebinding to a driver that is a loadable module, the network port binding can
+be reset without rebooting. To do so, unload both the target kernel module and the
+<code class="docutils literal"><span class="pre">nic_uio</span></code> module, modify or clear the <code class="docutils literal"><span class="pre">hw.nic_uio.bdfs</span></code> kernel environment (kenv)
+value, and reload the two drivers - first the original kernel driver, and then
+the <code class="docutils literal"><span class="pre">nic_uio</span> <span class="pre">driver</span></code>. Note: the latter does not need to be reloaded unless there are
+ports that are still to be bound to it.</p>
+<p>Example commands to perform these steps are shown below:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">kldunload nic_uio</span>
+<span class="go">kldunload &lt;original_driver&gt;</span>
+
+<span class="gp">#</span> To clear the value completely:
+<span class="go">kenv -u hw.nic_uio.bdfs</span>
+
+<span class="gp">#</span> To update the list of ports to bind:
+<span class="go">kenv hw.nic_uio.bdfs=&quot;b:d:f,b:d:f,...&quot;</span>
+
+<span class="go">kldload &lt;original_driver&gt;</span>
+
+<span class="go">kldload nic_uio  # optional</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="build_sample_apps.html" class="btn btn-neutral float-right" title="4. Compiling and Running Sample Applications" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="install_from_ports.html" class="btn btn-neutral" title="2. Installing DPDK from the Ports Collection" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

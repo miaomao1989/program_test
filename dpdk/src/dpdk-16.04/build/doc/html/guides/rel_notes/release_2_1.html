@@ -1,0 +1,963 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>4. DPDK Release 2.1 &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Release Notes" href="index.html"/>
+        <link rel="next" title="5. DPDK Release 2.0" href="release_2_0.html"/>
+        <link rel="prev" title="3. DPDK Release 2.2" href="release_2_2.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Release Notes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="rel_description.html">1. Description of Release</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_16_04.html">2. DPDK Release 16.04</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_2_2.html">3. DPDK Release 2.2</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4. DPDK Release 2.1</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#new-features">4.1. New Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#resolved-issues">4.2. Resolved Issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#known-issues">4.3. Known Issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#api-changes">4.4. API Changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#abi-changes">4.5. ABI Changes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="release_2_0.html">5. DPDK Release 2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_1_8.html">6. DPDK Release 1.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="supported_os.html">7. Supported Operating Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="known_issues.html">8. Known Issues and Limitations in Legacy Releases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deprecation.html">9. ABI and API Deprecation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Release Notes</a> &raquo;</li>
+      
+    <li>4. DPDK Release 2.1</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/rel_notes/release_2_1.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="dpdk-release-2-1">
+<h1>4. DPDK Release 2.1</h1>
+<div class="section" id="new-features">
+<h2>4.1. New Features</h2>
+<ul>
+<li><p class="first"><strong>Enabled cloning of indirect mbufs.</strong></p>
+<p>This feature removes a limitation of <code class="docutils literal"><span class="pre">rte_pktmbuf_attach()</span></code> which
+generated the warning: &#8220;mbuf we&#8217;re attaching to must be direct&#8221;.</p>
+<p>Now, when attaching to an indirect mbuf it is possible to:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Copy all relevant fields (address, length, offload, ...) as before.</li>
+<li>Get the pointer to the mbuf that embeds the data buffer (direct mbuf),
+and increase the reference counter.</li>
+</ul>
+<p>When detaching the mbuf, we can now retrieve this direct mbuf as the
+pointer is determined from the buffer address.</p>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>Extended packet type support.</strong></p>
+<p>In previous releases mbuf packet types were indicated by 6 bits in the
+<code class="docutils literal"><span class="pre">ol_flags</span></code>. This was not enough for some supported NICs. For example i40e
+hardware can recognize more than 150 packet types. Not being able to
+identify these additional packet types limits access to hardware offload
+capabilities</p>
+<p>So an extended &#8220;unified&#8221; packet type was added to support all possible
+PMDs. The 16 bit packet_type in the mbuf structure was changed to 32 bits
+and used for this purpose.</p>
+<p>To avoid breaking ABI compatibility, the code changes for this feature are
+enclosed in a <code class="docutils literal"><span class="pre">RTE_NEXT_ABI</span></code> ifdef. This is enabled by default but can be
+turned off for ABI compatibility with DPDK R2.0.</p>
+</li>
+<li><p class="first"><strong>Reworked memzone to be allocated by malloc and also support freeing.</strong></p>
+<p>In the memory hierarchy, memsegs are groups of physically contiguous
+hugepages, memzones are slices of memsegs, and malloc slices memzones
+into smaller memory chunks.</p>
+<p>This feature modifies <code class="docutils literal"><span class="pre">malloc()</span></code> so it partitions memsegs instead of
+memzones. Now  memzones allocate their memory from the malloc heap.</p>
+<p>Backward compatibility with API and ABI are maintained.</p>
+<p>This allow memzones, and any other structure based on memzones, for example
+mempools, to be freed. Currently only the API from freeing memzones is
+supported.</p>
+</li>
+<li><p class="first"><strong>Interrupt mode PMD.</strong></p>
+<p>This feature introduces a low-latency one-shot RX interrupt into DPDK. It
+also adds a polling and interrupt mode switch control example.</p>
+<p>DPDK userspace interrupt notification and handling mechanism is based on
+UIO/VFIO with the following limitations:</p>
+<ul class="simple">
+<li>Per queue RX interrupt events are only allowed in VFIO which supports
+multiple MSI-X vectors.</li>
+<li>In UIO, the RX interrupt shares the same vector with other
+interrupts. When the RX interrupt and LSC interrupt are both enabled, only
+the former is available.</li>
+<li>RX interrupt is only implemented for the linuxapp target.</li>
+<li>The feature is only currently enabled for tow PMDs: ixgbe and igb.</li>
+</ul>
+</li>
+<li><p class="first"><strong>Packet Framework enhancements.</strong></p>
+<p>Several enhancements were made to the Packet Framework:</p>
+<ul class="simple">
+<li>A new configuration file syntax has been introduced for IP pipeline
+applications. Parsing of the configuration file is changed.</li>
+<li>Implementation of the IP pipeline application is modified to make it more
+structured and user friendly.</li>
+<li>Implementation of the command line interface (CLI) for each pipeline type
+has been moved to the separate compilation unit. Syntax of pipeline CLI
+commands has been changed.</li>
+<li>Initialization of IP pipeline is modified to match the new parameters
+structure.</li>
+<li>New implementation of pass-through pipeline, firewall pipeline, routing
+pipeline, and flow classification has been added.</li>
+<li>Master pipeline with CLI interface has been added.</li>
+<li>Added extended documentation of the IP Pipeline.</li>
+</ul>
+</li>
+<li><p class="first"><strong>Added API for IEEE1588 timestamping.</strong></p>
+<p>This feature adds an ethdev API to enable, disable and read IEEE1588/802.1AS
+PTP timestamps from devices that support it. The following functions were
+added:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">rte_eth_timesync_enable()</span></code></li>
+<li><code class="docutils literal"><span class="pre">rte_eth_timesync_disable()</span></code></li>
+<li><code class="docutils literal"><span class="pre">rte_eth_timesync_read_rx_timestamp()</span></code></li>
+<li><code class="docutils literal"><span class="pre">rte_eth_timesync_read_tx_timestamp()</span></code></li>
+</ul>
+<p>The &#8220;ieee1588&#8221; forwarding mode in testpmd was also refactored to demonstrate
+the new API.</p>
+</li>
+<li><p class="first"><strong>Added multicast address filtering.</strong></p>
+<p>Added multicast address filtering via a new ethdev function
+<code class="docutils literal"><span class="pre">set_mc_addr_list()</span></code>.</p>
+<p>This overcomes a limitation in previous releases where the receipt of
+multicast packets on a given port could only be enabled by invoking the
+<code class="docutils literal"><span class="pre">rte_eth_allmulticast_enable()</span></code> function. This method did not work for VFs
+in SR-IOV architectures when the host PF driver does not allow these
+operation on VFs. In such cases, joined multicast addresses had to be added
+individually to the set of multicast addresses that are filtered by the [VF]
+port.</p>
+</li>
+<li><p class="first"><strong>Added Flow Director extensions.</strong></p>
+<p>Several Flow Director extensions were added such as:</p>
+<ul class="simple">
+<li>Support for RSS and Flow Director hashes in vector RX.</li>
+<li>Added Flow Director for L2 payload.</li>
+</ul>
+</li>
+<li><p class="first"><strong>Added RSS hash key size query per port.</strong></p>
+<p>This feature supports querying the RSS hash key size of each port. A new
+field <code class="docutils literal"><span class="pre">hash_key_size</span></code> has been added in the <code class="docutils literal"><span class="pre">rte_eth_dev_info</span></code> struct
+for storing hash key size in bytes.</p>
+</li>
+<li><p class="first"><strong>Added userspace ethtool support.</strong></p>
+<p>Added userspace ethtool support to provide a familiar interface for
+applications that manage devices via kernel-space <code class="docutils literal"><span class="pre">ethtool_op</span></code> and
+<code class="docutils literal"><span class="pre">net_device_op</span></code>.</p>
+<p>The initial implementation focuses on operations that can be implemented
+through existing <code class="docutils literal"><span class="pre">netdev</span></code> APIs. More operations will be supported in later
+releases.</p>
+</li>
+<li><p class="first"><strong>Updated the ixgbe base driver.</strong></p>
+<p>The ixgbe base driver was updated with several changes including the
+following:</p>
+<ul class="simple">
+<li>Added a new 82599 device id.</li>
+<li>Added new X550 PHY ids.</li>
+<li>Added SFP+ dual-speed support.</li>
+<li>Added wait helper for X550 IOSF accesses.</li>
+<li>Added X550em features.</li>
+<li>Added X557 PHY LEDs support.</li>
+<li>Commands for flow director.</li>
+<li>Issue firmware command when resetting X550em.</li>
+</ul>
+<p>See the git log for full details of the ixgbe/base changes.</p>
+</li>
+<li><p class="first"><strong>Added additional hotplug support.</strong></p>
+<p>Port hotplug support was added to the following PMDs:</p>
+<ul class="simple">
+<li>e1000/igb.</li>
+<li>ixgbe.</li>
+<li>i40e.</li>
+<li>fm10k.</li>
+<li>ring.</li>
+<li>bonding.</li>
+<li>virtio.</li>
+</ul>
+<p>Port hotplug support was added to BSD.</p>
+</li>
+<li><p class="first"><strong>Added ixgbe LRO support.</strong></p>
+<p>Added LRO support for x540 and 82599 devices.</p>
+</li>
+<li><p class="first"><strong>Added extended statistics for ixgbe.</strong></p>
+<p>Implemented <code class="docutils literal"><span class="pre">xstats_get()</span></code> and <code class="docutils literal"><span class="pre">xstats_reset()</span></code> in dev_ops for
+ixgbe to expose detailed error statistics to DPDK applications.</p>
+<p>These will be implemented for other PMDs in later releases.</p>
+</li>
+<li><p class="first"><strong>Added proc_info application.</strong></p>
+<p>Created a new <code class="docutils literal"><span class="pre">proc_info</span></code> application, by refactoring the existing
+<code class="docutils literal"><span class="pre">dump_cfg</span></code> application, to demonstrate the usage of retrieving statistics,
+and the new extended statistics (see above), for DPDK interfaces.</p>
+</li>
+<li><p class="first"><strong>Updated the i40e base driver.</strong></p>
+<p>The i40e base driver was updated with several changes including the
+following:</p>
+<ul class="simple">
+<li>Support for building both PF and VF driver together.</li>
+<li>Support for CEE DCBX on recent firmware versions.</li>
+<li>Replacement of <code class="docutils literal"><span class="pre">i40e_debug_read_register()</span></code>.</li>
+<li>Rework of <code class="docutils literal"><span class="pre">i40e_hmc_get_object_va</span></code>.</li>
+<li>Update of shadow RAM read/write functions.</li>
+<li>Enhancement of polling NVM semaphore.</li>
+<li>Enhancements on adminq init and sending asq command.</li>
+<li>Update of get/set LED functions.</li>
+<li>Addition of AOC phy types to case statement in get_media_type.</li>
+<li>Support for iSCSI capability.</li>
+<li>Setting of FLAG_RD when sending driver version to FW.</li>
+</ul>
+<p>See the git log for full details of the i40e/base changes.</p>
+</li>
+<li><p class="first"><strong>Added support for port mirroring in i40e.</strong></p>
+<p>Enabled mirror functionality in the i40e driver.</p>
+</li>
+<li><p class="first"><strong>Added support for i40e double VLAN, QinQ, stripping and insertion.</strong></p>
+<p>Added support to the i40e driver for offloading double VLAN (QinQ) tags to
+the mbuf header, and inserting double vlan tags by hardware to the packets
+to be transmitted.  Added a new field <code class="docutils literal"><span class="pre">vlan_tci_outer</span></code> in the <code class="docutils literal"><span class="pre">rte_mbuf</span></code>
+struct, and new flags in <code class="docutils literal"><span class="pre">ol_flags</span></code> to support this feature.</p>
+</li>
+<li><p class="first"><strong>Added fm10k promiscuous mode support.</strong></p>
+<p>Added support for promiscuous/allmulticast enable and disable in the fm10k PF
+function. VF is not supported yet.</p>
+</li>
+<li><p class="first"><strong>Added fm10k jumbo frame support.</strong></p>
+<p>Added support for jumbo frame less than 15K in both VF and PF functions in the
+fm10k pmd.</p>
+</li>
+<li><p class="first"><strong>Added fm10k mac vlan filtering support.</strong></p>
+<p>Added support for the fm10k MAC filter, only available in PF. Updated the
+VLAN filter to add/delete one static entry in the MAC table for each
+combination of VLAN and MAC address.</p>
+</li>
+<li><p class="first"><strong>Added support for the Broadcom bnx2x driver.</strong></p>
+<p>Added support for the Broadcom NetXtreme II bnx2x driver.
+It is supported only on Linux 64-bit and disabled by default.</p>
+</li>
+<li><p class="first"><strong>Added support for the Chelsio CXGBE driver.</strong></p>
+<p>Added support for the CXGBE Poll Mode Driver for the Chelsio Terminator 5
+series of 10G/40G adapters.</p>
+</li>
+<li><p class="first"><strong>Enhanced support for Mellanox ConnectX-3 driver (mlx4).</strong></p>
+<ul class="simple">
+<li>Support Mellanox OFED 3.0.</li>
+<li>Improved performance for both RX and TX operations.</li>
+<li>Better link status information.</li>
+<li>Outer L3/L4 checksum offload support.</li>
+<li>Inner L3/L4 checksum offload support for VXLAN.</li>
+</ul>
+</li>
+<li><p class="first"><strong>Enabled VMXNET3 vlan filtering.</strong></p>
+<p>Added support for the VLAN filter functionality of the VMXNET3 interface.</p>
+</li>
+<li><p class="first"><strong>Added support for vhost live migration.</strong></p>
+<p>Added support to allow live migration of vhost. Without this feature, qemu
+will report the following error: &#8220;migrate: Migration disabled: vhost lacks
+VHOST_F_LOG_ALL feature&#8221;.</p>
+</li>
+<li><p class="first"><strong>Added support for pcap jumbo frames.</strong></p>
+<p>Extended the PCAP PMD to support jumbo frames for RX and TX.</p>
+</li>
+<li><p class="first"><strong>Added support for the TILE-Gx architecture.</strong></p>
+<p>Added support for the EZchip TILE-Gx family of SoCs.</p>
+</li>
+<li><p class="first"><strong>Added hardware memory transactions/lock elision for x86.</strong></p>
+<p>Added the use of hardware memory transactions (HTM) on fast-path for rwlock
+and spinlock (a.k.a. lock elision). The methods are implemented for x86
+using Restricted Transactional Memory instructions (Intel(r) Transactional
+Synchronization Extensions). The implementation fall-backs to the normal
+rwlock if HTM is not available or memory transactions fail. This is not a
+replacement for all rwlock usages since not all critical sections protected
+by locks are friendly to HTM. For example, an attempt to perform a HW I/O
+operation inside a hardware memory transaction always aborts the transaction
+since the CPU is not able to roll-back should the transaction
+fail. Therefore, hardware transactional locks are not advised to be used
+around <code class="docutils literal"><span class="pre">rte_eth_rx_burst()</span></code> and <code class="docutils literal"><span class="pre">rte_eth_tx_burst()</span></code> calls.</p>
+</li>
+<li><p class="first"><strong>Updated Jenkins Hash function</strong></p>
+<p>Updated the version of the Jenkins Hash (jhash) function used in DPDK from
+the 1996 version to the 2006 version. This gives up to 35% better
+performance, compared to the original one.</p>
+<p>Note, the hashes generated by the updated version differ from the hashes
+generated by the previous version.</p>
+</li>
+<li><p class="first"><strong>Added software implementation of the Toeplitz RSS hash</strong></p>
+<p>Added a software implementation of the Toeplitz hash function used by RSS. It
+can be used either for packet distribution on a single queue NIC or for
+simulating RSS computation on a specific NIC (for example after GRE header
+de-encapsulation).</p>
+</li>
+<li><p class="first"><strong>Replaced the existing hash library with a Cuckoo hash implementation.</strong></p>
+<p>Replaced the existing hash library with another approach, using the Cuckoo
+Hash method to resolve collisions (open addressing). This method pushes
+items from a full bucket when a new entry must be added to it, storing the
+evicted entry in an alternative location, using a secondary hash function.</p>
+<p>This gives the user the ability to store more entries when a bucket is full,
+in comparison with the previous implementation.</p>
+<p>The API has not been changed, although new fields have been added in the
+<code class="docutils literal"><span class="pre">rte_hash</span></code> structure, which has been changed to internal use only.</p>
+<p>The main change when creating a new table is that the number of entries per
+bucket is now fixed, so its parameter is ignored now (it is still there to
+maintain the same parameters structure).</p>
+<p>Also, the maximum burst size in lookup_burst function hash been increased to
+64, to improve performance.</p>
+</li>
+<li><p class="first"><strong>Optimized KNI RX burst size computation.</strong></p>
+<p>Optimized KNI RX burst size computation by avoiding checking how many
+entries are in <code class="docutils literal"><span class="pre">kni-&gt;rx_q</span></code> prior to actually pulling them from the fifo.</p>
+</li>
+<li><p class="first"><strong>Added KNI multicast.</strong></p>
+<p>Enabled adding multicast addresses to KNI interfaces by adding an empty
+callback for <code class="docutils literal"><span class="pre">set_rx_mode</span></code> (typically used for setting up hardware) so
+that the ioctl succeeds. This is the same thing as the Linux tap interface
+does.</p>
+</li>
+<li><p class="first"><strong>Added cmdline polling mode.</strong></p>
+<p>Added the ability to process console input in the same thread as packet
+processing by using the <code class="docutils literal"><span class="pre">poll()</span></code> function.</p>
+</li>
+<li><p class="first"><strong>Added VXLAN Tunnel End point sample application.</strong></p>
+<p>Added a Tunnel End point (TEP) sample application that simulates a VXLAN
+Tunnel Endpoint (VTEP) termination in DPDK. It is used to demonstrate the
+offload and filtering capabilities of Intel XL710 10/40 GbE NICsfor VXLAN
+packets.</p>
+</li>
+<li><p class="first"><strong>Enabled combining of the ``-m`` and ``&#8211;no-huge`` EAL options.</strong></p>
+<p>Added option to allow combining of the <code class="docutils literal"><span class="pre">-m</span></code> and <code class="docutils literal"><span class="pre">--no-huge</span></code> EAL command
+line options.</p>
+<p>This allows user application to run as non-root but with higher memory
+allocations, and removes a constraint on <code class="docutils literal"><span class="pre">--no-huge</span></code> mode being limited to
+64M.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="resolved-issues">
+<h2>4.2. Resolved Issues</h2>
+<ul>
+<li><p class="first"><strong>acl: Fix ambiguity between test rules.</strong></p>
+<p>Some test rules had equal priority for the same category. That could cause
+an ambiguity in building the trie and test results.</p>
+</li>
+<li><p class="first"><strong>acl: Fix invalid rule wildness calculation for bitmask field type.</strong></p>
+</li>
+<li><p class="first"><strong>acl: Fix matching rule.</strong></p>
+</li>
+<li><p class="first"><strong>acl: Fix unneeded trie splitting for subset of rules.</strong></p>
+<p>When rebuilding a trie for limited rule-set, don&#8217;t try to split the rule-set
+even further.</p>
+</li>
+<li><p class="first"><strong>app/testpmd: Fix crash when port id out of bound.</strong></p>
+<p>Fixed issues in testpmd where using a port greater than 32 would cause a seg
+fault.</p>
+<p>Fixes: edab33b1c01d (&#8220;app/testpmd: support port hotplug&#8221;)</p>
+</li>
+<li><p class="first"><strong>app/testpmd: Fix reply to a multicast ICMP request.</strong></p>
+<p>Set the IP source and destination addresses in the IP header of the ICMP
+reply.</p>
+</li>
+<li><p class="first"><strong>app/testpmd: fix MAC address in ARP reply.</strong></p>
+<p>Fixed issue where in the <code class="docutils literal"><span class="pre">icmpecho</span></code> forwarding mode, ARP replies from
+testpmd contain invalid zero-filled MAC addresses.</p>
+<p>Fixes: 31db4d38de72 (&#8220;net: change arp header struct declaration&#8221;)</p>
+</li>
+<li><p class="first"><strong>app/testpmd: fix default flow control values.</strong></p>
+<p>Fixes: 422a20a4e62d (&#8220;app/testpmd: fix uninitialized flow control variables&#8221;)</p>
+</li>
+<li><p class="first"><strong>bonding: Fix crash when stopping inactive slave.</strong></p>
+</li>
+<li><p class="first"><strong>bonding: Fix device initialization error handling.</strong></p>
+</li>
+<li><p class="first"><strong>bonding: Fix initial link status of slave.</strong></p>
+<p>On Fortville NIC, link status change interrupt callback was not executed
+when slave in bonding was (re-)started.</p>
+</li>
+<li><p class="first"><strong>bonding: Fix socket id for LACP slave.</strong></p>
+<p>Fixes: 46fb43683679 (&#8220;bond: add mode 4&#8221;)</p>
+</li>
+<li><p class="first"><strong>bonding: Fix device initialization error handling.</strong></p>
+</li>
+<li><p class="first"><strong>cmdline: Fix small memory leak.</strong></p>
+<p>A function in <code class="docutils literal"><span class="pre">cmdline.c</span></code> had a return that did not free the buf properly.</p>
+</li>
+<li><p class="first"><strong>config: Enable same drivers options for Linux and BSD.</strong></p>
+<p>Enabled vector ixgbe and i40e bulk alloc for BSD as it is already done for
+Linux.</p>
+<p>Fixes: 304caba12643 (&#8220;config: fix bsd options&#8221;)
+Fixes: 0ff3324da2eb (&#8220;ixgbe: rework vector pmd following mbuf changes&#8221;)</p>
+</li>
+<li><p class="first"><strong>devargs: Fix crash on failure.</strong></p>
+<p>This problem occurred when passing an invalid PCI id to the blacklist API in
+devargs.</p>
+</li>
+<li><p class="first"><strong>e1000/i40e: Fix descriptor done flag with odd address.</strong></p>
+</li>
+<li><p class="first"><strong>e1000/igb: fix ieee1588 timestamping initialization.</strong></p>
+<p>Fixed issue with e1000 ieee1588 timestamp initialization. On initialization
+the IEEE1588 functions read the system time to set their timestamp. However,
+on some 1G NICs, for example, i350, system time is disabled by default and
+the IEEE1588 timestamp was always 0.</p>
+</li>
+<li><p class="first"><strong>eal/bsd: Fix inappropriate header guards.</strong></p>
+</li>
+<li><p class="first"><strong>eal/bsd: Fix virtio on FreeBSD.</strong></p>
+<p>Closing the <code class="docutils literal"><span class="pre">/dev/io</span></code> fd caused a SIGBUS in inb/outb instructions as the
+process lost the IOPL privileges once the fd is closed.</p>
+<p>Fixes: 8a312224bcde (&#8220;eal/bsd: fix fd leak&#8221;)</p>
+</li>
+<li><p class="first"><strong>eal/linux: Fix comments on vfio MSI.</strong></p>
+</li>
+<li><p class="first"><strong>eal/linux: Fix irq handling with igb_uio.</strong></p>
+<p>Fixed an issue where the the introduction of <code class="docutils literal"><span class="pre">uio_pci_generic</span></code> broke
+interrupt handling with igb_uio.</p>
+<p>Fixes: c112df6875a5 (&#8220;eal/linux: toggle interrupt for uio_pci_generic&#8221;)</p>
+</li>
+<li><p class="first"><strong>eal/linux: Fix numa node detection.</strong></p>
+</li>
+<li><p class="first"><strong>eal/linux: Fix socket value for undetermined numa node.</strong></p>
+<p>Sets zero as the default value of pci device numa_node if the socket could
+not be determined. This provides the same default value as FreeBSD which has
+no NUMA support, and makes the return value of <code class="docutils literal"><span class="pre">rte_eth_dev_socket_id()</span></code>
+be consistent with the API description.</p>
+</li>
+<li><p class="first"><strong>eal/ppc: Fix cpu cycle count for little endian.</strong></p>
+<p>On IBM POWER8 PPC64 little endian architecture, the definition of tsc union
+will be different. This fix enables the right output from <code class="docutils literal"><span class="pre">rte_rdtsc()</span></code>.</p>
+</li>
+<li><p class="first"><strong>ethdev: Fix check of threshold for TX freeing.</strong></p>
+<p>Fixed issue where the parameter to <code class="docutils literal"><span class="pre">tx_free_thresh</span></code> was not consistent
+between the drivers.</p>
+</li>
+<li><p class="first"><strong>ethdev: Fix crash if malloc of user callback fails.</strong></p>
+<p>If <code class="docutils literal"><span class="pre">rte_zmalloc()</span></code> failed in <code class="docutils literal"><span class="pre">rte_eth_dev_callback_register</span></code> then the
+NULL pointer would be dereferenced.</p>
+</li>
+<li><p class="first"><strong>ethdev: Fix illegal port access.</strong></p>
+<p>To obtain a detachable flag, <code class="docutils literal"><span class="pre">pci_drv</span></code> is accessed in
+<code class="docutils literal"><span class="pre">rte_eth_dev_is_detachable()</span></code>. However <code class="docutils literal"><span class="pre">pci_drv</span></code> is only valid if port
+is enabled. Fixed by checking <code class="docutils literal"><span class="pre">rte_eth_dev_is_valid_port()</span></code> first.</p>
+</li>
+<li><p class="first"><strong>ethdev: Make tables const.</strong></p>
+</li>
+<li><p class="first"><strong>ethdev: Rename and extend the mirror type.</strong></p>
+</li>
+<li><p class="first"><strong>examples/distributor: Fix debug macro.</strong></p>
+<p>The macro to turn on additional debug output when the app was compiled with
+<code class="docutils literal"><span class="pre">-DDEBUG</span></code> was broken.</p>
+<p>Fixes: 07db4a975094 (&#8220;examples/distributor: new sample app&#8221;)</p>
+</li>
+<li><p class="first"><strong>examples/kni: Fix crash on exit.</strong></p>
+</li>
+<li><p class="first"><strong>examples/vhost: Fix build with debug enabled.</strong></p>
+<p>Fixes: 72ec8d77ac68 (&#8220;examples/vhost: rework duplicated code&#8221;)</p>
+</li>
+<li><p class="first"><strong>fm10k: Fix RETA table initialization.</strong></p>
+<p>The fm10k driver has 128 RETA entries in 32 registers, but it only
+initialized the first 32 when doing multiple RX queue configurations. This
+fix initializes all 128 entries.</p>
+</li>
+<li><p class="first"><strong>fm10k: Fix RX buffer size.</strong></p>
+</li>
+<li><p class="first"><strong>fm10k: Fix TX multi-segment frame.</strong></p>
+</li>
+<li><p class="first"><strong>fm10k: Fix TX queue cleaning after start error.</strong></p>
+</li>
+<li><p class="first"><strong>fm10k: Fix Tx queue cleaning after start error.</strong></p>
+</li>
+<li><p class="first"><strong>fm10k: Fix default mac/vlan in switch.</strong></p>
+</li>
+<li><p class="first"><strong>fm10k: Fix interrupt fault handling.</strong></p>
+</li>
+<li><p class="first"><strong>fm10k: Fix jumbo frame issue.</strong></p>
+</li>
+<li><p class="first"><strong>fm10k: Fix mac/vlan filtering.</strong></p>
+</li>
+<li><p class="first"><strong>fm10k: Fix maximum VF number.</strong></p>
+</li>
+<li><p class="first"><strong>fm10k: Fix maximum queue number for VF.</strong></p>
+<p>Both PF and VF shared code in function <code class="docutils literal"><span class="pre">fm10k_stats_get()</span></code>. The function
+worked with PF, but had problems with VF since it has less queues than PF.</p>
+<p>Fixes: a6061d9e7075 (&#8220;fm10k: register PF driver&#8221;)</p>
+</li>
+<li><p class="first"><strong>fm10k: Fix queue disabling.</strong></p>
+</li>
+<li><p class="first"><strong>fm10k: Fix switch synchronization.</strong></p>
+</li>
+<li><p class="first"><strong>i40e/base: Fix error handling of NVM state update.</strong></p>
+</li>
+<li><p class="first"><strong>i40e/base: Fix hardware port number for pass-through.</strong></p>
+</li>
+<li><p class="first"><strong>i40e/base: Rework virtual address retrieval for lan queue.</strong></p>
+</li>
+<li><p class="first"><strong>i40e/base: Update LED blinking.</strong></p>
+</li>
+<li><p class="first"><strong>i40e/base: Workaround for PHY type with firmware &lt; 4.4.</strong></p>
+</li>
+<li><p class="first"><strong>i40e: Disable setting of PHY configuration.</strong></p>
+</li>
+<li><p class="first"><strong>i40e: Fix SCTP flow director.</strong></p>
+</li>
+<li><p class="first"><strong>i40e: Fix check of descriptor done flag.</strong></p>
+<p>Fixes: 4861cde46116 (&#8220;i40e: new poll mode driver&#8221;)
+Fixes: 05999aab4ca6 (&#8220;i40e: add or delete flow director&#8221;)</p>
+</li>
+<li><p class="first"><strong>i40e: Fix condition to get VMDQ info.</strong></p>
+</li>
+<li><p class="first"><strong>i40e: Fix registers access from big endian CPU.</strong></p>
+</li>
+<li><p class="first"><strong>i40evf: Clear command when error occurs.</strong></p>
+</li>
+<li><p class="first"><strong>i40evf: Fix RSS with less RX queues than TX queues.</strong></p>
+</li>
+<li><p class="first"><strong>i40evf: Fix crash when setup TX queues.</strong></p>
+</li>
+<li><p class="first"><strong>i40evf: Fix jumbo frame support.</strong></p>
+</li>
+<li><p class="first"><strong>i40evf: Fix offload capability flags.</strong></p>
+<p>Added checksum offload capability flags which have already been supported
+for a long time.</p>
+</li>
+<li><p class="first"><strong>ivshmem: Fix crash in corner case.</strong></p>
+<p>Fixed issues where depending on the configured segments it was possible to
+hit a segmentation fault as a result of decrementing an unsigned index with
+value 0.</p>
+<p>Fixes: 40b966a211ab (&#8220;ivshmem: library changes for mmaping using ivshmem&#8221;)</p>
+</li>
+<li><p class="first"><strong>ixgbe/base: Fix SFP probing.</strong></p>
+</li>
+<li><p class="first"><strong>ixgbe/base: Fix TX pending clearing.</strong></p>
+</li>
+<li><p class="first"><strong>ixgbe/base: Fix X550 CS4227 address.</strong></p>
+</li>
+<li><p class="first"><strong>ixgbe/base: Fix X550 PCIe master disabling.</strong></p>
+</li>
+<li><p class="first"><strong>ixgbe/base: Fix X550 check.</strong></p>
+</li>
+<li><p class="first"><strong>ixgbe/base: Fix X550 init early return.</strong></p>
+</li>
+<li><p class="first"><strong>ixgbe/base: Fix X550 link speed.</strong></p>
+</li>
+<li><p class="first"><strong>ixgbe/base: Fix X550em CS4227 speed mode.</strong></p>
+</li>
+<li><p class="first"><strong>ixgbe/base: Fix X550em SFP+ link stability.</strong></p>
+</li>
+<li><p class="first"><strong>ixgbe/base: Fix X550em UniPHY link configuration.</strong></p>
+</li>
+<li><p class="first"><strong>ixgbe/base: Fix X550em flow control for KR backplane.</strong></p>
+</li>
+<li><p class="first"><strong>ixgbe/base: Fix X550em flow control to be KR only.</strong></p>
+</li>
+<li><p class="first"><strong>ixgbe/base: Fix X550em link setup without SFP.</strong></p>
+</li>
+<li><p class="first"><strong>ixgbe/base: Fix X550em mux after MAC reset.</strong></p>
+<p>Fixes: d2e72774e58c (&#8220;ixgbe/base: support X550&#8221;)</p>
+</li>
+<li><p class="first"><strong>ixgbe/base: Fix bus type overwrite.</strong></p>
+</li>
+<li><p class="first"><strong>ixgbe/base: Fix init handling of X550em link down.</strong></p>
+</li>
+<li><p class="first"><strong>ixgbe/base: Fix lan id before first i2c access.</strong></p>
+</li>
+<li><p class="first"><strong>ixgbe/base: Fix mac type checks.</strong></p>
+</li>
+<li><p class="first"><strong>ixgbe/base: Fix tunneled UDP and TCP frames in flow director.</strong></p>
+</li>
+<li><p class="first"><strong>ixgbe: Check mbuf refcnt when clearing a ring.</strong></p>
+<p>The function to clear the TX ring when a port was being closed, e.g. on exit
+in testpmd, was not checking the mbuf refcnt before freeing it. Since the
+function in the vector driver to clear the ring after TX does not setting
+the pointer to NULL post-free, this caused crashes if mbuf debugging was
+turned on.</p>
+</li>
+<li><p class="first"><strong>ixgbe: Fix RX with buffer address not word aligned.</strong></p>
+<p>Niantic HW expects the Header Buffer Address in the RXD must be word
+aligned.</p>
+</li>
+<li><p class="first"><strong>ixgbe: Fix RX with buffer address not word aligned.</strong></p>
+</li>
+<li><p class="first"><strong>ixgbe: Fix Rx queue reset.</strong></p>
+<p>Fix to reset vector related RX queue fields to their initial values.</p>
+<p>Fixes: c95584dc2b18 (&#8220;ixgbe: new vectorized functions for Rx/Tx&#8221;)</p>
+</li>
+<li><p class="first"><strong>ixgbe: Fix TSO in IPv6.</strong></p>
+<p>When TSO was used with IPv6, the generated frames were incorrect. The L4
+frame was OK, but the length field of IPv6 header was not populated
+correctly.</p>
+</li>
+<li><p class="first"><strong>ixgbe: Fix X550 flow director check.</strong></p>
+</li>
+<li><p class="first"><strong>ixgbe: Fix check for split packets.</strong></p>
+<p>The check for split packets to be reassembled in the vector ixgbe PMD was
+incorrectly only checking the first 16 elements of the array instead of
+all 32.</p>
+<p>Fixes: cf4b4708a88a (&#8220;ixgbe: improve slow-path perf with vector scattered Rx&#8221;)</p>
+</li>
+<li><p class="first"><strong>ixgbe: Fix data access on big endian cpu.</strong></p>
+</li>
+<li><p class="first"><strong>ixgbe: Fix flow director flexbytes offset.</strong></p>
+<p>Fixes: d54a9888267c (&#8220;ixgbe: support flexpayload configuration of flow director&#8221;)</p>
+</li>
+<li><p class="first"><strong>ixgbe: Fix number of segments with vector scattered Rx.</strong></p>
+<p>Fixes: cf4b4708a88a (ixgbe: improve slow-path perf with vector scattered Rx)</p>
+</li>
+<li><p class="first"><strong>ixgbe: Fix offload config option name.</strong></p>
+<p>The RX_OLFLAGS option was renamed from DISABLE to ENABLE in the driver code
+and Linux config. It is now renamed also in the BSD config and
+documentation.</p>
+<p>Fixes: 359f106a69a9 (&#8220;ixgbe: prefer enabling olflags rather than not disabling&#8221;)</p>
+</li>
+<li><p class="first"><strong>ixgbe: Fix release queue mbufs.</strong></p>
+<p>The calculations of what mbufs were valid in the RX and TX queues were
+incorrect when freeing the mbufs for the vector PMD. This led to crashes due
+to invalid reference counts when mbuf debugging was turned on, and possibly
+other more subtle problems (such as mbufs being freed when in use) in other
+cases.</p>
+<p>Fixes: c95584dc2b18 (&#8220;ixgbe: new vectorized functions for Rx/Tx&#8221;)</p>
+</li>
+<li><p class="first"><strong>ixgbe: Move PMD specific fields out of base driver.</strong></p>
+<p>Move <code class="docutils literal"><span class="pre">rx_bulk_alloc_allowed</span></code> and <code class="docutils literal"><span class="pre">rx_vec_allowed</span></code> from <code class="docutils literal"><span class="pre">ixgbe_hw</span></code> to
+<code class="docutils literal"><span class="pre">ixgbe_adapter</span></code>.</p>
+<p>Fixes: 01fa1d6215fa (&#8220;ixgbe: unify Rx setup&#8221;)</p>
+</li>
+<li><p class="first"><strong>ixgbe: Rename TX queue release function.</strong></p>
+</li>
+<li><p class="first"><strong>ixgbevf: Fix RX function selection.</strong></p>
+<p>The logic to select ixgbe the VF RX function is different than the PF.</p>
+</li>
+<li><p class="first"><strong>ixgbevf: Fix link status for PF up/down events.</strong></p>
+</li>
+<li><p class="first"><strong>kni: Fix RX loop limit.</strong></p>
+<p>Loop processing packets dequeued from rx_q was using the number of packets
+requested, not how many it actually received.</p>
+</li>
+<li><p class="first"><strong>kni: Fix ioctl in containers, like Docker.</strong></p>
+</li>
+<li><p class="first"><strong>kni: Fix multicast ioctl handling.</strong></p>
+</li>
+<li><p class="first"><strong>log: Fix crash after log_history dump.</strong></p>
+</li>
+<li><p class="first"><strong>lpm: Fix big endian support.</strong></p>
+</li>
+<li><p class="first"><strong>lpm: Fix depth small entry add.</strong></p>
+</li>
+<li><p class="first"><strong>mbuf: Fix cloning with private mbuf data.</strong></p>
+<p>Added a new <code class="docutils literal"><span class="pre">priv_size</span></code> field in mbuf structure that should be initialized
+at mbuf pool creation. This field contains the size of the application
+private data in mbufs.</p>
+<p>Introduced new static inline functions <code class="docutils literal"><span class="pre">rte_mbuf_from_indirect()</span></code> and
+<code class="docutils literal"><span class="pre">rte_mbuf_to_baddr()</span></code> to replace the existing macros, which take the
+private size into account when attaching and detaching mbufs.</p>
+</li>
+<li><p class="first"><strong>mbuf: Fix data room size calculation in pool init.</strong></p>
+<p>Deduct the mbuf data room size from <code class="docutils literal"><span class="pre">mempool-&gt;elt_size</span></code> and <code class="docutils literal"><span class="pre">priv_size</span></code>,
+instead of using an hardcoded value that is not related to the real buffer
+size.</p>
+<p>To use <code class="docutils literal"><span class="pre">rte_pktmbuf_pool_init()</span></code>, the user can either:</p>
+<ul class="simple">
+<li>Give a NULL parameter to rte_pktmbuf_pool_init(): in this case, the
+private size is assumed to be 0, and the room size is <code class="docutils literal"><span class="pre">mp-&gt;elt_size</span></code> -
+<code class="docutils literal"><span class="pre">sizeof(struct</span> <span class="pre">rte_mbuf)</span></code>.</li>
+<li>Give the <code class="docutils literal"><span class="pre">rte_pktmbuf_pool_private</span></code> filled with appropriate
+data_room_size and priv_size values.</li>
+</ul>
+</li>
+<li><p class="first"><strong>mbuf: Fix init when private size is not zero.</strong></p>
+<p>Allow the user to use the default <code class="docutils literal"><span class="pre">rte_pktmbuf_init()</span></code> function even if
+the mbuf private size is not 0.</p>
+</li>
+<li><p class="first"><strong>mempool: Add structure for object headers.</strong></p>
+<p>Each object stored in mempools are prefixed by a header, allowing for
+instance to retrieve the mempool pointer from the object. When debug is
+enabled, a cookie is also added in this header that helps to detect
+corruptions and double-frees.</p>
+<p>Introduced a structure that materializes the content of this header,
+and will simplify future patches adding things in this header.</p>
+</li>
+<li><p class="first"><strong>mempool: Fix pages computation to determine number of objects.</strong></p>
+</li>
+<li><p class="first"><strong>mempool: Fix returned value after counting objects.</strong></p>
+<p>Fixes: 148f963fb532 (&#8220;xen: core library changes&#8221;)</p>
+</li>
+<li><p class="first"><strong>mlx4: Avoid requesting TX completion events to improve performance.</strong></p>
+<p>Instead of requesting a completion event for each TX burst, request it on a
+fixed schedule once every MLX4_PMD_TX_PER_COMP_REQ (currently 64) packets to
+improve performance.</p>
+</li>
+<li><p class="first"><strong>mlx4: Fix compilation as a shared library and on 32 bit platforms.</strong></p>
+</li>
+<li><p class="first"><strong>mlx4: Fix possible crash on scattered mbuf allocation failure.</strong></p>
+<p>Fixes issue where failing to allocate a segment, <code class="docutils literal"><span class="pre">mlx4_rx_burst_sp()</span></code>
+could call <code class="docutils literal"><span class="pre">rte_pktmbuf_free()</span></code> on an incomplete scattered mbuf whose next
+pointer in the last segment is not set.</p>
+</li>
+<li><p class="first"><strong>mlx4: Fix support for multiple vlan filters.</strong></p>
+<p>This fixes the &#8220;Multiple RX VLAN filters can be configured, but only the
+first one works&#8221; bug.</p>
+</li>
+<li><p class="first"><strong>pcap: Fix storage of name and type in queues.</strong></p>
+<p>pcap_rx_queue/pcap_tx_queue should store it&#8217;s own copy of name/type values,
+not the pointer to temporary allocated space.</p>
+</li>
+<li><p class="first"><strong>pci: Fix memory leaks and needless increment of map address.</strong></p>
+</li>
+<li><p class="first"><strong>pci: Fix uio mapping differences between linux and bsd.</strong></p>
+</li>
+<li><p class="first"><strong>port: Fix unaligned access to metadata.</strong></p>
+<p>Fix RTE_MBUF_METADATA macros to allow for unaligned accesses to meta-data
+fields.</p>
+</li>
+<li><p class="first"><strong>ring: Fix return of new port id on creation.</strong></p>
+</li>
+<li><p class="first"><strong>timer: Fix race condition.</strong></p>
+<p>Eliminate problematic race condition in <code class="docutils literal"><span class="pre">rte_timer_manage()</span></code> that can lead
+to corruption of per-lcore pending-lists (implemented as skip-lists).</p>
+</li>
+<li><p class="first"><strong>vfio: Fix overflow of BAR region offset and size.</strong></p>
+<p>Fixes: 90a1633b2347 (&#8220;eal/Linux: allow to map BARs with MSI-X tables&#8221;)</p>
+</li>
+<li><p class="first"><strong>vhost: Fix enqueue/dequeue to handle chained vring descriptors.</strong></p>
+</li>
+<li><p class="first"><strong>vhost: Fix race for connection fd.</strong></p>
+</li>
+<li><p class="first"><strong>vhost: Fix virtio freeze due to missed interrupt.</strong></p>
+</li>
+<li><p class="first"><strong>virtio: Fix crash if CQ is not negotiated.</strong></p>
+<p>Fix NULL dereference if virtio control queue is not negotiated.</p>
+</li>
+<li><p class="first"><strong>virtio: Fix ring size negotiation.</strong></p>
+<p>Negotiate the virtio ring size. The host may allow for very large rings but
+application may only want a smaller ring. Conversely, if the number of
+descriptors requested exceeds the virtio host queue size, then just silently
+use the smaller host size.</p>
+<p>This fixes issues with virtio in non-QEMU environments. For example Google
+Compute Engine allows up to 16K elements in ring.</p>
+</li>
+<li><p class="first"><strong>vmxnet3: Fix link state handling.</strong></p>
+</li>
+</ul>
+</div>
+<div class="section" id="known-issues">
+<h2>4.3. Known Issues</h2>
+<ul class="simple">
+<li>When running the <code class="docutils literal"><span class="pre">vmdq</span></code> sample or <code class="docutils literal"><span class="pre">vhost</span></code> sample applications with the
+Intel(R) XL710 (i40e) NIC, the configuration option
+<code class="docutils literal"><span class="pre">CONFIG_RTE_MAX_QUEUES_PER_PORT</span></code> should be increased from 256 to 1024.</li>
+<li>VM power manager may not work on systems with more than 64 cores.</li>
+</ul>
+</div>
+<div class="section" id="api-changes">
+<h2>4.4. API Changes</h2>
+<ul class="simple">
+<li>The order that user supplied RX and TX callbacks are called in has been
+changed to the order that they were added (fifo) in line with end-user
+expectations. The previous calling order was the reverse of this (lifo) and
+was counter intuitive for users. The actual API is unchanged.</li>
+</ul>
+</div>
+<div class="section" id="abi-changes">
+<h2>4.5. ABI Changes</h2>
+<ul class="simple">
+<li>The <code class="docutils literal"><span class="pre">rte_hash</span></code> structure has been changed to internal use only.</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="release_2_0.html" class="btn btn-neutral float-right" title="5. DPDK Release 2.0" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="release_2_2.html" class="btn btn-neutral" title="3. DPDK Release 2.2" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

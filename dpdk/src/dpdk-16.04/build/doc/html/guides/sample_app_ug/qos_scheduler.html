@@ -1,0 +1,555 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>25. QoS Scheduler Sample Application &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Sample Applications User Guide" href="index.html"/>
+        <link rel="next" title="26. Intel® QuickAssist Technology Sample Application" href="intel_quickassist.html"/>
+        <link rel="prev" title="24. QoS Metering Sample Application" href="qos_metering.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Sample Applications User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmd_line.html">2. Command Line Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethtool.html">3. Ethtool Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exception_path.html">4. Exception Path Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello_world.html">5. Hello World Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skeleton.html">6. Basic Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rxtx_callbacks.html">7. RX/TX Callbacks Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_frag.html">8. IP Fragmentation Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipv4_multicast.html">9. IPv4 Multicast Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_reassembly.html">10. IP Reassembly Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">11. Kernel NIC Interface Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keep_alive.html">12. Keep Alive Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_crypto.html">13. L2 Forwarding with Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_job_stats.html">14. L2 Forwarding Sample Application (in Real and Virtualized Environments) with core load statistics.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_real_virtual.html">15. L2 Forwarding Sample Application (in Real and Virtualized Environments)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_cat.html">16. L2 Forwarding Sample Application with Cache Allocation Technology (CAT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward.html">17. L3 Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_power_man.html">18. L3 Forwarding with Power Management Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_access_ctrl.html">19. L3 Forwarding with Access Control Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_virtual.html">20. L3 Forwarding in a Virtualization Environment Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_status_intr.html">21. Link Status Interrupt Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="load_balancer.html">22. Load Balancer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_process.html">23. Multi-process Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_metering.html">24. QoS Metering Sample Application</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">25. QoS Scheduler Sample Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">25.1. Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compiling-the-application">25.2. Compiling the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-application">25.3. Running the Application</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#interactive-mode">25.3.1. Interactive mode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example">25.3.2. Example</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#explanation">25.4. Explanation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="intel_quickassist.html">26. Intel® QuickAssist Technology Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quota_watermark.html">27. Quota and Watermark Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer.html">28. Timer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_ordering.html">29. Packet Ordering Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_dcb_forwarding.html">30. VMDQ and DCB Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">31. Vhost Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="netmap_compatibility.html">32. Netmap Compatibility Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_pipeline.html">33. Internet Protocol (IP) Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_pipeline.html">34. Test Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dist_app.html">35. Distributor Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vm_power_management.html">36. VM Power Management Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tep_termination.html">37. TEP termination Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="proc_info.html">38. dpdk_proc_info Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ptpclient.html">39. PTP Client Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance_thread.html">40. Performance Thread Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_secgw.html">41. IPsec Security Gateway Sample Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Sample Applications User Guide</a> &raquo;</li>
+      
+    <li>25. QoS Scheduler Sample Application</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/sample_app_ug/qos_scheduler.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="qos-scheduler-sample-application">
+<h1>25. QoS Scheduler Sample Application</h1>
+<p>The QoS sample application demonstrates the use of the DPDK to provide QoS scheduling.</p>
+<div class="section" id="overview">
+<h2>25.1. Overview</h2>
+<p>The architecture of the QoS scheduler application is shown in the following figure.</p>
+<div class="figure" id="id1">
+<span id="figure-qos-sched-app-arch"></span><img alt="../_images/qos_sched_app_arch.png" src="../_images/qos_sched_app_arch.png" />
+<p class="caption"><span class="caption-number">Fig. 25.1 </span><span class="caption-text">QoS Scheduler Application Architecture</span></p>
+</div>
+<p>There are two flavors of the runtime execution for this application,
+with two or three threads per each packet flow configuration being used.
+The RX thread reads packets from the RX port,
+classifies the packets based on the double VLAN (outer and inner) and
+the lower two bytes of the IP destination address and puts them into the ring queue.
+The worker thread dequeues the packets from the ring and calls the QoS scheduler enqueue/dequeue functions.
+If a separate TX core is used, these are sent to the TX ring.
+Otherwise, they are sent directly to the TX port.
+The TX thread, if present, reads from the TX ring and write the packets to the TX port.</p>
+</div>
+<div class="section" id="compiling-the-application">
+<h2>25.2. Compiling the Application</h2>
+<p>To compile the application:</p>
+<ol class="arabic">
+<li><p class="first">Go to the sample application directory:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export RTE_SDK=/path/to/rte_sdk</span>
+<span class="go">cd ${RTE_SDK}/examples/qos_sched</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Set the target (a default target is used if not specified). For example:</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This application is intended as a linuxapp only.</p>
+</div>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export RTE_TARGET=x86_64-native-linuxapp-gcc</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Build the application:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">make</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">To get statistics on the sample app using the command line interface as described in the next section,
+DPDK must be compiled defining <em>CONFIG_RTE_SCHED_COLLECT_STATS</em>,
+which can be done by changing the configuration file for the specific target to be compiled.</p>
+</div>
+</div>
+<div class="section" id="running-the-application">
+<h2>25.3. Running the Application</h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In order to run the application, a total of at least 4
+G of huge pages must be set up for each of the used sockets (depending on the cores in use).</p>
+</div>
+<p>The application has a number of command line options:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./qos_sched [EAL options] -- &lt;APP PARAMS&gt;</span>
+</pre></div>
+</div>
+<p>Mandatory application parameters include:</p>
+<ul class="simple">
+<li>&#8211;pfc &#8220;RX PORT, TX PORT, RX LCORE, WT LCORE, TX CORE&#8221;: Packet flow configuration.
+Multiple pfc entities can be configured in the command line,
+having 4 or 5 items (if TX core defined or not).</li>
+</ul>
+<p>Optional application parameters include:</p>
+<ul class="simple">
+<li>-i: It makes the application to start in the interactive mode.
+In this mode, the application shows a command line that can be used for obtaining statistics while
+scheduling is taking place (see interactive mode below for more information).</li>
+<li>&#8211;mst n: Master core index (the default value is 1).</li>
+<li>&#8211;rsz &#8220;A, B, C&#8221;: Ring sizes:</li>
+<li>A = Size (in number of buffer descriptors) of each of the NIC RX rings read
+by the I/O RX lcores (the default value is 128).</li>
+<li>B = Size (in number of elements) of each of the software rings used
+by the I/O RX lcores to send packets to worker lcores (the default value is 8192).</li>
+<li>C = Size (in number of buffer descriptors) of each of the NIC TX rings written
+by worker lcores (the default value is 256)</li>
+<li>&#8211;bsz &#8220;A, B, C, D&#8221;: Burst sizes</li>
+<li>A = I/O RX lcore read burst size from the NIC RX (the default value is 64)</li>
+<li>B = I/O RX lcore write burst size to the output software rings,
+worker lcore read burst size from input software rings,QoS enqueue size (the default value is 64)</li>
+<li>C = QoS dequeue size (the default value is 32)</li>
+<li>D = Worker lcore write burst size to the NIC TX (the default value is 64)</li>
+<li>&#8211;msz M: Mempool size (in number of mbufs) for each pfc (default 2097152)</li>
+<li>&#8211;rth &#8220;A, B, C&#8221;: The RX queue threshold parameters</li>
+<li>A = RX prefetch threshold (the default value is 8)</li>
+<li>B = RX host threshold (the default value is 8)</li>
+<li>C = RX write-back threshold (the default value is 4)</li>
+<li>&#8211;tth &#8220;A, B, C&#8221;: TX queue threshold parameters</li>
+<li>A = TX prefetch threshold (the default value is 36)</li>
+<li>B = TX host threshold (the default value is 0)</li>
+<li>C = TX write-back threshold (the default value is 0)</li>
+<li>&#8211;cfg FILE: Profile configuration to load</li>
+</ul>
+<p>Refer to <em>DPDK Getting Started Guide</em> for general information on running applications and
+the Environment Abstraction Layer (EAL) options.</p>
+<p>The profile configuration file defines all the port/subport/pipe/traffic class/queue parameters
+needed for the QoS scheduler configuration.</p>
+<p>The profile file has the following format:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>; port configuration [port]
+
+frame overhead = 24
+number of subports per port = 1
+number of pipes per subport = 4096
+queue sizes = 64 64 64 64
+
+; Subport configuration
+
+[subport 0]
+tb rate = 1250000000; Bytes per second
+tb size = 1000000; Bytes
+tc 0 rate = 1250000000;     Bytes per second
+tc 1 rate = 1250000000;     Bytes per second
+tc 2 rate = 1250000000;     Bytes per second
+tc 3 rate = 1250000000;     Bytes per second
+tc period = 10;             Milliseconds
+tc oversubscription period = 10;     Milliseconds
+
+pipe 0-4095 = 0;        These pipes are configured with pipe profile 0
+
+; Pipe configuration
+
+[pipe profile 0]
+tb rate = 305175; Bytes per second
+tb size = 1000000; Bytes
+
+tc 0 rate = 305175; Bytes per second
+tc 1 rate = 305175; Bytes per second
+tc 2 rate = 305175; Bytes per second
+tc 3 rate = 305175; Bytes per second
+tc period = 40; Milliseconds
+
+tc 0 oversubscription weight = 1
+tc 1 oversubscription weight = 1
+tc 2 oversubscription weight = 1
+tc 3 oversubscription weight = 1
+
+tc 0 wrr weights = 1 1 1 1
+tc 1 wrr weights = 1 1 1 1
+tc 2 wrr weights = 1 1 1 1
+tc 3 wrr weights = 1 1 1 1
+
+; RED params per traffic class and color (Green / Yellow / Red)
+
+[red]
+tc 0 wred min = 48 40 32
+tc 0 wred max = 64 64 64
+tc 0 wred inv prob = 10 10 10
+tc 0 wred weight = 9 9 9
+
+tc 1 wred min = 48 40 32
+tc 1 wred max = 64 64 64
+tc 1 wred inv prob = 10 10 10
+tc 1 wred weight = 9 9 9
+
+tc 2 wred min = 48 40 32
+tc 2 wred max = 64 64 64
+tc 2 wred inv prob = 10 10 10
+tc 2 wred weight = 9 9 9
+
+tc 3 wred min = 48 40 32
+tc 3 wred max = 64 64 64
+tc 3 wred inv prob = 10 10 10
+tc 3 wred weight = 9 9 9
+</pre></div>
+</div>
+<div class="section" id="interactive-mode">
+<h3>25.3.1. Interactive mode</h3>
+<p>These are the commands that are currently working under the command line interface:</p>
+<ul class="simple">
+<li>Control Commands</li>
+<li>&#8211;quit: Quits the application.</li>
+<li>General Statistics<ul>
+<li>stats app: Shows a table with in-app calculated statistics.</li>
+<li>stats port X subport Y: For a specific subport, it shows the number of packets that
+went through the scheduler properly and the number of packets that were dropped.
+The same information is shown in bytes.
+The information is displayed in a table separating it in different traffic classes.</li>
+<li>stats port X subport Y pipe Z: For a specific pipe, it shows the number of packets that
+went through the scheduler properly and the number of packets that were dropped.
+The same information is shown in bytes.
+This information is displayed in a table separating it in individual queues.</li>
+</ul>
+</li>
+<li>Average queue size</li>
+</ul>
+<p>All of these commands work the same way, averaging the number of packets throughout a specific subset of queues.</p>
+<p>Two parameters can be configured for this prior to calling any of these commands:</p>
+<blockquote>
+<div><ul class="simple">
+<li>qavg n X: n is the number of times that the calculation will take place.
+Bigger numbers provide higher accuracy. The default value is 10.</li>
+<li>qavg period X: period is the number of microseconds that will be allowed between each calculation.
+The default value is 100.</li>
+</ul>
+</div></blockquote>
+<p>The commands that can be used for measuring average queue size are:</p>
+<ul class="simple">
+<li>qavg port X subport Y: Show average queue size per subport.</li>
+<li>qavg port X subport Y tc Z: Show average queue size per subport for a specific traffic class.</li>
+<li>qavg port X subport Y pipe Z: Show average queue size per pipe.</li>
+<li>qavg port X subport Y pipe Z tc A: Show average queue size per pipe for a specific traffic class.</li>
+<li>qavg port X subport Y pipe Z tc A q B: Show average queue size of a specific queue.</li>
+</ul>
+</div>
+<div class="section" id="example">
+<h3>25.3.2. Example</h3>
+<p>The following is an example command with a single packet flow configuration:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./qos_sched -c a2 -n 4 -- --pfc &quot;3,2,5,7&quot; --cfg ./profile.cfg</span>
+</pre></div>
+</div>
+<p>This example uses a single packet flow configuration which creates one RX thread on lcore 5 reading
+from port 3 and a worker thread on lcore 7 writing to port 2.</p>
+<p>Another example with 2 packet flow configurations using different ports but sharing the same core for QoS scheduler is given below:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./qos_sched -c c6 -n 4 -- --pfc &quot;3,2,2,6,7&quot; --pfc &quot;1,0,2,6,7&quot; --cfg ./profile.cfg</span>
+</pre></div>
+</div>
+<p>Note that independent cores for the packet flow configurations for each of the RX, WT and TX thread are also supported,
+providing flexibility to balance the work.</p>
+<p>The EAL coremask is constrained to contain the default mastercore 1 and the RX, WT and TX cores only.</p>
+</div>
+</div>
+<div class="section" id="explanation">
+<h2>25.4. Explanation</h2>
+<p>The Port/Subport/Pipe/Traffic Class/Queue are the hierarchical entities in a typical QoS application:</p>
+<ul class="simple">
+<li>A subport represents a predefined group of users.</li>
+<li>A pipe represents an individual user/subscriber.</li>
+<li>A traffic class is the representation of a different traffic type with a specific loss rate,
+delay and jitter requirements; such as data voice, video or data transfers.</li>
+<li>A queue hosts packets from one or multiple connections of the same type belonging to the same user.</li>
+</ul>
+<p>The traffic flows that need to be configured are application dependent.
+This application classifies based on the QinQ double VLAN tags and the IP destination address as indicated in the following table.</p>
+<table border="1" class="docutils" id="id2">
+<span id="table-qos-scheduler-1"></span><caption><span class="caption-number">Table 25.1 </span><span class="caption-text">Entity Types</caption>
+<colgroup>
+<col width="13%" />
+<col width="20%" />
+<col width="40%" />
+<col width="27%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><strong>Level Name</strong></th>
+<th class="head"><strong>Siblings per Parent</strong></th>
+<th class="head"><strong>QoS Functional Description</strong></th>
+<th class="head"><strong>Selected By</strong></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Port</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+<td>Ethernet port</td>
+<td>Physical port</td>
+</tr>
+<tr class="row-odd"><td>Subport</td>
+<td>Config (8)</td>
+<td>Traffic shaped (token bucket)</td>
+<td>Outer VLAN tag</td>
+</tr>
+<tr class="row-even"><td>Pipe</td>
+<td>Config (4k)</td>
+<td>Traffic shaped (token bucket)</td>
+<td>Inner VLAN tag</td>
+</tr>
+<tr class="row-odd"><td>Traffic Class</td>
+<td>4</td>
+<td>TCs of the same pipe services in strict priority</td>
+<td>Destination IP address (0.0.X.0)</td>
+</tr>
+<tr class="row-even"><td>Queue</td>
+<td>4</td>
+<td>Queue of the same TC serviced in WRR</td>
+<td>Destination IP address (0.0.0.X)</td>
+</tr>
+</tbody>
+</table>
+<p>Please refer to the &#8220;QoS Scheduler&#8221; chapter in the <em>DPDK Programmer&#8217;s Guide</em> for more information about these parameters.</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="intel_quickassist.html" class="btn btn-neutral float-right" title="26. Intel® QuickAssist Technology Sample Application" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="qos_metering.html" class="btn btn-neutral" title="24. QoS Metering Sample Application" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
