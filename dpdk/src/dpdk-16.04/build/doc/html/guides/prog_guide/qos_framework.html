@@ -1,0 +1,2035 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>21. Quality of Service (QoS) Framework &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Programmer’s Guide" href="index.html"/>
+        <link rel="next" title="22. Power Management" href="power_man.html"/>
+        <link rel="prev" title="20. Thread Safety of DPDK Functions" href="thread_safety_dpdk_functions.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Programmer&#8217;s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html">2. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="env_abstraction_layer.html">3. Environment Abstraction Layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ring_lib.html">4. Ring Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mempool_lib.html">5. Mempool Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mbuf_lib.html">6. Mbuf Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="poll_mode_drv.html">7. Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cryptodev_lib.html">8. Cryptography Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ivshmem_lib.html">9. IVSHMEM Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_bonding_poll_mode_drv_lib.html">10. Link Bonding Poll Mode Driver Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer_lib.html">11. Timer Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hash_lib.html">12. Hash Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm_lib.html">13. LPM Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm6_lib.html">14. LPM6 Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_distrib_lib.html">15. Packet Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reorder_lib.html">16. Reorder Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_fragment_reassembly_lib.html">17. IP Fragmentation and Reassembly Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_proc_support.html">18. Multi-process Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">19. Kernel NIC Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thread_safety_dpdk_functions.html">20. Thread Safety of DPDK Functions</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">21. Quality of Service (QoS) Framework</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#packet-pipeline-with-qos-support">21.1. Packet Pipeline with QoS Support</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hierarchical-scheduler">21.2. Hierarchical Scheduler</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">21.2.1. Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scheduling-hierarchy">21.2.2. Scheduling Hierarchy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#application-programming-interface-api">21.2.3. Application Programming Interface (API)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#implementation">21.2.4. Implementation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#worst-case-scenarios-for-performance">21.2.5. Worst Case Scenarios for Performance</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#dropper">21.3. Dropper</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#configuration">21.3.1. Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enqueue-operation">21.3.2. Enqueue Operation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#queue-empty-operation">21.3.3. Queue Empty Operation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#source-files-location">21.3.4. Source Files Location</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#integration-with-the-dpdk-qos-scheduler">21.3.5. Integration with the DPDK QoS Scheduler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#integration-with-the-dpdk-qos-scheduler-sample-application">21.3.6. Integration with the DPDK QoS Scheduler Sample Application</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">21.3.7. Application Programming Interface (API)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#traffic-metering">21.4. Traffic Metering</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#functional-overview">21.4.1. Functional Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7">21.4.2. Implementation Overview</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="power_man.html">22. Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_classif_access_ctrl.html">23. Packet Classification and Access Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_framework.html">24. Packet Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_lib.html">25. Vhost Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="port_hotplug_framework.html">26. Port Hotplug Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source_org.html">27. Source Organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_kit_build_system.html">28. Development Kit Build System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_kit_root_make_help.html">29. Development Kit Root Makefile Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extend_dpdk.html">30. Extending the DPDK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_app.html">31. Building Your Own Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ext_app_lib_make_help.html">32. External Application/Library Makefile help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perf_opt_guidelines.html">33. Performance Optimization Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing_efficient_code.html">34. Writing Efficient Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="profile_app.html">35. Profile Your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">36. Glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Programmer&#8217;s Guide</a> &raquo;</li>
+      
+    <li>21. Quality of Service (QoS) Framework</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/prog_guide/qos_framework.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="quality-of-service-qos-framework">
+<h1>21. Quality of Service (QoS) Framework</h1>
+<p>This chapter describes the DPDK Quality of Service (QoS) framework.</p>
+<div class="section" id="packet-pipeline-with-qos-support">
+<h2>21.1. Packet Pipeline with QoS Support</h2>
+<p>An example of a complex packet processing pipeline with QoS support is shown in the following figure.</p>
+<div class="figure" id="id8">
+<span id="figure-pkt-proc-pipeline-qos"></span><img alt="../_images/pkt_proc_pipeline_qos.png" src="../_images/pkt_proc_pipeline_qos.png" />
+<p class="caption"><span class="caption-number">Fig. 21.1 </span><span class="caption-text">Complex Packet Processing Pipeline with QoS Support</span></p>
+</div>
+<p>This pipeline can be built using reusable DPDK software libraries.
+The main blocks implementing QoS in this pipeline are: the policer, the dropper and the scheduler.
+A functional description of each block is provided in the following table.</p>
+<table border="1" class="docutils" id="id9">
+<span id="table-qos-1"></span><caption><span class="caption-number">Table 21.1 </span><span class="caption-text">Packet Processing Pipeline Implementing QoS</caption>
+<colgroup>
+<col width="3%" />
+<col width="22%" />
+<col width="75%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">#</th>
+<th class="head">Block</th>
+<th class="head">Functional Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>Packet I/O RX &amp; TX</td>
+<td>Packet reception/ transmission from/to multiple NIC ports. Poll mode drivers
+(PMDs) for Intel 1 GbE/10 GbE NICs.</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>Packet parser</td>
+<td>Identify the protocol stack of the input packet. Check the integrity of the
+packet headers.</td>
+</tr>
+<tr class="row-even"><td>3</td>
+<td>Flow classification</td>
+<td>Map the input packet to one of the known traffic flows. Exact match table
+lookup using configurable hash function (jhash, CRC and so on) and bucket
+logic to handle collisions.</td>
+</tr>
+<tr class="row-odd"><td>4</td>
+<td>Policer</td>
+<td>Packet metering using srTCM (RFC 2697) or trTCM (RFC2698) algorithms.</td>
+</tr>
+<tr class="row-even"><td>5</td>
+<td>Load Balancer</td>
+<td>Distribute the input packets to the application workers. Provide uniform load
+to each worker. Preserve the affinity of traffic flows to workers and the
+packet order within each flow.</td>
+</tr>
+<tr class="row-odd"><td>6</td>
+<td>Worker threads</td>
+<td>Placeholders for the customer specific application workload (for example, IP
+stack and so on).</td>
+</tr>
+<tr class="row-even"><td>7</td>
+<td>Dropper</td>
+<td>Congestion management using the Random Early Detection (RED) algorithm
+(specified by the Sally Floyd - Van Jacobson paper) or Weighted RED (WRED).
+Drop packets based on the current scheduler queue load level and packet
+priority. When congestion is experienced, lower priority packets are dropped
+first.</td>
+</tr>
+<tr class="row-odd"><td>8</td>
+<td>Hierarchical Scheduler</td>
+<td>5-level hierarchical scheduler (levels are: output port, subport, pipe,
+traffic class and queue) with thousands (typically 64K) leaf nodes (queues).
+Implements traffic shaping (for subport and pipe levels), strict priority
+(for traffic class level) and Weighted Round Robin (WRR) (for queues within
+each pipe traffic class).</td>
+</tr>
+</tbody>
+</table>
+<p>The infrastructure blocks used throughout the packet processing pipeline are listed in the following table.</p>
+<table border="1" class="docutils" id="id10">
+<span id="table-qos-2"></span><caption><span class="caption-number">Table 21.2 </span><span class="caption-text">Infrastructure Blocks Used by the Packet Processing Pipeline</caption>
+<colgroup>
+<col width="3%" />
+<col width="24%" />
+<col width="73%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">#</th>
+<th class="head">Block</th>
+<th class="head">Functional Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>Buffer manager</td>
+<td>Support for global buffer pools and private per-thread buffer caches.</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>Queue manager</td>
+<td>Support for message passing between pipeline blocks.</td>
+</tr>
+<tr class="row-even"><td>3</td>
+<td>Power saving</td>
+<td>Support for power saving during low activity periods.</td>
+</tr>
+</tbody>
+</table>
+<p>The mapping of pipeline blocks to CPU cores is configurable based on the performance level required by each specific application
+and the set of features enabled for each block.
+Some blocks might consume more than one CPU core (with each CPU core running a different instance of the same block on different input packets),
+while several other blocks could be mapped to the same CPU core.</p>
+</div>
+<div class="section" id="hierarchical-scheduler">
+<h2>21.2. Hierarchical Scheduler</h2>
+<p>The hierarchical scheduler block, when present, usually sits on the TX side just before the transmission stage.
+Its purpose is to prioritize the transmission of packets from different users and different traffic classes
+according to the policy specified by the Service Level Agreements (SLAs) of each network node.</p>
+<div class="section" id="overview">
+<h3>21.2.1. Overview</h3>
+<p>The hierarchical scheduler block is similar to the traffic manager block used by network processors
+that typically implement per flow (or per group of flows) packet queuing and scheduling.
+It typically acts like a buffer that is able to temporarily store a large number of packets just before their transmission (enqueue operation);
+as the NIC TX is requesting more packets for transmission,
+these packets are later on removed and handed over to the NIC TX with the packet selection logic observing the predefined SLAs (dequeue operation).</p>
+<div class="figure" id="id11">
+<span id="figure-hier-sched-blk"></span><img alt="../_images/hier_sched_blk.png" src="../_images/hier_sched_blk.png" />
+<p class="caption"><span class="caption-number">Fig. 21.2 </span><span class="caption-text">Hierarchical Scheduler Block Internal Diagram</span></p>
+</div>
+<p>The hierarchical scheduler is optimized for a large number of packet queues.
+When only a small number of queues are needed, message passing queues should be used instead of this block.
+See <a class="reference internal" href="#worst-case-scenarios-for-performance">Worst Case Scenarios for Performance</a> for a more detailed discussion.</p>
+</div>
+<div class="section" id="scheduling-hierarchy">
+<h3>21.2.2. Scheduling Hierarchy</h3>
+<p>The scheduling hierarchy is shown in <a class="reference internal" href="#figure-sched-hier-per-port"><span class="std std-numref">Fig. 21.3</span></a>.
+The first level of the hierarchy is the Ethernet TX port 1/10/40 GbE,
+with subsequent hierarchy levels defined as subport, pipe, traffic class and queue.</p>
+<p>Typically, each subport represents a predefined group of users, while each pipe represents an individual user/subscriber.
+Each traffic class is the representation of a different traffic type with specific loss rate,
+delay and jitter requirements, such as voice, video or data transfers.
+Each queue hosts packets from one or multiple connections of the same type belonging to the same user.</p>
+<div class="figure" id="id12">
+<span id="figure-sched-hier-per-port"></span><img alt="../_images/sched_hier_per_port.png" src="../_images/sched_hier_per_port.png" />
+<p class="caption"><span class="caption-number">Fig. 21.3 </span><span class="caption-text">Scheduling Hierarchy per Port</span></p>
+</div>
+<p>The functionality of each hierarchical level is detailed in the following table.</p>
+<table border="1" class="docutils" id="id13">
+<span id="table-qos-3"></span><caption><span class="caption-number">Table 21.3 </span><span class="caption-text">Port Scheduling Hierarchy</caption>
+<colgroup>
+<col width="3%" />
+<col width="18%" />
+<col width="25%" />
+<col width="55%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">#</th>
+<th class="head">Level</th>
+<th class="head">Siblings per Parent</th>
+<th class="head">Functional Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>Port</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+<td><ol class="first last arabic simple">
+<li>Output Ethernet port 1/10/40 GbE.</li>
+<li>Multiple ports are scheduled in round robin order with
+all ports having equal priority.</li>
+</ol>
+</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>Subport</td>
+<td>Configurable (default: 8)</td>
+<td><ol class="first last arabic simple">
+<li>Traffic shaping using token bucket algorithm (one token
+bucket per subport).</li>
+<li>Upper limit enforced per Traffic Class (TC) at the
+subport level.</li>
+<li>Lower priority TCs able to reuse subport bandwidth
+currently unused by higher priority TCs.</li>
+</ol>
+</td>
+</tr>
+<tr class="row-even"><td>3</td>
+<td>Pipe</td>
+<td>Configurable (default: 4K)</td>
+<td><ol class="first last arabic simple">
+<li>Traffic shaping using the token bucket algorithm (one
+token bucket per pipe.</li>
+</ol>
+</td>
+</tr>
+<tr class="row-odd"><td>4</td>
+<td>Traffic Class (TC)</td>
+<td>4</td>
+<td><ol class="first last arabic simple">
+<li>TCs of the same pipe handled in strict priority order.</li>
+<li>Upper limit enforced per TC at the pipe level.</li>
+<li>Lower priority TCs able to reuse pipe bandwidth currently
+unused by higher priority TCs.</li>
+<li>When subport TC is oversubscribed (configuration time
+event), pipe TC upper limit is capped to a dynamically
+adjusted value that is shared by all the subport pipes.</li>
+</ol>
+</td>
+</tr>
+<tr class="row-even"><td>5</td>
+<td>Queue</td>
+<td>4</td>
+<td><ol class="first last arabic simple">
+<li>Queues of the same TC are serviced using Weighted Round
+Robin (WRR) according to predefined weights.</li>
+</ol>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="application-programming-interface-api">
+<h3>21.2.3. Application Programming Interface (API)</h3>
+<div class="section" id="port-scheduler-configuration-api">
+<h4>21.2.3.1. Port Scheduler Configuration API</h4>
+<p>The rte_sched.h file contains configuration functions for port, subport and pipe.</p>
+</div>
+<div class="section" id="port-scheduler-enqueue-api">
+<h4>21.2.3.2. Port Scheduler Enqueue API</h4>
+<p>The port scheduler enqueue API is very similar to the API of the DPDK PMD TX function.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">rte_sched_port_enqueue</span><span class="p">(</span><span class="k">struct</span> <span class="n">rte_sched_port</span> <span class="o">*</span><span class="n">port</span><span class="p">,</span> <span class="k">struct</span> <span class="n">rte_mbuf</span> <span class="o">**</span><span class="n">pkts</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">n_pkts</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="port-scheduler-dequeue-api">
+<h4>21.2.3.3. Port Scheduler Dequeue API</h4>
+<p>The port scheduler dequeue API is very similar to the API of the DPDK PMD RX function.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">rte_sched_port_dequeue</span><span class="p">(</span><span class="k">struct</span> <span class="n">rte_sched_port</span> <span class="o">*</span><span class="n">port</span><span class="p">,</span> <span class="k">struct</span> <span class="n">rte_mbuf</span> <span class="o">**</span><span class="n">pkts</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">n_pkts</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="usage-example">
+<h4>21.2.3.4. Usage Example</h4>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/* File &quot;application.c&quot; */</span>
+
+<span class="cp">#define N_PKTS_RX   64</span>
+<span class="cp">#define N_PKTS_TX   48</span>
+<span class="cp">#define NIC_RX_PORT 0</span>
+<span class="cp">#define NIC_RX_QUEUE 0</span>
+<span class="cp">#define NIC_TX_PORT 1</span>
+<span class="cp">#define NIC_TX_QUEUE 0</span>
+
+<span class="k">struct</span> <span class="n">rte_sched_port</span> <span class="o">*</span><span class="n">port</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+<span class="k">struct</span> <span class="n">rte_mbuf</span> <span class="o">*</span><span class="n">pkts_rx</span><span class="p">[</span><span class="n">N_PKTS_RX</span><span class="p">],</span> <span class="o">*</span><span class="n">pkts_tx</span><span class="p">[</span><span class="n">N_PKTS_TX</span><span class="p">];</span>
+<span class="kt">uint32_t</span> <span class="n">n_pkts_rx</span><span class="p">,</span> <span class="n">n_pkts_tx</span><span class="p">;</span>
+
+<span class="cm">/* Initialization */</span>
+
+<span class="o">&lt;</span><span class="n">initialization</span> <span class="n">code</span><span class="o">&gt;</span>
+
+<span class="cm">/* Runtime */</span>
+<span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* Read packets from NIC RX queue */</span>
+
+    <span class="n">n_pkts_rx</span> <span class="o">=</span> <span class="n">rte_eth_rx_burst</span><span class="p">(</span><span class="n">NIC_RX_PORT</span><span class="p">,</span> <span class="n">NIC_RX_QUEUE</span><span class="p">,</span> <span class="n">pkts_rx</span><span class="p">,</span> <span class="n">N_PKTS_RX</span><span class="p">);</span>
+
+    <span class="cm">/* Hierarchical scheduler enqueue */</span>
+
+    <span class="n">rte_sched_port_enqueue</span><span class="p">(</span><span class="n">port</span><span class="p">,</span> <span class="n">pkts_rx</span><span class="p">,</span> <span class="n">n_pkts_rx</span><span class="p">);</span>
+
+    <span class="cm">/* Hierarchical scheduler dequeue */</span>
+
+    <span class="n">n_pkts_tx</span> <span class="o">=</span> <span class="n">rte_sched_port_dequeue</span><span class="p">(</span><span class="n">port</span><span class="p">,</span> <span class="n">pkts_tx</span><span class="p">,</span> <span class="n">N_PKTS_TX</span><span class="p">);</span>
+
+    <span class="cm">/* Write packets to NIC TX queue */</span>
+
+    <span class="n">rte_eth_tx_burst</span><span class="p">(</span><span class="n">NIC_TX_PORT</span><span class="p">,</span> <span class="n">NIC_TX_QUEUE</span><span class="p">,</span> <span class="n">pkts_tx</span><span class="p">,</span> <span class="n">n_pkts_tx</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="implementation">
+<h3>21.2.4. Implementation</h3>
+<div class="section" id="internal-data-structures-per-port">
+<h4>21.2.4.1. Internal Data Structures per Port</h4>
+<p>A schematic of the internal data structures in shown in with details in.</p>
+<div class="figure" id="id14">
+<span id="figure-data-struct-per-port"></span><img alt="../_images/data_struct_per_port.png" src="../_images/data_struct_per_port.png" />
+<p class="caption"><span class="caption-number">Fig. 21.4 </span><span class="caption-text">Internal Data Structures per Port</span></p>
+</div>
+<table border="1" class="docutils" id="id15">
+<span id="table-qos-4"></span><caption><span class="caption-number">Table 21.4 </span><span class="caption-text">Scheduler Internal Data Structures per Port</caption>
+<colgroup>
+<col width="2%" />
+<col width="15%" />
+<col width="17%" />
+<col width="14%" />
+<col width="9%" />
+<col width="11%" />
+<col width="34%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head" rowspan="2">#</th>
+<th class="head" rowspan="2">Data structure</th>
+<th class="head" rowspan="2">Size (bytes)</th>
+<th class="head" rowspan="2"># per port</th>
+<th class="head" colspan="2">Access type</th>
+<th class="head">Description</th>
+</tr>
+<tr class="row-even"><th class="head">Enq</th>
+<th class="head">Deq</th>
+<th class="head">&nbsp;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-odd"><td>1</td>
+<td>Subport table entry</td>
+<td>64</td>
+<td># subports per port</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+<td>Rd, Wr</td>
+<td>Persistent subport data (credits, etc).</td>
+</tr>
+<tr class="row-even"><td>2</td>
+<td>Pipe table entry</td>
+<td>64</td>
+<td># pipes per port</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+<td>Rd, Wr</td>
+<td><p class="first">Persistent data for pipe, its TCs and its queues
+(credits, etc) that is updated during run-time.</p>
+<p class="last">The pipe configuration parameters do not change
+during run-time. The same pipe configuration
+parameters are shared by multiple pipes,
+therefore they are not part of pipe table entry.</p>
+</td>
+</tr>
+<tr class="row-odd"><td>3</td>
+<td>Queue table entry</td>
+<td>4</td>
+<td>#queues per port</td>
+<td>Rd, Wr</td>
+<td>Rd, Wr</td>
+<td><p class="first">Persistent queue data (read and write pointers).
+The queue size is the same per TC for all queues,
+allowing the queue base address to be computed
+using a fast formula, so these two parameters are
+not part of queue table entry.</p>
+<p class="last">The queue table entries for any given pipe are
+stored in the same cache line.</p>
+</td>
+</tr>
+<tr class="row-even"><td>4</td>
+<td>Queue storage area</td>
+<td>Config (default: 64 x8)</td>
+<td># queues per port</td>
+<td>Wr</td>
+<td>Rd</td>
+<td>Array of elements per queue; each element is 8
+byte in size (mbuf pointer).</td>
+</tr>
+<tr class="row-odd"><td>5</td>
+<td>Active queues bitmap</td>
+<td>1 bit per queue</td>
+<td>1</td>
+<td>Wr (Set)</td>
+<td>Rd, Wr (Clear)</td>
+<td><p class="first">The bitmap maintains one status bit per queue:
+queue not active (queue is empty) or queue active
+(queue is not empty).</p>
+<p>Queue bit is set by the scheduler enqueue and
+cleared by the scheduler dequeue when queue
+becomes empty.</p>
+<p class="last">Bitmap scan operation returns the next non-empty
+pipe and its status (16-bit mask of active queue
+in the pipe).</p>
+</td>
+</tr>
+<tr class="row-even"><td>6</td>
+<td>Grinder</td>
+<td>~128</td>
+<td>Config (default: 8)</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+<td>Rd, Wr</td>
+<td><p class="first">Short list of active pipes currently under
+processing. The grinder contains temporary data
+during pipe processing.</p>
+<p class="last">Once the current pipe exhausts packets or
+credits, it is replaced with another active pipe
+from the bitmap.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="multicore-scaling-strategy">
+<h4>21.2.4.2. Multicore Scaling Strategy</h4>
+<p>The multicore scaling strategy is:</p>
+<ol class="arabic simple">
+<li>Running different physical ports on different threads. The enqueue and dequeue of the same port are run by the same thread.</li>
+<li>Splitting the same physical port to different threads by running different sets of subports of the same physical port (virtual ports) on different threads.
+Similarly, a subport can be split into multiple subports that are each run by a different thread.
+The enqueue and dequeue of the same port are run by the same thread.
+This is only required if, for performance reasons, it is not possible to handle a full port with a single core.</li>
+</ol>
+<div class="section" id="enqueue-and-dequeue-for-the-same-output-port">
+<h5>21.2.4.2.1. Enqueue and Dequeue for the Same Output Port</h5>
+<p>Running enqueue and dequeue operations for the same output port from different cores is likely to cause significant impact on scheduler&#8217;s performance
+and it is therefore not recommended.</p>
+<p>The port enqueue and dequeue operations share access to the following data structures:</p>
+<ol class="arabic simple">
+<li>Packet descriptors</li>
+<li>Queue table</li>
+<li>Queue storage area</li>
+<li>Bitmap of active queues</li>
+</ol>
+<p>The expected drop in performance is due to:</p>
+<ol class="arabic simple">
+<li>Need to make the queue and bitmap operations thread safe,
+which requires either using locking primitives for access serialization (for example, spinlocks/ semaphores) or
+using atomic primitives for lockless access (for example, Test and Set, Compare And Swap, an so on).
+The impact is much higher in the former case.</li>
+<li>Ping-pong of cache lines storing the shared data structures between the cache hierarchies of the two cores
+(done transparently by the MESI protocol cache coherency CPU hardware).</li>
+</ol>
+<p>Therefore, the scheduler enqueue and dequeue operations have to be run from the same thread,
+which allows the queues and the bitmap operations to be non-thread safe and
+keeps the scheduler data structures internal to the same core.</p>
+</div>
+<div class="section" id="performance-scaling">
+<h5>21.2.4.2.2. Performance Scaling</h5>
+<p>Scaling up the number of NIC ports simply requires a proportional increase in the number of CPU cores to be used for traffic scheduling.</p>
+</div>
+</div>
+<div class="section" id="enqueue-pipeline">
+<h4>21.2.4.3. Enqueue Pipeline</h4>
+<p>The sequence of steps per packet:</p>
+<ol class="arabic simple">
+<li><em>Access</em> the mbuf to read the data fields required to identify the destination queue for the packet.
+These fields are: port, subport, traffic class and queue within traffic class, and are typically set by the classification stage.</li>
+<li><em>Access</em> the queue structure to identify the write location in the queue array.
+If the queue is full, then the packet is discarded.</li>
+<li><em>Access</em> the queue array location to store the packet (i.e. write the mbuf pointer).</li>
+</ol>
+<p>It should be noted the strong data dependency between these steps, as steps 2 and 3 cannot start before the result from steps 1 and 2 becomes available,
+which prevents the processor out of order execution engine to provide any significant performance optimizations.</p>
+<p>Given the high rate of input packets and the large amount of queues,
+it is expected that the data structures accessed to enqueue the current packet are not present
+in the L1 or L2 data cache of the current core, thus the above 3 memory accesses would result (on average) in L1 and L2 data cache misses.
+A number of 3 L1/L2 cache misses per packet is not acceptable for performance reasons.</p>
+<p>The workaround is to prefetch the required data structures in advance. The prefetch operation has an execution latency during which
+the processor should not attempt to access the data structure currently under prefetch, so the processor should execute other work.
+The only other work available is to execute different stages of the enqueue sequence of operations on other input packets,
+thus resulting in a pipelined implementation for the enqueue operation.</p>
+<p><a class="reference internal" href="#figure-prefetch-pipeline"><span class="std std-numref">Fig. 21.5</span></a> illustrates a pipelined implementation for the enqueue operation with 4 pipeline stages and each stage executing 2 different input packets.
+No input packet can be part of more than one pipeline stage at a given time.</p>
+<div class="figure" id="id16">
+<span id="figure-prefetch-pipeline"></span><img alt="../_images/prefetch_pipeline.png" src="../_images/prefetch_pipeline.png" />
+<p class="caption"><span class="caption-number">Fig. 21.5 </span><span class="caption-text">Prefetch Pipeline for the Hierarchical Scheduler Enqueue Operation</span></p>
+</div>
+<p>The congestion management scheme implemented by the enqueue pipeline described above is very basic:
+packets are enqueued until a specific queue becomes full,
+then all the packets destined to the same queue are dropped until packets are consumed (by the dequeue operation).
+This can be improved by enabling RED/WRED as part of the enqueue pipeline which looks at the queue occupancy and
+packet priority in order to yield the enqueue/drop decision for a specific packet
+(as opposed to enqueuing all packets / dropping all packets indiscriminately).</p>
+</div>
+<div class="section" id="dequeue-state-machine">
+<h4>21.2.4.4. Dequeue State Machine</h4>
+<p>The sequence of steps to schedule the next packet from the current pipe is:</p>
+<ol class="arabic simple">
+<li>Identify the next active pipe using the bitmap scan operation, <em>prefetch</em> pipe.</li>
+<li><em>Read</em> pipe data structure. Update the credits for the current pipe and its subport.
+Identify the first active traffic class within the current pipe, select the next queue using WRR,
+<em>prefetch</em> queue pointers for all the 16 queues of the current pipe.</li>
+<li><em>Read</em> next element from the current WRR queue and <em>prefetch</em> its packet descriptor.</li>
+<li><em>Read</em> the packet length from the packet descriptor (mbuf structure).
+Based on the packet length and the available credits (of current pipe, pipe traffic class, subport and subport traffic class),
+take the go/no go scheduling decision for the current packet.</li>
+</ol>
+<p>To avoid the cache misses, the above data structures (pipe, queue, queue array, mbufs) are prefetched in advance of being accessed.
+The strategy of hiding the latency of the prefetch operations is to switch from the current pipe (in grinder A) to another pipe
+(in grinder B) immediately after a prefetch is issued for the current pipe.
+This gives enough time to the prefetch operation to complete before the execution switches back to this pipe (in grinder A).</p>
+<p>The dequeue pipe state machine exploits the data presence into the processor cache,
+therefore it tries to send as many packets from the same pipe TC and pipe as possible (up to the available packets and credits) before
+moving to the next active TC from the same pipe (if any) or to another active pipe.</p>
+<div class="figure" id="id17">
+<span id="figure-pipe-prefetch-sm"></span><img alt="../_images/pipe_prefetch_sm.png" src="../_images/pipe_prefetch_sm.png" />
+<p class="caption"><span class="caption-number">Fig. 21.6 </span><span class="caption-text">Pipe Prefetch State Machine for the Hierarchical Scheduler Dequeue
+Operation</span></p>
+</div>
+</div>
+<div class="section" id="timing-and-synchronization">
+<h4>21.2.4.5. Timing and Synchronization</h4>
+<p>The output port is modeled as a conveyor belt of byte slots that need to be filled by the scheduler with data for transmission.
+For 10 GbE, there are 1.25 billion byte slots that need to be filled by the port scheduler every second.
+If the scheduler is not fast enough to fill the slots, provided that enough packets and credits exist,
+then some slots will be left unused and bandwidth will be wasted.</p>
+<p>In principle, the hierarchical scheduler dequeue operation should be triggered by NIC TX.
+Usually, once the occupancy of the NIC TX input queue drops below a predefined threshold,
+the port scheduler is woken up (interrupt based or polling based,
+by continuously monitoring the queue occupancy) to push more packets into the queue.</p>
+<div class="section" id="internal-time-reference">
+<h5>21.2.4.5.1. Internal Time Reference</h5>
+<p>The scheduler needs to keep track of time advancement for the credit logic,
+which requires credit updates based on time (for example, subport and pipe traffic shaping, traffic class upper limit enforcement, and so on).</p>
+<p>Every time the scheduler decides to send a packet out to the NIC TX for transmission, the scheduler will increment its internal time reference accordingly.
+Therefore, it is convenient to keep the internal time reference in units of bytes,
+where a byte signifies the time duration required by the physical interface to send out a byte on the transmission medium.
+This way, as a packet is scheduled for transmission, the time is incremented with (n + h),
+where n is the packet length in bytes and h is the number of framing overhead bytes per packet.</p>
+</div>
+<div class="section" id="internal-time-reference-re-synchronization">
+<h5>21.2.4.5.2. Internal Time Reference Re-synchronization</h5>
+<p>The scheduler needs to align its internal time reference to the pace of the port conveyor belt.
+The reason is to make sure that the scheduler does not feed the NIC TX with more bytes than the line rate of the physical medium in order to prevent packet drop
+(by the scheduler, due to the NIC TX input queue being full, or later on, internally by the NIC TX).</p>
+<p>The scheduler reads the current time on every dequeue invocation.
+The CPU time stamp can be obtained by reading either the Time Stamp Counter (TSC) register or the High Precision Event Timer (HPET) register.
+The current CPU time stamp is converted from number of CPU clocks to number of bytes:
+<em>time_bytes = time_cycles / cycles_per_byte, where cycles_per_byte</em>
+is the amount of CPU cycles that is equivalent to the transmission time for one byte on the wire
+(e.g. for a CPU frequency of 2 GHz and a 10GbE port,*cycles_per_byte = 1.6*).</p>
+<p>The scheduler maintains an internal time reference of the NIC time.
+Whenever a packet is scheduled, the NIC time is incremented with the packet length (including framing overhead).
+On every dequeue invocation, the scheduler checks its internal reference of the NIC time against the current time:</p>
+<ol class="arabic simple">
+<li>If NIC time is in the future (NIC time &gt;= current time), no adjustment of NIC time is needed.
+This means that scheduler is able to schedule NIC packets before the NIC actually needs those packets, so the NIC TX is well supplied with packets;</li>
+<li>If NIC time is in the past (NIC time &lt; current time), then NIC time should be adjusted by setting it to the current time.
+This means that the scheduler is not able to keep up with the speed of the NIC byte conveyor belt,
+so NIC bandwidth is wasted due to poor packet supply to the NIC TX.</li>
+</ol>
+</div>
+<div class="section" id="scheduler-accuracy-and-granularity">
+<h5>21.2.4.5.3. Scheduler Accuracy and Granularity</h5>
+<p>The scheduler round trip delay (SRTD) is the time (number of CPU cycles) between two consecutive examinations of the same pipe by the scheduler.</p>
+<p>To keep up with the output port (that is, avoid bandwidth loss),
+the scheduler should be able to schedule n packets faster than the same n packets are transmitted by NIC TX.</p>
+<p>The scheduler needs to keep up with the rate of each individual pipe,
+as configured for the pipe token bucket, assuming that no port oversubscription is taking place.
+This means that the size of the pipe token bucket should be set high enough to prevent it from overflowing due to big SRTD,
+as this would result in credit loss (and therefore bandwidth loss) for the pipe.</p>
+</div>
+</div>
+<div class="section" id="credit-logic">
+<h4>21.2.4.6. Credit Logic</h4>
+<div class="section" id="scheduling-decision">
+<h5>21.2.4.6.1. Scheduling Decision</h5>
+<p>The scheduling decision to send next packet from (subport S, pipe P, traffic class TC, queue Q) is favorable (packet is sent)
+when all the conditions below are met:</p>
+<ul class="simple">
+<li>Pipe P of subport S is currently selected by one of the port grinders;</li>
+<li>Traffic class TC is the highest priority active traffic class of pipe P;</li>
+<li>Queue Q is the next queue selected by WRR within traffic class TC of pipe P;</li>
+<li>Subport S has enough credits to send the packet;</li>
+<li>Subport S has enough credits for traffic class TC to send the packet;</li>
+<li>Pipe P has enough credits to send the packet;</li>
+<li>Pipe P has enough credits for traffic class TC to send the packet.</li>
+</ul>
+<p>If all the above conditions are met,
+then the packet is selected for transmission and the necessary credits are subtracted from subport S,
+subport S traffic class TC, pipe P, pipe P traffic class TC.</p>
+</div>
+<div class="section" id="framing-overhead">
+<h5>21.2.4.6.2. Framing Overhead</h5>
+<p>As the greatest common divisor for all packet lengths is one byte, the unit of credit is selected as one byte.
+The number of credits required for the transmission of a packet of n bytes is equal to (n+h),
+where h is equal to the number of framing overhead bytes per packet.</p>
+<table border="1" class="docutils" id="id18">
+<span id="table-qos-5"></span><caption><span class="caption-number">Table 21.5 </span><span class="caption-text">Ethernet Frame Overhead Fields</caption>
+<colgroup>
+<col width="2%" />
+<col width="25%" />
+<col width="13%" />
+<col width="60%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">#</th>
+<th class="head">Packet field</th>
+<th class="head">Length (bytes)</th>
+<th class="head">Comments</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>Preamble</td>
+<td>7</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>Start of Frame Delimiter (SFD)</td>
+<td>1</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>3</td>
+<td>Frame Check Sequence (FCS)</td>
+<td>4</td>
+<td>Considered overhead only if not included in the mbuf packet length field.</td>
+</tr>
+<tr class="row-odd"><td>4</td>
+<td>Inter Frame Gap (IFG)</td>
+<td>12</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>5</td>
+<td>Total</td>
+<td>24</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="traffic-shaping">
+<h5>21.2.4.6.3. Traffic Shaping</h5>
+<p>The traffic shaping for subport and pipe is implemented using a token bucket per subport/per pipe.
+Each token bucket is implemented using one saturated counter that keeps track of the number of available credits.</p>
+<p>The token bucket generic parameters and operations are presented in <a class="reference internal" href="#table-qos-6"><span class="std std-numref">Table 21.6</span></a> and <a class="reference internal" href="#table-qos-7"><span class="std std-numref">Table 21.7</span></a>.</p>
+<table border="1" class="docutils" id="id19">
+<span id="table-qos-6"></span><caption><span class="caption-number">Table 21.6 </span><span class="caption-text">Token Bucket Generic Operations</caption>
+<colgroup>
+<col width="3%" />
+<col width="23%" />
+<col width="19%" />
+<col width="55%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">#</th>
+<th class="head">Token Bucket Parameter</th>
+<th class="head">Unit</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>bucket_rate</td>
+<td>Credits per second</td>
+<td>Rate of adding credits to the bucket.</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>bucket_size</td>
+<td>Credits</td>
+<td>Max number of credits that can be stored in the bucket.</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils" id="id20">
+<span id="table-qos-7"></span><caption><span class="caption-number">Table 21.7 </span><span class="caption-text">Token Bucket Generic Parameters</caption>
+<colgroup>
+<col width="3%" />
+<col width="23%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">#</th>
+<th class="head">Token Bucket Operation</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>Initialization</td>
+<td>Bucket set to a predefined value, e.g. zero or half of the bucket size.</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>Credit update</td>
+<td>Credits are added to the bucket on top of existing ones, either periodically
+or on demand, based on the bucket_rate. Credits cannot exceed the upper
+limit defined by the bucket_size, so any credits to be added to the bucket
+while the bucket is full are dropped.</td>
+</tr>
+<tr class="row-even"><td>3</td>
+<td>Credit consumption</td>
+<td>As result of packet scheduling, the necessary number of credits is removed
+from the bucket. The packet can only be sent if enough credits are in the
+bucket to send the full packet (packet bytes and framing overhead for the
+packet).</td>
+</tr>
+</tbody>
+</table>
+<p>To implement the token bucket generic operations described above,
+the current design uses the persistent data structure presented in <a class="reference internal" href="#table-qos-8"><span class="std std-numref">Table 21.8</span></a>,
+while the implementation of the token bucket operations is described in <a class="reference internal" href="#table-qos-9"><span class="std std-numref">Table 21.9</span></a>.</p>
+<table border="1" class="docutils" id="id21">
+<span id="table-qos-8"></span><caption><span class="caption-number">Table 21.8 </span><span class="caption-text">Token Bucket Persistent Data Structure</caption>
+<colgroup>
+<col width="3%" />
+<col width="23%" />
+<col width="7%" />
+<col width="67%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">#</th>
+<th class="head">Token bucket field</th>
+<th class="head">Unit</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>tb_time</td>
+<td>Bytes</td>
+<td><p class="first">Time of the last credit update. Measured in bytes instead of seconds
+or CPU cycles for ease of credit consumption operation
+(as the current time is also maintained in bytes).</p>
+<p class="last">See  Section 26.2.4.5.1 &#8220;Internal Time Reference&#8221; for an
+explanation of why the time is maintained in byte units.</p>
+</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>tb_period</td>
+<td>Bytes</td>
+<td>Time period that should elapse since the last credit update in order
+for the bucket to be awarded tb_credits_per_period worth or credits.</td>
+</tr>
+<tr class="row-even"><td>3</td>
+<td>tb_credits_per_period</td>
+<td>Bytes</td>
+<td>Credit allowance per tb_period.</td>
+</tr>
+<tr class="row-odd"><td>4</td>
+<td>tb_size</td>
+<td>Bytes</td>
+<td>Bucket size, i.e. upper limit for the tb_credits.</td>
+</tr>
+<tr class="row-even"><td>5</td>
+<td>tb_credits</td>
+<td>Bytes</td>
+<td>Number of credits currently in the bucket.</td>
+</tr>
+</tbody>
+</table>
+<p>The bucket rate (in bytes per second) can be computed with the following formula:</p>
+<p><em>bucket_rate = (tb_credits_per_period / tb_period) * r</em></p>
+<p>where, r = port line rate (in bytes per second).</p>
+<table border="1" class="docutils" id="id22">
+<span id="table-qos-9"></span><caption><span class="caption-number">Table 21.9 </span><span class="caption-text">Token Bucket Operations</caption>
+<colgroup>
+<col width="3%" />
+<col width="24%" />
+<col width="73%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">#</th>
+<th class="head">Token bucket operation</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>Initialization</td>
+<td><em>tb_credits = 0; or tb_credits = tb_size / 2;</em></td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>Credit update</td>
+<td><p class="first">Credit update options:</p>
+<ul class="simple">
+<li>Every time a packet is sent for a port, update the credits of all the
+the subports and pipes of that port. Not feasible.</li>
+<li>Every time a packet is sent, update the credits for the pipe and
+subport. Very accurate, but not needed (a lot of calculations).</li>
+<li>Every time a pipe is selected (that is, picked by one
+of the grinders), update the credits for the pipe and its subport.</li>
+</ul>
+<p>The current implementation is using option 3.  According to Section
+<a class="reference internal" href="#dequeue-state-machine">Dequeue State Machine</a>, the pipe and subport credits are
+updated every time a pipe is selected by the dequeue process before the
+pipe and subport credits are actually used.</p>
+<p>The implementation uses a tradeoff between accuracy and speed by updating
+the bucket credits only when at least a full <em>tb_period</em>  has elapsed since
+the last update.</p>
+<ul class="simple">
+<li>Full accuracy can be achieved by selecting the value for <em>tb_period</em>
+for which  <em>tb_credits_per_period = 1</em>.</li>
+<li>When full accuracy is not required, better performance is achieved by
+setting <em>tb_credits</em> to a larger value.</li>
+</ul>
+<p>Update operations:</p>
+<ul class="last simple">
+<li>n_periods = (time - tb_time) / tb_period;</li>
+<li>tb_credits += n_periods * tb_credits_per_period;</li>
+<li>tb_credits = min(tb_credits, tb_size);</li>
+<li>tb_time += n_periods * tb_period;</li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>3</td>
+<td><dl class="first last docutils">
+<dt>Credit consumption</dt>
+<dd>(on packet scheduling)</dd>
+</dl>
+</td>
+<td><p class="first">As result of packet scheduling, the necessary number of credits is removed
+from the bucket. The packet can only be sent if enough credits are in the
+bucket to send the full packet (packet bytes and framing overhead for the
+packet).</p>
+<p>Scheduling operations:</p>
+<p class="last">pkt_credits = pkt_len + frame_overhead;
+if (tb_credits &gt;= pkt_credits){tb_credits -= pkt_credits;}</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="traffic-classes">
+<h5>21.2.4.6.4. Traffic Classes</h5>
+<div class="section" id="implementation-of-strict-priority-scheduling">
+<h6>21.2.4.6.4.1. Implementation of Strict Priority Scheduling</h6>
+<p>Strict priority scheduling of traffic classes within the same pipe is implemented by the pipe dequeue state machine,
+which selects the queues in ascending order.
+Therefore, queues 0..3 (associated with TC 0, highest priority TC) are handled before
+queues 4..7 (TC 1, lower priority than TC 0),
+which are handled before queues 8..11 (TC 2),
+which are handled before queues 12..15 (TC 3, lowest priority TC).</p>
+</div>
+<div class="section" id="upper-limit-enforcement">
+<h6>21.2.4.6.4.2. Upper Limit Enforcement</h6>
+<p>The traffic classes at the pipe and subport levels are not traffic shaped,
+so there is no token bucket maintained in this context.
+The upper limit for the traffic classes at the subport and
+pipe levels is enforced by periodically refilling the subport / pipe traffic class credit counter,
+out of which credits are consumed every time a packet is scheduled for that subport / pipe,
+as described in <a class="reference internal" href="#table-qos-10"><span class="std std-numref">Table 21.10</span></a> and <a class="reference internal" href="#table-qos-11"><span class="std std-numref">Table 21.11</span></a>.</p>
+<table border="1" class="docutils" id="id23">
+<span id="table-qos-10"></span><caption><span class="caption-number">Table 21.10 </span><span class="caption-text">Subport/Pipe Traffic Class Upper Limit Enforcement Persistent Data Structure</caption>
+<colgroup>
+<col width="3%" />
+<col width="22%" />
+<col width="7%" />
+<col width="68%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">#</th>
+<th class="head">Subport or pipe field</th>
+<th class="head">Unit</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>tc_time</td>
+<td>Bytes</td>
+<td><p class="first">Time of the next update (upper limit refill) for the 4 TCs of the
+current subport / pipe.</p>
+<p class="last">See  Section <a class="reference internal" href="#internal-time-reference">Internal Time Reference</a> for the
+explanation of why the time is maintained in byte units.</p>
+</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>tc_period</td>
+<td>Bytes</td>
+<td>Time between two consecutive updates for the 4 TCs of the current
+subport / pipe. This is expected to be many times bigger than the
+typical value of the token bucket tb_period.</td>
+</tr>
+<tr class="row-even"><td>3</td>
+<td>tc_credits_per_period</td>
+<td>Bytes</td>
+<td>Upper limit for the number of credits allowed to be consumed by the
+current TC during each enforcement period tc_period.</td>
+</tr>
+<tr class="row-odd"><td>4</td>
+<td>tc_credits</td>
+<td>Bytes</td>
+<td>Current upper limit for the number of credits that can be consumed by
+the current traffic class for the remainder of the current
+enforcement period.</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils" id="id24">
+<span id="table-qos-11"></span><caption><span class="caption-number">Table 21.11 </span><span class="caption-text">Subport/Pipe Traffic Class Upper Limit Enforcement Operations</caption>
+<colgroup>
+<col width="3%" />
+<col width="25%" />
+<col width="72%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">#</th>
+<th class="head">Traffic Class Operation</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>Initialization</td>
+<td><p class="first">tc_credits = tc_credits_per_period;</p>
+<p class="last">tc_time = tc_period;</p>
+</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>Credit update</td>
+<td><p class="first">Update operations:</p>
+<p>if (time &gt;= tc_time) {</p>
+<p>tc_credits = tc_credits_per_period;</p>
+<p>tc_time = time + tc_period;</p>
+<p class="last">}</p>
+</td>
+</tr>
+<tr class="row-even"><td>3</td>
+<td>Credit consumption
+(on packet scheduling)</td>
+<td><p class="first">As result of packet scheduling, the TC limit is decreased with the
+necessary number of credits. The packet can only be sent if enough credits
+are currently available in the TC limit to send the full packet
+(packet bytes and framing overhead for the packet).</p>
+<p>Scheduling operations:</p>
+<p>pkt_credits = pk_len + frame_overhead;</p>
+<p class="last">if (tc_credits &gt;= pkt_credits) {tc_credits -= pkt_credits;}</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="weighted-round-robin-wrr">
+<h5>21.2.4.6.5. Weighted Round Robin (WRR)</h5>
+<p>The evolution of the WRR design solution from simple to complex is shown in <a class="reference internal" href="#table-qos-12"><span class="std std-numref">Table 21.12</span></a>.</p>
+<table border="1" class="docutils" id="id25">
+<span id="table-qos-12"></span><caption><span class="caption-number">Table 21.12 </span><span class="caption-text">Weighted Round Robin (WRR)</caption>
+<colgroup>
+<col width="3%" />
+<col width="12%" />
+<col width="17%" />
+<col width="13%" />
+<col width="56%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">#</th>
+<th class="head">All Queues
+Active?</th>
+<th class="head">Equal Weights
+for All Queues?</th>
+<th class="head">All Packets
+Equal?</th>
+<th class="head">Strategy</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td><p class="first"><strong>Byte level round robin</strong></p>
+<p class="last"><em>Next queue</em>  queue #i, i =  <em>(i + 1) % n</em></p>
+</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+<td><p class="first"><strong>Packet level round robin</strong></p>
+<p>Consuming one byte from queue #i requires consuming
+exactly one token for queue #i.</p>
+<p>T(i) = Accumulated number of tokens previously consumed
+from queue #i. Every time a packet is consumed from
+queue #i, T(i) is updated as: T(i) += <em>pkt_len</em>.</p>
+<p class="last"><em>Next queue</em> : queue with the smallest T.</p>
+</td>
+</tr>
+<tr class="row-even"><td>3</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+<td><p class="first"><strong>Packet level weighted round robin</strong></p>
+<p>This case can be reduced to the previous case by
+introducing a cost per byte that is different for each
+queue. Queues with lower weights have a higher cost per
+byte. This way, it is still meaningful to compare the
+consumption amongst different queues in order to select
+the next queue.</p>
+<p>w(i) = Weight of queue #i</p>
+<p>t(i) = Tokens per byte for queue #i, defined as the
+inverse weight of queue #i.
+For example, if w[0..3] = [1:2:4:8],
+then t[0..3] = [8:4:2:1]; if w[0..3] = [1:4:15:20],
+then t[0..3] = [60:15:4:3].
+Consuming one byte from queue #i requires consuming t(i)
+tokens for queue #i.</p>
+<p class="last">T(i) = Accumulated number of tokens previously consumed
+from queue #i. Every time a packet is consumed from
+queue #i, T(i) is updated as:  <em>T(i) += pkt_len * t(i)</em>.
+<em>Next queue</em> : queue with the smallest T.</p>
+</td>
+</tr>
+<tr class="row-odd"><td>4</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td><p class="first"><strong>Packet level weighted round robin with variable queue
+status</strong></p>
+<p>Reduce this case to the previous case by setting the
+consumption of inactive queues to a high number, so that
+the inactive queues will never be selected by the
+smallest T logic.</p>
+<p>To prevent T from overflowing as result of successive
+accumulations, T(i) is truncated after each packet
+consumption for all queues.
+For example, T[0..3] = [1000, 1100, 1200, 1300]
+is truncated to T[0..3] = [0, 100, 200, 300]
+by subtracting the min T from T(i), i = 0..n.</p>
+<p>This requires having at least one active queue in the
+set of input queues, which is guaranteed by the dequeue
+state machine never selecting an inactive traffic class.</p>
+<p><em>mask(i) = Saturation mask for queue #i, defined as:</em></p>
+<p>mask(i) = (queue #i is active)? 0 : 0xFFFFFFFF;</p>
+<p>w(i) = Weight of queue #i</p>
+<p>t(i) = Tokens per byte for queue #i, defined as the
+inverse weight of queue #i.</p>
+<p>T(i) = Accumulated numbers of tokens previously consumed
+from queue #i.</p>
+<p><em>Next queue</em>  : queue with smallest T.</p>
+<p>Before packet consumption from queue #i:</p>
+<p><em>T(i) |= mask(i)</em></p>
+<p>After packet consumption from queue #i:</p>
+<p>T(j) -= T(i), j != i</p>
+<p>T(i) = pkt_len * t(i)</p>
+<p class="last">Note: T(j) uses the T(i) value before T(i) is updated.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="subport-traffic-class-oversubscription">
+<h5>21.2.4.6.6. Subport Traffic Class Oversubscription</h5>
+<div class="section" id="problem-statement">
+<h6>21.2.4.6.6.1. Problem Statement</h6>
+<p>Oversubscription for subport traffic class X is a configuration-time event that occurs when
+more bandwidth is allocated for traffic class X at the level of subport member pipes than
+allocated for the same traffic class at the parent subport level.</p>
+<p>The existence of the oversubscription for a specific subport and
+traffic class is solely the result of pipe and
+subport-level configuration as opposed to being created due
+to dynamic evolution of the traffic load at run-time (as congestion is).</p>
+<p>When the overall demand for traffic class X for the current subport is low,
+the existence of the oversubscription condition does not represent a problem,
+as demand for traffic class X is completely satisfied for all member pipes.
+However, this can no longer be achieved when the aggregated demand for traffic class X
+for all subport member pipes exceeds the limit configured at the subport level.</p>
+</div>
+<div class="section" id="solution-space">
+<h6>21.2.4.6.6.2. Solution Space</h6>
+<p>summarizes some of the possible approaches for handling this problem,
+with the third approach selected for implementation.</p>
+<table border="1" class="docutils" id="id26">
+<span id="table-qos-13"></span><caption><span class="caption-number">Table 21.13 </span><span class="caption-text">Subport Traffic Class Oversubscription</caption>
+<colgroup>
+<col width="5%" />
+<col width="26%" />
+<col width="70%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">No.</th>
+<th class="head">Approach</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>Don&#8217;t care</td>
+<td><p class="first">First come, first served.</p>
+<p class="last">This approach is not fair amongst subport member pipes, as pipes that
+are served first will use up as much bandwidth for TC X as they need,
+while pipes that are served later will receive poor service due to
+bandwidth for TC X at the subport level being scarce.</p>
+</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>Scale down all pipes</td>
+<td><p class="first">All pipes within the subport have their bandwidth limit for TC X scaled
+down by the same factor.</p>
+<p class="last">This approach is not fair among subport member pipes, as the low end
+pipes (that is, pipes configured with low bandwidth) can potentially
+experience severe service degradation that might render their service
+unusable (if available bandwidth for these pipes drops below the
+minimum requirements for a workable service), while the service
+degradation for high end pipes might not be noticeable at all.</p>
+</td>
+</tr>
+<tr class="row-even"><td>3</td>
+<td>Cap the high demand pipes</td>
+<td>Each subport member pipe receives an equal share of the bandwidth
+available at run-time for TC X at the subport level. Any bandwidth left
+unused by the low-demand pipes is redistributed in equal portions to
+the high-demand pipes. This way, the high-demand pipes are truncated
+while the low-demand pipes are not impacted.</td>
+</tr>
+</tbody>
+</table>
+<p>Typically, the subport TC oversubscription feature is enabled only for the lowest priority traffic class (TC 3),
+which is typically used for best effort traffic,
+with the management plane preventing this condition from occurring for the other (higher priority) traffic classes.</p>
+<p>To ease implementation, it is also assumed that the upper limit for subport TC 3 is set to 100% of the subport rate,
+and that the upper limit for pipe TC 3 is set to 100% of pipe rate for all subport member pipes.</p>
+</div>
+<div class="section" id="implementation-overview">
+<h6>21.2.4.6.6.3. Implementation Overview</h6>
+<p>The algorithm computes a watermark, which is periodically updated based on the current demand experienced by the subport member pipes,
+whose purpose is to limit the amount of traffic that each pipe is allowed to send for TC 3.
+The watermark is computed at the subport level at the beginning of each traffic class upper limit enforcement period and
+the same value is used by all the subport member pipes throughout the current enforcement period.
+illustrates how the watermark computed as subport level at the beginning of each period is propagated to all subport member pipes.</p>
+<p>At the beginning of the current enforcement period (which coincides with the end of the previous enforcement period),
+the value of the watermark is adjusted based on the amount of bandwidth allocated to TC 3 at the beginning of the previous period that
+was not left unused by the subport member pipes at the end of the previous period.</p>
+<p>If there was subport TC 3 bandwidth left unused,
+the value of the watermark for the current period is increased to encourage the subport member pipes to consume more bandwidth.
+Otherwise, the value of the watermark is decreased to enforce equality of bandwidth consumption among subport member pipes for TC 3.</p>
+<p>The increase or decrease in the watermark value is done in small increments,
+so several enforcement periods might be required to reach the equilibrium state.
+This state can change at any moment due to variations in the demand experienced by the subport member pipes for TC 3, for example,
+as a result of demand increase (when the watermark needs to be lowered) or demand decrease (when the watermark needs to be increased).</p>
+<p>When demand is low, the watermark is set high to prevent it from impeding the subport member pipes from consuming more bandwidth.
+The highest value for the watermark is picked as the highest rate configured for a subport member pipe.
+<a class="reference internal" href="#table-qos-14"><span class="std std-numref">Table 21.14</span></a> and <a class="reference internal" href="#table-qos-15"><span class="std std-numref">Table 21.15</span></a> illustrates the watermark operation.</p>
+<table border="1" class="docutils" id="id27">
+<span id="table-qos-14"></span><caption><span class="caption-number">Table 21.14 </span><span class="caption-text">Watermark Propagation from Subport Level to Member Pipes at the Beginning of Each Traffic Class Upper Limit Enforcement Period</caption>
+<colgroup>
+<col width="6%" />
+<col width="37%" />
+<col width="58%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">No.</th>
+<th class="head">Subport Traffic Class Operation</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>Initialization</td>
+<td><p class="first"><strong>Subport level</strong>: subport_period_id= 0</p>
+<p class="last"><strong>Pipe level</strong>: pipe_period_id = 0</p>
+</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>Credit update</td>
+<td><p class="first"><strong>Subport Level</strong>:</p>
+<p>if (time&gt;=subport_tc_time)</p>
+<dl class="docutils">
+<dt>{</dt>
+<dd><p class="first">subport_wm = water_mark_update();</p>
+<p>subport_tc_time = time + subport_tc_period;</p>
+<p class="last">subport_period_id++;</p>
+</dd>
+</dl>
+<p>}</p>
+<p><strong>Pipelevel:</strong></p>
+<p>if(pipe_period_id != subport_period_id)</p>
+<p>{</p>
+<blockquote>
+<div><p>pipe_ov_credits = subport_wm * pipe_weight;</p>
+<p>pipe_period_id = subport_period_id;</p>
+</div></blockquote>
+<p class="last">}</p>
+</td>
+</tr>
+<tr class="row-even"><td>3</td>
+<td>Credit consumption
+(on packet scheduling)</td>
+<td><p class="first"><strong>Pipe level:</strong></p>
+<p>pkt_credits = pk_len + frame_overhead;</p>
+<p>if(pipe_ov_credits &gt;= pkt_credits{</p>
+<blockquote>
+<div>pipe_ov_credits -= pkt_credits;</div></blockquote>
+<p class="last">}</p>
+</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils" id="id28">
+<span id="table-qos-15"></span><caption><span class="caption-number">Table 21.15 </span><span class="caption-text">Watermark Calculation</caption>
+<colgroup>
+<col width="5%" />
+<col width="17%" />
+<col width="78%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">No.</th>
+<th class="head">Subport Traffic
+Class Operation</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>Initialization</td>
+<td><p class="first"><strong>Subport level:</strong></p>
+<p class="last">wm = WM_MAX</p>
+</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>Credit update</td>
+<td><p class="first"><strong>Subport level (water_mark_update):</strong></p>
+<p>tc0_cons = subport_tc0_credits_per_period - subport_tc0_credits;</p>
+<p>tc1_cons = subport_tc1_credits_per_period - subport_tc1_credits;</p>
+<p>tc2_cons = subport_tc2_credits_per_period - subport_tc2_credits;</p>
+<p>tc3_cons = subport_tc3_credits_per_period - subport_tc3_credits;</p>
+<p>tc3_cons_max = subport_tc3_credits_per_period - (tc0_cons + tc1_cons +
+tc2_cons);</p>
+<p>if(tc3_consumption &gt; (tc3_consumption_max - MTU)){</p>
+<blockquote>
+<div><p>wm -= wm &gt;&gt; 7;</p>
+<p>if(wm &lt; WM_MIN) wm =  WM_MIN;</p>
+</div></blockquote>
+<p>} else {</p>
+<blockquote>
+<div><p>wm += (wm &gt;&gt; 7) + 1;</p>
+<p>if(wm &gt; WM_MAX) wm = WM_MAX;</p>
+</div></blockquote>
+<p class="last">}</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="worst-case-scenarios-for-performance">
+<h3>21.2.5. Worst Case Scenarios for Performance</h3>
+<div class="section" id="lots-of-active-queues-with-not-enough-credits">
+<h4>21.2.5.1. Lots of Active Queues with Not Enough Credits</h4>
+<p>The more queues the scheduler has to examine for packets and credits in order to select one packet,
+the lower the performance of the scheduler is.</p>
+<p>The scheduler maintains the bitmap of active queues, which skips the non-active queues,
+but in order to detect whether a specific pipe has enough credits,
+the pipe has to be drilled down using the pipe dequeue state machine,
+which consumes cycles regardless of the scheduling result
+(no packets are produced or at least one packet is produced).</p>
+<p>This scenario stresses the importance of the policer for the scheduler performance:
+if the pipe does not have enough credits,
+its packets should be dropped as soon as possible (before they reach the hierarchical scheduler),
+thus rendering the pipe queues as not active,
+which allows the dequeue side to skip that pipe with no cycles being spent on investigating the pipe credits
+that would result in a &#8220;not enough credits&#8221; status.</p>
+</div>
+<div class="section" id="single-queue-with-100-line-rate">
+<h4>21.2.5.2. Single Queue with 100% Line Rate</h4>
+<p>The port scheduler performance is optimized for a large number of queues.
+If the number of queues is small,
+then the performance of the port scheduler for the same level of active traffic is expected to be worse than
+the performance of a small set of message passing queues.</p>
+</div>
+</div>
+</div>
+<div class="section" id="dropper">
+<span id="id1"></span><h2>21.3. Dropper</h2>
+<p>The purpose of the DPDK dropper is to drop packets arriving at a packet scheduler to avoid congestion.
+The dropper supports the Random Early Detection (RED),
+Weighted Random Early Detection (WRED) and tail drop algorithms.
+<a class="reference internal" href="#figure-blk-diag-dropper"><span class="std std-numref">Fig. 21.7</span></a> illustrates how the dropper integrates with the scheduler.
+The DPDK currently does not support congestion management
+so the dropper provides the only method for congestion avoidance.</p>
+<div class="figure" id="id29">
+<span id="figure-blk-diag-dropper"></span><img alt="../_images/blk_diag_dropper.png" src="../_images/blk_diag_dropper.png" />
+<p class="caption"><span class="caption-number">Fig. 21.7 </span><span class="caption-text">High-level Block Diagram of the DPDK Dropper</span></p>
+</div>
+<p>The dropper uses the Random Early Detection (RED) congestion avoidance algorithm as documented in the reference publication.
+The purpose of the RED algorithm is to monitor a packet queue,
+determine the current congestion level in the queue and decide whether an arriving packet should be enqueued or dropped.
+The RED algorithm uses an Exponential Weighted Moving Average (EWMA) filter to compute average queue size which
+gives an indication of the current congestion level in the queue.</p>
+<p>For each enqueue operation, the RED algorithm compares the average queue size to minimum and maximum thresholds.
+Depending on whether the average queue size is below, above or in between these thresholds,
+the RED algorithm calculates the probability that an arriving packet should be dropped and
+makes a random decision based on this probability.</p>
+<p>The dropper also supports Weighted Random Early Detection (WRED) by allowing the scheduler to select
+different RED configurations for the same packet queue at run-time.
+In the case of severe congestion, the dropper resorts to tail drop.
+This occurs when a packet queue has reached maximum capacity and cannot store any more packets.
+In this situation, all arriving packets are dropped.</p>
+<p>The flow through the dropper is illustrated in <a class="reference internal" href="#figure-flow-tru-droppper"><span class="std std-numref">Fig. 21.8</span></a>.
+The RED/WRED algorithm is exercised first and tail drop second.</p>
+<div class="figure" id="id30">
+<span id="figure-flow-tru-droppper"></span><img alt="../_images/flow_tru_droppper.png" src="../_images/flow_tru_droppper.png" />
+<p class="caption"><span class="caption-number">Fig. 21.8 </span><span class="caption-text">Flow Through the Dropper</span></p>
+</div>
+<p>The use cases supported by the dropper are:</p>
+<ul class="simple">
+<li><ul class="first">
+<li>Initialize configuration data</li>
+</ul>
+</li>
+<li><ul class="first">
+<li>Initialize run-time data</li>
+</ul>
+</li>
+<li><ul class="first">
+<li>Enqueue (make a decision to enqueue or drop an arriving packet)</li>
+</ul>
+</li>
+<li><ul class="first">
+<li>Mark empty (record the time at which a packet queue becomes empty)</li>
+</ul>
+</li>
+</ul>
+<p>The configuration use case is explained in <a class="reference internal" href="#configuration"><span class="std std-ref">Section2.23.3.1</span></a>,
+the enqueue operation is explained in  <a class="reference internal" href="#enqueue-operation"><span class="std std-ref">Section 2.23.3.2</span></a>
+and the mark empty operation is explained in <a class="reference internal" href="#queue-empty-operation"><span class="std std-ref">Section 2.23.3.3</span></a>.</p>
+<div class="section" id="configuration">
+<span id="id2"></span><h3>21.3.1. Configuration</h3>
+<p>A RED configuration contains the parameters given in <a class="reference internal" href="#table-qos-16"><span class="std std-numref">Table 21.16</span></a>.</p>
+<table border="1" class="docutils" id="id31">
+<span id="table-qos-16"></span><caption><span class="caption-number">Table 21.16 </span><span class="caption-text">RED Configuration Parameters</caption>
+<colgroup>
+<col width="42%" />
+<col width="15%" />
+<col width="15%" />
+<col width="29%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Minimum</th>
+<th class="head">Maximum</th>
+<th class="head">Typical</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Minimum Threshold</td>
+<td>0</td>
+<td>1022</td>
+<td>1/4 x queue size</td>
+</tr>
+<tr class="row-odd"><td>Maximum Threshold</td>
+<td>1</td>
+<td>1023</td>
+<td>1/2 x queue size</td>
+</tr>
+<tr class="row-even"><td>Inverse Mark Probability</td>
+<td>1</td>
+<td>255</td>
+<td>10</td>
+</tr>
+<tr class="row-odd"><td>EWMA Filter Weight</td>
+<td>1</td>
+<td>12</td>
+<td>9</td>
+</tr>
+</tbody>
+</table>
+<p>The meaning of these parameters is explained in more detail in the following sections.
+The format of these parameters as specified to the dropper module API
+corresponds to the format used by Cisco* in their RED implementation.
+The minimum and maximum threshold parameters are specified to the dropper module in terms of number of packets.
+The mark probability parameter is specified as an inverse value, for example,
+an inverse mark probability parameter value of 10 corresponds
+to a mark probability of 1/10 (that is, 1 in 10 packets will be dropped).
+The EWMA filter weight parameter is specified as an inverse log value,
+for example, a filter weight parameter value of 9 corresponds to a filter weight of 1/29.</p>
+</div>
+<div class="section" id="enqueue-operation">
+<span id="id3"></span><h3>21.3.2. Enqueue Operation</h3>
+<p>In the example shown in <a class="reference internal" href="#figure-ex-data-flow-tru-dropper"><span class="std std-numref">Fig. 21.9</span></a>, q (actual queue size) is the input value,
+avg (average queue size) and count (number of packets since the last drop) are run-time values,
+decision is the output value and the remaining values are configuration parameters.</p>
+<div class="figure" id="id32">
+<span id="figure-ex-data-flow-tru-dropper"></span><img alt="../_images/ex_data_flow_tru_dropper.png" src="../_images/ex_data_flow_tru_dropper.png" />
+<p class="caption"><span class="caption-number">Fig. 21.9 </span><span class="caption-text">Example Data Flow Through Dropper</span></p>
+</div>
+<div class="section" id="ewma-filter-microblock">
+<h4>21.3.2.1. EWMA Filter Microblock</h4>
+<p>The purpose of the EWMA Filter microblock is to filter queue size values to smooth out transient changes
+that result from &#8220;bursty&#8221; traffic.
+The output value is the average queue size which gives a more stable view of the current congestion level in the queue.</p>
+<p>The EWMA filter has one configuration parameter, filter weight, which determines how quickly
+or slowly the average queue size output responds to changes in the actual queue size input.
+Higher values of filter weight mean that the average queue size responds more quickly to changes in actual queue size.</p>
+<div class="section" id="average-queue-size-calculation-when-the-queue-is-not-empty">
+<h5>21.3.2.1.1. Average Queue Size Calculation when the Queue is not Empty</h5>
+<p>The definition of the EWMA filter is given in the following equation.</p>
+<img alt="../_images/ewma_filter_eq_1.png" src="../_images/ewma_filter_eq_1.png" />
+<p>Where:</p>
+<ul class="simple">
+<li><em>avg</em>  = average queue size</li>
+<li><em>wq</em>   = filter weight</li>
+<li><em>q</em>    = actual queue size</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<dl class="last docutils">
+<dt>The filter weight, wq = 1/2^n, where n is the filter weight parameter value passed to the dropper module</dt>
+<dd>on configuration (see <a class="reference internal" href="#configuration"><span class="std std-ref">Section2.23.3.1</span></a> ).</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="section" id="average-queue-size-calculation-when-the-queue-is-empty">
+<h4>21.3.2.2. Average Queue Size Calculation when the Queue is Empty</h4>
+<p>The EWMA filter does not read time stamps and instead assumes that enqueue operations will happen quite regularly.
+Special handling is required when the queue becomes empty as the queue could be empty for a short time or a long time.
+When the queue becomes empty, average queue size should decay gradually to zero instead of dropping suddenly to zero
+or remaining stagnant at the last computed value.
+When a packet is enqueued on an empty queue, the average queue size is computed using the following formula:</p>
+<img alt="../_images/ewma_filter_eq_2.png" src="../_images/ewma_filter_eq_2.png" />
+<p>Where:</p>
+<ul class="simple">
+<li><em>m</em>   = the number of enqueue operations that could have occurred on this queue while the queue was empty</li>
+</ul>
+<p>In the dropper module, <em>m</em> is defined as:</p>
+<img alt="../_images/m_definition.png" src="../_images/m_definition.png" />
+<p>Where:</p>
+<ul class="simple">
+<li><em>time</em>  = current time</li>
+<li><em>qtime</em> = time the queue became empty</li>
+<li><em>s</em> = typical time between successive enqueue operations on this queue</li>
+</ul>
+<p>The time reference is in units of bytes,
+where a byte signifies the time duration required by the physical interface to send out a byte on the transmission medium
+(see Section <a class="reference internal" href="#internal-time-reference">Internal Time Reference</a>).
+The parameter s is defined in the dropper module as a constant with the value: s=2^22.
+This corresponds to the time required by every leaf node in a hierarchy with 64K leaf nodes
+to transmit one 64-byte packet onto the wire and represents the worst case scenario.
+For much smaller scheduler hierarchies,
+it may be necessary to reduce the parameter s, which is defined in the red header source file (rte_red.h) as:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#define RTE_RED_S</span>
+</pre></div>
+</div>
+<p>Since the time reference is in bytes, the port speed is implied in the expression: <em>time-qtime</em>.
+The dropper does not have to be configured with the actual port speed.
+It adjusts automatically to low speed and high speed links.</p>
+<div class="section" id="id4">
+<h5>21.3.2.2.1. Implementation</h5>
+<p>A numerical method is used to compute the factor (1-wq)^m that appears in Equation 2.</p>
+<p>This method is based on the following identity:</p>
+<img alt="../_images/eq2_factor.png" src="../_images/eq2_factor.png" />
+<p>This allows us to express the following:</p>
+<img alt="../_images/eq2_expression.png" src="../_images/eq2_expression.png" />
+<p>In the dropper module, a look-up table is used to compute log2(1-wq) for each value of wq supported by the dropper module.
+The factor (1-wq)^m can then be obtained by multiplying the table value by <em>m</em> and applying shift operations.
+To avoid overflow in the multiplication, the value, <em>m</em>, and the look-up table values are limited to 16 bits.
+The total size of the look-up table is 56 bytes.
+Once the factor (1-wq)^m is obtained using this method, the average queue size can be calculated from Equation 2.</p>
+</div>
+<div class="section" id="alternative-approaches">
+<h5>21.3.2.2.2. Alternative Approaches</h5>
+<p>Other methods for calculating the factor (1-wq)^m in the expression for computing average queue size
+when the queue is empty (Equation 2) were considered.
+These approaches include:</p>
+<ul class="simple">
+<li>Floating-point evaluation</li>
+<li>Fixed-point evaluation using a small look-up table (512B) and up to 16 multiplications
+(this is the approach used in the FreeBSD* ALTQ RED implementation)</li>
+<li>Fixed-point evaluation using a small look-up table (512B) and 16 SSE multiplications
+(SSE optimized version of the approach used in the FreeBSD* ALTQ RED implementation)</li>
+<li>Large look-up table (76 KB)</li>
+</ul>
+<p>The method that was finally selected (described above in Section 26.3.2.2.1) out performs all of these approaches
+in terms of run-time performance and memory requirements and
+also achieves accuracy comparable to floating-point evaluation.
+<a class="reference internal" href="#table-qos-17"><span class="std std-numref">Table 21.17</span></a> lists the performance of each of these alternative approaches relative to the method that is used in the dropper.
+As can be seen, the floating-point implementation achieved the worst performance.</p>
+<table border="1" class="docutils" id="id33">
+<span id="table-qos-17"></span><caption><span class="caption-number">Table 21.17 </span><span class="caption-text">Relative Performance of Alternative Approaches</caption>
+<colgroup>
+<col width="79%" />
+<col width="21%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Method</th>
+<th class="head">Relative Performance</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Current dropper method (see <a class="reference internal" href="#dropper"><span class="std std-ref">Section 23.3.2.1.3</span></a>)</td>
+<td>100%</td>
+</tr>
+<tr class="row-odd"><td>Fixed-point method with small (512B) look-up table</td>
+<td>148%</td>
+</tr>
+<tr class="row-even"><td>SSE method with small (512B) look-up table</td>
+<td>114%</td>
+</tr>
+<tr class="row-odd"><td>Large (76KB) look-up table</td>
+<td>118%</td>
+</tr>
+<tr class="row-even"><td>Floating-point</td>
+<td>595%</td>
+</tr>
+<tr class="row-odd"><td colspan="2"><strong>Note</strong>: In this case, since performance is expressed as time spent executing the operation in a
+specific condition, any relative performance value above 100% runs slower than the reference method.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="drop-decision-block">
+<h4>21.3.2.3. Drop Decision Block</h4>
+<p>The Drop Decision block:</p>
+<ul class="simple">
+<li>Compares the average queue size with the minimum and maximum thresholds</li>
+<li>Calculates a packet drop probability</li>
+<li>Makes a random decision to enqueue or drop an arriving packet</li>
+</ul>
+<p>The calculation of the drop probability occurs in two stages.
+An initial drop probability is calculated based on the average queue size,
+the minimum and maximum thresholds and the mark probability.
+An actual drop probability is then computed from the initial drop probability.
+The actual drop probability takes the count run-time value into consideration
+so that the actual drop probability increases as more packets arrive to the packet queue
+since the last packet was dropped.</p>
+<div class="section" id="initial-packet-drop-probability">
+<h5>21.3.2.3.1. Initial Packet Drop Probability</h5>
+<p>The initial drop probability is calculated using the following equation.</p>
+<img alt="../_images/drop_probability_eq3.png" src="../_images/drop_probability_eq3.png" />
+<p>Where:</p>
+<ul class="simple">
+<li><em>maxp</em>  = mark probability</li>
+<li><em>avg</em>  = average queue size</li>
+<li><em>minth</em>  = minimum threshold</li>
+<li><em>maxth</em>  = maximum threshold</li>
+</ul>
+<p>The calculation of the packet drop probability using Equation 3 is illustrated in <a class="reference internal" href="#figure-pkt-drop-probability"><span class="std std-numref">Fig. 21.10</span></a>.
+If the average queue size is below the minimum threshold, an arriving packet is enqueued.
+If the average queue size is at or above the maximum threshold, an arriving packet is dropped.
+If the average queue size is between the minimum and maximum thresholds,
+a drop probability is calculated to determine if the packet should be enqueued or dropped.</p>
+<div class="figure" id="id34">
+<span id="figure-pkt-drop-probability"></span><img alt="../_images/pkt_drop_probability.png" src="../_images/pkt_drop_probability.png" />
+<p class="caption"><span class="caption-number">Fig. 21.10 </span><span class="caption-text">Packet Drop Probability for a Given RED Configuration</span></p>
+</div>
+</div>
+<div class="section" id="actual-drop-probability">
+<h5>21.3.2.3.2. Actual Drop Probability</h5>
+<p>If the average queue size is between the minimum and maximum thresholds,
+then the actual drop probability is calculated from the following equation.</p>
+<img alt="../_images/drop_probability_eq4.png" src="../_images/drop_probability_eq4.png" />
+<p>Where:</p>
+<ul class="simple">
+<li><em>Pb</em>  = initial drop probability (from Equation 3)</li>
+<li><em>count</em> = number of packets that have arrived since the last drop</li>
+</ul>
+<p>The constant 2, in Equation 4 is the only deviation from the drop probability formulae
+given in the reference document where a value of 1 is used instead.
+It should be noted that the value pa computed from can be negative or greater than 1.
+If this is the case, then a value of 1 should be used instead.</p>
+<p>The initial and actual drop probabilities are shown in <a class="reference internal" href="#figure-drop-probability-graph"><span class="std std-numref">Fig. 21.11</span></a>.
+The actual drop probability is shown for the case where
+the formula given in the reference document1 is used (blue curve)
+and also for the case where the formula implemented in the dropper module,
+is used (red curve).
+The formula in the reference document results in a significantly higher drop rate
+compared to the mark probability configuration parameter specified by the user.
+The choice to deviate from the reference document is simply a design decision and
+one that has been taken by other RED implementations, for example, FreeBSD* ALTQ RED.</p>
+<div class="figure" id="id35">
+<span id="figure-drop-probability-graph"></span><img alt="../_images/drop_probability_graph.png" src="../_images/drop_probability_graph.png" />
+<p class="caption"><span class="caption-number">Fig. 21.11 </span><span class="caption-text">Initial Drop Probability (pb), Actual Drop probability (pa) Computed Using
+a Factor 1 (Blue Curve) and a Factor 2 (Red Curve)</span></p>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="queue-empty-operation">
+<span id="id5"></span><h3>21.3.3. Queue Empty Operation</h3>
+<p>The time at which a packet queue becomes empty must be recorded and saved with the RED run-time data
+so that the EWMA filter block can calculate the average queue size on the next enqueue operation.
+It is the responsibility of the calling application to inform the dropper module
+through the API that a queue has become empty.</p>
+</div>
+<div class="section" id="source-files-location">
+<h3>21.3.4. Source Files Location</h3>
+<p>The source files for the DPDK dropper are located at:</p>
+<ul class="simple">
+<li>DPDK/lib/librte_sched/rte_red.h</li>
+<li>DPDK/lib/librte_sched/rte_red.c</li>
+</ul>
+</div>
+<div class="section" id="integration-with-the-dpdk-qos-scheduler">
+<h3>21.3.5. Integration with the DPDK QoS Scheduler</h3>
+<p>RED functionality in the DPDK QoS scheduler is disabled by default.
+To enable it, use the DPDK configuration parameter:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>CONFIG_RTE_SCHED_RED=y
+</pre></div>
+</div>
+<p>This parameter must be set to y.
+The parameter is found in the build configuration files in the DPDK/config directory,
+for example, DPDK/config/common_linuxapp.
+RED configuration parameters are specified in the rte_red_params structure within the rte_sched_port_params structure
+that is passed to the scheduler on initialization.
+RED parameters are specified separately for four traffic classes and three packet colors (green, yellow and red)
+allowing the scheduler to implement Weighted Random Early Detection (WRED).</p>
+</div>
+<div class="section" id="integration-with-the-dpdk-qos-scheduler-sample-application">
+<h3>21.3.6. Integration with the DPDK QoS Scheduler Sample Application</h3>
+<p>The DPDK QoS Scheduler Application reads a configuration file on start-up.
+The configuration file includes a section containing RED parameters.
+The format of these parameters is described in <a class="reference internal" href="#configuration"><span class="std std-ref">Section2.23.3.1</span></a>.
+A sample RED configuration is shown below. In this example, the queue size is 64 packets.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">For correct operation, the same EWMA filter weight parameter (wred weight) should be used
+for each packet color (green, yellow, red) in the same traffic class (tc).</p>
+</div>
+<div class="highlight-none"><div class="highlight"><pre><span></span> ; RED params per traffic class and color (Green / Yellow / Red)
+
+[red]
+tc 0 wred min = 28 22 16
+tc 0 wred max = 32 32 32
+tc 0 wred inv prob = 10 10 10
+tc 0 wred weight = 9 9 9
+
+tc 1 wred min = 28 22 16
+tc 1 wred max = 32 32 32
+tc 1 wred inv prob = 10 10 10
+tc 1 wred weight = 9 9 9
+
+tc 2 wred min = 28 22 16
+tc 2 wred max = 32 32 32
+tc 2 wred inv prob = 10 10 10
+tc 2 wred weight = 9 9 9
+
+tc 3 wred min = 28 22 16
+tc 3 wred max = 32 32 32
+tc 3 wred inv prob = 10 10 10
+tc 3 wred weight = 9 9 9
+</pre></div>
+</div>
+<p>With this configuration file, the RED configuration that applies to green,
+yellow and red packets in traffic class 0 is shown in <a class="reference internal" href="#table-qos-18"><span class="std std-numref">Table 21.18</span></a>.</p>
+<table border="1" class="docutils" id="id36">
+<span id="table-qos-18"></span><caption><span class="caption-number">Table 21.18 </span><span class="caption-text">RED Configuration Corresponding to RED Configuration File</caption>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="12%" />
+<col width="13%" />
+<col width="8%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">RED Parameter</th>
+<th class="head">Configuration Name</th>
+<th class="head">Green</th>
+<th class="head">Yellow</th>
+<th class="head">Red</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Minimum Threshold</td>
+<td>tc 0 wred min</td>
+<td>28</td>
+<td>22</td>
+<td>16</td>
+</tr>
+<tr class="row-odd"><td>Maximum Threshold</td>
+<td>tc 0 wred max</td>
+<td>32</td>
+<td>32</td>
+<td>32</td>
+</tr>
+<tr class="row-even"><td>Mark Probability</td>
+<td>tc 0 wred inv prob</td>
+<td>10</td>
+<td>10</td>
+<td>10</td>
+</tr>
+<tr class="row-odd"><td>EWMA Filter Weight</td>
+<td>tc 0 wred weight</td>
+<td>9</td>
+<td>9</td>
+<td>9</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id6">
+<h3>21.3.7. Application Programming Interface (API)</h3>
+<div class="section" id="enqueue-api">
+<h4>21.3.7.1. Enqueue API</h4>
+<p>The syntax of the enqueue API is as follows:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">rte_red_enqueue</span><span class="p">(</span><span class="k">const</span> <span class="k">struct</span> <span class="n">rte_red_config</span> <span class="o">*</span><span class="n">red_cfg</span><span class="p">,</span> <span class="k">struct</span> <span class="n">rte_red</span> <span class="o">*</span><span class="n">red</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="n">q</span><span class="p">,</span> <span class="k">const</span> <span class="kt">uint64_t</span> <span class="n">time</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The arguments passed to the enqueue API are configuration data, run-time data,
+the current size of the packet queue (in packets) and a value representing the current time.
+The time reference is in units of bytes,
+where a byte signifies the time duration required by the physical interface to send out a byte on the transmission medium
+(see Section 26.2.4.5.1 &#8220;Internal Time Reference&#8221; ).
+The dropper reuses the scheduler time stamps for performance reasons.</p>
+</div>
+<div class="section" id="empty-api">
+<h4>21.3.7.2. Empty API</h4>
+<p>The syntax of the empty API is as follows:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="n">rte_red_mark_queue_empty</span><span class="p">(</span><span class="k">struct</span> <span class="n">rte_red</span> <span class="o">*</span><span class="n">red</span><span class="p">,</span> <span class="k">const</span> <span class="kt">uint64_t</span> <span class="n">time</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The arguments passed to the empty API are run-time data and the current time in bytes.</p>
+</div>
+</div>
+</div>
+<div class="section" id="traffic-metering">
+<h2>21.4. Traffic Metering</h2>
+<p>The traffic metering component implements the Single Rate Three Color Marker (srTCM) and
+Two Rate Three Color Marker (trTCM) algorithms, as defined by IETF RFC 2697 and 2698 respectively.
+These algorithms meter the stream of incoming packets based on the allowance defined in advance for each traffic flow.
+As result, each incoming packet is tagged as green,
+yellow or red based on the monitored consumption of the flow the packet belongs to.</p>
+<div class="section" id="functional-overview">
+<h3>21.4.1. Functional Overview</h3>
+<p>The srTCM algorithm defines two token buckets for each traffic flow,
+with the two buckets sharing the same token update rate:</p>
+<ul class="simple">
+<li>Committed (C) bucket: fed with tokens at the rate defined by the Committed Information Rate (CIR) parameter
+(measured in IP packet bytes per second).
+The size of the C bucket is defined by the Committed Burst Size (CBS) parameter (measured in bytes);</li>
+<li>Excess (E) bucket: fed with tokens at the same rate as the C bucket.
+The size of the E bucket is defined by the Excess Burst Size (EBS) parameter (measured in bytes).</li>
+</ul>
+<p>The trTCM algorithm defines two token buckets for each traffic flow,
+with the two buckets being updated with tokens at independent rates:</p>
+<ul class="simple">
+<li>Committed (C) bucket: fed with tokens at the rate defined by the Committed Information Rate (CIR) parameter
+(measured in bytes of IP packet per second).
+The size of the C bucket is defined by the Committed Burst Size (CBS) parameter (measured in bytes);</li>
+<li>Peak (P) bucket: fed with tokens at the rate defined by the Peak Information Rate (PIR) parameter
+(measured in IP packet bytes per second).
+The size of the P bucket is defined by the Peak Burst Size (PBS) parameter (measured in bytes).</li>
+</ul>
+<p>Please refer to RFC 2697 (for srTCM) and RFC 2698 (for trTCM) for details on how tokens are consumed
+from the buckets and how the packet color is determined.</p>
+<div class="section" id="color-blind-and-color-aware-modes">
+<h4>21.4.1.1. Color Blind and Color Aware Modes</h4>
+<p>For both algorithms, the color blind mode is functionally equivalent to the color aware mode with input color set as green.
+For color aware mode, a packet with red input color can only get the red output color,
+while a packet with yellow input color can only get the yellow or red output colors.</p>
+<p>The reason why the color blind mode is still implemented distinctly than the color aware mode is
+that color blind mode can be implemented with fewer operations than the color aware mode.</p>
+</div>
+</div>
+<div class="section" id="id7">
+<h3>21.4.2. Implementation Overview</h3>
+<p>For each input packet, the steps for the srTCM / trTCM algorithms are:</p>
+<ul class="simple">
+<li>Update the C and E / P token buckets. This is done by reading the current time (from the CPU timestamp counter),
+identifying the amount of time since the last bucket update and computing the associated number of tokens
+(according to the pre-configured bucket rate).
+The number of tokens in the bucket is limited by the pre-configured bucket size;</li>
+<li>Identify the output color for the current packet based on the size of the IP packet
+and the amount of tokens currently available in the C and E / P buckets; for color aware mode only,
+the input color of the packet is also considered.
+When the output color is not red, a number of tokens equal to the length of the IP packet are
+subtracted from the C or E /P or both buckets, depending on the algorithm and the output color of the packet.</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="power_man.html" class="btn btn-neutral float-right" title="22. Power Management" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="thread_safety_dpdk_functions.html" class="btn btn-neutral" title="20. Thread Safety of DPDK Functions" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,463 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>7. How to get best performance with NICs on Intel platforms &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Getting Started Guide for Linux" href="index.html"/>
+        <link rel="next" title="Getting Started Guide for FreeBSD" href="../freebsd_gsg/index.html"/>
+        <link rel="prev" title="6. Quick Start Setup Script" href="quick_start.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Getting Started Guide for Linux</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sys_reqs.html">2. System Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_dpdk.html">3. Compiling the DPDK Target from Source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_sample_apps.html">4. Compiling and Running Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="enable_func.html">5. Enabling Additional Functionality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quick_start.html">6. Quick Start Setup Script</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">7. How to get best performance with NICs on Intel platforms</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#hardware-and-memory-requirements">7.1. Hardware and Memory Requirements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#network-interface-card-requirements">7.1.1. Network Interface Card Requirements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bios-settings">7.1.2. BIOS Settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#linux-boot-command-line">7.1.3. Linux boot command line</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#configurations-before-running-dpdk">7.2. Configurations before running DPDK</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#example-of-getting-best-performance-for-an-intel-nic">7.3. Example of getting best performance for an Intel NIC</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Getting Started Guide for Linux</a> &raquo;</li>
+      
+    <li>7. How to get best performance with NICs on Intel platforms</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/linux_gsg/nic_perf_intel_platform.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="how-to-get-best-performance-with-nics-on-intel-platforms">
+<h1>7. How to get best performance with NICs on Intel platforms</h1>
+<p>This document is a step-by-step guide for getting high performance from DPDK applications on Intel platforms.</p>
+<div class="section" id="hardware-and-memory-requirements">
+<h2>7.1. Hardware and Memory Requirements</h2>
+<p>For best performance use an Intel Xeon class server system such as Ivy Bridge, Haswell or newer.</p>
+<p>Ensure that each memory channel has at least one memory DIMM inserted, and that the memory size for each is at least 4GB.
+<strong>Note</strong>: this has one of the most direct effects on performance.</p>
+<p>You can check the memory configuration using <code class="docutils literal"><span class="pre">dmidecode</span></code> as follows:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>dmidecode -t memory | grep Locator
+
+Locator: DIMM_A1
+Bank Locator: NODE 1
+Locator: DIMM_A2
+Bank Locator: NODE 1
+Locator: DIMM_B1
+Bank Locator: NODE 1
+Locator: DIMM_B2
+Bank Locator: NODE 1
+...
+Locator: DIMM_G1
+Bank Locator: NODE 2
+Locator: DIMM_G2
+Bank Locator: NODE 2
+Locator: DIMM_H1
+Bank Locator: NODE 2
+Locator: DIMM_H2
+Bank Locator: NODE 2
+</pre></div>
+</div>
+<p>The sample output above shows a total of 8 channels, from <code class="docutils literal"><span class="pre">A</span></code> to <code class="docutils literal"><span class="pre">H</span></code>, where each channel has 2 DIMMs.</p>
+<p>You can also use <code class="docutils literal"><span class="pre">dmidecode</span></code> to determine the memory frequency:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>dmidecode -t memory | grep Speed
+
+Speed: 2133 MHz
+Configured Clock Speed: 2134 MHz
+Speed: Unknown
+Configured Clock Speed: Unknown
+Speed: 2133 MHz
+Configured Clock Speed: 2134 MHz
+Speed: Unknown
+...
+Speed: 2133 MHz
+Configured Clock Speed: 2134 MHz
+Speed: Unknown
+Configured Clock Speed: Unknown
+Speed: 2133 MHz
+Configured Clock Speed: 2134 MHz
+Speed: Unknown
+Configured Clock Speed: Unknown
+</pre></div>
+</div>
+<p>The output shows a speed of 2133 MHz (DDR4) and Unknown (not existing).
+This aligns with the previous output which showed that each channel has one memory bar.</p>
+<div class="section" id="network-interface-card-requirements">
+<h3>7.1.1. Network Interface Card Requirements</h3>
+<p>Use a <a class="reference external" href="http://dpdk.org/doc/nics">DPDK supported</a> high end NIC such as the Intel XL710 40GbE.</p>
+<p>Make sure each NIC has been flashed the latest version of NVM/firmware.</p>
+<p>Use PCIe Gen3 slots, such as Gen3 <code class="docutils literal"><span class="pre">x8</span></code> or Gen3 <code class="docutils literal"><span class="pre">x16</span></code> because PCIe Gen2 slots don&#8217;t provide enough bandwidth
+for 2 x 10GbE and above.
+You can use <code class="docutils literal"><span class="pre">lspci</span></code> to check the speed of a PCI slot using something like the following:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>lspci -s 03:00.1 -vv | grep LnkSta
+
+LnkSta: Speed 8GT/s, Width x8, TrErr- Train- SlotClk+ DLActive- ...
+LnkSta2: Current De-emphasis Level: -6dB, EqualizationComplete+ ...
+</pre></div>
+</div>
+<p>When inserting NICs into PCI slots always check the caption, such as CPU0 or CPU1 to indicate which socket it is connected to.</p>
+<p>Care should be take with NUMA.
+If you are using 2 or more ports from different NICs, it is best to ensure that these NICs are on the same CPU socket.
+An example of how to determine this is shown further below.</p>
+</div>
+<div class="section" id="bios-settings">
+<h3>7.1.2. BIOS Settings</h3>
+<p>The following are some recommendations on BIOS settings. Different platforms will have different BIOS naming
+so the following is mainly for reference:</p>
+<ol class="arabic simple">
+<li>Before starting consider resetting all BIOS settings to their default.</li>
+<li>Disable all power saving options such as: Power performance tuning, CPU P-State, CPU C3 Report and CPU C6 Report.</li>
+<li>Select <strong>Performance</strong> as the CPU Power and Performance policy.</li>
+<li>Disable Turbo Boost to ensure the performance scaling increases with the number of cores.</li>
+<li>Set memory frequency to the highest available number, NOT auto.</li>
+<li>Disable all virtualization options when you test the physical function of the NIC, and turn on <code class="docutils literal"><span class="pre">VT-d</span></code> if you wants to use VFIO.</li>
+</ol>
+</div>
+<div class="section" id="linux-boot-command-line">
+<h3>7.1.3. Linux boot command line</h3>
+<p>The following are some recommendations on GRUB boot settings:</p>
+<ol class="arabic">
+<li><p class="first">Use the default grub file as a starting point.</p>
+</li>
+<li><p class="first">Reserve 1G huge pages via grub configurations. For example to reserve 8 huge pages of 1G size:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>default_hugepagesz=1G hugepagesz=1G hugepages=8
+</pre></div>
+</div>
+</li>
+<li><p class="first">Isolate CPU cores which will be used for DPDK. For example:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>isolcpus=2,3,4,5,6,7,8
+</pre></div>
+</div>
+</li>
+<li><p class="first">If it wants to use VFIO, use the following additional grub parameters:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>iommu=pt intel_iommu=on
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="section" id="configurations-before-running-dpdk">
+<h2>7.2. Configurations before running DPDK</h2>
+<ol class="arabic">
+<li><p class="first">Build the DPDK target and reserve huge pages.
+See the earlier section on <a class="reference internal" href="sys_reqs.html#linux-gsg-hugepages"><span class="std std-ref">Use of Hugepages in the Linux Environment</span></a> for more details.</p>
+<p>The following shell commands may help with building and configuration:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> Build DPDK target.
+<span class="go">cd dpdk_folder</span>
+<span class="go">make install T=x86_64-native-linuxapp-gcc -j</span>
+
+<span class="gp">#</span> Get the hugepage size.
+<span class="go">awk &#39;/Hugepagesize/ {print $2}&#39; /proc/meminfo</span>
+
+<span class="gp">#</span> Get the total huge page numbers.
+<span class="go">awk &#39;/HugePages_Total/ {print $2} &#39; /proc/meminfo</span>
+
+<span class="gp">#</span> Unmount the hugepages.
+<span class="go">umount `awk &#39;/hugetlbfs/ {print $2}&#39; /proc/mounts`</span>
+
+<span class="gp">#</span> Create the hugepage mount folder.
+<span class="go">mkdir -p /mnt/huge</span>
+
+<span class="gp">#</span> Mount to the specific folder.
+<span class="go">mount -t hugetlbfs nodev /mnt/huge</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Check the CPU layout using using the DPDK <code class="docutils literal"><span class="pre">cpu_layout</span></code> utility:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">cd dpdk_folder</span>
+
+<span class="go">tools/cpu_layout.py</span>
+</pre></div>
+</div>
+<p>Or run <code class="docutils literal"><span class="pre">lscpu</span></code> to check the the cores on each socket.</p>
+</li>
+<li><p class="first">Check your NIC id and related socket id:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> List all the NICs with PCI address and device IDs.
+<span class="go">lspci -nn | grep Eth</span>
+</pre></div>
+</div>
+<p>For example suppose your output was as follows:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>82:00.0 Ethernet [0200]: Intel XL710 for 40GbE QSFP+ [8086:1583]
+82:00.1 Ethernet [0200]: Intel XL710 for 40GbE QSFP+ [8086:1583]
+85:00.0 Ethernet [0200]: Intel XL710 for 40GbE QSFP+ [8086:1583]
+85:00.1 Ethernet [0200]: Intel XL710 for 40GbE QSFP+ [8086:1583]
+</pre></div>
+</div>
+<p>Check the PCI device related numa node id:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">cat /sys/bus/pci/devices/0000\:xx\:00.x/numa_node</span>
+</pre></div>
+</div>
+<p>Usually <code class="docutils literal"><span class="pre">0x:00.x</span></code> is on socket 0 and <code class="docutils literal"><span class="pre">8x:00.x</span></code> is on socket 1.
+<strong>Note</strong>: To get the best performance, ensure that the core and NICs are in the same socket.
+In the example above <code class="docutils literal"><span class="pre">85:00.0</span></code> is on socket 1 and should be used by cores on socket 1 for the best performance.</p>
+</li>
+<li><p class="first">Bind the test ports to DPDK compatible drivers, such as igb_uio. For example bind two ports to a DPDK compatible driver and check the status:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> Bind ports 82:00.0 and 85:00.0 to dpdk driver
+<span class="go">./dpdk_folder/tools/dpdk_nic_bind.py -b igb_uio 82:00.0 85:00.0</span>
+
+<span class="gp">#</span> Check the port driver status
+<span class="go">./dpdk_folder/tools/dpdk_nic_bind.py --status</span>
+</pre></div>
+</div>
+<p>See <code class="docutils literal"><span class="pre">dpdk_nic_bind.py</span> <span class="pre">--help</span></code> for more details.</p>
+</li>
+</ol>
+<p>More details about DPDK setup and Linux kernel requirements see <a class="reference internal" href="build_dpdk.html#linux-gsg-compiling-dpdk"><span class="std std-ref">Compiling the DPDK Target from Source</span></a>.</p>
+</div>
+<div class="section" id="example-of-getting-best-performance-for-an-intel-nic">
+<h2>7.3. Example of getting best performance for an Intel NIC</h2>
+<p>The following is an example of running the DPDK <code class="docutils literal"><span class="pre">l3fwd</span></code> sample application to get high performance with an
+Intel server platform and Intel XL710 NICs.
+For specific 40G NIC configuration please refer to the i40e NIC guide.</p>
+<p>The example scenario is to get best performance with two Intel XL710 40GbE ports.
+See <a class="reference internal" href="#figure-intel-perf-test-setup"><span class="std std-numref">Fig. 7.1</span></a> for the performance test setup.</p>
+<div class="figure" id="id1">
+<span id="figure-intel-perf-test-setup"></span><img src="../_images/intel_perf_test_setup.svg" /><p class="caption"><span class="caption-number">Fig. 7.1 </span><span class="caption-text">Performance Test Setup</span></p>
+</div>
+<ol class="arabic">
+<li><p class="first">Add two Intel XL710 NICs to the platform, and use one port per card to get best performance.
+The reason for using two NICs is to overcome a PCIe Gen3&#8217;s limitation since it cannot provide 80G bandwidth
+for two 40G ports, but two different PCIe Gen3 x8 slot can.
+Refer to the sample NICs output above, then we can select <code class="docutils literal"><span class="pre">82:00.0</span></code> and <code class="docutils literal"><span class="pre">85:00.0</span></code> as test ports:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>82:00.0 Ethernet [0200]: Intel XL710 for 40GbE QSFP+ [8086:1583]
+85:00.0 Ethernet [0200]: Intel XL710 for 40GbE QSFP+ [8086:1583]
+</pre></div>
+</div>
+</li>
+<li><p class="first">Connect the ports to the traffic generator. For high speed testing, it&#8217;s best to use a hardware traffic generator.</p>
+</li>
+<li><p class="first">Check the PCI devices numa node (socket id) and get the cores number on the exact socket id.
+In this case, <code class="docutils literal"><span class="pre">82:00.0</span></code> and <code class="docutils literal"><span class="pre">85:00.0</span></code> are both in socket 1, and the cores on socket 1 in the referenced platform
+are 18-35 and 54-71.
+Note: Don&#8217;t use 2 logical cores on the same core (e.g core18 has 2 logical cores, core18 and core54), instead, use 2 logical
+cores from different cores (e.g core18 and core19).</p>
+</li>
+<li><p class="first">Bind these two ports to igb_uio.</p>
+</li>
+<li><p class="first">As to XL710 40G port, we need at least two queue pairs to achieve best performance, then two queues per port
+will be required, and each queue pair will need a dedicated CPU core for receiving/transmitting packets.</p>
+</li>
+<li><p class="first">The DPDK sample application <code class="docutils literal"><span class="pre">l3fwd</span></code> will be used for performance testing, with using two ports for bi-directional forwarding.
+Compile the <code class="docutils literal"><span class="pre">l3fwd</span> <span class="pre">sample</span></code> with the default lpm mode.</p>
+</li>
+<li><p class="first">The command line of running l3fwd would be something like the followings:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>./l3fwd -c 0x3c0000 -n 4 -w 82:00.0 -w 85:00.0 \
+        -- -p 0x3 --config &#39;(0,0,18),(0,1,19),(1,0,20),(1,1,21)&#39;
+</pre></div>
+</div>
+<p>This means that the application uses core 18 for port 0, queue pair 0 forwarding, core 19 for port 0, queue pair 1 forwarding,
+core 20 for port 1, queue pair 0 forwarding, and core 21 for port 1, queue pair 1 forwarding.</p>
+</li>
+<li><p class="first">Configure the traffic at a traffic generator.</p>
+<ul class="simple">
+<li>Start creating a stream on packet generator.</li>
+<li>Set the Ethernet II type to 0x0800.</li>
+</ul>
+</li>
+</ol>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../freebsd_gsg/index.html" class="btn btn-neutral float-right" title="Getting Started Guide for FreeBSD" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="quick_start.html" class="btn btn-neutral" title="6. Quick Start Setup Script" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

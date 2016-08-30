@@ -1,0 +1,432 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>16. L2 Forwarding Sample Application with Cache Allocation Technology (CAT) &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Sample Applications User Guide" href="index.html"/>
+        <link rel="next" title="17. L3 Forwarding Sample Application" href="l3_forward.html"/>
+        <link rel="prev" title="15. L2 Forwarding Sample Application (in Real and Virtualized Environments)" href="l2_forward_real_virtual.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Sample Applications User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmd_line.html">2. Command Line Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethtool.html">3. Ethtool Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exception_path.html">4. Exception Path Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello_world.html">5. Hello World Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skeleton.html">6. Basic Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rxtx_callbacks.html">7. RX/TX Callbacks Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_frag.html">8. IP Fragmentation Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipv4_multicast.html">9. IPv4 Multicast Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_reassembly.html">10. IP Reassembly Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">11. Kernel NIC Interface Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keep_alive.html">12. Keep Alive Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_crypto.html">13. L2 Forwarding with Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_job_stats.html">14. L2 Forwarding Sample Application (in Real and Virtualized Environments) with core load statistics.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_real_virtual.html">15. L2 Forwarding Sample Application (in Real and Virtualized Environments)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">16. L2 Forwarding Sample Application with Cache Allocation Technology (CAT)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#compiling-the-application">16.1. Compiling the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-application">16.2. Running the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#explanation">16.3. Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#the-main-function">16.3.1. The Main Function</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward.html">17. L3 Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_power_man.html">18. L3 Forwarding with Power Management Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_access_ctrl.html">19. L3 Forwarding with Access Control Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_virtual.html">20. L3 Forwarding in a Virtualization Environment Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_status_intr.html">21. Link Status Interrupt Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="load_balancer.html">22. Load Balancer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_process.html">23. Multi-process Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_metering.html">24. QoS Metering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_scheduler.html">25. QoS Scheduler Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intel_quickassist.html">26. Intel® QuickAssist Technology Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quota_watermark.html">27. Quota and Watermark Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer.html">28. Timer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_ordering.html">29. Packet Ordering Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_dcb_forwarding.html">30. VMDQ and DCB Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">31. Vhost Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="netmap_compatibility.html">32. Netmap Compatibility Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_pipeline.html">33. Internet Protocol (IP) Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_pipeline.html">34. Test Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dist_app.html">35. Distributor Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vm_power_management.html">36. VM Power Management Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tep_termination.html">37. TEP termination Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="proc_info.html">38. dpdk_proc_info Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ptpclient.html">39. PTP Client Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance_thread.html">40. Performance Thread Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_secgw.html">41. IPsec Security Gateway Sample Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Sample Applications User Guide</a> &raquo;</li>
+      
+    <li>16. L2 Forwarding Sample Application with Cache Allocation Technology (CAT)</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/sample_app_ug/l2_forward_cat.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="l2-forwarding-sample-application-with-cache-allocation-technology-cat">
+<h1>16. L2 Forwarding Sample Application with Cache Allocation Technology (CAT)</h1>
+<p>Basic Forwarding sample application is a simple <em>skeleton</em> example of
+a forwarding application. It has been extended to make use of CAT via extended
+command line options and linking against the libpqos library.</p>
+<p>It is intended as a demonstration of the basic components of a DPDK forwarding
+application and use of the libpqos library to program CAT.
+For more detailed implementations see the L2 and L3 forwarding
+sample applications.</p>
+<p>CAT and Code Data Prioritization (CDP) features allow management of the CPU&#8217;s
+last level cache. CAT introduces classes of service (COS) that are essentially
+bitmasks. In current CAT implementations, a bit in a COS bitmask corresponds to
+one cache way in last level cache.
+A CPU core is always assigned to one of the CAT classes.
+By programming CPU core assignment and COS bitmasks, applications can be given
+exclusive, shared, or mixed access to the CPU&#8217;s last level cache.
+CDP extends CAT so that there are two bitmasks per COS,
+one for data and one for code.
+The number of classes and number of valid bits in a COS bitmask is CPU model
+specific and COS bitmasks need to be contiguous. Sample code calls this bitmask
+<code class="docutils literal"><span class="pre">cbm</span></code> or capacity bitmask.
+By default, after reset, all CPU cores are assigned to COS 0 and all classes
+are programmed to allow fill into all cache ways.
+CDP is off by default.</p>
+<p>For more information about CAT please see:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://github.com/01org/intel-cmt-cat">https://github.com/01org/intel-cmt-cat</a></li>
+</ul>
+<p>White paper demonstrating example use case:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://www.intel.com/content/www/us/en/communications/increasing-platform-determinism-pqos-dpdk-white-paper.html">Increasing Platform Determinism with Platform Quality of Service for the Data Plane Development Kit</a></li>
+</ul>
+<div class="section" id="compiling-the-application">
+<h2>16.1. Compiling the Application</h2>
+<p>Requires <code class="docutils literal"><span class="pre">libpqos</span></code> from Intel&#8217;s
+<a class="reference external" href="https://github.com/01org/intel-cmt-cat">intel-cmt-cat software package</a>
+hosted on GitHub repository. For installation notes, please see <code class="docutils literal"><span class="pre">README</span></code> file.</p>
+<p>GIT:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://github.com/01org/intel-cmt-cat">https://github.com/01org/intel-cmt-cat</a></li>
+</ul>
+<p>To compile the application export the path to PQoS lib
+and the DPDK source tree and go to the example directory:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export PQOS_INSTALL_PATH=/path/to/libpqos</span>
+<span class="go">export RTE_SDK=/path/to/rte_sdk</span>
+
+<span class="go">cd ${RTE_SDK}/examples/l2fwd-cat</span>
+</pre></div>
+</div>
+<p>Set the target, for example:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export RTE_TARGET=x86_64-native-linuxapp-gcc</span>
+</pre></div>
+</div>
+<p>See the <em>DPDK Getting Started</em> Guide for possible <code class="docutils literal"><span class="pre">RTE_TARGET</span></code> values.</p>
+<p>Build the application as follows:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">make</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="running-the-application">
+<h2>16.2. Running the Application</h2>
+<p>To run the example in a <code class="docutils literal"><span class="pre">linuxapp</span></code> environment and enable CAT on cpus 0-2:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./build/l2fwd-cat -c 2 -n 4 -- --l3ca=&quot;0x3@(0-2)&quot;</span>
+</pre></div>
+</div>
+<p>or to enable CAT and CDP on cpus 1,3:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./build/l2fwd-cat -c 2 -n 4 -- --l3ca=&quot;(0x00C00,0x00300)@(1,3)&quot;</span>
+</pre></div>
+</div>
+<p>If CDP is not supported it will fail with following error message:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">PQOS: CDP requested but not supported.</span>
+<span class="go">PQOS: Requested CAT configuration is not valid!</span>
+<span class="go">PQOS: Shutting down PQoS library...</span>
+<span class="go">EAL: Error - exiting with code: 1</span>
+<span class="go">  Cause: PQOS: L3CA init failed!</span>
+</pre></div>
+</div>
+<p>The option to enable CAT is:</p>
+<ul>
+<li><p class="first"><code class="docutils literal"><span class="pre">--l3ca='&lt;common_cbm&#64;cpus&gt;[,&lt;(code_cbm,data_cbm)&#64;cpus&gt;...]'</span></code>:</p>
+<p>where <code class="docutils literal"><span class="pre">cbm</span></code> stands for capacity bitmask and must be expressed in
+hexadecimal form.</p>
+<p><code class="docutils literal"><span class="pre">common_cbm</span></code> is a single mask, for a CDP enabled system, a group of two
+masks (<code class="docutils literal"><span class="pre">code_cbm</span></code> and <code class="docutils literal"><span class="pre">data_cbm</span></code>) is used.</p>
+<p><code class="docutils literal"><span class="pre">(</span></code> and <code class="docutils literal"><span class="pre">)</span></code> are necessary if it&#8217;s a group.</p>
+<p><code class="docutils literal"><span class="pre">cpus</span></code> could be a single digit/range or a group and must be expressed in
+decimal form.</p>
+<p><code class="docutils literal"><span class="pre">(</span></code> and <code class="docutils literal"><span class="pre">)</span></code> are necessary if it&#8217;s a group.</p>
+<p>e.g. <code class="docutils literal"><span class="pre">--l3ca='0x00F00&#64;(1,3),0x0FF00&#64;(4-6),0xF0000&#64;7'</span></code></p>
+<ul class="simple">
+<li>cpus 1 and 3 share its 4 ways with cpus 4, 5 and 6;</li>
+<li>cpus 4, 5 and 6 share half (4 out of 8 ways) of its L3 with cpus 1 and 3;</li>
+<li>cpus 4, 5 and 6 have exclusive access to 4 out of 8 ways;</li>
+<li>cpu 7 has exclusive access to all of its 4 ways;</li>
+</ul>
+<p>e.g. <code class="docutils literal"><span class="pre">--l3ca='(0x00C00,0x00300)&#64;(1,3)'</span></code> for CDP enabled system</p>
+<ul class="simple">
+<li>cpus 1 and 3 have access to 2 ways for code and 2 ways for data, code and
+data ways are not overlapping.</li>
+</ul>
+</li>
+</ul>
+<p>Refer to <em>DPDK Getting Started Guide</em> for general information on running
+applications and the Environment Abstraction Layer (EAL) options.</p>
+<p>To reset or list CAT configuration and control CDP please use <code class="docutils literal"><span class="pre">pqos</span></code> tool
+from Intel&#8217;s
+<a class="reference external" href="https://github.com/01org/intel-cmt-cat">intel-cmt-cat software package</a>.</p>
+<p>To enabled or disable CDP:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">sudo ./pqos -S cdp-on</span>
+
+<span class="go">sudo ./pqos -S cdp-off</span>
+</pre></div>
+</div>
+<p>to reset CAT configuration:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">sudo ./pqos -R</span>
+</pre></div>
+</div>
+<p>to list CAT config:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">sudo ./pqos -s</span>
+</pre></div>
+</div>
+<p>For more info about <code class="docutils literal"><span class="pre">pqos</span></code> tool please see its man page or
+<a class="reference external" href="https://github.com/01org/intel-cmt-cat/wiki">intel-cmt-cat wiki</a>.</p>
+</div>
+<div class="section" id="explanation">
+<h2>16.3. Explanation</h2>
+<p>The following sections provide an explanation of the main components of the
+code.</p>
+<p>All DPDK library functions used in the sample code are prefixed with <code class="docutils literal"><span class="pre">rte_</span></code>
+and are explained in detail in the <em>DPDK API Documentation</em>.</p>
+<div class="section" id="the-main-function">
+<h3>16.3.1. The Main Function</h3>
+<p>The <code class="docutils literal"><span class="pre">main()</span></code> function performs the initialization and calls the execution
+threads for each lcore.</p>
+<p>The first task is to initialize the Environment Abstraction Layer (EAL).  The
+<code class="docutils literal"><span class="pre">argc</span></code> and <code class="docutils literal"><span class="pre">argv</span></code> arguments are provided to the <code class="docutils literal"><span class="pre">rte_eal_init()</span></code>
+function. The value returned is the number of parsed arguments:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">ret</span> <span class="o">=</span> <span class="n">rte_eal_init</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">rte_exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">,</span> <span class="s">&quot;Error with EAL initialization</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The next task is to initialize the PQoS library and configure CAT. The
+<code class="docutils literal"><span class="pre">argc</span></code> and <code class="docutils literal"><span class="pre">argv</span></code> arguments are provided to the <code class="docutils literal"><span class="pre">cat_init()</span></code>
+function. The value returned is the number of parsed arguments:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">ret</span> <span class="o">=</span> <span class="n">cat_init</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">rte_exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">,</span> <span class="s">&quot;PQOS: L3CA init failed!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">cat_init()</span></code> is a wrapper function which parses the command, validates
+the requested parameters and configures CAT accordingly.</p>
+<p>Parsing of command line arguments is done in <code class="docutils literal"><span class="pre">parse_args(...)</span></code>.
+libpqos is then initialized with the <code class="docutils literal"><span class="pre">pqos_init(...)</span></code> call. Next, libpqos is
+queried for system CPU information and L3CA capabilities via
+<code class="docutils literal"><span class="pre">pqos_cap_get(...)</span></code> and <code class="docutils literal"><span class="pre">pqos_cap_get_type(...,</span> <span class="pre">PQOS_CAP_TYPE_L3CA,</span> <span class="pre">...)</span></code>
+calls. When all capability and topology information is collected, the requested
+CAT configuration is validated. A check is then performed (on per socket basis)
+for a sufficient number of un-associated COS. COS are selected and
+configured via the <code class="docutils literal"><span class="pre">pqos_l3ca_set(...)</span></code> call. Finally, COS are associated to
+relevant CPUs via <code class="docutils literal"><span class="pre">pqos_l3ca_assoc_set(...)</span></code> calls.</p>
+<p><code class="docutils literal"><span class="pre">atexit(...)</span></code> is used to register <code class="docutils literal"><span class="pre">cat_exit(...)</span></code> to be called on
+a clean exit. <code class="docutils literal"><span class="pre">cat_exit(...)</span></code> performs a simple CAT clean-up, by associating
+COS 0 to all involved CPUs via <code class="docutils literal"><span class="pre">pqos_l3ca_assoc_set(...)</span></code> calls.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="l3_forward.html" class="btn btn-neutral float-right" title="17. L3 Forwarding Sample Application" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="l2_forward_real_virtual.html" class="btn btn-neutral" title="15. L2 Forwarding Sample Application (in Real and Virtualized Environments)" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

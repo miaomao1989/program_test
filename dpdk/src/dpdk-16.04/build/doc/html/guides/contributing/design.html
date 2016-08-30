@@ -1,0 +1,379 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>2. Design &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Contributor’s Guidelines" href="index.html"/>
+        <link rel="next" title="3. Managing ABI updates" href="versioning.html"/>
+        <link rel="prev" title="1. DPDK Coding Style" href="coding_style.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Contributor&#8217;s Guidelines</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="coding_style.html">1. DPDK Coding Style</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2. Design</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#environment-or-architecture-specific-sources">2.1. Environment or Architecture-specific Sources</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#per-architecture-sources">2.1.1. Per Architecture Sources</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#per-execution-environment-sources">2.1.2. Per Execution Environment Sources</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#library-statistics">2.2. Library Statistics</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#description">2.2.1. Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechanism-to-allow-the-application-to-turn-library-statistics-on-and-off">2.2.2. Mechanism to allow the application to turn library statistics on and off</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#prevention-of-abi-changes-due-to-library-statistics-support">2.2.3. Prevention of ABI changes due to library statistics support</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#motivation-to-allow-the-application-to-turn-library-statistics-on-and-off">2.2.4. Motivation to allow the application to turn library statistics on and off</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="versioning.html">3. Managing ABI updates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="documentation.html">4. DPDK Documentation Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="patches.html">5. Contributing Code to DPDK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cheatsheet.html">6. Patch Cheatsheet</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Contributor&#8217;s Guidelines</a> &raquo;</li>
+      
+    <li>2. Design</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/contributing/design.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="design">
+<h1>2. Design</h1>
+<div class="section" id="environment-or-architecture-specific-sources">
+<h2>2.1. Environment or Architecture-specific Sources</h2>
+<p>In DPDK and DPDK applications, some code is specific to an architecture (i686, x86_64) or to an executive environment (bsdapp or linuxapp) and so on.
+As far as is possible, all such instances of architecture or env-specific code should be provided via standard APIs in the EAL.</p>
+<p>By convention, a file is common if it is not located in a directory indicating that it is specific.
+For instance, a file located in a subdir of &#8220;x86_64&#8221; directory is specific to this architecture.
+A file located in a subdir of &#8220;linuxapp&#8221; is specific to this execution environment.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Code in DPDK libraries and applications should be generic.
+The correct location for architecture or executive environment specific code is in the EAL.</p>
+</div>
+<p>When absolutely necessary, there are several ways to handle specific code:</p>
+<ul>
+<li><p class="first">Use a <code class="docutils literal"><span class="pre">#ifdef</span></code> with the CONFIG option in the C code.
+This can be done when the differences are small and they can be embedded in the same C file:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#ifdef RTE_ARCH_I686</span>
+<span class="n">toto</span><span class="p">();</span>
+<span class="cp">#else</span>
+<span class="n">titi</span><span class="p">();</span>
+<span class="cp">#endif</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Use the CONFIG option in the Makefile. This is done when the differences are more significant.
+In this case, the code is split into two separate files that are architecture or environment specific.
+This should only apply inside the EAL library.</p>
+</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">As in the linux kernel, the <code class="docutils literal"><span class="pre">CONFIG_</span></code> prefix is not used in C code.
+This is only needed in Makefiles or shell scripts.</p>
+</div>
+<div class="section" id="per-architecture-sources">
+<h3>2.1.1. Per Architecture Sources</h3>
+<p>The following config options can be used:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">CONFIG_RTE_ARCH</span></code> is a string that contains the name of the architecture.</li>
+<li><code class="docutils literal"><span class="pre">CONFIG_RTE_ARCH_I686</span></code>, <code class="docutils literal"><span class="pre">CONFIG_RTE_ARCH_X86_64</span></code>, <code class="docutils literal"><span class="pre">CONFIG_RTE_ARCH_X86_64_32</span></code> or <code class="docutils literal"><span class="pre">CONFIG_RTE_ARCH_PPC_64</span></code> are defined only if we are building for those architectures.</li>
+</ul>
+</div>
+<div class="section" id="per-execution-environment-sources">
+<h3>2.1.2. Per Execution Environment Sources</h3>
+<p>The following config options can be used:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">CONFIG_RTE_EXEC_ENV</span></code> is a string that contains the name of the executive environment.</li>
+<li><code class="docutils literal"><span class="pre">CONFIG_RTE_EXEC_ENV_BSDAPP</span></code> or <code class="docutils literal"><span class="pre">CONFIG_RTE_EXEC_ENV_LINUXAPP</span></code> are defined only if we are building for this execution environment.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="library-statistics">
+<h2>2.2. Library Statistics</h2>
+<div class="section" id="description">
+<h3>2.2.1. Description</h3>
+<p>This document describes the guidelines for DPDK library-level statistics counter
+support. This includes guidelines for turning library statistics on and off and
+requirements for preventing ABI changes when implementing statistics.</p>
+</div>
+<div class="section" id="mechanism-to-allow-the-application-to-turn-library-statistics-on-and-off">
+<h3>2.2.2. Mechanism to allow the application to turn library statistics on and off</h3>
+<p>Each library that maintains statistics counters should provide a single build
+time flag that decides whether the statistics counter collection is enabled or
+not. This flag should be exposed as a variable within the DPDK configuration
+file. When this flag is set, all the counters supported by current library are
+collected for all the instances of every object type provided by the library.
+When this flag is cleared, none of the counters supported by the current library
+are collected for any instance of any object type provided by the library:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> DPDK file config/common_linuxapp, config/common_bsdapp, etc.
+<span class="go">CONFIG_RTE_&lt;LIBRARY_NAME&gt;_STATS_COLLECT=y/n</span>
+</pre></div>
+</div>
+<p>The default value for this DPDK configuration file variable (either &#8220;yes&#8221; or
+&#8220;no&#8221;) is decided by each library.</p>
+</div>
+<div class="section" id="prevention-of-abi-changes-due-to-library-statistics-support">
+<h3>2.2.3. Prevention of ABI changes due to library statistics support</h3>
+<p>The layout of data structures and prototype of functions that are part of the
+library API should not be affected by whether the collection of statistics
+counters is turned on or off for the current library. In practical terms, this
+means that space should always be allocated in the API data structures for
+statistics counters and the statistics related API functions are always built
+into the code, regardless of whether the statistics counter collection is turned
+on or off for the current library.</p>
+<p>When the collection of statistics counters for the current library is turned
+off, the counters retrieved through the statistics related API functions should
+have a default value of zero.</p>
+</div>
+<div class="section" id="motivation-to-allow-the-application-to-turn-library-statistics-on-and-off">
+<h3>2.2.4. Motivation to allow the application to turn library statistics on and off</h3>
+<p>It is highly recommended that each library provides statistics counters to allow
+an application to monitor the library-level run-time events. Typical counters
+are: number of packets received/dropped/transmitted, number of buffers
+allocated/freed, number of occurrences for specific events, etc.</p>
+<p>However, the resources consumed for library-level statistics counter collection
+have to be spent out of the application budget and the counters collected by
+some libraries might not be relevant to the current application. In order to
+avoid any unwanted waste of resources and/or performance impacts, the
+application should decide at build time whether the collection of library-level
+statistics counters should be turned on or off for each library individually.</p>
+<p>Library-level statistics counters can be relevant or not for specific
+applications:</p>
+<ul class="simple">
+<li>For Application A, counters maintained by Library X are always relevant and
+the application needs to use them to implement certain features, such as traffic
+accounting, logging, application-level statistics, etc. In this case,
+the application requires that collection of statistics counters for Library X is
+always turned on.</li>
+<li>For Application B, counters maintained by Library X are only useful during the
+application debug stage and are not relevant once debug phase is over. In this
+case, the application may decide to turn on the collection of Library X
+statistics counters during the debug phase and at a later stage turn them off.</li>
+<li>For Application C, counters maintained by Library X are not relevant at all.
+It might be that the application maintains its own set of statistics counters
+that monitor a different set of run-time events (e.g. number of connection
+requests, number of active users, etc). It might also be that the application
+uses multiple libraries (Library X, Library Y, etc) and it is interested in the
+statistics counters of Library Y, but not in those of Library X. In this case,
+the application may decide to turn the collection of statistics counters off for
+Library X and on for Library Y.</li>
+</ul>
+<p>The statistics collection consumes a certain amount of CPU resources (cycles,
+cache bandwidth, memory bandwidth, etc) that depends on:</p>
+<ul class="simple">
+<li>Number of libraries used by the current application that have statistics
+counters collection turned on.</li>
+<li>Number of statistics counters maintained by each library per object type
+instance (e.g. per port, table, pipeline, thread, etc).</li>
+<li>Number of instances created for each object type supported by each library.</li>
+<li>Complexity of the statistics logic collection for each counter: when only
+some occurrences of a specific event are valid, additional logic is typically
+needed to decide whether the current occurrence of the event should be counted
+or not. For example, in the event of packet reception, when only TCP packets
+with destination port within a certain range should be recorded, conditional
+branches are usually required. When processing a burst of packets that have been
+validated for header integrity, counting the number of bits set in a bitmask
+might be needed.</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="versioning.html" class="btn btn-neutral float-right" title="3. Managing ABI updates" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="coding_style.html" class="btn btn-neutral" title="1. DPDK Coding Style" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

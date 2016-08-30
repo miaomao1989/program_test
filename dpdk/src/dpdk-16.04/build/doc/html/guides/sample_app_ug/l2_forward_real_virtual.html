@@ -1,0 +1,708 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>15. L2 Forwarding Sample Application (in Real and Virtualized Environments) &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Sample Applications User Guide" href="index.html"/>
+        <link rel="next" title="16. L2 Forwarding Sample Application with Cache Allocation Technology (CAT)" href="l2_forward_cat.html"/>
+        <link rel="prev" title="14. L2 Forwarding Sample Application (in Real and Virtualized Environments) with core load statistics." href="l2_forward_job_stats.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Sample Applications User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmd_line.html">2. Command Line Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethtool.html">3. Ethtool Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exception_path.html">4. Exception Path Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello_world.html">5. Hello World Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skeleton.html">6. Basic Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rxtx_callbacks.html">7. RX/TX Callbacks Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_frag.html">8. IP Fragmentation Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipv4_multicast.html">9. IPv4 Multicast Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_reassembly.html">10. IP Reassembly Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">11. Kernel NIC Interface Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keep_alive.html">12. Keep Alive Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_crypto.html">13. L2 Forwarding with Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_job_stats.html">14. L2 Forwarding Sample Application (in Real and Virtualized Environments) with core load statistics.</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">15. L2 Forwarding Sample Application (in Real and Virtualized Environments)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">15.1. Overview</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#virtual-function-setup-instructions">15.1.1. Virtual Function Setup Instructions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#compiling-the-application">15.2. Compiling the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-application">15.3. Running the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#explanation">15.4. Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#command-line-arguments">15.4.1. Command Line Arguments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mbuf-pool-initialization">15.4.2. Mbuf Pool Initialization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#driver-initialization">15.4.3. Driver Initialization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rx-queue-initialization">15.4.4. RX Queue Initialization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tx-queue-initialization">15.4.5. TX Queue Initialization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#receive-process-and-transmit-packets">15.4.6. Receive, Process and Transmit Packets</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_cat.html">16. L2 Forwarding Sample Application with Cache Allocation Technology (CAT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward.html">17. L3 Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_power_man.html">18. L3 Forwarding with Power Management Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_access_ctrl.html">19. L3 Forwarding with Access Control Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_virtual.html">20. L3 Forwarding in a Virtualization Environment Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_status_intr.html">21. Link Status Interrupt Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="load_balancer.html">22. Load Balancer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_process.html">23. Multi-process Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_metering.html">24. QoS Metering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_scheduler.html">25. QoS Scheduler Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intel_quickassist.html">26. Intel® QuickAssist Technology Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quota_watermark.html">27. Quota and Watermark Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer.html">28. Timer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_ordering.html">29. Packet Ordering Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_dcb_forwarding.html">30. VMDQ and DCB Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">31. Vhost Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="netmap_compatibility.html">32. Netmap Compatibility Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_pipeline.html">33. Internet Protocol (IP) Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_pipeline.html">34. Test Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dist_app.html">35. Distributor Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vm_power_management.html">36. VM Power Management Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tep_termination.html">37. TEP termination Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="proc_info.html">38. dpdk_proc_info Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ptpclient.html">39. PTP Client Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance_thread.html">40. Performance Thread Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_secgw.html">41. IPsec Security Gateway Sample Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Sample Applications User Guide</a> &raquo;</li>
+      
+    <li>15. L2 Forwarding Sample Application (in Real and Virtualized Environments)</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/sample_app_ug/l2_forward_real_virtual.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="l2-forwarding-sample-application-in-real-and-virtualized-environments">
+<span id="l2-fwd-app-real-and-virtual"></span><h1>15. L2 Forwarding Sample Application (in Real and Virtualized Environments)</h1>
+<p>The L2 Forwarding sample application is a simple example of packet processing using
+the Data Plane Development Kit (DPDK) which
+also takes advantage of Single Root I/O Virtualization (SR-IOV) features in a virtualized environment.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Please note that previously a separate L2 Forwarding in Virtualized Environments sample application was used,
+however, in later DPDK versions these sample applications have been merged.</p>
+</div>
+<div class="section" id="overview">
+<h2>15.1. Overview</h2>
+<p>The L2 Forwarding sample application, which can operate in real and virtualized environments,
+performs L2 forwarding for each packet that is received on an RX_PORT.
+The destination port is the adjacent port from the enabled portmask, that is,
+if the first four ports are enabled (portmask 0xf),
+ports 1 and 2 forward into each other, and ports 3 and 4 forward into each other.
+Also, the MAC addresses are affected as follows:</p>
+<ul class="simple">
+<li>The source MAC address is replaced by the TX_PORT MAC address</li>
+<li>The destination MAC address is replaced by  02:00:00:00:00:TX_PORT_ID</li>
+</ul>
+<p>This application can be used to benchmark performance using a traffic-generator, as shown in the <a class="reference internal" href="#figure-l2-fwd-benchmark-setup"><span class="std std-numref">Fig. 15.6</span></a>.</p>
+<p>The application can also be used in a virtualized environment as shown in <a class="reference internal" href="#figure-l2-fwd-virtenv-benchmark-setup"><span class="std std-numref">Fig. 15.7</span></a>.</p>
+<p>The L2 Forwarding application can also be used as a starting point for developing a new application based on the DPDK.</p>
+<div class="figure" id="id1">
+<span id="figure-l2-fwd-benchmark-setup"></span><img src="../_images/l2_fwd_benchmark_setup.svg" /><p class="caption"><span class="caption-number">Fig. 15.6 </span><span class="caption-text">Performance Benchmark Setup (Basic Environment)</span></p>
+</div>
+<div class="figure" id="id2">
+<span id="figure-l2-fwd-virtenv-benchmark-setup"></span><img alt="../_images/l2_fwd_virtenv_benchmark_setup.png" src="../_images/l2_fwd_virtenv_benchmark_setup.png" />
+<p class="caption"><span class="caption-number">Fig. 15.7 </span><span class="caption-text">Performance Benchmark Setup (Virtualized Environment)</span></p>
+</div>
+<div class="section" id="virtual-function-setup-instructions">
+<span id="l2-fwd-vf-setup"></span><h3>15.1.1. Virtual Function Setup Instructions</h3>
+<p>This application can use the virtual function available in the system and
+therefore can be used in a virtual machine without passing through
+the whole Network Device into a guest machine in a virtualized scenario.
+The virtual functions can be enabled in the host machine or the hypervisor with the respective physical function driver.</p>
+<p>For example, in a Linux* host machine, it is possible to enable a virtual function using the following command:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">modprobe ixgbe max_vfs=2,2</span>
+</pre></div>
+</div>
+<p>This command enables two Virtual Functions on each of Physical Function of the NIC,
+with two physical ports in the PCI configuration space.
+It is important to note that enabled Virtual Function 0 and 2 would belong to Physical Function 0
+and Virtual Function 1 and 3 would belong to Physical Function 1,
+in this case enabling a total of four Virtual Functions.</p>
+</div>
+</div>
+<div class="section" id="compiling-the-application">
+<h2>15.2. Compiling the Application</h2>
+<ol class="arabic">
+<li><p class="first">Go to the example directory:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export RTE_SDK=/path/to/rte_sdk</span>
+<span class="go">cd ${RTE_SDK}/examples/l2fwd</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Set the target (a default target is used if not specified). For example:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export RTE_TARGET=x86_64-native-linuxapp-gcc</span>
+</pre></div>
+</div>
+<p><em>See the DPDK Getting Started Guide</em> for possible RTE_TARGET values.</p>
+</li>
+<li><p class="first">Build the application:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">make</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="running-the-application">
+<h2>15.3. Running the Application</h2>
+<p>The application requires a number of command line options:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./build/l2fwd [EAL options] -- -p PORTMASK [-q NQ]</span>
+</pre></div>
+</div>
+<p>where,</p>
+<ul class="simple">
+<li>p PORTMASK: A hexadecimal bitmask of the ports to configure</li>
+<li>q NQ: A number of queues (=ports) per lcore (default is 1)</li>
+</ul>
+<p>To run the application in linuxapp environment with 4 lcores, 16 ports and 8 RX queues per lcore, issue the command:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> ./build/l2fwd -c f -n <span class="m">4</span> -- -q <span class="m">8</span> -p ffff
+</pre></div>
+</div>
+<p>Refer to the <em>DPDK Getting Started Guide</em> for general information on running applications
+and the Environment Abstraction Layer (EAL) options.</p>
+</div>
+<div class="section" id="explanation">
+<h2>15.4. Explanation</h2>
+<p>The following sections provide some explanation of the code.</p>
+<div class="section" id="command-line-arguments">
+<span id="l2-fwd-app-cmd-arguments"></span><h3>15.4.1. Command Line Arguments</h3>
+<p>The L2 Forwarding sample application takes specific parameters,
+in addition to Environment Abstraction Layer (EAL) arguments.
+The preferred way to parse parameters is to use the getopt() function,
+since it is part of a well-defined and portable library.</p>
+<p>The parsing of arguments is done in the l2fwd_parse_args() function.
+The method of argument parsing is not described here.
+Refer to the <em>glibc getopt(3)</em> man page for details.</p>
+<p>EAL arguments are parsed first, then application-specific arguments.
+This is done at the beginning of the main() function:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/* init EAL */</span>
+
+<span class="n">ret</span> <span class="o">=</span> <span class="n">rte_eal_init</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">rte_exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">,</span> <span class="s">&quot;Invalid EAL arguments</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+
+<span class="n">argc</span> <span class="o">-=</span> <span class="n">ret</span><span class="p">;</span>
+<span class="n">argv</span> <span class="o">+=</span> <span class="n">ret</span><span class="p">;</span>
+
+<span class="cm">/* parse application arguments (after the EAL ones) */</span>
+
+<span class="n">ret</span> <span class="o">=</span> <span class="n">l2fwd_parse_args</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">rte_exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">,</span> <span class="s">&quot;Invalid L2FWD arguments</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="mbuf-pool-initialization">
+<span id="l2-fwd-app-mbuf-init"></span><h3>15.4.2. Mbuf Pool Initialization</h3>
+<p>Once the arguments are parsed, the mbuf pool is created.
+The mbuf pool contains a set of mbuf objects that will be used by the driver
+and the application to store network packet data:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/* create the mbuf pool */</span>
+
+<span class="n">l2fwd_pktmbuf_pool</span> <span class="o">=</span> <span class="n">rte_mempool_create</span><span class="p">(</span><span class="s">&quot;mbuf_pool&quot;</span><span class="p">,</span> <span class="n">NB_MBUF</span><span class="p">,</span> <span class="n">MBUF_SIZE</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="n">rte_pktmbuf_pool_private</span><span class="p">),</span>
+    <span class="n">rte_pktmbuf_pool_init</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">rte_pktmbuf_init</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">SOCKET0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">l2fwd_pktmbuf_pool</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+    <span class="n">rte_panic</span><span class="p">(</span><span class="s">&quot;Cannot init mbuf pool</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The rte_mempool is a generic structure used to handle pools of objects.
+In this case, it is necessary to create a pool that will be used by the driver,
+which expects to have some reserved space in the mempool structure,
+sizeof(struct rte_pktmbuf_pool_private) bytes.
+The number of allocated pkt mbufs is NB_MBUF, with a size of MBUF_SIZE each.
+A per-lcore cache of 32 mbufs is kept.
+The memory is allocated in NUMA socket 0,
+but it is possible to extend this code to allocate one mbuf pool per socket.</p>
+<p>Two callback pointers are also given to the rte_mempool_create() function:</p>
+<ul class="simple">
+<li>The first callback pointer is to rte_pktmbuf_pool_init() and is used
+to initialize the private data of the mempool, which is needed by the driver.
+This function is provided by the mbuf API, but can be copied and extended by the developer.</li>
+<li>The second callback pointer given to rte_mempool_create() is the mbuf initializer.
+The default is used, that is, rte_pktmbuf_init(), which is provided in the rte_mbuf library.
+If a more complex application wants to extend the rte_pktmbuf structure for its own needs,
+a new function derived from rte_pktmbuf_init( ) can be created.</li>
+</ul>
+</div>
+<div class="section" id="driver-initialization">
+<span id="l2-fwd-app-dvr-init"></span><h3>15.4.3. Driver Initialization</h3>
+<p>The main part of the code in the main() function relates to the initialization of the driver.
+To fully understand this code, it is recommended to study the chapters that related to the Poll Mode Driver
+in the <em>DPDK Programmer&#8217;s Guide</em> - Rel 1.4 EAR and the <em>DPDK API Reference</em>.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">rte_eal_pci_probe</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">rte_exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">,</span> <span class="s">&quot;Cannot probe PCI</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+
+<span class="n">nb_ports</span> <span class="o">=</span> <span class="n">rte_eth_dev_count</span><span class="p">();</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">nb_ports</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">rte_exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">,</span> <span class="s">&quot;No Ethernet ports - bye</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">nb_ports</span> <span class="o">&gt;</span> <span class="n">RTE_MAX_ETHPORTS</span><span class="p">)</span>
+    <span class="n">nb_ports</span> <span class="o">=</span> <span class="n">RTE_MAX_ETHPORTS</span><span class="p">;</span>
+
+<span class="cm">/* reset l2fwd_dst_ports */</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="n">portid</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">portid</span> <span class="o">&lt;</span> <span class="n">RTE_MAX_ETHPORTS</span><span class="p">;</span> <span class="n">portid</span><span class="o">++</span><span class="p">)</span>
+    <span class="n">l2fwd_dst_ports</span><span class="p">[</span><span class="n">portid</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="n">last_port</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="cm">/*</span>
+<span class="cm"> * Each logical core is assigned a dedicated TX queue on each port.</span>
+<span class="cm"> */</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="n">portid</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">portid</span> <span class="o">&lt;</span> <span class="n">nb_ports</span><span class="p">;</span> <span class="n">portid</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* skip ports that are not enabled */</span>
+
+    <span class="k">if</span> <span class="p">((</span><span class="n">l2fwd_enabled_port_mask</span> <span class="o">&amp;</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">portid</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+       <span class="k">continue</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">nb_ports_in_mask</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">l2fwd_dst_ports</span><span class="p">[</span><span class="n">portid</span><span class="p">]</span> <span class="o">=</span> <span class="n">last_port</span><span class="p">;</span>
+        <span class="n">l2fwd_dst_ports</span><span class="p">[</span><span class="n">last_port</span><span class="p">]</span> <span class="o">=</span> <span class="n">portid</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+       <span class="n">last_port</span> <span class="o">=</span> <span class="n">portid</span><span class="p">;</span>
+
+    <span class="n">nb_ports_in_mask</span><span class="o">++</span><span class="p">;</span>
+
+    <span class="n">rte_eth_dev_info_get</span><span class="p">((</span><span class="kt">uint8_t</span><span class="p">)</span> <span class="n">portid</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">dev_info</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Observe that:</p>
+<ul class="simple">
+<li>rte_igb_pmd_init_all() simultaneously registers the driver as a PCI driver and as an Ethernet* Poll Mode Driver.</li>
+<li>rte_eal_pci_probe() parses the devices on the PCI bus and initializes recognized devices.</li>
+</ul>
+<p>The next step is to configure the RX and TX queues.
+For each port, there is only one RX queue (only one lcore is able to poll a given port).
+The number of TX queues depends on the number of available lcores.
+The rte_eth_dev_configure() function is used to configure the number of queues for a port:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="n">ret</span> <span class="o">=</span> <span class="n">rte_eth_dev_configure</span><span class="p">((</span><span class="kt">uint8_t</span><span class="p">)</span><span class="n">portid</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">port_conf</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">rte_exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">,</span> <span class="s">&quot;Cannot configure device: &quot;</span>
+        <span class="s">&quot;err=%d, port=%u</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span>
+        <span class="n">ret</span><span class="p">,</span> <span class="n">portid</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The global configuration is stored in a static structure:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">rte_eth_conf</span> <span class="n">port_conf</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">.</span><span class="n">rxmode</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">.</span><span class="n">split_hdr_size</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">header_split</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>   <span class="cm">/**&lt; Header Split disabled */</span>
+        <span class="p">.</span><span class="n">hw_ip_checksum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="cm">/**&lt; IP checksum offload disabled */</span>
+        <span class="p">.</span><span class="n">hw_vlan_filter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="cm">/**&lt; VLAN filtering disabled */</span>
+        <span class="p">.</span><span class="n">jumbo_frame</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>    <span class="cm">/**&lt; Jumbo Frame Support disabled */</span>
+        <span class="p">.</span><span class="n">hw_strip_crc</span><span class="o">=</span> <span class="mi">0</span><span class="p">,</span>    <span class="cm">/**&lt; CRC stripped by hardware */</span>
+    <span class="p">},</span>
+
+    <span class="p">.</span><span class="n">txmode</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">.</span><span class="n">mq_mode</span> <span class="o">=</span> <span class="n">ETH_DCB_NONE</span>
+    <span class="p">},</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="rx-queue-initialization">
+<span id="l2-fwd-app-rx-init"></span><h3>15.4.4. RX Queue Initialization</h3>
+<p>The application uses one lcore to poll one or several ports, depending on the -q option,
+which specifies the number of queues per lcore.</p>
+<p>For example, if the user specifies -q 4, the application is able to poll four ports with one lcore.
+If there are 16 ports on the target (and if the portmask argument is -p ffff ),
+the application will need four lcores to poll all the ports.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="n">ret</span> <span class="o">=</span> <span class="n">rte_eth_rx_queue_setup</span><span class="p">((</span><span class="kt">uint8_t</span><span class="p">)</span> <span class="n">portid</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">nb_rxd</span><span class="p">,</span> <span class="n">SOCKET0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rx_conf</span><span class="p">,</span> <span class="n">l2fwd_pktmbuf_pool</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">rte_exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">,</span> <span class="s">&quot;rte_eth_rx_queue_setup: &quot;</span>
+        <span class="s">&quot;err=%d, port=%u</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span>
+        <span class="n">ret</span><span class="p">,</span> <span class="n">portid</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The list of queues that must be polled for a given lcore is stored in a private structure called struct lcore_queue_conf.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">lcore_queue_conf</span> <span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="n">n_rx_port</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="n">rx_port_list</span><span class="p">[</span><span class="n">MAX_RX_QUEUE_PER_LCORE</span><span class="p">];</span>
+    <span class="k">struct</span> <span class="n">mbuf_table</span> <span class="n">tx_mbufs</span><span class="p">[</span><span class="n">L2FWD_MAX_PORTS</span><span class="p">];</span>
+<span class="p">}</span> <span class="n">rte_cache_aligned</span><span class="p">;</span>
+
+<span class="k">struct</span> <span class="n">lcore_queue_conf</span> <span class="n">lcore_queue_conf</span><span class="p">[</span><span class="n">RTE_MAX_LCORE</span><span class="p">];</span>
+</pre></div>
+</div>
+<p>The values n_rx_port and rx_port_list[] are used in the main packet processing loop
+(see <a class="reference internal" href="#l2-fwd-app-rx-tx-packets"><span class="std std-ref">Receive, Process and Transmit Packets</span></a>).</p>
+<p>The global configuration for the RX queues is stored in a static structure:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">rte_eth_rxconf</span> <span class="n">rx_conf</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">.</span><span class="n">rx_thresh</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">.</span><span class="n">pthresh</span> <span class="o">=</span> <span class="n">RX_PTHRESH</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">hthresh</span> <span class="o">=</span> <span class="n">RX_HTHRESH</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">wthresh</span> <span class="o">=</span> <span class="n">RX_WTHRESH</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="tx-queue-initialization">
+<span id="l2-fwd-app-tx-init"></span><h3>15.4.5. TX Queue Initialization</h3>
+<p>Each lcore should be able to transmit on any port. For every port, a single TX queue is initialized.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/* init one TX queue on each port */</span>
+
+<span class="n">fflush</span><span class="p">(</span><span class="n">stdout</span><span class="p">);</span>
+
+<span class="n">ret</span> <span class="o">=</span> <span class="n">rte_eth_tx_queue_setup</span><span class="p">((</span><span class="kt">uint8_t</span><span class="p">)</span> <span class="n">portid</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">nb_txd</span><span class="p">,</span> <span class="n">rte_eth_dev_socket_id</span><span class="p">(</span><span class="n">portid</span><span class="p">),</span> <span class="o">&amp;</span><span class="n">tx_conf</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">rte_exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">,</span> <span class="s">&quot;rte_eth_tx_queue_setup:err=%d, port=%u</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">ret</span><span class="p">,</span> <span class="p">(</span><span class="kt">unsigned</span><span class="p">)</span> <span class="n">portid</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The global configuration for TX queues is stored in a static structure:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">rte_eth_txconf</span> <span class="n">tx_conf</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">.</span><span class="n">tx_thresh</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">.</span><span class="n">pthresh</span> <span class="o">=</span> <span class="n">TX_PTHRESH</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">hthresh</span> <span class="o">=</span> <span class="n">TX_HTHRESH</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">wthresh</span> <span class="o">=</span> <span class="n">TX_WTHRESH</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="p">.</span><span class="n">tx_free_thresh</span> <span class="o">=</span> <span class="n">RTE_TEST_TX_DESC_DEFAULT</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="cm">/* disable feature */</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="receive-process-and-transmit-packets">
+<span id="l2-fwd-app-rx-tx-packets"></span><h3>15.4.6. Receive, Process and Transmit Packets</h3>
+<p>In the l2fwd_main_loop() function, the main task is to read ingress packets from the RX queues.
+This is done using the following code:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm"> * Read packet from RX queues</span>
+<span class="cm"> */</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">qconf</span><span class="o">-&gt;</span><span class="n">n_rx_port</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">portid</span> <span class="o">=</span> <span class="n">qconf</span><span class="o">-&gt;</span><span class="n">rx_port_list</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+    <span class="n">nb_rx</span> <span class="o">=</span> <span class="n">rte_eth_rx_burst</span><span class="p">((</span><span class="kt">uint8_t</span><span class="p">)</span> <span class="n">portid</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>  <span class="n">pkts_burst</span><span class="p">,</span> <span class="n">MAX_PKT_BURST</span><span class="p">);</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">nb_rx</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">pkts_burst</span><span class="p">[</span><span class="n">j</span><span class="p">];</span>
+        <span class="n">rte_prefetch0</span><span class="p">[</span><span class="n">rte_pktmbuf_mtod</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="p">));</span> <span class="n">l2fwd_simple_forward</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">portid</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Packets are read in a burst of size MAX_PKT_BURST.
+The rte_eth_rx_burst() function writes the mbuf pointers in a local table and returns the number of available mbufs in the table.</p>
+<p>Then, each mbuf in the table is processed by the l2fwd_simple_forward() function.
+The processing is very simple: process the TX port from the RX port, then replace the source and destination MAC addresses.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In the following code, one line for getting the output port requires some explanation.</p>
+</div>
+<p>During the initialization process, a static array of destination ports (l2fwd_dst_ports[]) is filled such that for each source port,
+a destination port is assigned that is either the next or previous enabled port from the portmask.
+Naturally, the number of ports in the portmask must be even, otherwise, the application exits.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">void</span>
+<span class="nf">l2fwd_simple_forward</span><span class="p">(</span><span class="k">struct</span> <span class="n">rte_mbuf</span> <span class="o">*</span><span class="n">m</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="n">portid</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">struct</span> <span class="n">ether_hdr</span> <span class="o">*</span><span class="n">eth</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="o">*</span><span class="n">tmp</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="n">dst_port</span><span class="p">;</span>
+
+    <span class="n">dst_port</span> <span class="o">=</span> <span class="n">l2fwd_dst_ports</span><span class="p">[</span><span class="n">portid</span><span class="p">];</span>
+
+    <span class="n">eth</span> <span class="o">=</span> <span class="n">rte_pktmbuf_mtod</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="k">struct</span> <span class="n">ether_hdr</span> <span class="o">*</span><span class="p">);</span>
+
+    <span class="cm">/* 02:00:00:00:00:xx */</span>
+
+    <span class="n">tmp</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">eth</span><span class="o">-&gt;</span><span class="n">d_addr</span><span class="p">.</span><span class="n">addr_bytes</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+
+    <span class="o">*</span><span class="p">((</span><span class="kt">uint64_t</span> <span class="o">*</span><span class="p">)</span><span class="n">tmp</span><span class="p">)</span> <span class="o">=</span> <span class="mh">0x000000000002</span> <span class="o">+</span> <span class="p">((</span><span class="kt">uint64_t</span><span class="p">)</span> <span class="n">dst_port</span> <span class="o">&lt;&lt;</span> <span class="mi">40</span><span class="p">);</span>
+
+    <span class="cm">/* src addr */</span>
+
+    <span class="n">ether_addr_copy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">l2fwd_ports_eth_addr</span><span class="p">[</span><span class="n">dst_port</span><span class="p">],</span> <span class="o">&amp;</span><span class="n">eth</span><span class="o">-&gt;</span><span class="n">s_addr</span><span class="p">);</span>
+
+    <span class="n">l2fwd_send_packet</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="p">(</span><span class="kt">uint8_t</span><span class="p">)</span> <span class="n">dst_port</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Then, the packet is sent using the l2fwd_send_packet (m, dst_port) function.
+For this test application, the processing is exactly the same for all packets arriving on the same RX port.
+Therefore, it would have been possible to call the l2fwd_send_burst() function directly from the main loop
+to send all the received packets on the same TX port,
+using the burst-oriented send function, which is more efficient.</p>
+<p>However, in real-life applications (such as, L3 routing),
+packet N is not necessarily forwarded on the same port as packet N-1.
+The application is implemented to illustrate that, so the same approach can be reused in a more complex application.</p>
+<p>The l2fwd_send_packet() function stores the packet in a per-lcore and per-txport table.
+If the table is full, the whole packets table is transmitted using the l2fwd_send_burst() function:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span>/* Send the packet on an output interface */
+
+static int
+l2fwd_send_packet(struct rte_mbuf *m, uint8_t port)
+{
+    unsigned lcore_id, len;
+    struct lcore_queue_conf \*qconf;
+
+    lcore_id = rte_lcore_id();
+    qconf = &amp;lcore_queue_conf[lcore_id];
+    len = qconf-&gt;tx_mbufs[port].len;
+    qconf-&gt;tx_mbufs[port].m_table[len] = m;
+    len++;
+
+    /* enough pkts to be sent */
+
+    if (unlikely(len == MAX_PKT_BURST)) {
+        l2fwd_send_burst(qconf, MAX_PKT_BURST, port);
+        len = 0;
+    }
+
+    qconf-&gt;tx_mbufs[port].len = len; return 0;
+}
+</pre></div>
+</div>
+<p>To ensure that no packets remain in the tables, each lcore does a draining of TX queue in its main loop.
+This technique introduces some latency when there are not many packets to send,
+however it improves performance:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="n">cur_tsc</span> <span class="o">=</span> <span class="n">rte_rdtsc</span><span class="p">();</span>
+
+<span class="cm">/*</span>
+<span class="cm"> *   TX burst queue drain</span>
+<span class="cm"> */</span>
+
+<span class="n">diff_tsc</span> <span class="o">=</span> <span class="n">cur_tsc</span> <span class="o">-</span> <span class="n">prev_tsc</span><span class="p">;</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">unlikely</span><span class="p">(</span><span class="n">diff_tsc</span> <span class="o">&gt;</span> <span class="n">drain_tsc</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">portid</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">portid</span> <span class="o">&lt;</span> <span class="n">RTE_MAX_ETHPORTS</span><span class="p">;</span> <span class="n">portid</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">qconf</span><span class="o">-&gt;</span><span class="n">tx_mbufs</span><span class="p">[</span><span class="n">portid</span><span class="p">].</span><span class="n">len</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="k">continue</span><span class="p">;</span>
+
+        <span class="n">l2fwd_send_burst</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lcore_queue_conf</span><span class="p">[</span><span class="n">lcore_id</span><span class="p">],</span> <span class="n">qconf</span><span class="o">-&gt;</span><span class="n">tx_mbufs</span><span class="p">[</span><span class="n">portid</span><span class="p">].</span><span class="n">len</span><span class="p">,</span> <span class="p">(</span><span class="kt">uint8_t</span><span class="p">)</span> <span class="n">portid</span><span class="p">);</span>
+
+        <span class="n">qconf</span><span class="o">-&gt;</span><span class="n">tx_mbufs</span><span class="p">[</span><span class="n">portid</span><span class="p">].</span><span class="n">len</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="cm">/* if timer is enabled */</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">timer_period</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="cm">/* advance the timer */</span>
+
+        <span class="n">timer_tsc</span> <span class="o">+=</span> <span class="n">diff_tsc</span><span class="p">;</span>
+
+        <span class="cm">/* if timer has reached its timeout */</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">unlikely</span><span class="p">(</span><span class="n">timer_tsc</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="kt">uint64_t</span><span class="p">)</span> <span class="n">timer_period</span><span class="p">))</span> <span class="p">{</span>
+            <span class="cm">/* do this only on master core */</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">lcore_id</span> <span class="o">==</span> <span class="n">rte_get_master_lcore</span><span class="p">())</span> <span class="p">{</span>
+                <span class="n">print_stats</span><span class="p">();</span>
+
+                <span class="cm">/* reset the timer */</span>
+                <span class="n">timer_tsc</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">prev_tsc</span> <span class="o">=</span> <span class="n">cur_tsc</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="l2_forward_cat.html" class="btn btn-neutral float-right" title="16. L2 Forwarding Sample Application with Cache Allocation Technology (CAT)" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="l2_forward_job_stats.html" class="btn btn-neutral" title="14. L2 Forwarding Sample Application (in Real and Virtualized Environments) with core load statistics." accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

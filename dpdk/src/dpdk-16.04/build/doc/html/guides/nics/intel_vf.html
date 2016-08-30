@@ -1,0 +1,734 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>10. I40E/IXGBE/IGB Virtual Function Driver &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Network Interface Controller Drivers" href="index.html"/>
+        <link rel="next" title="11. MLX4 poll mode driver library" href="mlx4.html"/>
+        <link rel="prev" title="9. IXGBE Driver" href="ixgbe.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Network Interface Controller Drivers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">1. Overview of Networking Drivers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bnx2x.html">2. BNX2X Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cxgbe.html">3. CXGBE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="e1000em.html">4. Driver for VM Emulated Devices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ena.html">5. ENA Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="enic.html">6. ENIC Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fm10k.html">7. FM10K Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="i40e.html">8. I40E Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ixgbe.html">9. IXGBE Driver</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">10. I40E/IXGBE/IGB Virtual Function Driver</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#sr-iov-mode-utilization-in-a-dpdk-environment">10.1. SR-IOV Mode Utilization in a DPDK Environment</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#physical-and-virtual-function-infrastructure">10.1.1. Physical and Virtual Function Infrastructure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#validated-hypervisors">10.1.2. Validated Hypervisors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#expected-guest-operating-system-in-virtual-machine">10.1.3. Expected Guest Operating System in Virtual Machine</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#setting-up-a-kvm-virtual-machine-monitor">10.2. Setting Up a KVM Virtual Machine Monitor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dpdk-sr-iov-pmd-pf-vf-driver-usage-model">10.3. DPDK SR-IOV PMD PF/VF Driver Usage Model</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#fast-host-based-packet-processing">10.3.1. Fast Host-based Packet Processing</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#sr-iov-pf-vf-approach-for-inter-vm-communication">10.4. SR-IOV (PF/VF) Approach for Inter-VM Communication</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mlx4.html">11. MLX4 poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mlx5.html">12. MLX5 poll mode driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nfp.html">13. NFP poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="szedata2.html">14. SZEDATA2 poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="virtio.html">15. Poll Mode Driver for Emulated Virtio NIC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">16. Poll Mode Driver that wraps vhost library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmxnet3.html">17. Poll Mode Driver for Paravirtual VMXNET3 NIC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pcap_ring.html">18. Libpcap and Ring Based Poll Mode Drivers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Network Interface Controller Drivers</a> &raquo;</li>
+      
+    <li>10. I40E/IXGBE/IGB Virtual Function Driver</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/nics/intel_vf.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="i40e-ixgbe-igb-virtual-function-driver">
+<h1>10. I40E/IXGBE/IGB Virtual Function Driver</h1>
+<p>Supported Intel® Ethernet Controllers (see the <em>DPDK Release Notes</em> for details)
+support the following modes of operation in a virtualized environment:</p>
+<ul class="simple">
+<li><strong>SR-IOV mode</strong>: Involves direct assignment of part of the port resources to different guest operating systems
+using the PCI-SIG Single Root I/O Virtualization (SR IOV) standard,
+also known as &#8220;native mode&#8221; or &#8220;pass-through&#8221; mode.
+In this chapter, this mode is referred to as IOV mode.</li>
+<li><strong>VMDq mode</strong>: Involves central management of the networking resources by an IO Virtual Machine (IOVM) or
+a Virtual Machine Monitor (VMM), also known as software switch acceleration mode.
+In this chapter, this mode is referred to as the Next Generation VMDq mode.</li>
+</ul>
+<div class="section" id="sr-iov-mode-utilization-in-a-dpdk-environment">
+<h2>10.1. SR-IOV Mode Utilization in a DPDK Environment</h2>
+<p>The DPDK uses the SR-IOV feature for hardware-based I/O sharing in IOV mode.
+Therefore, it is possible to partition SR-IOV capability on Ethernet controller NIC resources logically and
+expose them to a virtual machine as a separate PCI function called a &#8220;Virtual Function&#8221;.
+Refer to <a class="reference internal" href="#figure-single-port-nic"><span class="std std-numref">Fig. 10.8</span></a>.</p>
+<p>Therefore, a NIC is logically distributed among multiple virtual machines (as shown in <a class="reference internal" href="#figure-single-port-nic"><span class="std std-numref">Fig. 10.8</span></a>),
+while still having global data in common to share with the Physical Function and other Virtual Functions.
+The DPDK fm10kvf, i40evf, igbvf or ixgbevf as a Poll Mode Driver (PMD) serves for the Intel® 82576 Gigabit Ethernet Controller,
+Intel® Ethernet Controller I350 family, Intel® 82599 10 Gigabit Ethernet Controller NIC,
+Intel® Fortville 10/40 Gigabit Ethernet Controller NIC&#8217;s virtual PCI function, or PCIe host-interface of the Intel Ethernet Switch
+FM10000 Series.
+Meanwhile the DPDK Poll Mode Driver (PMD) also supports &#8220;Physical Function&#8221; of such NIC&#8217;s on the host.</p>
+<p>The DPDK PF/VF Poll Mode Driver (PMD) supports the Layer 2 switch on Intel® 82576 Gigabit Ethernet Controller,
+Intel® Ethernet Controller I350 family, Intel® 82599 10 Gigabit Ethernet Controller,
+and Intel® Fortville 10/40 Gigabit Ethernet Controller NICs so that guest can choose it for inter virtual machine traffic in SR-IOV mode.</p>
+<p>For more detail on SR-IOV, please refer to the following documents:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://www.intel.com/network/connectivity/solutions/vmdc.htm">SR-IOV provides hardware based I/O sharing</a></li>
+<li><a class="reference external" href="http://www.intel.com/content/www/us/en/pci-express/pci-sig-single-root-io-virtualization-support-in-virtualization-technology-for-connectivity-paper.html">PCI-SIG-Single Root I/O Virtualization Support on IA</a></li>
+<li><a class="reference external" href="http://www.intel.com/content/www/us/en/virtualization/server-virtualization/scalable-i-o-virtualized-servers-paper.html">Scalable I/O Virtualized Servers</a></li>
+</ul>
+<div class="figure" id="id1">
+<span id="figure-single-port-nic"></span><img alt="../_images/single_port_nic.png" src="../_images/single_port_nic.png" />
+<p class="caption"><span class="caption-number">Fig. 10.8 </span><span class="caption-text">Virtualization for a Single Port NIC in SR-IOV Mode</span></p>
+</div>
+<div class="section" id="physical-and-virtual-function-infrastructure">
+<h3>10.1.1. Physical and Virtual Function Infrastructure</h3>
+<p>The following describes the Physical Function and Virtual Functions infrastructure for the supported Ethernet Controller NICs.</p>
+<p>Virtual Functions operate under the respective Physical Function on the same NIC Port and therefore have no access
+to the global NIC resources that are shared between other functions for the same NIC port.</p>
+<p>A Virtual Function has basic access to the queue resources and control structures of the queues assigned to it.
+For global resource access, a Virtual Function has to send a request to the Physical Function for that port,
+and the Physical Function operates on the global resources on behalf of the Virtual Function.
+For this out-of-band communication, an SR-IOV enabled NIC provides a memory buffer for each Virtual Function,
+which is called a &#8220;Mailbox&#8221;.</p>
+<div class="section" id="the-pcie-host-interface-of-intel-ethernet-switch-fm10000-series-vf-infrastructure">
+<h4>10.1.1.1. The PCIE host-interface of Intel Ethernet Switch FM10000 Series VF infrastructure</h4>
+<p>In a virtualized environment, the programmer can enable a maximum of <em>64 Virtual Functions (VF)</em>
+globally per PCIE host-interface of the Intel Ethernet Switch FM10000 Series device.
+Each VF can have a maximum of 16 queue pairs.
+The Physical Function in host could be only configured by the Linux* fm10k driver
+(in the case of the Linux Kernel-based Virtual Machine [KVM]), DPDK PMD PF driver doesn&#8217;t support it yet.</p>
+<p>For example,</p>
+<ul>
+<li><p class="first">Using Linux* fm10k driver:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">rmmod fm10k (To remove the fm10k module)</span>
+<span class="go">insmod fm0k.ko max_vfs=2,2 (To enable two Virtual Functions per port)</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>Virtual Function enumeration is performed in the following sequence by the Linux* pci driver for a dual-port NIC.
+When you enable the four Virtual Functions with the above command, the four enabled functions have a Function#
+represented by (Bus#, Device#, Function#) in sequence starting from 0 to 3.
+However:</p>
+<ul class="simple">
+<li>Virtual Functions 0 and 2 belong to Physical Function 0</li>
+<li>Virtual Functions 1 and 3 belong to Physical Function 1</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The above is an important consideration to take into account when targeting specific packets to a selected port.</p>
+</div>
+</div>
+<div class="section" id="intel-fortville-10-40-gigabit-ethernet-controller-vf-infrastructure">
+<h4>10.1.1.2. Intel® Fortville 10/40 Gigabit Ethernet Controller VF Infrastructure</h4>
+<p>In a virtualized environment, the programmer can enable a maximum of <em>128 Virtual Functions (VF)</em>
+globally per Intel® Fortville 10/40 Gigabit Ethernet Controller NIC device.
+Each VF can have a maximum of 16 queue pairs.
+The Physical Function in host could be either configured by the Linux* i40e driver
+(in the case of the Linux Kernel-based Virtual Machine [KVM]) or by DPDK PMD PF driver.
+When using both DPDK PMD PF/VF drivers, the whole NIC will be taken over by DPDK based application.</p>
+<p>For example,</p>
+<ul>
+<li><p class="first">Using Linux* i40e  driver:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">rmmod i40e (To remove the i40e module)</span>
+<span class="go">insmod i40e.ko max_vfs=2,2 (To enable two Virtual Functions per port)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Using the DPDK PMD PF i40e driver:</p>
+<p>Kernel Params: iommu=pt, intel_iommu=on</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">modprobe uio</span>
+<span class="go">insmod igb_uio</span>
+<span class="go">./dpdk_nic_bind.py -b igb_uio bb:ss.f</span>
+<span class="go">echo 2 &gt; /sys/bus/pci/devices/0000\:bb\:ss.f/max_vfs (To enable two VFs on a specific PCI device)</span>
+</pre></div>
+</div>
+<p>Launch the DPDK testpmd/example or your own host daemon application using the DPDK PMD library.</p>
+</li>
+<li><p class="first">Using the DPDK PMD PF ixgbe driver to enable VF RSS:</p>
+<p>Same steps as above to install the modules of uio, igb_uio, specify max_vfs for PCI device, and
+launch the DPDK testpmd/example or your own host daemon application using the DPDK PMD library.</p>
+<p>The available queue number(at most 4) per VF depends on the total number of pool, which is
+determined by the max number of VF at PF initialization stage and the number of queue specified
+in config:</p>
+<ul>
+<li><p class="first">If the max number of VF is set in the range of 1 to 32:</p>
+<p>If the number of rxq is specified as 4(e.g. &#8216;&#8211;rxq 4&#8217; in testpmd), then there are totally 32
+pools(ETH_32_POOLS), and each VF could have 4 or less(e.g. 2) queues;</p>
+<p>If the number of rxq is specified as 2(e.g. &#8216;&#8211;rxq 2&#8217; in testpmd), then there are totally 32
+pools(ETH_32_POOLS), and each VF could have 2 queues;</p>
+</li>
+<li><p class="first">If the max number of VF is in the range of 33 to 64:</p>
+<p>If the number of rxq is 4 (&#8216;&#8211;rxq 4&#8217; in testpmd), then error message is expected as rxq is not
+correct at this case;</p>
+<p>If the number of rxq is 2 (&#8216;&#8211;rxq 2&#8217; in testpmd), then there is totally 64 pools(ETH_64_POOLS),
+and each VF have 2 queues;</p>
+</li>
+</ul>
+<p>On host, to enable VF RSS functionality, rx mq mode should be set as ETH_MQ_RX_VMDQ_RSS
+or ETH_MQ_RX_RSS mode, and SRIOV mode should be activated(max_vfs &gt;= 1).
+It also needs config VF RSS information like hash function, RSS key, RSS key length.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">testpmd -c 0xffff -n 4 -- --coremask=&lt;core-mask&gt; --rxq=4 --txq=4 -i</span>
+</pre></div>
+</div>
+<p>The limitation for VF RSS on Intel® 82599 10 Gigabit Ethernet Controller is:
+The hash and key are shared among PF and all VF, the RETA table with 128 entries is also shared
+among PF and all VF; So it could not to provide a method to query the hash and reta content per
+VF on guest, while, if possible, please query them on host(PF) for the shared RETA information.</p>
+</li>
+</ul>
+<p>Virtual Function enumeration is performed in the following sequence by the Linux* pci driver for a dual-port NIC.
+When you enable the four Virtual Functions with the above command, the four enabled functions have a Function#
+represented by (Bus#, Device#, Function#) in sequence starting from 0 to 3.
+However:</p>
+<ul class="simple">
+<li>Virtual Functions 0 and 2 belong to Physical Function 0</li>
+<li>Virtual Functions 1 and 3 belong to Physical Function 1</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The above is an important consideration to take into account when targeting specific packets to a selected port.</p>
+</div>
+</div>
+<div class="section" id="intel-82599-10-gigabit-ethernet-controller-vf-infrastructure">
+<h4>10.1.1.3. Intel® 82599 10 Gigabit Ethernet Controller VF Infrastructure</h4>
+<p>The programmer can enable a maximum of <em>63 Virtual Functions</em> and there must be <em>one Physical Function</em> per Intel® 82599
+10 Gigabit Ethernet Controller NIC port.
+The reason for this is that the device allows for a maximum of 128 queues per port and a virtual/physical function has to
+have at least one queue pair (RX/TX).
+The current implementation of the DPDK ixgbevf driver supports a single queue pair (RX/TX) per Virtual Function.
+The Physical Function in host could be either configured by the Linux* ixgbe driver
+(in the case of the Linux Kernel-based Virtual Machine [KVM]) or by DPDK PMD PF driver.
+When using both DPDK PMD PF/VF drivers, the whole NIC will be taken over by DPDK based application.</p>
+<p>For example,</p>
+<ul>
+<li><p class="first">Using Linux* ixgbe driver:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">rmmod ixgbe (To remove the ixgbe module)</span>
+<span class="go">insmod ixgbe max_vfs=2,2 (To enable two Virtual Functions per port)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Using the DPDK PMD PF ixgbe driver:</p>
+<p>Kernel Params: iommu=pt, intel_iommu=on</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">modprobe uio</span>
+<span class="go">insmod igb_uio</span>
+<span class="go">./dpdk_nic_bind.py -b igb_uio bb:ss.f</span>
+<span class="go">echo 2 &gt; /sys/bus/pci/devices/0000\:bb\:ss.f/max_vfs (To enable two VFs on a specific PCI device)</span>
+</pre></div>
+</div>
+<p>Launch the DPDK testpmd/example or your own host daemon application using the DPDK PMD library.</p>
+</li>
+</ul>
+<p>Virtual Function enumeration is performed in the following sequence by the Linux* pci driver for a dual-port NIC.
+When you enable the four Virtual Functions with the above command, the four enabled functions have a Function#
+represented by (Bus#, Device#, Function#) in sequence starting from 0 to 3.
+However:</p>
+<ul class="simple">
+<li>Virtual Functions 0 and 2 belong to Physical Function 0</li>
+<li>Virtual Functions 1 and 3 belong to Physical Function 1</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The above is an important consideration to take into account when targeting specific packets to a selected port.</p>
+</div>
+</div>
+<div class="section" id="intel-82576-gigabit-ethernet-controller-and-intel-ethernet-controller-i350-family-vf-infrastructure">
+<h4>10.1.1.4. Intel® 82576 Gigabit Ethernet Controller and Intel® Ethernet Controller I350 Family VF Infrastructure</h4>
+<p>In a virtualized environment, an Intel® 82576 Gigabit Ethernet Controller serves up to eight virtual machines (VMs).
+The controller has 16 TX and 16 RX queues.
+They are generally referred to (or thought of) as queue pairs (one TX and one RX queue).
+This gives the controller 16 queue pairs.</p>
+<p>A pool is a group of queue pairs for assignment to the same VF, used for transmit and receive operations.
+The controller has eight pools, with each pool containing two queue pairs, that is, two TX and two RX queues assigned to each VF.</p>
+<p>In a virtualized environment, an Intel® Ethernet Controller I350 family device serves up to eight virtual machines (VMs) per port.
+The eight queues can be accessed by eight different VMs if configured correctly (the i350 has 4x1GbE ports each with 8T X and 8 RX queues),
+that means, one Transmit and one Receive queue assigned to each VF.</p>
+<p>For example,</p>
+<ul>
+<li><p class="first">Using Linux* igb driver:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">rmmod igb (To remove the igb module)</span>
+<span class="go">insmod igb max_vfs=2,2 (To enable two Virtual Functions per port)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Using DPDK PMD PF igb driver:</p>
+<p>Kernel Params: iommu=pt, intel_iommu=on modprobe uio</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">insmod igb_uio</span>
+<span class="go">./dpdk_nic_bind.py -b igb_uio bb:ss.f</span>
+<span class="go">echo 2 &gt; /sys/bus/pci/devices/0000\:bb\:ss.f/max_vfs (To enable two VFs on a specific pci device)</span>
+</pre></div>
+</div>
+<p>Launch DPDK testpmd/example or your own host daemon application using the DPDK PMD library.</p>
+</li>
+</ul>
+<p>Virtual Function enumeration is performed in the following sequence by the Linux* pci driver for a four-port NIC.
+When you enable the four Virtual Functions with the above command, the four enabled functions have a Function#
+represented by (Bus#, Device#, Function#) in sequence, starting from 0 to 7.
+However:</p>
+<ul class="simple">
+<li>Virtual Functions 0 and 4 belong to Physical Function 0</li>
+<li>Virtual Functions 1 and 5 belong to Physical Function 1</li>
+<li>Virtual Functions 2 and 6 belong to Physical Function 2</li>
+<li>Virtual Functions 3 and 7 belong to Physical Function 3</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The above is an important consideration to take into account when targeting specific packets to a selected port.</p>
+</div>
+</div>
+</div>
+<div class="section" id="validated-hypervisors">
+<h3>10.1.2. Validated Hypervisors</h3>
+<p>The validated hypervisor is:</p>
+<ul class="simple">
+<li>KVM (Kernel Virtual Machine) with  Qemu, version 0.14.0</li>
+</ul>
+<p>However, the hypervisor is bypassed to configure the Virtual Function devices using the Mailbox interface,
+the solution is hypervisor-agnostic.
+Xen* and VMware* (when SR- IOV is supported) will also be able to support the DPDK with Virtual Function driver support.</p>
+</div>
+<div class="section" id="expected-guest-operating-system-in-virtual-machine">
+<h3>10.1.3. Expected Guest Operating System in Virtual Machine</h3>
+<p>The expected guest operating systems in a virtualized environment are:</p>
+<ul class="simple">
+<li>Fedora* 14 (64-bit)</li>
+<li>Ubuntu* 10.04 (64-bit)</li>
+</ul>
+<p>For supported kernel versions, refer to the <em>DPDK Release Notes</em>.</p>
+</div>
+</div>
+<div class="section" id="setting-up-a-kvm-virtual-machine-monitor">
+<h2>10.2. Setting Up a KVM Virtual Machine Monitor</h2>
+<p>The following describes a target environment:</p>
+<ul class="simple">
+<li>Host Operating System: Fedora 14</li>
+<li>Hypervisor: KVM (Kernel Virtual Machine) with Qemu  version 0.14.0</li>
+<li>Guest Operating System: Fedora 14</li>
+<li>Linux Kernel Version: Refer to the  <em>DPDK Getting Started Guide</em></li>
+<li>Target Applications:  l2fwd, l3fwd-vf</li>
+</ul>
+<p>The setup procedure is as follows:</p>
+<ol class="arabic">
+<li><p class="first">Before booting the Host OS, open <strong>BIOS setup</strong> and enable <strong>Intel® VT features</strong>.</p>
+</li>
+<li><p class="first">While booting the Host OS kernel, pass the intel_iommu=on kernel command line argument using GRUB.
+When using DPDK PF driver on host, pass the iommu=pt kernel command line argument in GRUB.</p>
+</li>
+<li><p class="first">Download qemu-kvm-0.14.0 from
+<a class="reference external" href="http://sourceforge.net/projects/kvm/files/qemu-kvm/">http://sourceforge.net/projects/kvm/files/qemu-kvm/</a>
+and install it in the Host OS using the following steps:</p>
+<p>When using a recent kernel (2.6.25+) with kvm modules included:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">tar xzf qemu-kvm-release.tar.gz</span>
+<span class="go">cd qemu-kvm-release</span>
+<span class="go">./configure --prefix=/usr/local/kvm</span>
+<span class="go">make</span>
+<span class="go">sudo make install</span>
+<span class="go">sudo /sbin/modprobe kvm-intel</span>
+</pre></div>
+</div>
+<p>When using an older kernel, or a kernel from a distribution without the kvm modules,
+you must download (from the same link), compile and install the modules yourself:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">tar xjf kvm-kmod-release.tar.bz2</span>
+<span class="go">cd kvm-kmod-release</span>
+<span class="go">./configure</span>
+<span class="go">make</span>
+<span class="go">sudo make install</span>
+<span class="go">sudo /sbin/modprobe kvm-intel</span>
+</pre></div>
+</div>
+<p>qemu-kvm installs in the /usr/local/bin directory.</p>
+<p>For more details about KVM configuration and usage, please refer to:</p>
+<p><a class="reference external" href="http://www.linux-kvm.org/page/HOWTO1">http://www.linux-kvm.org/page/HOWTO1</a>.</p>
+</li>
+<li><p class="first">Create a Virtual Machine and install Fedora 14 on the Virtual Machine.
+This is referred to as the Guest Operating System (Guest OS).</p>
+</li>
+<li><p class="first">Download and install the latest ixgbe driver from:</p>
+<p><a class="reference external" href="http://downloadcenter.intel.com/Detail_Desc.aspx?agr=Y&amp;amp;DwnldID=14687">http://downloadcenter.intel.com/Detail_Desc.aspx?agr=Y&amp;amp;DwnldID=14687</a></p>
+</li>
+<li><p class="first">In the Host OS</p>
+<p>When using Linux kernel ixgbe driver, unload the Linux ixgbe driver and reload it with the max_vfs=2,2 argument:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">rmmod ixgbe</span>
+<span class="go">modprobe ixgbe max_vfs=2,2</span>
+</pre></div>
+</div>
+<p>When using DPDK PMD PF driver, insert DPDK kernel module igb_uio and set the number of VF by sysfs max_vfs:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">modprobe uio</span>
+<span class="go">insmod igb_uio</span>
+<span class="go">./dpdk_nic_bind.py -b igb_uio 02:00.0 02:00.1 0e:00.0 0e:00.1</span>
+<span class="go">echo 2 &gt; /sys/bus/pci/devices/0000\:02\:00.0/max_vfs</span>
+<span class="go">echo 2 &gt; /sys/bus/pci/devices/0000\:02\:00.1/max_vfs</span>
+<span class="go">echo 2 &gt; /sys/bus/pci/devices/0000\:0e\:00.0/max_vfs</span>
+<span class="go">echo 2 &gt; /sys/bus/pci/devices/0000\:0e\:00.1/max_vfs</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You need to explicitly specify number of vfs for each port, for example,
+in the command above, it creates two vfs for the first two ixgbe ports.</p>
+</div>
+<p>Let say we have a machine with four physical ixgbe ports:</p>
+<blockquote>
+<div><p>0000:02:00.0</p>
+<p>0000:02:00.1</p>
+<p>0000:0e:00.0</p>
+<p>0000:0e:00.1</p>
+</div></blockquote>
+<p>The command above creates two vfs for device 0000:02:00.0:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">ls -alrt /sys/bus/pci/devices/0000\:02\:00.0/virt*</span>
+<span class="go">lrwxrwxrwx. 1 root root 0 Apr 13 05:40 /sys/bus/pci/devices/0000:02:00.0/virtfn1 -&gt; ../0000:02:10.2</span>
+<span class="go">lrwxrwxrwx. 1 root root 0 Apr 13 05:40 /sys/bus/pci/devices/0000:02:00.0/virtfn0 -&gt; ../0000:02:10.0</span>
+</pre></div>
+</div>
+<p>It also creates two vfs for device 0000:02:00.1:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">ls -alrt /sys/bus/pci/devices/0000\:02\:00.1/virt*</span>
+<span class="go">lrwxrwxrwx. 1 root root 0 Apr 13 05:51 /sys/bus/pci/devices/0000:02:00.1/virtfn1 -&gt; ../0000:02:10.3</span>
+<span class="go">lrwxrwxrwx. 1 root root 0 Apr 13 05:51 /sys/bus/pci/devices/0000:02:00.1/virtfn0 -&gt; ../0000:02:10.1</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">List the PCI devices connected and notice that the Host OS shows two Physical Functions (traditional ports)
+and four Virtual Functions (two for each port).
+This is the result of the previous step.</p>
+</li>
+<li><p class="first">Insert the pci_stub module to hold the PCI devices that are freed from the default driver using the following command
+(see <a class="reference external" href="http://www.linux-kvm.org/page/How_to_assign_devices_with_VT-d_in_KVM">http://www.linux-kvm.org/page/How_to_assign_devices_with_VT-d_in_KVM</a> Section 4 for more information):</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">sudo /sbin/modprobe pci-stub</span>
+</pre></div>
+</div>
+<p>Unbind the default driver from the PCI devices representing the Virtual Functions.
+A script to perform this action is as follows:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">echo &quot;8086 10ed&quot; &gt; /sys/bus/pci/drivers/pci-stub/new_id</span>
+<span class="go">echo 0000:08:10.0 &gt; /sys/bus/pci/devices/0000:08:10.0/driver/unbind</span>
+<span class="go">echo 0000:08:10.0 &gt; /sys/bus/pci/drivers/pci-stub/bind</span>
+</pre></div>
+</div>
+<p>where, 0000:08:10.0 belongs to the Virtual Function visible in the Host OS.</p>
+</li>
+<li><p class="first">Now, start the Virtual Machine by running the following command:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">/usr/local/kvm/bin/qemu-system-x86_64 -m 4096 -smp 4 -boot c -hda lucid.qcow2 -device pci-assign,host=08:10.0</span>
+</pre></div>
+</div>
+<p>where:</p>
+<blockquote>
+<div><p>— -m = memory to assign</p>
+<p class="attribution">&mdash;-smp = number of smp cores</p>
+</div></blockquote>
+<blockquote>
+<div><p>— -boot = boot option</p>
+<p class="attribution">&mdash;-hda = virtual disk image</p>
+</div></blockquote>
+<blockquote>
+<div><p>— -device = device to attach</p>
+</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>— The pci-assign,host=08:10.0 alue indicates that you want to attach a PCI device
+to a Virtual Machine and the respective (Bus:Device.Function)
+numbers should be passed for the Virtual Function to be attached.</p>
+<p>— qemu-kvm-0.14.0 allows a maximum of four PCI devices assigned to a VM,
+but this is qemu-kvm version dependent since qemu-kvm-0.14.1 allows a maximum of five PCI devices.</p>
+<p>— qemu-system-x86_64 also has a -cpu command line option that is used to select the cpu_model
+to emulate in a Virtual Machine. Therefore, it can be used as:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">/usr/local/kvm/bin/qemu-system-x86_64 -cpu ?</span>
+
+<span class="go">(to list all available cpu_models)</span>
+
+<span class="go">/usr/local/kvm/bin/qemu-system-x86_64 -m 4096 -cpu host -smp 4 -boot c -hda lucid.qcow2 -device pci-assign,host=08:10.0</span>
+
+<span class="go">(to use the same cpu_model equivalent to the host cpu)</span>
+</pre></div>
+</div>
+<p class="last">For more information, please refer to: <a class="reference external" href="http://wiki.qemu.org/Features/CPUModels">http://wiki.qemu.org/Features/CPUModels</a>.</p>
+</div>
+</li>
+<li><p class="first">Install and run DPDK host app to take  over the Physical Function. Eg.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">make install T=x86_64-native-linuxapp-gcc</span>
+<span class="go">./x86_64-native-linuxapp-gcc/app/testpmd -c f -n 4 -- -i</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Finally, access the Guest OS using vncviewer with the localhost:5900 port and check the lspci command output in the Guest OS.
+The virtual functions will be listed as available for use.</p>
+</li>
+<li><p class="first">Configure and install the DPDK with an x86_64-native-linuxapp-gcc configuration on the Guest OS as normal,
+that is, there is no change to the normal installation procedure.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">make config T=x86_64-native-linuxapp-gcc O=x86_64-native-linuxapp-gcc</span>
+<span class="go">cd x86_64-native-linuxapp-gcc</span>
+<span class="go">make</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you are unable to compile the DPDK and you are getting &#8220;error: CPU you selected does not support x86-64 instruction set&#8221;,
+power off the Guest OS and start the virtual machine with the correct -cpu option in the qemu- system-x86_64 command as shown in step 9.
+You must select the best x86_64 cpu_model to emulate or you can select host option if available.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Run the DPDK l2fwd sample application in the Guest OS with Hugepages enabled.
+For the expected benchmark performance, you must pin the cores from the Guest OS to the Host OS (taskset can be used to do this) and
+you must also look at the PCI Bus layout on the board to ensure you are not running the traffic over the QPI Interface.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<ul class="last simple">
+<li>The Virtual Machine Manager (the Fedora package name is virt-manager) is a utility for virtual machine management
+that can also be used to create, start, stop and delete virtual machines.
+If this option is used, step 2 and 6 in the instructions provided will be different.</li>
+<li>virsh, a command line utility for virtual machine management,
+can also be used to bind and unbind devices to a virtual machine in Ubuntu.
+If this option is used, step 6 in the instructions provided will be different.</li>
+<li>The Virtual Machine Monitor (see <a class="reference internal" href="#figure-perf-benchmark"><span class="std std-numref">Fig. 10.9</span></a>) is equivalent to a Host OS with KVM installed as described in the instructions.</li>
+</ul>
+</div>
+<div class="figure" id="id2">
+<span id="figure-perf-benchmark"></span><img alt="../_images/perf_benchmark.png" src="../_images/perf_benchmark.png" />
+<p class="caption"><span class="caption-number">Fig. 10.9 </span><span class="caption-text">Performance Benchmark Setup</span></p>
+</div>
+</div>
+<div class="section" id="dpdk-sr-iov-pmd-pf-vf-driver-usage-model">
+<h2>10.3. DPDK SR-IOV PMD PF/VF Driver Usage Model</h2>
+<div class="section" id="fast-host-based-packet-processing">
+<h3>10.3.1. Fast Host-based Packet Processing</h3>
+<p>Software Defined Network (SDN) trends are demanding fast host-based packet handling.
+In a virtualization environment,
+the DPDK VF PMD driver performs the same throughput result as a non-VT native environment.</p>
+<p>With such host instance fast packet processing, lots of services such as filtering, QoS,
+DPI can be offloaded on the host fast path.</p>
+<p><a class="reference internal" href="#figure-fast-pkt-proc"><span class="std std-numref">Fig. 10.10</span></a> shows the scenario where some VMs directly communicate externally via a VFs,
+while others connect to a virtual switch and share the same uplink bandwidth.</p>
+<div class="figure" id="id3">
+<span id="figure-fast-pkt-proc"></span><img alt="../_images/fast_pkt_proc.png" src="../_images/fast_pkt_proc.png" />
+<p class="caption"><span class="caption-number">Fig. 10.10 </span><span class="caption-text">Fast Host-based Packet Processing</span></p>
+</div>
+</div>
+</div>
+<div class="section" id="sr-iov-pf-vf-approach-for-inter-vm-communication">
+<h2>10.4. SR-IOV (PF/VF) Approach for Inter-VM Communication</h2>
+<p>Inter-VM data communication is one of the traffic bottle necks in virtualization platforms.
+SR-IOV device assignment helps a VM to attach the real device, taking advantage of the bridge in the NIC.
+So VF-to-VF traffic within the same physical port (VM0&lt;-&gt;VM1) have hardware acceleration.
+However, when VF crosses physical ports (VM0&lt;-&gt;VM2), there is no such hardware bridge.
+In this case, the DPDK PMD PF driver provides host forwarding between such VMs.</p>
+<p><a class="reference internal" href="#figure-inter-vm-comms"><span class="std std-numref">Fig. 10.11</span></a> shows an example.
+In this case an update of the MAC address lookup tables in both the NIC and host DPDK application is required.</p>
+<p>In the NIC, writing the destination of a MAC address belongs to another cross device VM to the PF specific pool.
+So when a packet comes in, its destination MAC address will match and forward to the host DPDK PMD application.</p>
+<p>In the host DPDK application, the behavior is similar to L2 forwarding,
+that is, the packet is forwarded to the correct PF pool.
+The SR-IOV NIC switch forwards the packet to a specific VM according to the MAC destination address
+which belongs to the destination VF on the VM.</p>
+<div class="figure" id="id4">
+<span id="figure-inter-vm-comms"></span><img alt="../_images/inter_vm_comms.png" src="../_images/inter_vm_comms.png" />
+<p class="caption"><span class="caption-number">Fig. 10.11 </span><span class="caption-text">Inter-VM Communication</span></p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="mlx4.html" class="btn btn-neutral float-right" title="11. MLX4 poll mode driver library" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ixgbe.html" class="btn btn-neutral" title="9. IXGBE Driver" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

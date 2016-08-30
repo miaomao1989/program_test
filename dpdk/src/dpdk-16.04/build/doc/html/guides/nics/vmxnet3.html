@@ -1,0 +1,388 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>17. Poll Mode Driver for Paravirtual VMXNET3 NIC &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Network Interface Controller Drivers" href="index.html"/>
+        <link rel="next" title="18. Libpcap and Ring Based Poll Mode Drivers" href="pcap_ring.html"/>
+        <link rel="prev" title="16. Poll Mode Driver that wraps vhost library" href="vhost.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Network Interface Controller Drivers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">1. Overview of Networking Drivers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bnx2x.html">2. BNX2X Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cxgbe.html">3. CXGBE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="e1000em.html">4. Driver for VM Emulated Devices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ena.html">5. ENA Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="enic.html">6. ENIC Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fm10k.html">7. FM10K Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="i40e.html">8. I40E Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ixgbe.html">9. IXGBE Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intel_vf.html">10. I40E/IXGBE/IGB Virtual Function Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mlx4.html">11. MLX4 poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mlx5.html">12. MLX5 poll mode driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nfp.html">13. NFP poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="szedata2.html">14. SZEDATA2 poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="virtio.html">15. Poll Mode Driver for Emulated Virtio NIC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">16. Poll Mode Driver that wraps vhost library</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">17. Poll Mode Driver for Paravirtual VMXNET3 NIC</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#vmxnet3-implementation-in-the-dpdk">17.1. VMXNET3 Implementation in the DPDK</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#features-and-limitations-of-vmxnet3-pmd">17.2. Features and Limitations of VMXNET3 PMD</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prerequisites">17.3. Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#vmxnet3-with-a-native-nic-connected-to-a-vswitch">17.4. VMXNET3 with a Native NIC Connected to a vSwitch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#vmxnet3-chaining-vms-connected-to-a-vswitch">17.5. VMXNET3 Chaining VMs Connected to a vSwitch</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pcap_ring.html">18. Libpcap and Ring Based Poll Mode Drivers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Network Interface Controller Drivers</a> &raquo;</li>
+      
+    <li>17. Poll Mode Driver for Paravirtual VMXNET3 NIC</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/nics/vmxnet3.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="poll-mode-driver-for-paravirtual-vmxnet3-nic">
+<h1>17. Poll Mode Driver for Paravirtual VMXNET3 NIC</h1>
+<p>The VMXNET3 adapter is the next generation of a paravirtualized NIC, introduced by VMware* ESXi.
+It is designed for performance and is not related to VMXNET or VMXENET2.
+It offers all the features available in VMXNET2, and adds several new features such as,
+multi-queue support (also known as Receive Side Scaling, RSS),
+IPv6 offloads, and MSI/MSI-X interrupt delivery.
+Because operating system vendors do not provide built-in drivers for this card,
+VMware Tools must be installed to have a driver for the VMXNET3 network adapter available.
+One can use the same device in a DPDK application with VMXNET3 PMD introduced in DPDK API.</p>
+<p>Currently, the driver provides basic support for using the device in a DPDK application running on a guest OS.
+Optimization is needed on the backend, that is, the VMware* ESXi vmkernel switch, to achieve optimal performance end-to-end.</p>
+<p>In this chapter, two setups with the use of the VMXNET3 PMD are demonstrated:</p>
+<ol class="arabic simple">
+<li>Vmxnet3 with a native NIC connected to a vSwitch</li>
+<li>Vmxnet3 chaining VMs connected to a vSwitch</li>
+</ol>
+<div class="section" id="vmxnet3-implementation-in-the-dpdk">
+<h2>17.1. VMXNET3 Implementation in the DPDK</h2>
+<p>For details on the VMXNET3 device, refer to the VMXNET3 driver&#8217;s vmxnet3 directory and support manual from VMware*.</p>
+<p>For performance details, refer to the following link from VMware:</p>
+<p><a class="reference external" href="http://www.vmware.com/pdf/vsp_4_vmxnet3_perf.pdf">http://www.vmware.com/pdf/vsp_4_vmxnet3_perf.pdf</a></p>
+<p>As a PMD, the VMXNET3 driver provides the packet reception and transmission callbacks, vmxnet3_recv_pkts and vmxnet3_xmit_pkts.
+It does not support scattered packet reception as part of vmxnet3_recv_pkts and vmxnet3_xmit_pkts.
+Also, it does not support scattered packet reception as part of the device operations supported.</p>
+<p>The VMXNET3 PMD handles all the packet buffer memory allocation and resides in guest address space
+and it is solely responsible to free that memory when not needed.
+The packet buffers and features to be supported are made available to hypervisor via VMXNET3 PCI configuration space BARs.
+During RX/TX, the packet buffers are exchanged by their GPAs,
+and the hypervisor loads the buffers with packets in the RX case and sends packets to vSwitch in the TX case.</p>
+<p>The VMXNET3 PMD is compiled with vmxnet3 device headers.
+The interface is similar to that of the other PMDs available in the DPDK API.
+The driver pre-allocates the packet buffers and loads the command ring descriptors in advance.
+The hypervisor fills those packet buffers on packet arrival and write completion ring descriptors,
+which are eventually pulled by the PMD.
+After reception, the DPDK application frees the descriptors and loads new packet buffers for the coming packets.
+The interrupts are disabled and there is no notification required.
+This keeps performance up on the RX side, even though the device provides a notification feature.</p>
+<p>In the transmit routine, the DPDK application fills packet buffer pointers in the descriptors of the command ring
+and notifies the hypervisor.
+In response the hypervisor takes packets and passes them to the vSwitch. It writes into the completion descriptors ring.
+The rings are read by the PMD in the next transmit routine call and the buffers and descriptors are freed from memory.</p>
+</div>
+<div class="section" id="features-and-limitations-of-vmxnet3-pmd">
+<h2>17.2. Features and Limitations of VMXNET3 PMD</h2>
+<p>In release 1.6.0, the VMXNET3 PMD provides the basic functionality of packet reception and transmission.
+There are several options available for filtering packets at VMXNET3 device level including:</p>
+<ol class="arabic simple">
+<li>MAC Address based filtering:<ul>
+<li>Unicast, Broadcast, All Multicast modes - SUPPORTED BY DEFAULT</li>
+<li>Multicast with Multicast Filter table - NOT SUPPORTED</li>
+<li>Promiscuous mode - SUPPORTED</li>
+<li>RSS based load balancing between queues - SUPPORTED</li>
+</ul>
+</li>
+<li>VLAN filtering:<ul>
+<li>VLAN tag based filtering without load balancing - SUPPORTED</li>
+</ul>
+</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<ul class="last simple">
+<li>Release 1.6.0 does not support separate headers and body receive cmd_ring and hence,
+multiple segment buffers are not supported.
+Only cmd_ring_0 is used for packet buffers, one for each descriptor.</li>
+<li>Receive and transmit of scattered packets is not supported.</li>
+<li>Multicast with Multicast Filter table is not supported.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="prerequisites">
+<h2>17.3. Prerequisites</h2>
+<p>The following prerequisites apply:</p>
+<ul class="simple">
+<li>Before starting a VM, a VMXNET3 interface to a VM through VMware vSphere Client must be assigned.
+This is shown in the figure below.</li>
+</ul>
+<div class="figure" id="id1">
+<span id="figure-vmxnet3-int"></span><img alt="../_images/vmxnet3_int.png" src="../_images/vmxnet3_int.png" />
+<p class="caption"><span class="caption-number">Fig. 17.1 </span><span class="caption-text">Assigning a VMXNET3 interface to a VM using VMware vSphere Client</span></p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Depending on the Virtual Machine type, the VMware vSphere Client shows Ethernet adaptors while adding an Ethernet device.
+Ensure that the VM type used offers a VMXNET3 device. Refer to the VMware documentation for a listed of VMs.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Follow the <em>DPDK Getting Started Guide</em> to setup the basic DPDK environment.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Follow the <em>DPDK Sample Application&#8217;s User Guide</em>, L2 Forwarding/L3 Forwarding and
+TestPMD for instructions on how to run a DPDK application using an assigned VMXNET3 device.</p>
+</div>
+</div>
+<div class="section" id="vmxnet3-with-a-native-nic-connected-to-a-vswitch">
+<h2>17.4. VMXNET3 with a Native NIC Connected to a vSwitch</h2>
+<p>This section describes an example setup for Phy-vSwitch-VM-Phy communication.</p>
+<div class="figure" id="id2">
+<span id="figure-vswitch-vm"></span><img alt="../_images/vswitch_vm.png" src="../_images/vswitch_vm.png" />
+<p class="caption"><span class="caption-number">Fig. 17.2 </span><span class="caption-text">VMXNET3 with a Native NIC Connected to a vSwitch</span></p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Other instructions on preparing to use DPDK such as, hugepage enabling, uio port binding are not listed here.
+Please refer to <em>DPDK Getting Started Guide and DPDK Sample Application&#8217;s User Guide</em> for detailed instructions.</p>
+</div>
+<p>The packet reception and transmission flow path is:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>Packet generator -&gt; 82576
+                 -&gt; VMware ESXi vSwitch
+                 -&gt; VMXNET3 device
+                 -&gt; Guest VM VMXNET3 port 0 rx burst
+                 -&gt; Guest VM 82599 VF port 0 tx burst
+                 -&gt; 82599 VF
+                 -&gt; Packet generator
+</pre></div>
+</div>
+</div>
+<div class="section" id="vmxnet3-chaining-vms-connected-to-a-vswitch">
+<h2>17.5. VMXNET3 Chaining VMs Connected to a vSwitch</h2>
+<p>The following figure shows an example VM-to-VM communication over a Phy-VM-vSwitch-VM-Phy communication channel.</p>
+<div class="figure" id="id3">
+<span id="figure-vm-vm-comms"></span><img alt="../_images/vm_vm_comms.png" src="../_images/vm_vm_comms.png" />
+<p class="caption"><span class="caption-number">Fig. 17.3 </span><span class="caption-text">VMXNET3 Chaining VMs Connected to a vSwitch</span></p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">When using the L2 Forwarding or L3 Forwarding applications,
+a destination MAC address needs to be written in packets to hit the other VM&#8217;s VMXNET3 interface.</p>
+</div>
+<p>In this example, the packet flow path is:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>Packet generator -&gt; 82599 VF
+                 -&gt; Guest VM 82599 port 0 rx burst
+                 -&gt; Guest VM VMXNET3 port 1 tx burst
+                 -&gt; VMXNET3 device
+                 -&gt; VMware ESXi vSwitch
+                 -&gt; VMXNET3 device
+                 -&gt; Guest VM VMXNET3 port 0 rx burst
+                 -&gt; Guest VM 82599 VF port 1 tx burst
+                 -&gt; 82599 VF
+                 -&gt; Packet generator
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pcap_ring.html" class="btn btn-neutral float-right" title="18. Libpcap and Ring Based Poll Mode Drivers" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="vhost.html" class="btn btn-neutral" title="16. Poll Mode Driver that wraps vhost library" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

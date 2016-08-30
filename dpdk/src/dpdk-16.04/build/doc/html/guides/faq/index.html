@@ -1,0 +1,253 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>FAQ &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="next" title="1. What does “EAL: map_all_hugepages(): open failed: Permission denied Cannot init memory” mean?" href="faq.html"/>
+        <link rel="prev" title="4. Testpmd Runtime Functions" href="../testpmd_app_ug/testpmd_funcs.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">FAQ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="faq.html">1. What does &#8220;EAL: map_all_hugepages(): open failed: Permission denied Cannot init memory&#8221; mean?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#if-i-want-to-change-the-number-of-tlb-hugepages-allocated-how-do-i-remove-the-original-pages-allocated">2. If I want to change the number of TLB Hugepages allocated, how do I remove the original pages allocated?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#if-i-execute-l2fwd-c-f-m-64-n-3-p-3-i-get-the-following-output-indicating-that-there-are-no-socket-0-hugepages-to-allocate-the-mbuf-and-ring-structures-to">3. If I execute &#8220;l2fwd -c f -m 64 -n 3 &#8211; -p 3&#8221;, I get the following output, indicating that there are no socket 0 hugepages to allocate the mbuf and ring structures to?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#i-am-running-a-32-bit-dpdk-application-on-a-numa-system-and-sometimes-the-application-initializes-fine-but-cannot-allocate-memory-why-is-that-happening">4. I am running a 32-bit DPDK application on a NUMA system, and sometimes the application initializes fine but cannot allocate memory. Why is that happening?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#on-application-startup-there-is-a-lot-of-eal-information-printed-is-there-any-way-to-reduce-this">5. On application startup, there is a lot of EAL information printed. Is there any way to reduce this?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-can-i-tune-my-network-application-to-achieve-lower-latency">6. How can I tune my network application to achieve lower latency?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#without-numa-enabled-my-network-throughput-is-low-why">7. Without NUMA enabled, my network throughput is low, why?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#i-am-getting-errors-about-not-being-able-to-open-files-why">8. I am getting errors about not being able to open files. Why?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#vf-driver-for-ixgbe-devices-cannot-be-initialized">9. VF driver for IXGBE devices cannot be initialized</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#is-it-safe-to-add-an-entry-to-the-hash-table-while-running">10. Is it safe to add an entry to the hash table while running?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what-is-the-purpose-of-setting-iommu-pt">11. What is the purpose of setting iommu=pt?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#when-trying-to-send-packets-from-an-application-to-itself-meaning-smac-dmac-using-intel-r-82599-vf-packets-are-lost">12. When trying to send packets from an application to itself, meaning smac==dmac, using Intel(R) 82599 VF packets are lost.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#can-i-split-packet-rx-to-use-dpdk-and-have-an-application-s-higher-order-functions-continue-using-linux-pthread">13. Can I split packet RX to use DPDK and have an application&#8217;s higher order functions continue using Linux pthread?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#is-it-possible-to-exchange-data-between-dpdk-processes-and-regular-userspace-processes-via-some-shared-memory-or-ipc-mechanism">14. Is it possible to exchange data between DPDK processes and regular userspace processes via some shared memory or IPC mechanism?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#can-the-multiple-queues-in-intel-r-i350-be-used-with-dpdk">15. Can the multiple queues in Intel(R) I350 be used with DPDK?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-can-hugepage-backed-memory-be-shared-among-multiple-processes">16. How can hugepage-backed memory be shared among multiple processes?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+    <li>FAQ</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/faq/index.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="faq">
+<h1>FAQ</h1>
+<p>This document contains some Frequently Asked Questions that arise when working with DPDK.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">1. What does &#8220;EAL: map_all_hugepages(): open failed: Permission denied Cannot init memory&#8221; mean?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html#if-i-want-to-change-the-number-of-tlb-hugepages-allocated-how-do-i-remove-the-original-pages-allocated">2. If I want to change the number of TLB Hugepages allocated, how do I remove the original pages allocated?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html#if-i-execute-l2fwd-c-f-m-64-n-3-p-3-i-get-the-following-output-indicating-that-there-are-no-socket-0-hugepages-to-allocate-the-mbuf-and-ring-structures-to">3. If I execute &#8220;l2fwd -c f -m 64 -n 3 &#8211; -p 3&#8221;, I get the following output, indicating that there are no socket 0 hugepages to allocate the mbuf and ring structures to?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html#i-am-running-a-32-bit-dpdk-application-on-a-numa-system-and-sometimes-the-application-initializes-fine-but-cannot-allocate-memory-why-is-that-happening">4. I am running a 32-bit DPDK application on a NUMA system, and sometimes the application initializes fine but cannot allocate memory. Why is that happening?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html#on-application-startup-there-is-a-lot-of-eal-information-printed-is-there-any-way-to-reduce-this">5. On application startup, there is a lot of EAL information printed. Is there any way to reduce this?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html#how-can-i-tune-my-network-application-to-achieve-lower-latency">6. How can I tune my network application to achieve lower latency?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html#without-numa-enabled-my-network-throughput-is-low-why">7. Without NUMA enabled, my network throughput is low, why?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html#i-am-getting-errors-about-not-being-able-to-open-files-why">8. I am getting errors about not being able to open files. Why?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html#vf-driver-for-ixgbe-devices-cannot-be-initialized">9. VF driver for IXGBE devices cannot be initialized</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html#is-it-safe-to-add-an-entry-to-the-hash-table-while-running">10. Is it safe to add an entry to the hash table while running?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html#what-is-the-purpose-of-setting-iommu-pt">11. What is the purpose of setting iommu=pt?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html#when-trying-to-send-packets-from-an-application-to-itself-meaning-smac-dmac-using-intel-r-82599-vf-packets-are-lost">12. When trying to send packets from an application to itself, meaning smac==dmac, using Intel(R) 82599 VF packets are lost.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html#can-i-split-packet-rx-to-use-dpdk-and-have-an-application-s-higher-order-functions-continue-using-linux-pthread">13. Can I split packet RX to use DPDK and have an application&#8217;s higher order functions continue using Linux pthread?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html#is-it-possible-to-exchange-data-between-dpdk-processes-and-regular-userspace-processes-via-some-shared-memory-or-ipc-mechanism">14. Is it possible to exchange data between DPDK processes and regular userspace processes via some shared memory or IPC mechanism?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html#can-the-multiple-queues-in-intel-r-i350-be-used-with-dpdk">15. Can the multiple queues in Intel(R) I350 be used with DPDK?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html#how-can-hugepage-backed-memory-be-shared-among-multiple-processes">16. How can hugepage-backed memory be shared among multiple processes?</a></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="faq.html" class="btn btn-neutral float-right" title="1. What does “EAL: map_all_hugepages(): open failed: Permission denied Cannot init memory” mean?" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../testpmd_app_ug/testpmd_funcs.html" class="btn btn-neutral" title="4. Testpmd Runtime Functions" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

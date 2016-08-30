@@ -1,0 +1,914 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>23. Multi-process Sample Application &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Sample Applications User Guide" href="index.html"/>
+        <link rel="next" title="24. QoS Metering Sample Application" href="qos_metering.html"/>
+        <link rel="prev" title="22. Load Balancer Sample Application" href="load_balancer.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Sample Applications User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmd_line.html">2. Command Line Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethtool.html">3. Ethtool Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exception_path.html">4. Exception Path Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello_world.html">5. Hello World Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skeleton.html">6. Basic Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rxtx_callbacks.html">7. RX/TX Callbacks Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_frag.html">8. IP Fragmentation Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipv4_multicast.html">9. IPv4 Multicast Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_reassembly.html">10. IP Reassembly Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">11. Kernel NIC Interface Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keep_alive.html">12. Keep Alive Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_crypto.html">13. L2 Forwarding with Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_job_stats.html">14. L2 Forwarding Sample Application (in Real and Virtualized Environments) with core load statistics.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_real_virtual.html">15. L2 Forwarding Sample Application (in Real and Virtualized Environments)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_cat.html">16. L2 Forwarding Sample Application with Cache Allocation Technology (CAT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward.html">17. L3 Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_power_man.html">18. L3 Forwarding with Power Management Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_access_ctrl.html">19. L3 Forwarding with Access Control Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_virtual.html">20. L3 Forwarding in a Virtualization Environment Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_status_intr.html">21. Link Status Interrupt Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="load_balancer.html">22. Load Balancer Sample Application</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">23. Multi-process Sample Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#example-applications">23.1. Example Applications</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#building-the-sample-applications">23.1.1. Building the Sample Applications</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#basic-multi-process-example">23.1.2. Basic Multi-process Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#symmetric-multi-process-example">23.1.3. Symmetric Multi-process Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#client-server-multi-process-example">23.1.4. Client-Server Multi-process Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#master-slave-multi-process-example">23.1.5. Master-slave Multi-process Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="qos_metering.html">24. QoS Metering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_scheduler.html">25. QoS Scheduler Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intel_quickassist.html">26. Intel® QuickAssist Technology Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quota_watermark.html">27. Quota and Watermark Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer.html">28. Timer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_ordering.html">29. Packet Ordering Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_dcb_forwarding.html">30. VMDQ and DCB Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">31. Vhost Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="netmap_compatibility.html">32. Netmap Compatibility Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_pipeline.html">33. Internet Protocol (IP) Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_pipeline.html">34. Test Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dist_app.html">35. Distributor Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vm_power_management.html">36. VM Power Management Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tep_termination.html">37. TEP termination Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="proc_info.html">38. dpdk_proc_info Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ptpclient.html">39. PTP Client Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance_thread.html">40. Performance Thread Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_secgw.html">41. IPsec Security Gateway Sample Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Sample Applications User Guide</a> &raquo;</li>
+      
+    <li>23. Multi-process Sample Application</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/sample_app_ug/multi_process.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="multi-process-sample-application">
+<span id="multi-process-app"></span><h1>23. Multi-process Sample Application</h1>
+<p>This chapter describes the example applications for multi-processing that are included in the DPDK.</p>
+<div class="section" id="example-applications">
+<h2>23.1. Example Applications</h2>
+<div class="section" id="building-the-sample-applications">
+<h3>23.1.1. Building the Sample Applications</h3>
+<p>The multi-process example applications are built in the same way as other sample applications,
+and as documented in the <em>DPDK Getting Started Guide</em>.
+To build all the example applications:</p>
+<ol class="arabic">
+<li><p class="first">Set RTE_SDK and go to the example directory:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export RTE_SDK=/path/to/rte_sdk</span>
+<span class="go">cd ${RTE_SDK}/examples/multi_process</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Set the target (a default target will be used if not specified). For example:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export RTE_TARGET=x86_64-native-linuxapp-gcc</span>
+</pre></div>
+</div>
+<p>See the <em>DPDK Getting Started Guide</em> for possible RTE_TARGET values.</p>
+</li>
+<li><p class="first">Build the applications:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">make</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If just a specific multi-process application needs to be built,
+the final make command can be run just in that application&#8217;s directory,
+rather than at the top-level multi-process directory.</p>
+</div>
+</div>
+<div class="section" id="basic-multi-process-example">
+<h3>23.1.2. Basic Multi-process Example</h3>
+<p>The examples/simple_mp folder in the DPDK release contains a basic example application to demonstrate how
+two DPDK processes can work together using queues and memory pools to share information.</p>
+<div class="section" id="running-the-application">
+<h4>23.1.2.1. Running the Application</h4>
+<p>To run the application, start one copy of the simple_mp binary in one terminal,
+passing at least two cores in the coremask, as follows:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./build/simple_mp -c 3 -n 4 --proc-type=primary</span>
+</pre></div>
+</div>
+<p>For the first DPDK process run, the proc-type flag can be omitted or set to auto,
+since all DPDK processes will default to being a primary instance,
+meaning they have control over the hugepage shared memory regions.
+The process should start successfully and display a command prompt as follows:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> ./build/simple_mp -c <span class="m">3</span> -n <span class="m">4</span> --proc-type<span class="o">=</span>primary
+<span class="go">EAL: coremask set to 3</span>
+<span class="go">EAL: Detected lcore 0 on socket 0</span>
+<span class="go">EAL: Detected lcore 1 on socket 0</span>
+<span class="go">EAL: Detected lcore 2 on socket 0</span>
+<span class="go">EAL: Detected lcore 3 on socket 0</span>
+<span class="go">...</span>
+
+<span class="go">EAL: Requesting 2 pages of size 1073741824</span>
+<span class="go">EAL: Requesting 768 pages of size 2097152</span>
+<span class="go">EAL: Ask a virtual area of 0x40000000 bytes</span>
+<span class="go">EAL: Virtual area found at 0x7ff200000000 (size = 0x40000000)</span>
+<span class="go">...</span>
+
+<span class="go">EAL: check igb_uio module</span>
+<span class="go">EAL: check module finished</span>
+<span class="go">EAL: Master core 0 is ready (tid=54e41820)</span>
+<span class="go">EAL: Core 1 is ready (tid=53b32700)</span>
+
+<span class="go">Starting core 1</span>
+
+<span class="go">simple_mp &gt;</span>
+</pre></div>
+</div>
+<p>To run the secondary process to communicate with the primary process,
+again run the same binary setting at least two cores in the coremask:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./build/simple_mp -c C -n 4 --proc-type=secondary</span>
+</pre></div>
+</div>
+<p>When running a secondary process such as that shown above, the proc-type parameter can again be specified as auto.
+However, omitting the parameter altogether will cause the process to try and start as a primary rather than secondary process.</p>
+<p>Once the process type is specified correctly,
+the process starts up, displaying largely similar status messages to the primary instance as it initializes.
+Once again, you will be presented with a command prompt.</p>
+<p>Once both processes are running, messages can be sent between them using the send command.
+At any stage, either process can be terminated using the quit command.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">EAL: Master core 10 is ready (tid=b5f89820)           EAL: Master core 8 is ready (tid=864a3820)</span>
+<span class="go">EAL: Core 11 is ready (tid=84ffe700)                  EAL: Core 9 is ready (tid=85995700)</span>
+<span class="go">Starting core 11                                      Starting core 9</span>
+<span class="go">simple_mp &gt; send hello_secondary                      simple_mp &gt; core 9: Received &#39;hello_secondary&#39;</span>
+<span class="go">simple_mp &gt; core 11: Received &#39;hello_primary&#39;         simple_mp &gt; send hello_primary</span>
+<span class="go">simple_mp &gt; quit                                      simple_mp &gt; quit</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If the primary instance is terminated, the secondary instance must also be shut-down and restarted after the primary.
+This is necessary because the primary instance will clear and reset the shared memory regions on startup,
+invalidating the secondary process&#8217;s pointers.
+The secondary process can be stopped and restarted without affecting the primary process.</p>
+</div>
+</div>
+<div class="section" id="how-the-application-works">
+<h4>23.1.2.2. How the Application Works</h4>
+<p>The core of this example application is based on using two queues and a single memory pool in shared memory.
+These three objects are created at startup by the primary process,
+since the secondary process cannot create objects in memory as it cannot reserve memory zones,
+and the secondary process then uses lookup functions to attach to these objects as it starts up.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">rte_eal_process_type</span><span class="p">()</span> <span class="o">==</span> <span class="n">RTE_PROC_PRIMARY</span><span class="p">){</span>
+    <span class="n">send_ring</span> <span class="o">=</span> <span class="n">rte_ring_create</span><span class="p">(</span><span class="n">_PRI_2_SEC</span><span class="p">,</span> <span class="n">ring_size</span><span class="p">,</span> <span class="n">SOCKET0</span><span class="p">,</span> <span class="n">flags</span><span class="p">);</span>
+    <span class="n">recv_ring</span> <span class="o">=</span> <span class="n">rte_ring_create</span><span class="p">(</span><span class="n">_SEC_2_PRI</span><span class="p">,</span> <span class="n">ring_size</span><span class="p">,</span> <span class="n">SOCKET0</span><span class="p">,</span> <span class="n">flags</span><span class="p">);</span>
+    <span class="n">message_pool</span> <span class="o">=</span> <span class="n">rte_mempool_create</span><span class="p">(</span><span class="n">_MSG_POOL</span><span class="p">,</span> <span class="n">pool_size</span><span class="p">,</span> <span class="n">string_size</span><span class="p">,</span> <span class="n">pool_cache</span><span class="p">,</span> <span class="n">priv_data_sz</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">SOCKET0</span><span class="p">,</span> <span class="n">flags</span><span class="p">);</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="n">recv_ring</span> <span class="o">=</span> <span class="n">rte_ring_lookup</span><span class="p">(</span><span class="n">_PRI_2_SEC</span><span class="p">);</span>
+    <span class="n">send_ring</span> <span class="o">=</span> <span class="n">rte_ring_lookup</span><span class="p">(</span><span class="n">_SEC_2_PRI</span><span class="p">);</span>
+    <span class="n">message_pool</span> <span class="o">=</span> <span class="n">rte_mempool_lookup</span><span class="p">(</span><span class="n">_MSG_POOL</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Note, however, that the named ring structure used as send_ring in the primary process is the recv_ring in the secondary process.</p>
+<p>Once the rings and memory pools are all available in both the primary and secondary processes,
+the application simply dedicates two threads to sending and receiving messages respectively.
+The receive thread simply dequeues any messages on the receive ring, prints them,
+and frees the buffer space used by the messages back to the memory pool.
+The send thread makes use of the command-prompt library to interactively request user input for messages to send.
+Once a send command is issued by the user, a buffer is allocated from the memory pool, filled in with the message contents,
+then enqueued on the appropriate rte_ring.</p>
+</div>
+</div>
+<div class="section" id="symmetric-multi-process-example">
+<h3>23.1.3. Symmetric Multi-process Example</h3>
+<p>The second example of DPDK multi-process support demonstrates how a set of processes can run in parallel,
+with each process performing the same set of packet- processing operations.
+(Since each process is identical in functionality to the others,
+we refer to this as symmetric multi-processing, to differentiate it from asymmetric multi- processing -
+such as a client-server mode of operation seen in the next example,
+where different processes perform different tasks, yet co-operate to form a packet-processing system.)
+The following diagram shows the data-flow through the application, using two processes.</p>
+<div class="figure" id="id5">
+<span id="figure-sym-multi-proc-app"></span><img alt="../_images/sym_multi_proc_app.png" src="../_images/sym_multi_proc_app.png" />
+<p class="caption"><span class="caption-number">Fig. 23.1 </span><span class="caption-text">Example Data Flow in a Symmetric Multi-process Application</span></p>
+</div>
+<p>As the diagram shows, each process reads packets from each of the network ports in use.
+RSS is used to distribute incoming packets on each port to different hardware RX queues.
+Each process reads a different RX queue on each port and so does not contend with any other process for that queue access.
+Similarly, each process writes outgoing packets to a different TX queue on each port.</p>
+<div class="section" id="id1">
+<h4>23.1.3.1. Running the Application</h4>
+<p>As with the simple_mp example, the first instance of the symmetric_mp process must be run as the primary instance,
+though with a number of other application- specific parameters also provided after the EAL arguments.
+These additional parameters are:</p>
+<ul class="simple">
+<li>-p &lt;portmask&gt;, where portmask is a hexadecimal bitmask of what ports on the system are to be used.
+For example: -p 3 to use ports 0 and 1 only.</li>
+<li>&#8211;num-procs &lt;N&gt;, where N is the total number of symmetric_mp instances that will be run side-by-side to perform packet processing.
+This parameter is used to configure the appropriate number of receive queues on each network port.</li>
+<li>&#8211;proc-id &lt;n&gt;, where n is a numeric value in the range 0 &lt;= n &lt; N (number of processes, specified above).
+This identifies which symmetric_mp instance is being run, so that each process can read a unique receive queue on each network port.</li>
+</ul>
+<p>The secondary symmetric_mp instances must also have these parameters specified,
+and the first two must be the same as those passed to the primary instance, or errors result.</p>
+<p>For example, to run a set of four symmetric_mp instances, running on lcores 1-4,
+all performing level-2 forwarding of packets between ports 0 and 1,
+the following commands can be used (assuming run as root):</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> ./build/symmetric_mp -c <span class="m">2</span> -n <span class="m">4</span> --proc-type<span class="o">=</span>auto -- -p <span class="m">3</span> --num-procs<span class="o">=</span><span class="m">4</span> --proc-id<span class="o">=</span>0
+<span class="gp">#</span> ./build/symmetric_mp -c <span class="m">4</span> -n <span class="m">4</span> --proc-type<span class="o">=</span>auto -- -p <span class="m">3</span> --num-procs<span class="o">=</span><span class="m">4</span> --proc-id<span class="o">=</span>1
+<span class="gp">#</span> ./build/symmetric_mp -c <span class="m">8</span> -n <span class="m">4</span> --proc-type<span class="o">=</span>auto -- -p <span class="m">3</span> --num-procs<span class="o">=</span><span class="m">4</span> --proc-id<span class="o">=</span>2
+<span class="gp">#</span> ./build/symmetric_mp -c <span class="m">10</span> -n <span class="m">4</span> --proc-type<span class="o">=</span>auto -- -p <span class="m">3</span> --num-procs<span class="o">=</span><span class="m">4</span> --proc-id<span class="o">=</span>3
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In the above example, the process type can be explicitly specified as primary or secondary, rather than auto.
+When using auto, the first process run creates all the memory structures needed for all processes -
+irrespective of whether it has a proc-id of 0, 1, 2 or 3.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">For the symmetric multi-process example, since all processes work in the same manner,
+once the hugepage shared memory and the network ports are initialized,
+it is not necessary to restart all processes if the primary instance dies.
+Instead, that process can be restarted as a secondary,
+by explicitly setting the proc-type to secondary on the command line.
+(All subsequent instances launched will also need this explicitly specified,
+as auto-detection will detect no primary processes running and therefore attempt to re-initialize shared memory.)</p>
+</div>
+</div>
+<div class="section" id="id2">
+<h4>23.1.3.2. How the Application Works</h4>
+<p>The initialization calls in both the primary and secondary instances are the same for the most part,
+calling the rte_eal_init(), 1 G and 10 G driver initialization and then rte_eal_pci_probe() functions.
+Thereafter, the initialization done depends on whether the process is configured as a primary or secondary instance.</p>
+<p>In the primary instance, a memory pool is created for the packet mbufs and the network ports to be used are initialized -
+the number of RX and TX queues per port being determined by the num-procs parameter passed on the command-line.
+The structures for the initialized network ports are stored in shared memory and
+therefore will be accessible by the secondary process as it initializes.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">num_ports</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span>
+   <span class="n">rte_exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">,</span> <span class="s">&quot;Application must use an even number of ports</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+
+<span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num_ports</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">proc_type</span> <span class="o">==</span> <span class="n">RTE_PROC_PRIMARY</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">smp_port_init</span><span class="p">(</span><span class="n">ports</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">mp</span><span class="p">,</span> <span class="p">(</span><span class="kt">uint16_t</span><span class="p">)</span><span class="n">num_procs</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">rte_exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">,</span> <span class="s">&quot;Error initializing ports</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>In the secondary instance, rather than initializing the network ports, the port information exported by the primary process is used,
+giving the secondary process access to the hardware and software rings for each network port.
+Similarly, the memory pool of mbufs is accessed by doing a lookup for it by name:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="n">mp</span> <span class="o">=</span> <span class="p">(</span><span class="n">proc_type</span> <span class="o">==</span> <span class="n">RTE_PROC_SECONDARY</span><span class="p">)</span> <span class="o">?</span> <span class="n">rte_mempool_lookup</span><span class="p">(</span><span class="n">_SMP_MBUF_POOL</span><span class="p">)</span> <span class="o">:</span> <span class="n">rte_mempool_create</span><span class="p">(</span><span class="n">_SMP_MBUF_POOL</span><span class="p">,</span> <span class="n">NB_MBUFS</span><span class="p">,</span> <span class="n">MBUF_SIZE</span><span class="p">,</span> <span class="p">...</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>Once this initialization is complete, the main loop of each process, both primary and secondary,
+is exactly the same - each process reads from each port using the queue corresponding to its proc-id parameter,
+and writes to the corresponding transmit queue on the output port.</p>
+</div>
+</div>
+<div class="section" id="client-server-multi-process-example">
+<h3>23.1.4. Client-Server Multi-process Example</h3>
+<p>The third example multi-process application included with the DPDK shows how one can
+use a client-server type multi-process design to do packet processing.
+In this example, a single server process performs the packet reception from the ports being used and
+distributes these packets using round-robin ordering among a set of client  processes,
+which perform the actual packet processing.
+In this case, the client applications just perform level-2 forwarding of packets by sending each packet out on a different network port.</p>
+<p>The following diagram shows the data-flow through the application, using two client processes.</p>
+<div class="figure" id="id6">
+<span id="figure-client-svr-sym-multi-proc-app"></span><img alt="../_images/client_svr_sym_multi_proc_app.png" src="../_images/client_svr_sym_multi_proc_app.png" />
+<p class="caption"><span class="caption-number">Fig. 23.2 </span><span class="caption-text">Example Data Flow in a Client-Server Symmetric Multi-process Application</span></p>
+</div>
+<div class="section" id="id3">
+<h4>23.1.4.1. Running the Application</h4>
+<p>The server process must be run initially as the primary process to set up all memory structures for use by the clients.
+In addition to the EAL parameters, the application- specific parameters are:</p>
+<ul class="simple">
+<li>-p &lt;portmask &gt;, where portmask is a hexadecimal bitmask of what ports on the system are to be used.
+For example: -p 3 to use ports 0 and 1 only.</li>
+<li>-n &lt;num-clients&gt;, where the num-clients parameter is the number of client processes that will process the packets received
+by the server application.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In the server process, a single thread, the master thread, that is, the lowest numbered lcore in the coremask, performs all packet I/O.
+If a coremask is specified with more than a single lcore bit set in it,
+an additional lcore will be used for a thread to periodically print packet count statistics.</p>
+</div>
+<p>Since the server application stores configuration data in shared memory, including the network ports to be used,
+the only application parameter needed by a client process is its client instance ID.
+Therefore, to run a server application on lcore 1 (with lcore 2 printing statistics) along with two client processes running on lcores 3 and 4,
+the following commands could be used:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> ./mp_server/build/mp_server -c <span class="m">6</span> -n <span class="m">4</span> -- -p <span class="m">3</span> -n 2
+<span class="gp">#</span> ./mp_client/build/mp_client -c <span class="m">8</span> -n <span class="m">4</span> --proc-type<span class="o">=</span>auto -- -n 0
+<span class="gp">#</span> ./mp_client/build/mp_client -c <span class="m">10</span> -n <span class="m">4</span> --proc-type<span class="o">=</span>auto -- -n 1
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If the server application dies and needs to be restarted, all client applications also need to be restarted,
+as there is no support in the server application for it to run as a secondary process.
+Any client processes that need restarting can be restarted without affecting the server process.</p>
+</div>
+</div>
+<div class="section" id="id4">
+<h4>23.1.4.2. How the Application Works</h4>
+<p>The server process performs the network port and data structure initialization much as the symmetric multi-process application does when run as primary.
+One additional enhancement in this sample application is that the server process stores its port configuration data in a memory zone in hugepage shared memory.
+This eliminates the need for the client processes to have the portmask parameter passed into them on the command line,
+as is done for the symmetric multi-process application, and therefore eliminates mismatched parameters as a potential source of errors.</p>
+<p>In the same way that the server process is designed to be run as a primary process instance only,
+the client processes are designed to be run as secondary instances only.
+They have no code to attempt to create shared memory objects.
+Instead, handles to all needed rings and memory pools are obtained via calls to rte_ring_lookup() and rte_mempool_lookup().
+The network ports for use by the processes are obtained by loading the network port drivers and probing the PCI bus,
+which will, as in the symmetric multi-process example,
+automatically get access to the network ports using the settings already configured by the primary/server process.</p>
+<p>Once all applications are initialized, the server operates by reading packets from each network port in turn and
+distributing those packets to the client queues (software rings, one for each client process) in round-robin order.
+On the client side, the packets are read from the rings in as big of bursts as possible, then routed out to a different network port.
+The routing used is very simple. All packets received on the first NIC port are transmitted back out on the second port and vice versa.
+Similarly, packets are routed between the 3rd and 4th network ports and so on.
+The sending of packets is done by writing the packets directly to the network ports; they are not transferred back via the server process.</p>
+<p>In both the server and the client processes, outgoing packets are buffered before being sent,
+so as to allow the sending of multiple packets in a single burst to improve efficiency.
+For example, the client process will buffer packets to send,
+until either the buffer is full or until we receive no further packets from the server.</p>
+</div>
+</div>
+<div class="section" id="master-slave-multi-process-example">
+<h3>23.1.5. Master-slave Multi-process Example</h3>
+<p>The fourth example of DPDK multi-process support demonstrates a master-slave model that
+provide the capability of application recovery if a slave process crashes or  meets unexpected conditions.
+In addition, it also demonstrates the floating process,
+which can run among different cores in contrast to the traditional way of binding a process/thread to a specific CPU core,
+using the local cache mechanism of mempool structures.</p>
+<p>This application performs the same functionality as the L2 Forwarding sample application,
+therefore this chapter does not cover that part but describes functionality that is introduced in this multi-process example only.
+Please refer to <a class="reference internal" href="l2_forward_real_virtual.html"><span class="doc">L2 Forwarding Sample Application (in Real and Virtualized Environments)</span></a> for more information.</p>
+<p>Unlike previous examples where all processes are started from the command line with input arguments, in this example,
+only one process is spawned from the command line and that process creates other processes.
+The following section describes this in more detail.</p>
+<div class="section" id="master-slave-process-models">
+<h4>23.1.5.1. Master-slave Process Models</h4>
+<p>The process spawned from the command line is called the <em>master process</em> in this document.
+A process created by the master is called a <em>slave process</em>.
+The application has only one master process, but could have multiple slave processes.</p>
+<p>Once the master process begins to run, it tries to initialize all the resources such as
+memory, CPU cores, driver, ports, and so on, as the other examples do.
+Thereafter, it creates slave processes, as shown in the following figure.</p>
+<div class="figure" id="id7">
+<span id="figure-master-slave-proc"></span><img alt="../_images/master_slave_proc.png" src="../_images/master_slave_proc.png" />
+<p class="caption"><span class="caption-number">Fig. 23.3 </span><span class="caption-text">Master-slave Process Workflow</span></p>
+</div>
+<p>The master process calls the rte_eal_mp_remote_launch() EAL function to launch an application function for each pinned thread through the pipe.
+Then, it waits to check if any slave processes have exited.
+If so, the process tries to re-initialize the resources that belong to that slave and launch them in the pinned thread entry again.
+The following section describes the recovery procedures in more detail.</p>
+<p>For each pinned thread in EAL, after reading any data from the pipe, it tries to call the function that the application specified.
+In this master specified function, a fork() call creates a slave process that performs the L2 forwarding task.
+Then, the function waits until the slave exits, is killed or crashes. Thereafter, it notifies the master of this event and returns.
+Finally, the EAL pinned thread waits until the new function is launched.</p>
+<p>After discussing the master-slave model, it is necessary to mention another issue, global and static variables.</p>
+<p>For multiple-thread cases, all global and static variables have only one copy and they can be accessed by any thread if applicable.
+So, they can be used to sync or share data among threads.</p>
+<p>In the previous examples, each process has separate global and static variables in memory and are independent of each other.
+If it is necessary to share the knowledge, some communication mechanism should be deployed, such as, memzone, ring, shared memory, and so on.
+The global or static variables are not a valid approach to share data among processes.
+For variables in this example, on the one hand, the slave process inherits all the knowledge of these variables after being created by the master.
+On the other hand, other processes cannot know if one or more processes modifies them after slave creation since that
+is the nature of a multiple process address space.
+But this does not mean that these variables cannot be used to share or sync data; it depends on the use case.
+The following are the possible use cases:</p>
+<ol class="arabic simple">
+<li>The master process starts and initializes a variable and it will never be changed after slave processes created. This case is OK.</li>
+<li>After the slave processes are created, the master or slave cores need to change a variable, but other processes do not need to know the change.
+This case is also OK.</li>
+<li>After the slave processes are created, the master or a slave needs to change a variable.
+In the meantime, one or more other process needs to be aware of the change.
+In this case, global and static variables cannot be used to share knowledge. Another communication mechanism is needed.
+A simple approach without lock protection can be a heap buffer allocated by rte_malloc or mem zone.</li>
+</ol>
+</div>
+<div class="section" id="slave-process-recovery-mechanism">
+<h4>23.1.5.2. Slave Process Recovery Mechanism</h4>
+<p>Before talking about the recovery mechanism, it is necessary to know what is needed before a new slave instance can run if a previous one exited.</p>
+<p>When a slave process exits, the system returns all the resources allocated for this process automatically.
+However, this does not include the resources that were allocated by the DPDK. All the hardware resources are shared among the processes,
+which include memzone, mempool, ring, a heap buffer allocated by the rte_malloc library, and so on.
+If the new instance runs and the allocated resource is not returned, either resource allocation failed or the hardware resource is lost forever.</p>
+<p>When a slave process runs, it may have dependencies on other processes.
+They could have execution sequence orders; they could share the ring to communicate; they could share the same port for reception and forwarding;
+they could use lock structures to do exclusive access in some critical path.
+What happens to the dependent process(es) if the peer leaves?
+The consequence are varied since the dependency cases are complex.
+It depends on what the processed had shared.
+However, it is necessary to notify the peer(s) if one slave exited.
+Then, the peer(s) will be aware of that and wait until the new instance begins to run.</p>
+<p>Therefore, to provide the capability to resume the new slave instance if the previous one exited, it is necessary to provide several mechanisms:</p>
+<ol class="arabic simple">
+<li>Keep a resource list for each slave process.
+Before a slave process run, the master should prepare a resource list.
+After it exits, the master could either delete the allocated resources and create new ones,
+or re-initialize those for use by the new instance.</li>
+<li>Set up a notification mechanism for slave process exit cases. After the specific slave leaves,
+the master should be notified and then help to create a new instance.
+This mechanism is provided in Section <a class="reference internal" href="#master-slave-process-models">Master-slave Process Models</a>.</li>
+<li>Use a synchronization mechanism among dependent processes.
+The master should have the capability to stop or kill slave processes that have a dependency on the one that has exited.
+Then, after the new instance of exited slave process begins to run, the dependency ones could resume or run from the start.
+The example sends a STOP command to slave processes dependent on the exited one, then they will exit.
+Thereafter, the master creates new instances for the exited slave processes.</li>
+</ol>
+<p>The following diagram describes slave process recovery.</p>
+<div class="figure" id="id8">
+<span id="figure-slave-proc-recov"></span><img alt="../_images/slave_proc_recov.png" src="../_images/slave_proc_recov.png" />
+<p class="caption"><span class="caption-number">Fig. 23.4 </span><span class="caption-text">Slave Process Recovery Process Flow</span></p>
+</div>
+</div>
+<div class="section" id="floating-process-support">
+<h4>23.1.5.3. Floating Process Support</h4>
+<p>When the DPDK application runs, there is always a -c option passed in to indicate the cores that are enabled.
+Then, the DPDK creates a thread for each enabled core.
+By doing so, it creates a 1:1 mapping between the enabled core and each thread.
+The enabled core always has an ID, therefore, each thread has a unique core ID in the DPDK execution environment.
+With the ID, each thread can easily access the structures or resources exclusively belonging to it without using function parameter passing.
+It can easily use the rte_lcore_id() function to get the value in every function that is called.</p>
+<p>For threads/processes not created in that way, either pinned to a core or not, they will not own a unique ID and the
+rte_lcore_id() function will not work in the correct way.
+However, sometimes these threads/processes still need the unique ID mechanism to do easy access on structures or resources.
+For example, the DPDK mempool library provides a local cache mechanism
+(refer to <a class="reference internal" href="../prog_guide/mempool_lib.html#mempool-local-cache"><span class="std std-ref">Local Cache</span></a>)
+for fast element allocation and freeing.
+If using a non-unique ID or a fake one,
+a race condition occurs if two or more threads/ processes with the same core ID try to use the local cache.</p>
+<p>Therefore, unused core IDs from the passing of parameters with the -c option are used to organize the core ID allocation array.
+Once the floating process is spawned, it tries to allocate a unique core ID from the array and release it on exit.</p>
+<p>A natural way to spawn a floating process is to use the fork() function and allocate a unique core ID from the unused core ID array.
+However, it is necessary to write new code to provide a notification mechanism for slave exit
+and make sure the process recovery mechanism can work with it.</p>
+<p>To avoid producing redundant code, the Master-Slave process model is still used to spawn floating processes,
+then cancel the affinity to specific cores.
+Besides that, clear the core ID assigned to the DPDK spawning a thread that has a 1:1 mapping with the core mask.
+Thereafter, get a new core ID from the unused core ID allocation array.</p>
+</div>
+<div class="section" id="run-the-application">
+<h4>23.1.5.4. Run the Application</h4>
+<p>This example has a command line similar to the L2 Forwarding sample application with a few differences.</p>
+<p>To run the application, start one copy of the l2fwd_fork binary in one terminal.
+Unlike the L2 Forwarding example,
+this example requires at least three cores since the master process will wait and be accountable for slave process recovery.
+The command is as follows:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span>./build/l2fwd_fork -c 1c -n <span class="m">4</span> -- -p <span class="m">3</span> -f
+</pre></div>
+</div>
+<p>This example provides another -f option to specify the use of floating process.
+If not specified, the example will use a pinned process to perform the L2 forwarding task.</p>
+<p>To verify the recovery mechanism, proceed as follows: First, check the PID of the slave processes:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span>ps -fe <span class="p">|</span> grep l2fwd_fork
+<span class="go">root 5136 4843 29 11:11 pts/1 00:00:05 ./build/l2fwd_fork</span>
+<span class="go">root 5145 5136 98 11:11 pts/1 00:00:11 ./build/l2fwd_fork</span>
+<span class="go">root 5146 5136 98 11:11 pts/1 00:00:11 ./build/l2fwd_fork</span>
+</pre></div>
+</div>
+<p>Then, kill one of the slaves:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span><span class="nb">kill</span> -9 5145
+</pre></div>
+</div>
+<p>After 1 or 2 seconds, check whether the slave has resumed:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span>ps -fe <span class="p">|</span> grep l2fwd_fork
+<span class="go">root 5136 4843 3 11:11 pts/1 00:00:06 ./build/l2fwd_fork</span>
+<span class="go">root 5247 5136 99 11:14 pts/1 00:00:01 ./build/l2fwd_fork</span>
+<span class="go">root 5248 5136 99 11:14 pts/1 00:00:01 ./build/l2fwd_fork</span>
+</pre></div>
+</div>
+<p>It can also monitor the traffic generator statics to see whether slave processes have resumed.</p>
+</div>
+<div class="section" id="explanation">
+<h4>23.1.5.5. Explanation</h4>
+<p>As described in previous sections,
+not all global and static variables need to change to be accessible in multiple processes;
+it depends on how they are used.
+In this example,
+the statics info on packets dropped/forwarded/received count needs to be updated by the slave process,
+and the master needs to see the update and print them out.
+So, it needs to allocate a heap buffer using rte_zmalloc.
+In addition, if the -f option is specified,
+an array is needed to store the allocated core ID for the floating process so that the master can return it
+after a slave has exited accidentally.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">int</span>
+<span class="nf">l2fwd_malloc_shared_struct</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">port_statistics</span> <span class="o">=</span> <span class="n">rte_zmalloc</span><span class="p">(</span><span class="s">&quot;port_stat&quot;</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="n">l2fwd_port_statistics</span><span class="p">)</span> <span class="o">*</span> <span class="n">RTE_MAX_ETHPORTS</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">port_statistics</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+
+    <span class="cm">/* allocate mapping_id array */</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">float_proc</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+
+        <span class="n">mapping_id</span> <span class="o">=</span> <span class="n">rte_malloc</span><span class="p">(</span><span class="s">&quot;mapping_id&quot;</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">unsigned</span><span class="p">)</span> <span class="o">*</span> <span class="n">RTE_MAX_LCORE</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">mapping_id</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+
+        <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">RTE_MAX_LCORE</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+            <span class="n">mapping_id</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">INVALID_MAPPING_ID</span><span class="p">;</span>
+
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>For each slave process, packets are received from one port and forwarded to another port that another slave is operating on.
+If the other slave exits accidentally, the port it is operating on may not work normally,
+so the first slave cannot forward packets to that port.
+There is a dependency on the port in this case. So, the master should recognize the dependency.
+The following is the code to detect this dependency:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="p">(</span><span class="n">portid</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">portid</span> <span class="o">&lt;</span> <span class="n">nb_ports</span><span class="p">;</span> <span class="n">portid</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* skip ports that are not enabled */</span>
+
+    <span class="k">if</span> <span class="p">((</span><span class="n">l2fwd_enabled_port_mask</span> <span class="o">&amp;</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">portid</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">continue</span><span class="p">;</span>
+
+    <span class="cm">/* Find pair ports&#39; lcores */</span>
+
+    <span class="n">find_lcore</span> <span class="o">=</span> <span class="n">find_pair_lcore</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">pair_port</span> <span class="o">=</span> <span class="n">l2fwd_dst_ports</span><span class="p">[</span><span class="n">portid</span><span class="p">];</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">RTE_MAX_LCORE</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">rte_lcore_is_enabled</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+            <span class="k">continue</span><span class="p">;</span>
+
+        <span class="k">for</span> <span class="p">(</span><span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">lcore_queue_conf</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">n_rx_port</span><span class="p">;</span><span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">lcore_queue_conf</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">rx_port_list</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="n">portid</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">lcore</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+                <span class="n">find_lcore</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">lcore_queue_conf</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">rx_port_list</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="n">pair_port</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">pair_lcore</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+                <span class="n">find_pair_lcore</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">find_lcore</span> <span class="o">&amp;&amp;</span> <span class="n">find_pair_lcore</span><span class="p">)</span>
+            <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">find_lcore</span> <span class="o">||</span> <span class="o">!</span><span class="n">find_pair_lcore</span><span class="p">)</span>
+        <span class="n">rte_exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">,</span> <span class="s">&quot;Not find port=%d pair</span><span class="se">\\</span><span class="s">n&quot;</span><span class="p">,</span> <span class="n">portid</span><span class="p">);</span>
+
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;lcore %u and %u paired</span><span class="se">\\</span><span class="s">n&quot;</span><span class="p">,</span> <span class="n">lcore</span><span class="p">,</span> <span class="n">pair_lcore</span><span class="p">);</span>
+
+    <span class="n">lcore_resource</span><span class="p">[</span><span class="n">lcore</span><span class="p">].</span><span class="n">pair_id</span> <span class="o">=</span> <span class="n">pair_lcore</span><span class="p">;</span>
+    <span class="n">lcore_resource</span><span class="p">[</span><span class="n">pair_lcore</span><span class="p">].</span><span class="n">pair_id</span> <span class="o">=</span> <span class="n">lcore</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Before launching the slave process,
+it is necessary to set up the communication channel between the master and slave so that
+the master can notify the slave if its peer process with the dependency exited.
+In addition, the master needs to register a callback function in the case where a specific slave exited.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">RTE_MAX_LCORE</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">lcore_resource</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">enabled</span><span class="p">)</span> <span class="p">{</span>
+        <span class="cm">/* Create ring for master and slave communication */</span>
+
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">create_ms_ring</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">rte_exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">,</span> <span class="s">&quot;Create ring for lcore=%u failed&quot;</span><span class="p">,</span><span class="n">i</span><span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">flib_register_slave_exit_notify</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">slave_exit_cb</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">rte_exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">,</span> <span class="s">&quot;Register master_trace_slave_exit failed&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>After launching the slave process, the master waits and prints out the port statics periodically.
+If an event indicating that a slave process exited is detected,
+it sends the STOP command to the peer and waits until it has also exited.
+Then, it tries to clean up the execution environment and prepare new resources.
+Finally, the new slave instance is launched.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="n">cur_tsc</span> <span class="o">=</span> <span class="n">rte_rdtsc</span><span class="p">();</span>
+    <span class="n">diff_tsc</span> <span class="o">=</span> <span class="n">cur_tsc</span> <span class="o">-</span> <span class="n">prev_tsc</span><span class="p">;</span>
+
+    <span class="cm">/* if timer is enabled */</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">timer_period</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="cm">/* advance the timer */</span>
+        <span class="n">timer_tsc</span> <span class="o">+=</span> <span class="n">diff_tsc</span><span class="p">;</span>
+
+        <span class="cm">/* if timer has reached its timeout */</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">unlikely</span><span class="p">(</span><span class="n">timer_tsc</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="kt">uint64_t</span><span class="p">)</span> <span class="n">timer_period</span><span class="p">))</span> <span class="p">{</span>
+            <span class="n">print_stats</span><span class="p">();</span>
+
+            <span class="cm">/* reset the timer */</span>
+            <span class="n">timer_tsc</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">prev_tsc</span> <span class="o">=</span> <span class="n">cur_tsc</span><span class="p">;</span>
+
+    <span class="cm">/* Check any slave need restart or recreate */</span>
+
+    <span class="n">rte_spinlock_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">res_lock</span><span class="p">);</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">RTE_MAX_LCORE</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">struct</span> <span class="n">lcore_resource_struct</span> <span class="o">*</span><span class="n">res</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">lcore_resource</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+        <span class="k">struct</span> <span class="n">lcore_resource_struct</span> <span class="o">*</span><span class="n">pair</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">lcore_resource</span><span class="p">[</span><span class="n">res</span><span class="o">-&gt;</span><span class="n">pair_id</span><span class="p">];</span>
+
+        <span class="cm">/* If find slave exited, try to reset pair */</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">res</span><span class="o">-&gt;</span><span class="n">enabled</span> <span class="o">&amp;&amp;</span> <span class="n">res</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="o">&amp;&amp;</span> <span class="n">pair</span><span class="o">-&gt;</span><span class="n">enabled</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">pair</span><span class="o">-&gt;</span><span class="n">flags</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">master_sendcmd_with_ack</span><span class="p">(</span><span class="n">pair</span><span class="o">-&gt;</span><span class="n">lcore_id</span><span class="p">,</span> <span class="n">CMD_STOP</span><span class="p">);</span>
+                <span class="n">rte_spinlock_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">res_lock</span><span class="p">);</span>
+                <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+                <span class="n">rte_spinlock_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">res_lock</span><span class="p">);</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">pair</span><span class="o">-&gt;</span><span class="n">flags</span><span class="p">)</span>
+                    <span class="k">continue</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">reset_pair</span><span class="p">(</span><span class="n">res</span><span class="o">-&gt;</span><span class="n">lcore_id</span><span class="p">,</span> <span class="n">pair</span><span class="o">-&gt;</span><span class="n">lcore_id</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="n">rte_exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">,</span> <span class="s">&quot;failed to reset slave&quot;</span><span class="p">);</span>
+
+            <span class="n">res</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="n">pair</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">rte_spinlock_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">res_lock</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>When the slave process is spawned and starts to run, it checks whether the floating process option is applied.
+If so, it clears the affinity to a specific core and also sets the unique core ID to 0.
+Then, it tries to allocate a new core ID.
+Since the core ID has changed, the resource allocated by the master cannot work,
+so it remaps the resource to the new core ID slot.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">int</span>
+<span class="nf">l2fwd_launch_one_lcore</span><span class="p">(</span> <span class="n">attribute</span> <span class="p">((</span><span class="n">unused</span><span class="p">))</span> <span class="kt">void</span> <span class="o">*</span><span class="n">dummy</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="n">lcore_id</span> <span class="o">=</span> <span class="n">rte_lcore_id</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">float_proc</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">unsigned</span> <span class="n">flcore_id</span><span class="p">;</span>
+
+        <span class="cm">/* Change it to floating process, also change it&#39;s lcore_id */</span>
+
+        <span class="n">clear_cpu_affinity</span><span class="p">();</span>
+
+        <span class="n">RTE_PER_LCORE</span><span class="p">(</span><span class="n">_lcore_id</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+        <span class="cm">/* Get a lcore_id */</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">flib_assign_lcore_id</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">&quot;flib_assign_lcore_id failed</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="n">flcore_id</span> <span class="o">=</span> <span class="n">rte_lcore_id</span><span class="p">();</span>
+
+        <span class="cm">/* Set mapping id, so master can return it after slave exited */</span>
+
+        <span class="n">mapping_id</span><span class="p">[</span><span class="n">lcore_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">flcore_id</span><span class="p">;</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Org lcore_id = %u, cur lcore_id = %u</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">lcore_id</span><span class="p">,</span> <span class="n">flcore_id</span><span class="p">);</span>
+        <span class="n">remapping_slave_resource</span><span class="p">(</span><span class="n">lcore_id</span><span class="p">,</span> <span class="n">flcore_id</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">l2fwd_main_loop</span><span class="p">();</span>
+
+    <span class="cm">/* return lcore_id before return */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">float_proc</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">flib_free_lcore_id</span><span class="p">(</span><span class="n">rte_lcore_id</span><span class="p">());</span>
+        <span class="n">mapping_id</span><span class="p">[</span><span class="n">lcore_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">INVALID_MAPPING_ID</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="qos_metering.html" class="btn btn-neutral float-right" title="24. QoS Metering Sample Application" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="load_balancer.html" class="btn btn-neutral" title="22. Load Balancer Sample Application" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,465 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>19. Kernel NIC Interface &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Programmer’s Guide" href="index.html"/>
+        <link rel="next" title="20. Thread Safety of DPDK Functions" href="thread_safety_dpdk_functions.html"/>
+        <link rel="prev" title="18. Multi-process Support" href="multi_proc_support.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Programmer&#8217;s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html">2. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="env_abstraction_layer.html">3. Environment Abstraction Layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ring_lib.html">4. Ring Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mempool_lib.html">5. Mempool Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mbuf_lib.html">6. Mbuf Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="poll_mode_drv.html">7. Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cryptodev_lib.html">8. Cryptography Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ivshmem_lib.html">9. IVSHMEM Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_bonding_poll_mode_drv_lib.html">10. Link Bonding Poll Mode Driver Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer_lib.html">11. Timer Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hash_lib.html">12. Hash Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm_lib.html">13. LPM Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm6_lib.html">14. LPM6 Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_distrib_lib.html">15. Packet Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reorder_lib.html">16. Reorder Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_fragment_reassembly_lib.html">17. IP Fragmentation and Reassembly Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_proc_support.html">18. Multi-process Support</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">19. Kernel NIC Interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#the-dpdk-kni-kernel-module">19.1. The DPDK KNI Kernel Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#kni-creation-and-deletion">19.2. KNI Creation and Deletion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dpdk-mbuf-flow">19.3. DPDK mbuf Flow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#use-case-ingress">19.4. Use Case: Ingress</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#use-case-egress">19.5. Use Case: Egress</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethtool">19.6. Ethtool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#link-state-and-mtu-change">19.7. Link state and MTU change</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#kni-working-as-a-kernel-vhost-backend">19.8. KNI Working as a Kernel vHost Backend</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">19.8.1. Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#packet-flow">19.8.2. Packet Flow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sample-usage">19.8.3. Sample Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#compatibility-configure-option">19.8.4. Compatibility Configure Option</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="thread_safety_dpdk_functions.html">20. Thread Safety of DPDK Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_framework.html">21. Quality of Service (QoS) Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="power_man.html">22. Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_classif_access_ctrl.html">23. Packet Classification and Access Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_framework.html">24. Packet Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_lib.html">25. Vhost Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="port_hotplug_framework.html">26. Port Hotplug Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source_org.html">27. Source Organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_kit_build_system.html">28. Development Kit Build System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_kit_root_make_help.html">29. Development Kit Root Makefile Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extend_dpdk.html">30. Extending the DPDK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_app.html">31. Building Your Own Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ext_app_lib_make_help.html">32. External Application/Library Makefile help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perf_opt_guidelines.html">33. Performance Optimization Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing_efficient_code.html">34. Writing Efficient Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="profile_app.html">35. Profile Your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">36. Glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Programmer&#8217;s Guide</a> &raquo;</li>
+      
+    <li>19. Kernel NIC Interface</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/prog_guide/kernel_nic_interface.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="kernel-nic-interface">
+<span id="kni"></span><h1>19. Kernel NIC Interface</h1>
+<p>The DPDK Kernel NIC Interface (KNI) allows userspace applications access to the Linux* control plane.</p>
+<p>The benefits of using the DPDK KNI are:</p>
+<ul class="simple">
+<li>Faster than existing Linux TUN/TAP interfaces
+(by eliminating system calls and copy_to_user()/copy_from_user() operations.</li>
+<li>Allows management of DPDK ports using standard Linux net tools such as ethtool, ifconfig and tcpdump.</li>
+<li>Allows an interface with the kernel network stack.</li>
+</ul>
+<p>The components of an application using the DPDK Kernel NIC Interface are shown in <a class="reference internal" href="#figure-kernel-nic-intf"><span class="std std-numref">Fig. 19.1</span></a>.</p>
+<div class="figure" id="id1">
+<span id="figure-kernel-nic-intf"></span><img alt="../_images/kernel_nic_intf.png" src="../_images/kernel_nic_intf.png" />
+<p class="caption"><span class="caption-number">Fig. 19.1 </span><span class="caption-text">Components of a DPDK KNI Application</span></p>
+</div>
+<div class="section" id="the-dpdk-kni-kernel-module">
+<h2>19.1. The DPDK KNI Kernel Module</h2>
+<p>The KNI kernel loadable module provides support for two types of devices:</p>
+<ul class="simple">
+<li>A Miscellaneous device (/dev/kni) that:<ul>
+<li>Creates net devices (via ioctl  calls).</li>
+<li>Maintains a kernel thread context shared by all KNI instances
+(simulating the RX side of the net driver).</li>
+<li>For single kernel thread mode, maintains a kernel thread context shared by all KNI instances
+(simulating the RX side of the net driver).</li>
+<li>For multiple kernel thread mode, maintains a kernel thread context for each KNI instance
+(simulating the RX side of the new driver).</li>
+</ul>
+</li>
+<li>Net device:<ul>
+<li>Net functionality provided by implementing several operations such as netdev_ops,
+header_ops, ethtool_ops that are defined by struct net_device,
+including support for DPDK mbufs and FIFOs.</li>
+<li>The interface name is provided from userspace.</li>
+<li>The MAC address can be the real NIC MAC address or random.</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="kni-creation-and-deletion">
+<h2>19.2. KNI Creation and Deletion</h2>
+<p>The KNI interfaces are created by a DPDK application dynamically.
+The interface name and FIFO details are provided by the application through an ioctl call
+using the rte_kni_device_info struct which contains:</p>
+<ul class="simple">
+<li>The interface name.</li>
+<li>Physical addresses of the corresponding memzones for the relevant FIFOs.</li>
+<li>Mbuf mempool details, both physical and virtual (to calculate the offset for mbuf pointers).</li>
+<li>PCI information.</li>
+<li>Core affinity.</li>
+</ul>
+<p>Refer to rte_kni_common.h in the DPDK source code for more details.</p>
+<p>The physical addresses will be re-mapped into the kernel address space and stored in separate KNI contexts.</p>
+<p>The KNI interfaces can be deleted by a DPDK application dynamically after being created.
+Furthermore, all those KNI interfaces not deleted will be deleted on the release operation
+of the miscellaneous device (when the DPDK application is closed).</p>
+</div>
+<div class="section" id="dpdk-mbuf-flow">
+<h2>19.3. DPDK mbuf Flow</h2>
+<p>To minimize the amount of DPDK code running in kernel space, the mbuf mempool is managed in userspace only.
+The kernel module will be aware of mbufs,
+but all mbuf allocation and free operations will be handled by the DPDK application only.</p>
+<p><a class="reference internal" href="#figure-pkt-flow-kni"><span class="std std-numref">Fig. 19.2</span></a> shows a typical scenario with packets sent in both directions.</p>
+<div class="figure" id="id2">
+<span id="figure-pkt-flow-kni"></span><img alt="../_images/pkt_flow_kni.png" src="../_images/pkt_flow_kni.png" />
+<p class="caption"><span class="caption-number">Fig. 19.2 </span><span class="caption-text">Packet Flow via mbufs in the DPDK KNI</span></p>
+</div>
+</div>
+<div class="section" id="use-case-ingress">
+<h2>19.4. Use Case: Ingress</h2>
+<p>On the DPDK RX side, the mbuf is allocated by the PMD in the RX thread context.
+This thread will enqueue the mbuf in the rx_q FIFO.
+The KNI thread will poll all KNI active devices for the rx_q.
+If an mbuf is dequeued, it will be converted to a sk_buff and sent to the net stack via netif_rx().
+The dequeued mbuf must be freed, so the same pointer is sent back in the free_q FIFO.</p>
+<p>The RX thread, in the same main loop, polls this FIFO and frees the mbuf after dequeuing it.</p>
+</div>
+<div class="section" id="use-case-egress">
+<h2>19.5. Use Case: Egress</h2>
+<p>For packet egress the DPDK application must first enqueue several mbufs to create an mbuf cache on the kernel side.</p>
+<p>The packet is received from the Linux net stack, by calling the kni_net_tx() callback.
+The mbuf is dequeued (without waiting due the cache) and filled with data from sk_buff.
+The sk_buff is then freed and the mbuf sent in the tx_q FIFO.</p>
+<p>The DPDK TX thread dequeues the mbuf and sends it to the PMD (via rte_eth_tx_burst()).
+It then puts the mbuf back in the cache.</p>
+</div>
+<div class="section" id="ethtool">
+<h2>19.6. Ethtool</h2>
+<p>Ethtool is a Linux-specific tool with corresponding support in the kernel
+where each net device must register its own callbacks for the supported operations.
+The current implementation uses the igb/ixgbe modified Linux drivers for ethtool support.
+Ethtool is not supported in i40e and VMs (VF or EM devices).</p>
+</div>
+<div class="section" id="link-state-and-mtu-change">
+<h2>19.7. Link state and MTU change</h2>
+<p>Link state and MTU change are network interface specific operations usually done via ifconfig.
+The request is initiated from the kernel side (in the context of the ifconfig process)
+and handled by the user space DPDK application.
+The application polls the request, calls the application handler and returns the response back into the kernel space.</p>
+<p>The application handlers can be registered upon interface creation or explicitly registered/unregistered in runtime.
+This provides flexibility in multiprocess scenarios
+(where the KNI is created in the primary process but the callbacks are handled in the secondary one).
+The constraint is that a single process can register and handle the requests.</p>
+</div>
+<div class="section" id="kni-working-as-a-kernel-vhost-backend">
+<h2>19.8. KNI Working as a Kernel vHost Backend</h2>
+<p>vHost is a kernel module usually working as the backend of virtio (a para- virtualization driver framework)
+to accelerate the traffic from the guest to the host.
+The DPDK Kernel NIC interface provides the ability to hookup vHost traffic into userspace DPDK application.
+Together with the DPDK PMD virtio, it significantly improves the throughput between guest and host.
+In the scenario where DPDK is running as fast path in the host, kni-vhost is an efficient path for the traffic.</p>
+<div class="section" id="overview">
+<h3>19.8.1. Overview</h3>
+<p>vHost-net has three kinds of real backend implementations. They are: 1) tap, 2) macvtap and 3) RAW socket.
+The main idea behind kni-vhost is making the KNI work as a RAW socket, attaching it as the backend instance of vHost-net.
+It is using the existing interface with vHost-net, so it does not require any kernel hacking,
+and is fully-compatible with the kernel vhost module.
+As vHost is still taking responsibility for communicating with the front-end virtio,
+it naturally supports both legacy virtio -net and the DPDK PMD virtio.
+There is a little penalty that comes from the non-polling mode of vhost.
+However, it scales throughput well when using KNI in multi-thread mode.</p>
+<div class="figure" id="id3">
+<span id="figure-vhost-net-arch2"></span><img alt="../_images/vhost_net_arch.png" src="../_images/vhost_net_arch.png" />
+<p class="caption"><span class="caption-number">Fig. 19.3 </span><span class="caption-text">vHost-net Architecture Overview</span></p>
+</div>
+</div>
+<div class="section" id="packet-flow">
+<h3>19.8.2. Packet Flow</h3>
+<p>There is only a minor difference from the original KNI traffic flows.
+On transmit side, vhost kthread calls the RAW socket&#8217;s ops sendmsg and it puts the packets into the KNI transmit FIFO.
+On the receive side, the kni kthread gets packets from the KNI receive FIFO, puts them into the queue of the raw socket,
+and wakes up the task in vhost kthread to begin receiving.
+All the packet copying, irrespective of whether it is on the transmit or receive side,
+happens in the context of vhost kthread.
+Every vhost-net device is exposed to a front end virtio device in the guest.</p>
+<div class="figure" id="id4">
+<span id="figure-kni-traffic-flow"></span><img alt="../_images/kni_traffic_flow.png" src="../_images/kni_traffic_flow.png" />
+<p class="caption"><span class="caption-number">Fig. 19.4 </span><span class="caption-text">KNI Traffic Flow</span></p>
+</div>
+</div>
+<div class="section" id="sample-usage">
+<h3>19.8.3. Sample Usage</h3>
+<p>Before starting to use KNI as the backend of vhost, the CONFIG_RTE_KNI_VHOST configuration option must be turned on.
+Otherwise, by default, KNI will not enable its backend support capability.</p>
+<p>Of course, as a prerequisite, the vhost/vhost-net kernel CONFIG should be chosen before compiling the kernel.</p>
+<ol class="arabic">
+<li><p class="first">Compile the DPDK and insert uio_pci_generic/igb_uio kernel modules as normal.</p>
+</li>
+<li><p class="first">Insert the KNI kernel module:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">insmod ./rte_kni.ko</span>
+</pre></div>
+</div>
+<p>If using KNI in multi-thread mode, use the following command line:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">insmod ./rte_kni.ko kthread_mode=multiple</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Running the KNI sample application:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">examples/kni/build/app/kni -c -0xf0 -n 4 -- -p 0x3 -P --config=&quot;(0,4,6),(1,5,7)&quot;</span>
+</pre></div>
+</div>
+<p>This command runs the kni sample application with two physical ports.
+Each port pins two forwarding cores (ingress/egress) in user space.</p>
+</li>
+<li><p class="first">Assign a raw socket to vhost-net during qemu-kvm startup.
+The DPDK does not provide a script to do this since it is easy for the user to customize.
+The following shows the key steps to launch qemu-kvm with kni-vhost:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="nb">echo</span> <span class="m">1</span> &gt; /sys/class/net/vEth0/sock_en
+<span class="nv">fd</span><span class="o">=</span><span class="sb">`</span>cat /sys/class/net/vEth0/sock_fd<span class="sb">`</span>
+qemu-kvm <span class="se">\</span>
+-name vm1 -cpu host -m <span class="m">2048</span> -smp <span class="m">1</span> -hda /opt/vm-fc16.img <span class="se">\</span>
+-netdev tap,fd<span class="o">=</span><span class="nv">$fd</span>,id<span class="o">=</span>hostnet1,vhost<span class="o">=</span>on <span class="se">\</span>
+-device virti-net-pci,netdev<span class="o">=</span>hostnet1,id<span class="o">=</span>net1,bus<span class="o">=</span>pci.0,addr<span class="o">=</span>0x4
+</pre></div>
+</div>
+</li>
+</ol>
+<p>It is simple to enable raw socket using sysfs sock_en and get raw socket fd using sock_fd under the KNI device node.</p>
+<p>Then, using the qemu-kvm command with the -netdev option to assign such raw socket fd as vhost&#8217;s backend.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The key word tap must exist as qemu-kvm now only supports vhost with a tap backend, so here we cheat qemu-kvm by an existing fd.</p>
+</div>
+</div>
+<div class="section" id="compatibility-configure-option">
+<h3>19.8.4. Compatibility Configure Option</h3>
+<p>There is a CONFIG_RTE_KNI_VHOST_VNET_HDR_EN configuration option in DPDK configuration file.
+By default, it set to n, which means do not turn on the virtio net header,
+which is used to support additional features (such as, csum offload, vlan offload, generic-segmentation and so on),
+since the kni-vhost does not yet support those features.</p>
+<p>Even if the option is turned on, kni-vhost will ignore the information that the header contains.
+When working with legacy virtio on the guest, it is better to turn off unsupported offload features using ethtool -K.
+Otherwise, there may be problems such as an incorrect L4 checksum error.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="thread_safety_dpdk_functions.html" class="btn btn-neutral float-right" title="20. Thread Safety of DPDK Functions" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="multi_proc_support.html" class="btn btn-neutral" title="18. Multi-process Support" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

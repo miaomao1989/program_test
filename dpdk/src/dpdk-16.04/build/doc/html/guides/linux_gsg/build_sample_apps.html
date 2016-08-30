@@ -1,0 +1,428 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>4. Compiling and Running Sample Applications &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Getting Started Guide for Linux" href="index.html"/>
+        <link rel="next" title="5. Enabling Additional Functionality" href="enable_func.html"/>
+        <link rel="prev" title="3. Compiling the DPDK Target from Source" href="build_dpdk.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Getting Started Guide for Linux</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sys_reqs.html">2. System Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_dpdk.html">3. Compiling the DPDK Target from Source</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4. Compiling and Running Sample Applications</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#compiling-a-sample-application">4.1. Compiling a Sample Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-a-sample-application">4.2. Running a Sample Application</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#logical-core-use-by-applications">4.2.1. Logical Core Use by Applications</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hugepage-memory-use-by-applications">4.2.2. Hugepage Memory Use by Applications</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#additional-sample-applications">4.3. Additional Sample Applications</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#additional-test-applications">4.4. Additional Test Applications</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="enable_func.html">5. Enabling Additional Functionality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quick_start.html">6. Quick Start Setup Script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nic_perf_intel_platform.html">7. How to get best performance with NICs on Intel platforms</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Getting Started Guide for Linux</a> &raquo;</li>
+      
+    <li>4. Compiling and Running Sample Applications</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/linux_gsg/build_sample_apps.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="compiling-and-running-sample-applications">
+<h1>4. Compiling and Running Sample Applications</h1>
+<p>The chapter describes how to compile and run applications in an DPDK environment.
+It also provides a pointer to where sample applications are stored.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Parts of this process can also be done using the setup script described the
+<a class="reference internal" href="quick_start.html#linux-setup-script"><span class="std std-ref">Quick Start Setup Script</span></a> section of this document.</p>
+</div>
+<div class="section" id="compiling-a-sample-application">
+<h2>4.1. Compiling a Sample Application</h2>
+<p>Once an DPDK target environment directory has been created (such as <code class="docutils literal"><span class="pre">x86_64-native-linuxapp-gcc</span></code>),
+it contains all libraries and header files required to build an application.</p>
+<p>When compiling an application in the Linux* environment on the DPDK, the following variables must be exported:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">RTE_SDK</span></code> - Points to the DPDK installation directory.</li>
+<li><code class="docutils literal"><span class="pre">RTE_TARGET</span></code> - Points to the DPDK target environment directory.</li>
+</ul>
+<p>The following is an example of creating the <code class="docutils literal"><span class="pre">helloworld</span></code> application, which runs in the DPDK Linux environment.
+This example may be found in the <code class="docutils literal"><span class="pre">${RTE_SDK}/examples</span></code> directory.</p>
+<p>The directory contains the <code class="docutils literal"><span class="pre">main.c</span></code> file. This file, when combined with the libraries in the DPDK target environment,
+calls the various functions to initialize the DPDK environment,
+then launches an entry point (dispatch application) for each core to be utilized.
+By default, the binary is generated in the build directory.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">cd examples/helloworld/</span>
+<span class="go">export RTE_SDK=$HOME/DPDK</span>
+<span class="go">export RTE_TARGET=x86_64-native-linuxapp-gcc</span>
+
+<span class="go">make</span>
+<span class="go">    CC main.o</span>
+<span class="go">    LD helloworld</span>
+<span class="go">    INSTALL-APP helloworld</span>
+<span class="go">    INSTALL-MAP helloworld.map</span>
+
+<span class="go">ls build/app</span>
+<span class="go">    helloworld helloworld.map</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>In the above example, <code class="docutils literal"><span class="pre">helloworld</span></code> was in the directory structure of the DPDK.
+However, it could have been located outside the directory structure to keep the DPDK structure intact.
+In the following case, the <code class="docutils literal"><span class="pre">helloworld</span></code> application is copied to a new directory as a new starting point.</p>
+<div class="last highlight-console"><div class="highlight"><pre><span></span><span class="go">export RTE_SDK=/home/user/DPDK</span>
+<span class="go">cp -r $(RTE_SDK)/examples/helloworld my_rte_app</span>
+<span class="go">cd my_rte_app/</span>
+<span class="go">export RTE_TARGET=x86_64-native-linuxapp-gcc</span>
+
+<span class="go">make</span>
+<span class="go">  CC main.o</span>
+<span class="go">  LD helloworld</span>
+<span class="go">  INSTALL-APP helloworld</span>
+<span class="go">  INSTALL-MAP helloworld.map</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="running-a-sample-application">
+<h2>4.2. Running a Sample Application</h2>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The UIO drivers and hugepages must be setup prior to running an application.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Any ports to be used by the application must be already bound to an appropriate kernel
+module, as described in <a class="reference internal" href="build_dpdk.html#linux-gsg-binding-kernel"><span class="std std-ref">Binding and Unbinding Network Ports to/from the Kernel Modules</span></a>, prior to running the application.</p>
+</div>
+<p>The application is linked with the DPDK target environment&#8217;s Environmental Abstraction Layer (EAL) library,
+which provides some options that are generic to every DPDK application.</p>
+<p>The following is the list of options that can be given to the EAL:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./rte-app -c COREMASK [-n NUM] [-b &lt;domain:bus:devid.func&gt;] \</span>
+<span class="go">          [--socket-mem=MB,...] [-m MB] [-r NUM] [-v] [--file-prefix] \</span>
+<span class="go">          [--proc-type &lt;primary|secondary|auto&gt;] [-- xen-dom0]</span>
+</pre></div>
+</div>
+<p>The EAL options are as follows:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">-c</span> <span class="pre">COREMASK</span></code>:
+An hexadecimal bit mask of the cores to run on. Note that core numbering can
+change between platforms and should be determined beforehand.</li>
+<li><code class="docutils literal"><span class="pre">-n</span> <span class="pre">NUM</span></code>:
+Number of memory channels per processor socket.</li>
+<li><code class="docutils literal"><span class="pre">-b</span> <span class="pre">&lt;domain:bus:devid.func&gt;</span></code>:
+Blacklisting of ports; prevent EAL from using specified PCI device
+(multiple <code class="docutils literal"><span class="pre">-b</span></code> options are allowed).</li>
+<li><code class="docutils literal"><span class="pre">--use-device</span></code>:
+use the specified Ethernet device(s) only. Use comma-separate
+<code class="docutils literal"><span class="pre">[domain:]bus:devid.func</span></code> values. Cannot be used with <code class="docutils literal"><span class="pre">-b</span></code> option.</li>
+<li><code class="docutils literal"><span class="pre">--socket-mem</span></code>:
+Memory to allocate from hugepages on specific sockets.</li>
+<li><code class="docutils literal"><span class="pre">-m</span> <span class="pre">MB</span></code>:
+Memory to allocate from hugepages, regardless of processor socket. It is
+recommended that <code class="docutils literal"><span class="pre">--socket-mem</span></code> be used instead of this option.</li>
+<li><code class="docutils literal"><span class="pre">-r</span> <span class="pre">NUM</span></code>:
+Number of memory ranks.</li>
+<li><code class="docutils literal"><span class="pre">-v</span></code>:
+Display version information on startup.</li>
+<li><code class="docutils literal"><span class="pre">--huge-dir</span></code>:
+The directory where hugetlbfs is mounted.</li>
+<li><code class="docutils literal"><span class="pre">--file-prefix</span></code>:
+The prefix text used for hugepage filenames.</li>
+<li><code class="docutils literal"><span class="pre">--proc-type</span></code>:
+The type of process instance.</li>
+<li><code class="docutils literal"><span class="pre">--xen-dom0</span></code>:
+Support application running on Xen Domain0 without hugetlbfs.</li>
+<li><code class="docutils literal"><span class="pre">--vmware-tsc-map</span></code>:
+Use VMware TSC map instead of native RDTSC.</li>
+<li><code class="docutils literal"><span class="pre">--base-virtaddr</span></code>:
+Specify base virtual address.</li>
+<li><code class="docutils literal"><span class="pre">--vfio-intr</span></code>:
+Specify interrupt type to be used by VFIO (has no effect if VFIO is not used).</li>
+</ul>
+<p>The <code class="docutils literal"><span class="pre">-c</span></code> and option is mandatory; the others are optional.</p>
+<p>Copy the DPDK application binary to your target, then run the application as follows
+(assuming the platform has four memory channels per processor socket,
+and that cores 0-3 are present and are to be used for running the application):</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>./helloworld -c f -n 4
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <code class="docutils literal"><span class="pre">--proc-type</span></code> and <code class="docutils literal"><span class="pre">--file-prefix</span></code> EAL options are used for running
+multiple DPDK processes. See the &#8220;Multi-process Sample Application&#8221;
+chapter in the <em>DPDK Sample Applications User Guide</em> and the <em>DPDK
+Programmers Guide</em> for more details.</p>
+</div>
+<div class="section" id="logical-core-use-by-applications">
+<h3>4.2.1. Logical Core Use by Applications</h3>
+<p>The coremask parameter is always mandatory for DPDK applications.
+Each bit of the mask corresponds to the equivalent logical core number as reported by Linux.
+Since these logical core numbers, and their mapping to specific cores on specific NUMA sockets, can vary from platform to platform,
+it is recommended that the core layout for each platform be considered when choosing the coremask to use in each case.</p>
+<p>On initialization of the EAL layer by an DPDK application, the logical cores to be used and their socket location are displayed.
+This information can also be determined for all cores on the system by examining the <code class="docutils literal"><span class="pre">/proc/cpuinfo</span></code> file, for example, by running cat <code class="docutils literal"><span class="pre">/proc/cpuinfo</span></code>.
+The physical id attribute listed for each processor indicates the CPU socket to which it belongs.
+This can be useful when using other processors to understand the mapping of the logical cores to the sockets.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>A more graphical view of the logical core layout may be obtained using the <code class="docutils literal"><span class="pre">lstopo</span></code> Linux utility.
+On Fedora Linux, this may be installed and run using the following command:</p>
+<div class="last highlight-none"><div class="highlight"><pre><span></span>sudo yum install hwloc
+./lstopo
+</pre></div>
+</div>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The logical core layout can change between different board layouts and should be checked before selecting an application coremask.</p>
+</div>
+</div>
+<div class="section" id="hugepage-memory-use-by-applications">
+<h3>4.2.2. Hugepage Memory Use by Applications</h3>
+<p>When running an application, it is recommended to use the same amount of memory as that allocated for hugepages.
+This is done automatically by the DPDK application at startup,
+if no <code class="docutils literal"><span class="pre">-m</span></code> or <code class="docutils literal"><span class="pre">--socket-mem</span></code> parameter is passed to it when run.</p>
+<p>If more memory is requested by explicitly passing a <code class="docutils literal"><span class="pre">-m</span></code> or <code class="docutils literal"><span class="pre">--socket-mem</span></code> value, the application fails.
+However, the application itself can also fail if the user requests less memory than the reserved amount of hugepage-memory, particularly if using the <code class="docutils literal"><span class="pre">-m</span></code> option.
+The reason is as follows.
+Suppose the system has 1024 reserved 2 MB pages in socket 0 and 1024 in socket 1.
+If the user requests 128 MB of memory, the 64 pages may not match the constraints:</p>
+<ul class="simple">
+<li>The hugepage memory by be given to the application by the kernel in socket 1 only.
+In this case, if the application attempts to create an object, such as a ring or memory pool in socket 0, it fails.
+To avoid this issue, it is recommended that the <code class="docutils literal"><span class="pre">--socket-mem</span></code> option be used instead of the <code class="docutils literal"><span class="pre">-m</span></code> option.</li>
+<li>These pages can be located anywhere in physical memory, and, although the DPDK EAL will attempt to allocate memory in contiguous blocks,
+it is possible that the pages will not be contiguous. In this case, the application is not able to allocate big memory pools.</li>
+</ul>
+<p>The socket-mem option can be used to request specific amounts of memory for specific sockets.
+This is accomplished by supplying the <code class="docutils literal"><span class="pre">--socket-mem</span></code> flag followed by amounts of memory requested on each socket,
+for example, supply <code class="docutils literal"><span class="pre">--socket-mem=0,512</span></code> to try and reserve 512 MB for socket 1 only.
+Similarly, on a four socket system, to allocate 1 GB memory on each of sockets 0 and 2 only, the parameter <code class="docutils literal"><span class="pre">--socket-mem=1024,0,1024</span></code> can be used.
+No memory will be reserved on any CPU socket that is not explicitly referenced, for example, socket 3 in this case.
+If the DPDK cannot allocate enough memory on each socket, the EAL initialization fails.</p>
+</div>
+</div>
+<div class="section" id="additional-sample-applications">
+<h2>4.3. Additional Sample Applications</h2>
+<p>Additional sample applications are included in the ${RTE_SDK}/examples directory.
+These sample applications may be built and run in a manner similar to that described in earlier sections in this manual.
+In addition, see the <em>DPDK Sample Applications User Guide</em> for a description of the application,
+specific instructions on compilation and execution and some explanation of the code.</p>
+</div>
+<div class="section" id="additional-test-applications">
+<h2>4.4. Additional Test Applications</h2>
+<p>In addition, there are two other applications that are built when the libraries are created.
+The source files for these are in the DPDK/app directory and are called test and testpmd.
+Once the libraries are created, they can be found in the build/app directory.</p>
+<ul class="simple">
+<li>The test application provides a variety of specific tests for the various functions in the DPDK.</li>
+<li>The testpmd application provides a number of different packet throughput tests and
+examples of features such as how to use the Flow Director found in the Intel® 82599 10 Gigabit Ethernet Controller.</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="enable_func.html" class="btn btn-neutral float-right" title="5. Enabling Additional Functionality" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="build_dpdk.html" class="btn btn-neutral" title="3. Compiling the DPDK Target from Source" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

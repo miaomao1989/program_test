@@ -1,0 +1,474 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>6. Mbuf Library &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Programmer’s Guide" href="index.html"/>
+        <link rel="next" title="7. Poll Mode Driver" href="poll_mode_drv.html"/>
+        <link rel="prev" title="5. Mempool Library" href="mempool_lib.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Programmer&#8217;s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html">2. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="env_abstraction_layer.html">3. Environment Abstraction Layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ring_lib.html">4. Ring Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mempool_lib.html">5. Mempool Library</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">6. Mbuf Library</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#design-of-packet-buffers">6.1. Design of Packet Buffers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#buffers-stored-in-memory-pools">6.2. Buffers Stored in Memory Pools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#constructors">6.3. Constructors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#allocating-and-freeing-mbufs">6.4. Allocating and Freeing mbufs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manipulating-mbufs">6.5. Manipulating mbufs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#meta-information">6.6. Meta Information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#direct-and-indirect-buffers">6.7. Direct and Indirect Buffers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#debug">6.8. Debug</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#use-cases">6.9. Use Cases</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="poll_mode_drv.html">7. Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cryptodev_lib.html">8. Cryptography Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ivshmem_lib.html">9. IVSHMEM Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_bonding_poll_mode_drv_lib.html">10. Link Bonding Poll Mode Driver Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer_lib.html">11. Timer Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hash_lib.html">12. Hash Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm_lib.html">13. LPM Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm6_lib.html">14. LPM6 Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_distrib_lib.html">15. Packet Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reorder_lib.html">16. Reorder Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_fragment_reassembly_lib.html">17. IP Fragmentation and Reassembly Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_proc_support.html">18. Multi-process Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">19. Kernel NIC Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thread_safety_dpdk_functions.html">20. Thread Safety of DPDK Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_framework.html">21. Quality of Service (QoS) Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="power_man.html">22. Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_classif_access_ctrl.html">23. Packet Classification and Access Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_framework.html">24. Packet Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_lib.html">25. Vhost Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="port_hotplug_framework.html">26. Port Hotplug Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source_org.html">27. Source Organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_kit_build_system.html">28. Development Kit Build System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_kit_root_make_help.html">29. Development Kit Root Makefile Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extend_dpdk.html">30. Extending the DPDK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_app.html">31. Building Your Own Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ext_app_lib_make_help.html">32. External Application/Library Makefile help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perf_opt_guidelines.html">33. Performance Optimization Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing_efficient_code.html">34. Writing Efficient Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="profile_app.html">35. Profile Your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">36. Glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Programmer&#8217;s Guide</a> &raquo;</li>
+      
+    <li>6. Mbuf Library</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/prog_guide/mbuf_lib.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="mbuf-library">
+<span id="id1"></span><h1>6. Mbuf Library</h1>
+<p>The mbuf library provides the ability to allocate and free buffers (mbufs)
+that may be used by the DPDK application to store message buffers.
+The message buffers are stored in a mempool, using the <a class="reference internal" href="mempool_lib.html#mempool-library"><span class="std std-ref">Mempool Library</span></a>.</p>
+<p>A rte_mbuf struct can carry network packet buffers
+or generic control buffers (indicated by the CTRL_MBUF_FLAG).
+This can be extended to other types.
+The rte_mbuf header structure is kept as small as possible and currently uses
+just two cache lines, with the most frequently used fields being on the first
+of the two cache lines.</p>
+<div class="section" id="design-of-packet-buffers">
+<h2>6.1. Design of Packet Buffers</h2>
+<p>For the storage of the packet data (including protocol headers), two approaches were considered:</p>
+<ol class="arabic simple">
+<li>Embed metadata within a single memory buffer the structure followed by a fixed size area for the packet data.</li>
+<li>Use separate memory buffers for the metadata structure and for the packet data.</li>
+</ol>
+<p>The advantage of the first method is that it only needs one operation to allocate/free the whole memory representation of a packet.
+On the other hand, the second method is more flexible and allows
+the complete separation of the allocation of metadata structures from the allocation of packet data buffers.</p>
+<p>The first method was chosen for the DPDK.
+The metadata contains control information such as message type, length,
+offset to the start of the data and a pointer for additional mbuf structures allowing buffer chaining.</p>
+<p>Message buffers that are used to carry network packets can handle buffer chaining
+where multiple buffers are required to hold the complete packet.
+This is the case for jumbo frames that are composed of many mbufs linked together through their next field.</p>
+<p>For a newly allocated mbuf, the area at which the data begins in the message buffer is
+RTE_PKTMBUF_HEADROOM bytes after the beginning of the buffer, which is cache aligned.
+Message buffers may be used to carry control information, packets, events,
+and so on between different entities in the system.
+Message buffers may also use their buffer pointers to point to other message buffer data sections or other structures.</p>
+<p><a class="reference internal" href="#figure-mbuf1"><span class="std std-numref">Fig. 6.1</span></a> and <a class="reference internal" href="#figure-mbuf2"><span class="std std-numref">Fig. 6.2</span></a> show some of these scenarios.</p>
+<div class="figure" id="id2">
+<span id="figure-mbuf1"></span><img src="../_images/mbuf1.svg" /><p class="caption"><span class="caption-number">Fig. 6.1 </span><span class="caption-text">An mbuf with One Segment</span></p>
+</div>
+<div class="figure" id="id3">
+<span id="figure-mbuf2"></span><img src="../_images/mbuf2.svg" /><p class="caption"><span class="caption-number">Fig. 6.2 </span><span class="caption-text">An mbuf with Three Segments</span></p>
+</div>
+<p>The Buffer Manager implements a fairly standard set of buffer access functions to manipulate network packets.</p>
+</div>
+<div class="section" id="buffers-stored-in-memory-pools">
+<h2>6.2. Buffers Stored in Memory Pools</h2>
+<p>The Buffer Manager uses the <a class="reference internal" href="mempool_lib.html#mempool-library"><span class="std std-ref">Mempool Library</span></a> to allocate buffers.
+Therefore, it ensures that the packet header is interleaved optimally across the channels and ranks for L3 processing.
+An mbuf contains a field indicating the pool that it originated from.
+When calling rte_ctrlmbuf_free(m) or rte_pktmbuf_free(m), the mbuf returns to its original pool.</p>
+</div>
+<div class="section" id="constructors">
+<h2>6.3. Constructors</h2>
+<p>Packet and control mbuf constructors are provided by the API.
+The rte_pktmbuf_init() and rte_ctrlmbuf_init() functions initialize some fields in the mbuf structure that
+are not modified by the user once created (mbuf type, origin pool, buffer start address, and so on).
+This function is given as a callback function to the rte_mempool_create() function at pool creation time.</p>
+</div>
+<div class="section" id="allocating-and-freeing-mbufs">
+<h2>6.4. Allocating and Freeing mbufs</h2>
+<p>Allocating a new mbuf requires the user to specify the mempool from which the mbuf should be taken.
+For any newly-allocated mbuf, it contains one segment, with a length of 0.
+The offset to data is initialized to have some bytes of headroom in the buffer (RTE_PKTMBUF_HEADROOM).</p>
+<p>Freeing a mbuf means returning it into its original mempool.
+The content of an mbuf is not modified when it is stored in a pool (as a free mbuf).
+Fields initialized by the constructor do not need to be re-initialized at mbuf allocation.</p>
+<p>When freeing a packet mbuf that contains several segments, all of them are freed and returned to their original mempool.</p>
+</div>
+<div class="section" id="manipulating-mbufs">
+<h2>6.5. Manipulating mbufs</h2>
+<p>This library provides some functions for manipulating the data in a packet mbuf. For instance:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Get data length</li>
+<li>Get a pointer to the start of data</li>
+<li>Prepend data before data</li>
+<li>Append data after data</li>
+<li>Remove data at the beginning of the buffer (rte_pktmbuf_adj())</li>
+<li>Remove data at the end of the buffer (rte_pktmbuf_trim()) Refer to the <em>DPDK API Reference</em> for details.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="meta-information">
+<h2>6.6. Meta Information</h2>
+<p>Some information is retrieved by the network driver and stored in an mbuf to make processing easier.
+For instance, the VLAN, the RSS hash result (see <a class="reference internal" href="poll_mode_drv.html#poll-mode-driver"><span class="std std-ref">Poll Mode Driver</span></a>)
+and a flag indicating that the checksum was computed by hardware.</p>
+<p>An mbuf also contains the input port (where it comes from), and the number of segment mbufs in the chain.</p>
+<p>For chained buffers, only the first mbuf of the chain stores this meta information.</p>
+<p>For instance, this is the case on RX side for the IEEE1588 packet
+timestamp mechanism, the VLAN tagging and the IP checksum computation.</p>
+<p>On TX side, it is also possible for an application to delegate some
+processing to the hardware if it supports it. For instance, the
+PKT_TX_IP_CKSUM flag allows to offload the computation of the IPv4
+checksum.</p>
+<p>The following examples explain how to configure different TX offloads on
+a vxlan-encapsulated tcp packet:
+<code class="docutils literal"><span class="pre">out_eth/out_ip/out_udp/vxlan/in_eth/in_ip/in_tcp/payload</span></code></p>
+<ul>
+<li><p class="first">calculate checksum of out_ip:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>mb-&gt;l2_len = len(out_eth)
+mb-&gt;l3_len = len(out_ip)
+mb-&gt;ol_flags |= PKT_TX_IPV4 | PKT_TX_IP_CSUM
+set out_ip checksum to 0 in the packet
+</pre></div>
+</div>
+<p>This is supported on hardware advertising DEV_TX_OFFLOAD_IPV4_CKSUM.</p>
+</li>
+<li><p class="first">calculate checksum of out_ip and out_udp:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span> mb-&gt;l2_len = len(out_eth)
+ mb-&gt;l3_len = len(out_ip)
+ mb-&gt;ol_flags |= PKT_TX_IPV4 | PKT_TX_IP_CSUM | PKT_TX_UDP_CKSUM
+ set out_ip checksum to 0 in the packet
+ set out_udp checksum to pseudo header using rte_ipv4_phdr_cksum()
+
+This is supported on hardware advertising DEV_TX_OFFLOAD_IPV4_CKSUM
+and DEV_TX_OFFLOAD_UDP_CKSUM.
+</pre></div>
+</div>
+</li>
+<li><p class="first">calculate checksum of in_ip:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>mb-&gt;l2_len = len(out_eth + out_ip + out_udp + vxlan + in_eth)
+mb-&gt;l3_len = len(in_ip)
+mb-&gt;ol_flags |= PKT_TX_IPV4 | PKT_TX_IP_CSUM
+set in_ip checksum to 0 in the packet
+</pre></div>
+</div>
+<p>This is similar to case 1), but l2_len is different. It is supported
+on hardware advertising DEV_TX_OFFLOAD_IPV4_CKSUM.
+Note that it can only work if outer L4 checksum is 0.</p>
+</li>
+<li><p class="first">calculate checksum of in_ip and in_tcp:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>mb-&gt;l2_len = len(out_eth + out_ip + out_udp + vxlan + in_eth)
+mb-&gt;l3_len = len(in_ip)
+mb-&gt;ol_flags |= PKT_TX_IPV4 | PKT_TX_IP_CSUM | PKT_TX_TCP_CKSUM
+set in_ip checksum to 0 in the packet
+set in_tcp checksum to pseudo header using rte_ipv4_phdr_cksum()
+</pre></div>
+</div>
+<p>This is similar to case 2), but l2_len is different. It is supported
+on hardware advertising DEV_TX_OFFLOAD_IPV4_CKSUM and
+DEV_TX_OFFLOAD_TCP_CKSUM.
+Note that it can only work if outer L4 checksum is 0.</p>
+</li>
+<li><p class="first">segment inner TCP:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>mb-&gt;l2_len = len(out_eth + out_ip + out_udp + vxlan + in_eth)
+mb-&gt;l3_len = len(in_ip)
+mb-&gt;l4_len = len(in_tcp)
+mb-&gt;ol_flags |= PKT_TX_IPV4 | PKT_TX_IP_CKSUM | PKT_TX_TCP_CKSUM |
+  PKT_TX_TCP_SEG;
+set in_ip checksum to 0 in the packet
+set in_tcp checksum to pseudo header without including the IP
+  payload length using rte_ipv4_phdr_cksum()
+</pre></div>
+</div>
+<p>This is supported on hardware advertising DEV_TX_OFFLOAD_TCP_TSO.
+Note that it can only work if outer L4 checksum is 0.</p>
+</li>
+<li><p class="first">calculate checksum of out_ip, in_ip, in_tcp:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span> mb-&gt;outer_l2_len = len(out_eth)
+ mb-&gt;outer_l3_len = len(out_ip)
+ mb-&gt;l2_len = len(out_udp + vxlan + in_eth)
+ mb-&gt;l3_len = len(in_ip)
+ mb-&gt;ol_flags |= PKT_TX_OUTER_IPV4 | PKT_TX_OUTER_IP_CKSUM  | \
+   PKT_TX_IP_CKSUM |  PKT_TX_TCP_CKSUM;
+ set out_ip checksum to 0 in the packet
+ set in_ip checksum to 0 in the packet
+ set in_tcp checksum to pseudo header using rte_ipv4_phdr_cksum()
+
+This is supported on hardware advertising DEV_TX_OFFLOAD_IPV4_CKSUM,
+DEV_TX_OFFLOAD_UDP_CKSUM and DEV_TX_OFFLOAD_OUTER_IPV4_CKSUM.
+</pre></div>
+</div>
+</li>
+</ul>
+<p>The list of flags and their precise meaning is described in the mbuf API
+documentation (rte_mbuf.h). Also refer to the testpmd source code
+(specifically the csumonly.c file) for details.</p>
+</div>
+<div class="section" id="direct-and-indirect-buffers">
+<span id="direct-indirect-buffer"></span><h2>6.7. Direct and Indirect Buffers</h2>
+<p>A direct buffer is a buffer that is completely separate and self-contained.
+An indirect buffer behaves like a direct buffer but for the fact that the buffer pointer and
+data offset in it refer to data in another direct buffer.
+This is useful in situations where packets need to be duplicated or fragmented,
+since indirect buffers provide the means to reuse the same packet data across multiple buffers.</p>
+<p>A buffer becomes indirect when it is &#8220;attached&#8221; to a direct buffer using the rte_pktmbuf_attach() function.
+Each buffer has a reference counter field and whenever an indirect buffer is attached to the direct buffer,
+the reference counter on the direct buffer is incremented.
+Similarly, whenever the indirect buffer is detached, the reference counter on the direct buffer is decremented.
+If the resulting reference counter is equal to 0, the direct buffer is freed since it is no longer in use.</p>
+<p>There are a few things to remember when dealing with indirect buffers.
+First of all, it is not possible to attach an indirect buffer to another indirect buffer.
+Secondly, for a buffer to become indirect, its reference counter must be equal to 1,
+that is, it must not be already referenced by another indirect buffer.
+Finally, it is not possible to reattach an indirect buffer to the direct buffer (unless it is detached first).</p>
+<p>While the attach/detach operations can be invoked directly using the recommended rte_pktmbuf_attach() and rte_pktmbuf_detach() functions,
+it is suggested to use the higher-level rte_pktmbuf_clone() function,
+which takes care of the correct initialization of an indirect buffer and can clone buffers with multiple segments.</p>
+<p>Since indirect buffers are not supposed to actually hold any data,
+the memory pool for indirect buffers should be configured to indicate the reduced memory consumption.
+Examples of the initialization of a memory pool for indirect buffers (as well as use case examples for indirect buffers)
+can be found in several of the sample applications, for example, the IPv4 Multicast sample application.</p>
+</div>
+<div class="section" id="debug">
+<h2>6.8. Debug</h2>
+<p>In debug mode (CONFIG_RTE_MBUF_DEBUG is enabled),
+the functions of the mbuf library perform sanity checks before any operation (such as, buffer corruption, bad type, and so on).</p>
+</div>
+<div class="section" id="use-cases">
+<h2>6.9. Use Cases</h2>
+<p>All networking application should use mbufs to transport network packets.</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="poll_mode_drv.html" class="btn btn-neutral float-right" title="7. Poll Mode Driver" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="mempool_lib.html" class="btn btn-neutral" title="5. Mempool Library" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

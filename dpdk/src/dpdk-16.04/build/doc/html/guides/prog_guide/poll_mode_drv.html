@@ -1,0 +1,530 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>7. Poll Mode Driver &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Programmer’s Guide" href="index.html"/>
+        <link rel="next" title="8. Cryptography Device Library" href="cryptodev_lib.html"/>
+        <link rel="prev" title="6. Mbuf Library" href="mbuf_lib.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Programmer&#8217;s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html">2. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="env_abstraction_layer.html">3. Environment Abstraction Layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ring_lib.html">4. Ring Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mempool_lib.html">5. Mempool Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mbuf_lib.html">6. Mbuf Library</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">7. Poll Mode Driver</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#requirements-and-assumptions">7.1. Requirements and Assumptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#design-principles">7.2. Design Principles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#logical-cores-memory-and-nic-queues-relationships">7.3. Logical Cores, Memory and NIC Queues Relationships</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#device-identification-and-configuration">7.4. Device Identification and Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#device-identification">7.4.1. Device Identification</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#device-configuration">7.4.2. Device Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#on-the-fly-configuration">7.4.3. On-the-Fly Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuration-of-transmit-and-receive-queues">7.4.4. Configuration of Transmit and Receive Queues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hardware-offload">7.4.5. Hardware Offload</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#poll-mode-driver-api">7.5. Poll Mode Driver API</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#generalities">7.5.1. Generalities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#generic-packet-representation">7.5.2. Generic Packet Representation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ethernet-device-api">7.5.3. Ethernet Device API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#extended-statistics-api">7.5.4. Extended Statistics API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cryptodev_lib.html">8. Cryptography Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ivshmem_lib.html">9. IVSHMEM Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_bonding_poll_mode_drv_lib.html">10. Link Bonding Poll Mode Driver Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer_lib.html">11. Timer Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hash_lib.html">12. Hash Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm_lib.html">13. LPM Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm6_lib.html">14. LPM6 Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_distrib_lib.html">15. Packet Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reorder_lib.html">16. Reorder Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_fragment_reassembly_lib.html">17. IP Fragmentation and Reassembly Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_proc_support.html">18. Multi-process Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">19. Kernel NIC Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thread_safety_dpdk_functions.html">20. Thread Safety of DPDK Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_framework.html">21. Quality of Service (QoS) Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="power_man.html">22. Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_classif_access_ctrl.html">23. Packet Classification and Access Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_framework.html">24. Packet Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_lib.html">25. Vhost Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="port_hotplug_framework.html">26. Port Hotplug Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source_org.html">27. Source Organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_kit_build_system.html">28. Development Kit Build System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_kit_root_make_help.html">29. Development Kit Root Makefile Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extend_dpdk.html">30. Extending the DPDK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_app.html">31. Building Your Own Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ext_app_lib_make_help.html">32. External Application/Library Makefile help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perf_opt_guidelines.html">33. Performance Optimization Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing_efficient_code.html">34. Writing Efficient Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="profile_app.html">35. Profile Your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">36. Glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Programmer&#8217;s Guide</a> &raquo;</li>
+      
+    <li>7. Poll Mode Driver</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/prog_guide/poll_mode_drv.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="poll-mode-driver">
+<span id="id1"></span><h1>7. Poll Mode Driver</h1>
+<p>The DPDK includes 1 Gigabit, 10 Gigabit and 40 Gigabit and para virtualized virtio Poll Mode Drivers.</p>
+<p>A Poll Mode Driver (PMD) consists of APIs, provided through the BSD driver running in user space,
+to configure the devices and their respective queues.
+In addition, a PMD accesses the RX and TX descriptors directly without any interrupts
+(with the exception of Link Status Change interrupts) to quickly receive,
+process and deliver packets in the user&#8217;s application.
+This section describes the requirements of the PMDs,
+their global design principles and proposes a high-level architecture and a generic external API for the Ethernet PMDs.</p>
+<div class="section" id="requirements-and-assumptions">
+<h2>7.1. Requirements and Assumptions</h2>
+<p>The DPDK environment for packet processing applications allows for two models, run-to-completion and pipe-line:</p>
+<ul class="simple">
+<li>In the <em>run-to-completion</em>  model, a specific port&#8217;s RX descriptor ring is polled for packets through an API.
+Packets are then processed on the same core and placed on a port&#8217;s TX descriptor ring through an API for transmission.</li>
+<li>In the <em>pipe-line</em>  model, one core polls one or more port&#8217;s RX descriptor ring through an API.
+Packets are received and passed to another core via a ring.
+The other core continues to process the packet which then may be placed on a port&#8217;s TX descriptor ring through an API for transmission.</li>
+</ul>
+<p>In a synchronous run-to-completion model,
+each logical core assigned to the DPDK executes a packet processing loop that includes the following steps:</p>
+<ul class="simple">
+<li>Retrieve input packets through the PMD receive API</li>
+<li>Process each received packet one at a time, up to its forwarding</li>
+<li>Send pending output packets through the PMD transmit API</li>
+</ul>
+<p>Conversely, in an asynchronous pipe-line model, some logical cores may be dedicated to the retrieval of received packets and
+other logical cores to the processing of previously received packets.
+Received packets are exchanged between logical cores through rings.
+The loop for packet retrieval includes the following steps:</p>
+<ul class="simple">
+<li>Retrieve input packets through the PMD receive API</li>
+<li>Provide received packets to processing lcores through packet queues</li>
+</ul>
+<p>The loop for packet processing includes the following steps:</p>
+<ul class="simple">
+<li>Retrieve the received packet from the packet queue</li>
+<li>Process the received packet, up to its retransmission if forwarded</li>
+</ul>
+<p>To avoid any unnecessary interrupt processing overhead, the execution environment must not use any asynchronous notification mechanisms.
+Whenever needed and appropriate, asynchronous communication should be introduced as much as possible through the use of rings.</p>
+<p>Avoiding lock contention is a key issue in a multi-core environment.
+To address this issue, PMDs are designed to work with per-core private resources as much as possible.
+For example, a PMD maintains a separate transmit queue per-core, per-port.
+In the same way, every receive queue of a port is assigned to and polled by a single logical core (lcore).</p>
+<p>To comply with Non-Uniform Memory Access (NUMA), memory management is designed to assign to each logical core
+a private buffer pool in local memory to minimize remote memory access.
+The configuration of packet buffer pools should take into account the underlying physical memory architecture in terms of DIMMS,
+channels and ranks.
+The application must ensure that appropriate parameters are given at memory pool creation time.
+See <a class="reference internal" href="mempool_lib.html#mempool-library"><span class="std std-ref">Mempool Library</span></a>.</p>
+</div>
+<div class="section" id="design-principles">
+<h2>7.2. Design Principles</h2>
+<p>The API and architecture of the Ethernet* PMDs are designed with the following guidelines in mind.</p>
+<p>PMDs must help global policy-oriented decisions to be enforced at the upper application level.
+Conversely, NIC PMD functions should not impede the benefits expected by upper-level global policies,
+or worse prevent such policies from being applied.</p>
+<p>For instance, both the receive and transmit functions of a PMD have a maximum number of packets/descriptors to poll.
+This allows a run-to-completion processing stack to statically fix or
+to dynamically adapt its overall behavior through different global loop policies, such as:</p>
+<ul class="simple">
+<li>Receive, process immediately and transmit packets one at a time in a piecemeal fashion.</li>
+<li>Receive as many packets as possible, then process all received packets, transmitting them immediately.</li>
+<li>Receive a given maximum number of packets, process the received packets, accumulate them and finally send all accumulated packets to transmit.</li>
+</ul>
+<p>To achieve optimal performance, overall software design choices and pure software optimization techniques must be considered and
+balanced against available low-level hardware-based optimization features (CPU cache properties, bus speed, NIC PCI bandwidth, and so on).
+The case of packet transmission is an example of this software/hardware tradeoff issue when optimizing burst-oriented network packet processing engines.
+In the initial case, the PMD could export only an rte_eth_tx_one function to transmit one packet at a time on a given queue.
+On top of that, one can easily build an rte_eth_tx_burst function that loops invoking the rte_eth_tx_one function to transmit several packets at a time.
+However, an rte_eth_tx_burst function is effectively implemented by the PMD to minimize the driver-level transmit cost per packet through the following optimizations:</p>
+<ul class="simple">
+<li>Share among multiple packets the un-amortized cost of invoking the rte_eth_tx_one function.</li>
+<li>Enable the rte_eth_tx_burst function to take advantage of burst-oriented hardware features (prefetch data in cache, use of NIC head/tail registers)
+to minimize the number of CPU cycles per packet, for example by avoiding unnecessary read memory accesses to ring transmit descriptors,
+or by systematically using arrays of pointers that exactly fit cache line boundaries and sizes.</li>
+<li>Apply burst-oriented software optimization techniques to remove operations that would otherwise be unavoidable, such as ring index wrap back management.</li>
+</ul>
+<p>Burst-oriented functions are also introduced via the API for services that are intensively used by the PMD.
+This applies in particular to buffer allocators used to populate NIC rings, which provide functions to allocate/free several buffers at a time.
+For example, an mbuf_multiple_alloc function returning an array of pointers to rte_mbuf buffers which speeds up the receive poll function of the PMD when
+replenishing multiple descriptors of the receive ring.</p>
+</div>
+<div class="section" id="logical-cores-memory-and-nic-queues-relationships">
+<h2>7.3. Logical Cores, Memory and NIC Queues Relationships</h2>
+<p>The DPDK supports NUMA allowing for better performance when a processor&#8217;s logical cores and interfaces utilize its local memory.
+Therefore, mbuf allocation associated with local PCIe* interfaces should be allocated from memory pools created in the local memory.
+The buffers should, if possible, remain on the local processor to obtain the best performance results and RX and TX buffer descriptors
+should be populated with mbufs allocated from a mempool allocated from local memory.</p>
+<p>The run-to-completion model also performs better if packet or data manipulation is in local memory instead of a remote processors memory.
+This is also true for the pipe-line model provided all logical cores used are located on the same processor.</p>
+<p>Multiple logical cores should never share receive or transmit queues for interfaces since this would require global locks and hinder performance.</p>
+</div>
+<div class="section" id="device-identification-and-configuration">
+<h2>7.4. Device Identification and Configuration</h2>
+<div class="section" id="device-identification">
+<h3>7.4.1. Device Identification</h3>
+<p>Each NIC port is uniquely designated by its (bus/bridge, device, function) PCI
+identifiers assigned by the PCI probing/enumeration function executed at DPDK initialization.
+Based on their PCI identifier, NIC ports are assigned two other identifiers:</p>
+<ul class="simple">
+<li>A port index used to designate the NIC port in all functions exported by the PMD API.</li>
+<li>A port name used to designate the port in console messages, for administration or debugging purposes.
+For ease of use, the port name includes the port index.</li>
+</ul>
+</div>
+<div class="section" id="device-configuration">
+<h3>7.4.2. Device Configuration</h3>
+<p>The configuration of each NIC port includes the following operations:</p>
+<ul class="simple">
+<li>Allocate PCI resources</li>
+<li>Reset the hardware (issue a Global Reset) to a well-known default state</li>
+<li>Set up the PHY and the link</li>
+<li>Initialize statistics counters</li>
+</ul>
+<p>The PMD API must also export functions to start/stop the all-multicast feature of a port and functions to set/unset the port in promiscuous mode.</p>
+<p>Some hardware offload features must be individually configured at port initialization through specific configuration parameters.
+This is the case for the Receive Side Scaling (RSS) and Data Center Bridging (DCB) features for example.</p>
+</div>
+<div class="section" id="on-the-fly-configuration">
+<h3>7.4.3. On-the-Fly Configuration</h3>
+<p>All device features that can be started or stopped &#8220;on the fly&#8221; (that is, without stopping the device) do not require the PMD API to export dedicated functions for this purpose.</p>
+<p>All that is required is the mapping address of the device PCI registers to implement the configuration of these features in specific functions outside of the drivers.</p>
+<p>For this purpose,
+the PMD API exports a function that provides all the information associated with a device that can be used to set up a given device feature outside of the driver.
+This includes the PCI vendor identifier, the PCI device identifier, the mapping address of the PCI device registers, and the name of the driver.</p>
+<p>The main advantage of this approach is that it gives complete freedom on the choice of the API used to configure, to start, and to stop such features.</p>
+<p>As an example, refer to the configuration of the IEEE1588 feature for the Intel® 82576 Gigabit Ethernet Controller and
+the Intel® 82599 10 Gigabit Ethernet Controller controllers in the testpmd application.</p>
+<p>Other features such as the L3/L4 5-Tuple packet filtering feature of a port can be configured in the same way.
+Ethernet* flow control (pause frame) can be configured on the individual port.
+Refer to the testpmd source code for details.
+Also, L4 (UDP/TCP/ SCTP) checksum offload by the NIC can be enabled for an individual packet as long as the packet mbuf is set up correctly. See <a class="reference internal" href="#hardware-offload">Hardware Offload</a> for details.</p>
+</div>
+<div class="section" id="configuration-of-transmit-and-receive-queues">
+<h3>7.4.4. Configuration of Transmit and Receive Queues</h3>
+<p>Each transmit queue is independently configured with the following information:</p>
+<ul class="simple">
+<li>The number of descriptors of the transmit ring</li>
+<li>The socket identifier used to identify the appropriate DMA memory zone from which to allocate the transmit ring in NUMA architectures</li>
+<li>The values of the Prefetch, Host and Write-Back threshold registers of the transmit queue</li>
+<li>The <em>minimum</em> transmit packets to free threshold (tx_free_thresh).
+When the number of descriptors used to transmit packets exceeds this threshold, the network adaptor should be checked to see if it has written back descriptors.
+A value of 0 can be passed during the TX queue configuration to indicate the default value should be used.
+The default value for tx_free_thresh is 32.
+This ensures that the PMD does not search for completed descriptors until at least 32 have been processed by the NIC for this queue.</li>
+<li>The <em>minimum</em>  RS bit threshold. The minimum number of transmit descriptors to use before setting the Report Status (RS) bit in the transmit descriptor.
+Note that this parameter may only be valid for Intel 10 GbE network adapters.
+The RS bit is set on the last descriptor used to transmit a packet if the number of descriptors used since the last RS bit setting,
+up to the first descriptor used to transmit the packet, exceeds the transmit RS bit threshold (tx_rs_thresh).
+In short, this parameter controls which transmit descriptors are written back to host memory by the network adapter.
+A value of 0 can be passed during the TX queue configuration to indicate that the default value should be used.
+The default value for tx_rs_thresh is 32.
+This ensures that at least 32 descriptors are used before the network adapter writes back the most recently used descriptor.
+This saves upstream PCIe* bandwidth resulting from TX descriptor write-backs.
+It is important to note that the TX Write-back threshold (TX wthresh) should be set to 0 when tx_rs_thresh is greater than 1.
+Refer to the Intel® 82599 10 Gigabit Ethernet Controller Datasheet for more details.</li>
+</ul>
+<p>The following constraints must be satisfied for tx_free_thresh and tx_rs_thresh:</p>
+<ul class="simple">
+<li>tx_rs_thresh must be greater than 0.</li>
+<li>tx_rs_thresh must be less than the size of the ring minus 2.</li>
+<li>tx_rs_thresh must be less than or equal to tx_free_thresh.</li>
+<li>tx_free_thresh must be greater than 0.</li>
+<li>tx_free_thresh must be less than the size of the ring minus 3.</li>
+<li>For optimal performance, TX wthresh should be set to 0 when tx_rs_thresh is greater than 1.</li>
+</ul>
+<p>One descriptor in the TX ring is used as a sentinel to avoid a hardware race condition, hence the maximum threshold constraints.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">When configuring for DCB operation, at port initialization, both the number of transmit queues and the number of receive queues must be set to 128.</p>
+</div>
+</div>
+<div class="section" id="hardware-offload">
+<h3>7.4.5. Hardware Offload</h3>
+<p>Depending on driver capabilities advertised by
+<code class="docutils literal"><span class="pre">rte_eth_dev_info_get()</span></code>, the PMD may support hardware offloading
+feature like checksumming, TCP segmentation or VLAN insertion.</p>
+<p>The support of these offload features implies the addition of dedicated
+status bit(s) and value field(s) into the rte_mbuf data structure, along
+with their appropriate handling by the receive/transmit functions
+exported by each PMD. The list of flags and their precise meaning is
+described in the mbuf API documentation and in the in <a class="reference internal" href="mbuf_lib.html#mbuf-library"><span class="std std-ref">Mbuf Library</span></a>, section &#8220;Meta Information&#8221;.</p>
+</div>
+</div>
+<div class="section" id="poll-mode-driver-api">
+<h2>7.5. Poll Mode Driver API</h2>
+<div class="section" id="generalities">
+<h3>7.5.1. Generalities</h3>
+<p>By default, all functions exported by a PMD are lock-free functions that are assumed
+not to be invoked in parallel on different logical cores to work on the same target object.
+For instance, a PMD receive function cannot be invoked in parallel on two logical cores to poll the same RX queue of the same port.
+Of course, this function can be invoked in parallel by different logical cores on different RX queues.
+It is the responsibility of the upper-level application to enforce this rule.</p>
+<p>If needed, parallel accesses by multiple logical cores to shared queues can be explicitly protected by dedicated inline lock-aware functions
+built on top of their corresponding lock-free functions of the PMD API.</p>
+</div>
+<div class="section" id="generic-packet-representation">
+<h3>7.5.2. Generic Packet Representation</h3>
+<p>A packet is represented by an rte_mbuf structure, which is a generic metadata structure containing all necessary housekeeping information.
+This includes fields and status bits corresponding to offload hardware features, such as checksum computation of IP headers or VLAN tags.</p>
+<p>The rte_mbuf data structure includes specific fields to represent, in a generic way, the offload features provided by network controllers.
+For an input packet, most fields of the rte_mbuf structure are filled in by the PMD receive function with the information contained in the receive descriptor.
+Conversely, for output packets, most fields of rte_mbuf structures are used by the PMD transmit function to initialize transmit descriptors.</p>
+<p>The mbuf structure is fully described in the <a class="reference internal" href="mbuf_lib.html#mbuf-library"><span class="std std-ref">Mbuf Library</span></a> chapter.</p>
+</div>
+<div class="section" id="ethernet-device-api">
+<h3>7.5.3. Ethernet Device API</h3>
+<p>The Ethernet device API exported by the Ethernet PMDs is described in the <em>DPDK API Reference</em>.</p>
+</div>
+<div class="section" id="extended-statistics-api">
+<h3>7.5.4. Extended Statistics API</h3>
+<p>The extended statistics API allows each individual PMD to expose a unique set
+of statistics. The client of the API provides an array of
+<code class="docutils literal"><span class="pre">struct</span> <span class="pre">rte_eth_xstats</span></code> type. Each <code class="docutils literal"><span class="pre">struct</span> <span class="pre">rte_eth_xstats</span></code> contains a
+string and value pair. The amount of xstats exposed, and position of the
+statistic in the array must remain constant during runtime.</p>
+<p>A naming scheme exists for the strings exposed to clients of the API. This is
+to allow scraping of the API for statistics of interest. The naming scheme uses
+strings split by a single underscore <code class="docutils literal"><span class="pre">_</span></code>. The scheme is as follows:</p>
+<ul class="simple">
+<li>direction</li>
+<li>detail 1</li>
+<li>detail 2</li>
+<li>detail n</li>
+<li>unit</li>
+</ul>
+<p>Examples of common statistics xstats strings, formatted to comply to the scheme
+proposed above:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">rx_bytes</span></code></li>
+<li><code class="docutils literal"><span class="pre">rx_crc_errors</span></code></li>
+<li><code class="docutils literal"><span class="pre">tx_multicast_packets</span></code></li>
+</ul>
+<p>The scheme, although quite simple, allows flexibility in presenting and reading
+information from the statistic strings. The following example illustrates the
+naming scheme:<code class="docutils literal"><span class="pre">rx_packets</span></code>. In this example, the string is split into two
+components. The first component <code class="docutils literal"><span class="pre">rx</span></code> indicates that the statistic is
+associated with the receive side of the NIC.  The second component <code class="docutils literal"><span class="pre">packets</span></code>
+indicates that the unit of measure is packets.</p>
+<p>A more complicated example: <code class="docutils literal"><span class="pre">tx_size_128_to_255_packets</span></code>. In this example,
+<code class="docutils literal"><span class="pre">tx</span></code> indicates transmission, <code class="docutils literal"><span class="pre">size</span></code>  is the first detail, <code class="docutils literal"><span class="pre">128</span></code> etc are
+more details, and <code class="docutils literal"><span class="pre">packets</span></code> indicates that this is a packet counter.</p>
+<p>Some additions in the metadata scheme are as follows:</p>
+<ul class="simple">
+<li>If the first part does not match <code class="docutils literal"><span class="pre">rx</span></code> or <code class="docutils literal"><span class="pre">tx</span></code>, the statistic does not
+have an affinity with either receive of transmit.</li>
+<li>If the first letter of the second part is <code class="docutils literal"><span class="pre">q</span></code> and this <code class="docutils literal"><span class="pre">q</span></code> is followed
+by a number, this statistic is part of a specific queue.</li>
+</ul>
+<p>An example where queue numbers are used is as follows: <code class="docutils literal"><span class="pre">tx_q7_bytes</span></code> which
+indicates this statistic applies to queue number 7, and represents the number
+of transmitted bytes on that queue.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="cryptodev_lib.html" class="btn btn-neutral float-right" title="8. Cryptography Device Library" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="mbuf_lib.html" class="btn btn-neutral" title="6. Mbuf Library" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

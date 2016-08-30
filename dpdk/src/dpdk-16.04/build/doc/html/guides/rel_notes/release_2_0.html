@@ -1,0 +1,336 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>5. DPDK Release 2.0 &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Release Notes" href="index.html"/>
+        <link rel="next" title="6. DPDK Release 1.8" href="release_1_8.html"/>
+        <link rel="prev" title="4. DPDK Release 2.1" href="release_2_1.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Release Notes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="rel_description.html">1. Description of Release</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_16_04.html">2. DPDK Release 16.04</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_2_2.html">3. DPDK Release 2.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_2_1.html">4. DPDK Release 2.1</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5. DPDK Release 2.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#new-features">5.1. New Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="release_1_8.html">6. DPDK Release 1.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="supported_os.html">7. Supported Operating Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="known_issues.html">8. Known Issues and Limitations in Legacy Releases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deprecation.html">9. ABI and API Deprecation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Release Notes</a> &raquo;</li>
+      
+    <li>5. DPDK Release 2.0</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/rel_notes/release_2_0.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="dpdk-release-2-0">
+<h1>5. DPDK Release 2.0</h1>
+<div class="section" id="new-features">
+<h2>5.1. New Features</h2>
+<ul class="simple">
+<li>Poll-mode driver support for an early release of the PCIE host interface of the Intel(R) Ethernet Switch FM10000.<ul>
+<li>Basic Rx/Tx functions for PF/VF</li>
+<li>Interrupt handling support for PF/VF</li>
+<li>Per queue start/stop functions for PF/VF</li>
+<li>Support Mailbox handling between PF/VF and PF/Switch Manager</li>
+<li>Receive Side Scaling (RSS) for PF/VF</li>
+<li>Scatter receive function for PF/VF</li>
+<li>Reta update/query for PF/VF</li>
+<li>VLAN filter set for PF</li>
+<li>Link status query for PF/VF</li>
+</ul>
+</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The software is intended to run on pre-release hardware and may contain unknown or unresolved defects or
+issues related to functionality and performance.
+The poll mode driver is also pre-release and will be updated to a released version post hardware and base driver release.
+Should the official hardware release be made between DPDK releases an updated poll-mode driver will be made available.</p>
+</div>
+<ul>
+<li><p class="first">Link Bonding</p>
+<ul class="simple">
+<li>Support for adaptive load balancing (mode 6) to the link bonding library.</li>
+<li>Support for registration of link status change callbacks with link bonding devices.</li>
+<li>Support for slaves devices which do not support link status change interrupts in the link bonding library via a link status polling mechanism.</li>
+</ul>
+</li>
+<li><p class="first">PCI Hotplug with NULL PMD sample application</p>
+</li>
+<li><p class="first">ABI versioning</p>
+</li>
+<li><p class="first">x32 ABI</p>
+</li>
+<li><p class="first">Non-EAL Thread Support</p>
+</li>
+<li><p class="first">Multi-pthread Support</p>
+</li>
+<li><p class="first">Re-order Library</p>
+</li>
+<li><p class="first">ACL for AVX2</p>
+</li>
+<li><p class="first">Architecture Independent CRC Hash</p>
+</li>
+<li><p class="first">uio_pci_generic Support</p>
+</li>
+<li><p class="first">KNI Optimizations</p>
+</li>
+<li><p class="first">Vhost-user support</p>
+</li>
+<li><p class="first">Virtio (link, vlan, mac, port IO, perf)</p>
+</li>
+<li><p class="first">IXGBE-VF RSS</p>
+</li>
+<li><p class="first">RX/TX Callbacks</p>
+</li>
+<li><p class="first">Unified Flow Types</p>
+</li>
+<li><p class="first">Indirect Attached MBUF Flag</p>
+</li>
+<li><p class="first">Use default port configuration in TestPMD</p>
+</li>
+<li><p class="first">Tunnel offloading in TestPMD</p>
+</li>
+<li><p class="first">Poll Mode Driver - 40 GbE Controllers (librte_pmd_i40e)</p>
+<ul class="simple">
+<li>Support for Flow Director</li>
+<li>Support for ethertype filter</li>
+<li>Support RSS in VF</li>
+<li>Support configuring redirection table with different size from 1GbE and 10 GbE</li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li>128/512 entries of 40GbE PF</li>
+<li>64 entries of 40GbE VF</li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li>Support configuring hash functions</li>
+<li>Support for VXLAN packet on Intel® 40GbE Controllers</li>
+</ul>
+</li>
+<li><p class="first">Poll Mode Driver for Mellanox ConnectX-3 EN adapters (mlx4)</p>
+</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This PMD is only available for Linux and is disabled by default
+due to external dependencies (libibverbs and libmlx4). Please
+refer to the NIC drivers guide for more information.</p>
+</div>
+<ul class="simple">
+<li>Packet Distributor Sample Application</li>
+<li>Job Stats library and Sample Application.</li>
+<li>Enhanced Jenkins hash (jhash) library</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The hash values returned by the new jhash library are different
+from the ones returned by the previous library.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="release_1_8.html" class="btn btn-neutral float-right" title="6. DPDK Release 1.8" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="release_2_1.html" class="btn btn-neutral" title="4. DPDK Release 2.1" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,752 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>8. Cryptography Device Library &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Programmer’s Guide" href="index.html"/>
+        <link rel="next" title="9. IVSHMEM Library" href="ivshmem_lib.html"/>
+        <link rel="prev" title="7. Poll Mode Driver" href="poll_mode_drv.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Programmer&#8217;s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html">2. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="env_abstraction_layer.html">3. Environment Abstraction Layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ring_lib.html">4. Ring Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mempool_lib.html">5. Mempool Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mbuf_lib.html">6. Mbuf Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="poll_mode_drv.html">7. Poll Mode Driver</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">8. Cryptography Device Library</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#design-principles">8.1. Design Principles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#device-management">8.2. Device Management</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#device-creation">8.2.1. Device Creation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#device-identification">8.2.2. Device Identification</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#device-configuration">8.2.3. Device Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuration-of-queue-pairs">8.2.4. Configuration of Queue Pairs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#logical-cores-memory-and-queues-pair-relationships">8.2.5. Logical Cores, Memory and Queues Pair Relationships</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#device-features-and-capabilities">8.3. Device Features and Capabilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#device-features">8.3.1. Device Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#device-operation-capabilities">8.3.2. Device Operation Capabilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#capabilities-discovery">8.3.3. Capabilities Discovery</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#operation-processing">8.4. Operation Processing</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#enqueue-dequeue-burst-apis">8.4.1. Enqueue / Dequeue Burst APIs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#operation-representation">8.4.2. Operation Representation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#operation-management-and-allocation">8.4.3. Operation Management and Allocation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#symmetric-cryptography-support">8.5. Symmetric Cryptography Support</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#session-and-session-management">8.5.1. Session and Session Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#transforms-and-transform-chaining">8.5.2. Transforms and Transform Chaining</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#symmetric-operations">8.5.3. Symmetric Operations</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#asymmetric-cryptography">8.6. Asymmetric Cryptography</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#crypto-device-api">8.6.1. Crypto Device API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ivshmem_lib.html">9. IVSHMEM Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_bonding_poll_mode_drv_lib.html">10. Link Bonding Poll Mode Driver Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer_lib.html">11. Timer Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hash_lib.html">12. Hash Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm_lib.html">13. LPM Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm6_lib.html">14. LPM6 Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_distrib_lib.html">15. Packet Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reorder_lib.html">16. Reorder Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_fragment_reassembly_lib.html">17. IP Fragmentation and Reassembly Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_proc_support.html">18. Multi-process Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">19. Kernel NIC Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thread_safety_dpdk_functions.html">20. Thread Safety of DPDK Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_framework.html">21. Quality of Service (QoS) Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="power_man.html">22. Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_classif_access_ctrl.html">23. Packet Classification and Access Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_framework.html">24. Packet Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_lib.html">25. Vhost Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="port_hotplug_framework.html">26. Port Hotplug Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source_org.html">27. Source Organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_kit_build_system.html">28. Development Kit Build System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_kit_root_make_help.html">29. Development Kit Root Makefile Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extend_dpdk.html">30. Extending the DPDK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_app.html">31. Building Your Own Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ext_app_lib_make_help.html">32. External Application/Library Makefile help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perf_opt_guidelines.html">33. Performance Optimization Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing_efficient_code.html">34. Writing Efficient Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="profile_app.html">35. Profile Your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">36. Glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Programmer&#8217;s Guide</a> &raquo;</li>
+      
+    <li>8. Cryptography Device Library</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/prog_guide/cryptodev_lib.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="cryptography-device-library">
+<h1>8. Cryptography Device Library</h1>
+<p>The cryptodev library provides a Crypto device framework for management and
+provisioning of hardware and software Crypto poll mode drivers, defining generic
+APIs which support a number of different Crypto operations. The framework
+currently only supports cipher, authentication, chained cipher/authentication
+and AEAD symmetric Crypto operations.</p>
+<div class="section" id="design-principles">
+<h2>8.1. Design Principles</h2>
+<p>The cryptodev library follows the same basic principles as those used in DPDKs
+Ethernet Device framework. The Crypto framework provides a generic Crypto device
+framework which supports both physical (hardware) and virtual (software) Crypto
+devices as well as a generic Crypto API which allows Crypto devices to be
+managed and configured and supports Crypto operations to be provisioned on
+Crypto poll mode driver.</p>
+</div>
+<div class="section" id="device-management">
+<h2>8.2. Device Management</h2>
+<div class="section" id="device-creation">
+<h3>8.2.1. Device Creation</h3>
+<p>Physical Crypto devices are discovered during the PCI probe/enumeration of the
+EAL function which is executed at DPDK initialization, based on
+their PCI device identifier, each unique PCI BDF (bus/bridge, device,
+function). Specific physical Crypto devices, like other physical devices in DPDK
+can be white-listed or black-listed using the EAL command line options.</p>
+<p>Virtual devices can be created by two mechanisms, either using the EAL command
+line options or from within the application using an EAL API directly.</p>
+<p>From the command line using the &#8211;vdev EAL option</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">--vdev  &#39;cryptodev_aesni_mb_pmd0,max_nb_queue_pairs=2,max_nb_sessions=1024,socket_id=0&#39;</span>
+</pre></div>
+</div>
+<p>Our using the rte_eal_vdev_init API within the application code.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="n">rte_eal_vdev_init</span><span class="p">(</span><span class="s">&quot;cryptodev_aesni_mb_pmd&quot;</span><span class="p">,</span>
+                  <span class="s">&quot;max_nb_queue_pairs=2,max_nb_sessions=1024,socket_id=0&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>All virtual Crypto devices support the following initialization parameters:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">max_nb_queue_pairs</span></code> - maximum number of queue pairs supported by the device.</li>
+<li><code class="docutils literal"><span class="pre">max_nb_sessions</span></code> - maximum number of sessions supported by the device</li>
+<li><code class="docutils literal"><span class="pre">socket_id</span></code> - socket on which to allocate the device resources on.</li>
+</ul>
+</div>
+<div class="section" id="device-identification">
+<h3>8.2.2. Device Identification</h3>
+<p>Each device, whether virtual or physical is uniquely designated by two
+identifiers:</p>
+<ul class="simple">
+<li>A unique device index used to designate the Crypto device in all functions
+exported by the cryptodev API.</li>
+<li>A device name used to designate the Crypto device in console messages, for
+administration or debugging purposes. For ease of use, the port name includes
+the port index.</li>
+</ul>
+</div>
+<div class="section" id="device-configuration">
+<h3>8.2.3. Device Configuration</h3>
+<p>The configuration of each Crypto device includes the following operations:</p>
+<ul class="simple">
+<li>Allocation of resources, including hardware resources if a physical device.</li>
+<li>Resetting the device into a well-known default state.</li>
+<li>Initialization of statistics counters.</li>
+</ul>
+<p>The rte_cryptodev_configure API is used to configure a Crypto device.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">rte_cryptodev_configure</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="n">dev_id</span><span class="p">,</span>
+                            <span class="k">struct</span> <span class="n">rte_cryptodev_config</span> <span class="o">*</span><span class="n">config</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">rte_cryptodev_config</span></code> structure is used to pass the configuration parameters.
+In contains parameter for socket selection, number of queue pairs and the
+session mempool configuration.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">rte_cryptodev_config</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">socket_id</span><span class="p">;</span>
+    <span class="cm">/**&lt; Socket to allocate resources on */</span>
+    <span class="kt">uint16_t</span> <span class="n">nb_queue_pairs</span><span class="p">;</span>
+    <span class="cm">/**&lt; Number of queue pairs to configure on device */</span>
+
+    <span class="k">struct</span> <span class="p">{</span>
+        <span class="kt">uint32_t</span> <span class="n">nb_objs</span><span class="p">;</span>
+        <span class="kt">uint32_t</span> <span class="n">cache_size</span><span class="p">;</span>
+    <span class="p">}</span> <span class="n">session_mp</span><span class="p">;</span>
+    <span class="cm">/**&lt; Session mempool configuration */</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="configuration-of-queue-pairs">
+<h3>8.2.4. Configuration of Queue Pairs</h3>
+<p>Each Crypto devices queue pair is individually configured through the
+<code class="docutils literal"><span class="pre">rte_cryptodev_queue_pair_setup</span></code> API.
+Each queue pairs resources may be allocated on a specified socket.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">rte_cryptodev_queue_pair_setup</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="n">dev_id</span><span class="p">,</span> <span class="kt">uint16_t</span> <span class="n">queue_pair_id</span><span class="p">,</span>
+            <span class="k">const</span> <span class="k">struct</span> <span class="n">rte_cryptodev_qp_conf</span> <span class="o">*</span><span class="n">qp_conf</span><span class="p">,</span>
+            <span class="kt">int</span> <span class="n">socket_id</span><span class="p">)</span>
+
+<span class="k">struct</span> <span class="n">rte_cryptodev_qp_conf</span> <span class="p">{</span>
+    <span class="kt">uint32_t</span> <span class="n">nb_descriptors</span><span class="p">;</span> <span class="cm">/**&lt; Number of descriptors per queue pair */</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="logical-cores-memory-and-queues-pair-relationships">
+<h3>8.2.5. Logical Cores, Memory and Queues Pair Relationships</h3>
+<p>The Crypto device Library as the Poll Mode Driver library support NUMA for when
+a processor’s logical cores and interfaces utilize its local memory. Therefore
+Crypto operations, and in the case of symmetric Crypto operations, the session
+and the mbuf being operated on, should be allocated from memory pools created
+in the local memory. The buffers should, if possible, remain on the local
+processor to obtain the best performance results and buffer descriptors should
+be populated with mbufs allocated from a mempool allocated from local memory.</p>
+<p>The run-to-completion model also performs better, especially in the case of
+virtual Crypto devices, if the Crypto operation and session and data buffer is
+in local memory instead of a remote processor&#8217;s memory. This is also true for
+the pipe-line model provided all logical cores used are located on the same
+processor.</p>
+<p>Multiple logical cores should never share the same queue pair for enqueuing
+operations or dequeuing operations on the same Crypto device since this would
+require global locks and hinder performance. It is however possible to use a
+different logical core to dequeue an operation on a queue pair from the logical
+core which it was enqueued on. This means that a crypto burst enqueue/dequeue
+APIs are a logical place to transition from one logical core to another in a
+packet processing pipeline.</p>
+</div>
+</div>
+<div class="section" id="device-features-and-capabilities">
+<h2>8.3. Device Features and Capabilities</h2>
+<p>Crypto devices define their functionality through two mechanisms, global device
+features and algorithm capabilities. Global devices features identify device
+wide level features which are applicable to the whole device such as
+the device having hardware acceleration or supporting symmetric Crypto
+operations,</p>
+<p>The capabilities mechanism defines the individual algorithms/functions which
+the device supports, such as a specific symmetric Crypto cipher or
+authentication operation.</p>
+<div class="section" id="device-features">
+<h3>8.3.1. Device Features</h3>
+<p>Currently the following Crypto device features are defined:</p>
+<ul class="simple">
+<li>Symmetric Crypto operations</li>
+<li>Asymmetric Crypto operations</li>
+<li>Chaining of symmetric Crypto operations</li>
+<li>SSE accelerated SIMD vector operations</li>
+<li>AVX accelerated SIMD vector operations</li>
+<li>AVX2 accelerated SIMD vector operations</li>
+<li>AESNI accelerated instructions</li>
+<li>Hardware off-load processing</li>
+</ul>
+</div>
+<div class="section" id="device-operation-capabilities">
+<h3>8.3.2. Device Operation Capabilities</h3>
+<p>Crypto capabilities which identify particular algorithm which the Crypto PMD
+supports are  defined by the operation type, the operation transform, the
+transform identifier and then the particulars of the transform. For the full
+scope of the Crypto capability see the definition of the structure in the
+<em>DPDK API Reference</em>.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">rte_cryptodev_capabilities</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Each Crypto poll mode driver defines its own private array of capabilities
+for the operations it supports. Below is an example of the capabilities for a
+PMD which supports the authentication algorithm SHA1_HMAC and the cipher
+algorithm AES_CBC.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">rte_cryptodev_capabilities</span> <span class="n">pmd_capabilities</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">{</span>    <span class="cm">/* SHA1 HMAC */</span>
+        <span class="p">.</span><span class="n">op</span> <span class="o">=</span> <span class="n">RTE_CRYPTO_OP_TYPE_SYMMETRIC</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">sym</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="p">.</span><span class="n">xform_type</span> <span class="o">=</span> <span class="n">RTE_CRYPTO_SYM_XFORM_AUTH</span><span class="p">,</span>
+            <span class="p">.</span><span class="n">auth</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="p">.</span><span class="n">algo</span> <span class="o">=</span> <span class="n">RTE_CRYPTO_AUTH_SHA1_HMAC</span><span class="p">,</span>
+                <span class="p">.</span><span class="n">block_size</span> <span class="o">=</span> <span class="mi">64</span><span class="p">,</span>
+                <span class="p">.</span><span class="n">key_size</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="p">.</span><span class="n">min</span> <span class="o">=</span> <span class="mi">64</span><span class="p">,</span>
+                    <span class="p">.</span><span class="n">max</span> <span class="o">=</span> <span class="mi">64</span><span class="p">,</span>
+                    <span class="p">.</span><span class="n">increment</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="p">},</span>
+                <span class="p">.</span><span class="n">digest_size</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="p">.</span><span class="n">min</span> <span class="o">=</span> <span class="mi">12</span><span class="p">,</span>
+                    <span class="p">.</span><span class="n">max</span> <span class="o">=</span> <span class="mi">12</span><span class="p">,</span>
+                    <span class="p">.</span><span class="n">increment</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="p">},</span>
+                <span class="p">.</span><span class="n">aad_size</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">0</span> <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="p">{</span>    <span class="cm">/* AES CBC */</span>
+        <span class="p">.</span><span class="n">op</span> <span class="o">=</span> <span class="n">RTE_CRYPTO_OP_TYPE_SYMMETRIC</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">sym</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="p">.</span><span class="n">xform_type</span> <span class="o">=</span> <span class="n">RTE_CRYPTO_SYM_XFORM_CIPHER</span><span class="p">,</span>
+            <span class="p">.</span><span class="n">cipher</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="p">.</span><span class="n">algo</span> <span class="o">=</span> <span class="n">RTE_CRYPTO_CIPHER_AES_CBC</span><span class="p">,</span>
+                <span class="p">.</span><span class="n">block_size</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
+                <span class="p">.</span><span class="n">key_size</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="p">.</span><span class="n">min</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
+                    <span class="p">.</span><span class="n">max</span> <span class="o">=</span> <span class="mi">32</span><span class="p">,</span>
+                    <span class="p">.</span><span class="n">increment</span> <span class="o">=</span> <span class="mi">8</span>
+                <span class="p">},</span>
+                <span class="p">.</span><span class="n">iv_size</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="p">.</span><span class="n">min</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
+                    <span class="p">.</span><span class="n">max</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
+                    <span class="p">.</span><span class="n">increment</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="capabilities-discovery">
+<h3>8.3.3. Capabilities Discovery</h3>
+<p>Discovering the features and capabilities of a Crypto device poll mode driver
+is achieved through the <code class="docutils literal"><span class="pre">rte_cryptodev_info_get</span></code> function.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">rte_cryptodev_info_get</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="n">dev_id</span><span class="p">,</span>
+                            <span class="k">struct</span> <span class="n">rte_cryptodev_info</span> <span class="o">*</span><span class="n">dev_info</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>This allows the user to query a specific Crypto PMD and get all the device
+features and capabilities. The <code class="docutils literal"><span class="pre">rte_cryptodev_info</span></code> structure contains all the
+relevant information for the device.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">rte_cryptodev_info</span> <span class="p">{</span>
+    <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">driver_name</span><span class="p">;</span>
+    <span class="k">enum</span> <span class="n">rte_cryptodev_type</span> <span class="n">dev_type</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">rte_pci_device</span> <span class="o">*</span><span class="n">pci_dev</span><span class="p">;</span>
+
+    <span class="kt">uint64_t</span> <span class="n">feature_flags</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="k">struct</span> <span class="n">rte_cryptodev_capabilities</span> <span class="o">*</span><span class="n">capabilities</span><span class="p">;</span>
+
+    <span class="kt">unsigned</span> <span class="n">max_nb_queue_pairs</span><span class="p">;</span>
+
+    <span class="k">struct</span> <span class="p">{</span>
+        <span class="kt">unsigned</span> <span class="n">max_nb_sessions</span><span class="p">;</span>
+    <span class="p">}</span> <span class="n">sym</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="operation-processing">
+<h2>8.4. Operation Processing</h2>
+<p>Scheduling of Crypto operations on DPDK&#8217;s application data path is
+performed using a burst oriented asynchronous API set. A queue pair on a Crypto
+device accepts a burst of Crypto operations using enqueue burst API. On physical
+Crypto devices the enqueue burst API will place the operations to be processed
+on the devices hardware input queue, for virtual devices the processing of the
+Crypto operations is usually completed during the enqueue call to the Crypto
+device. The dequeue burst API will retrieve any processed operations available
+from the queue pair on the Crypto device, from physical devices this is usually
+directly from the devices processed queue, and for virtual device&#8217;s from a
+<code class="docutils literal"><span class="pre">rte_ring</span></code> where processed operations are place after being processed on the
+enqueue call.</p>
+<div class="section" id="enqueue-dequeue-burst-apis">
+<h3>8.4.1. Enqueue / Dequeue Burst APIs</h3>
+<p>The burst enqueue API uses a Crypto device identifier and a queue pair
+identifier to specify the Crypto device queue pair to schedule the processing on.
+The <code class="docutils literal"><span class="pre">nb_ops</span></code> parameter is the number of operations to process which are
+supplied in the <code class="docutils literal"><span class="pre">ops</span></code> array of <code class="docutils literal"><span class="pre">rte_crypto_op</span></code> structures.
+The enqueue function returns the number of operations it actually enqueued for
+processing, a return value equal to <code class="docutils literal"><span class="pre">nb_ops</span></code> means that all packets have been
+enqueued.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">uint16_t</span> <span class="n">rte_cryptodev_enqueue_burst</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="n">dev_id</span><span class="p">,</span> <span class="kt">uint16_t</span> <span class="n">qp_id</span><span class="p">,</span>
+                                     <span class="k">struct</span> <span class="n">rte_crypto_op</span> <span class="o">**</span><span class="n">ops</span><span class="p">,</span> <span class="kt">uint16_t</span> <span class="n">nb_ops</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The dequeue API uses the same format as the enqueue API of processed but
+the <code class="docutils literal"><span class="pre">nb_ops</span></code> and <code class="docutils literal"><span class="pre">ops</span></code> parameters are now used to specify the max processed
+operations the user wishes to retrieve and the location in which to store them.
+The API call returns the actual number of processed operations returned, this
+can never be larger than <code class="docutils literal"><span class="pre">nb_ops</span></code>.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">uint16_t</span> <span class="n">rte_cryptodev_dequeue_burst</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="n">dev_id</span><span class="p">,</span> <span class="kt">uint16_t</span> <span class="n">qp_id</span><span class="p">,</span>
+                                     <span class="k">struct</span> <span class="n">rte_crypto_op</span> <span class="o">**</span><span class="n">ops</span><span class="p">,</span> <span class="kt">uint16_t</span> <span class="n">nb_ops</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="operation-representation">
+<h3>8.4.2. Operation Representation</h3>
+<p>An Crypto operation is represented by an rte_crypto_op structure, which is a
+generic metadata container for all necessary information required for the
+Crypto operation to be processed on a particular Crypto device poll mode driver.</p>
+<div class="figure">
+<img src="../_images/crypto_op.svg" /></div>
+<p>The operation structure includes the operation type and the operation status,
+a reference to the operation specific data, which can vary in size and content
+depending on the operation being provisioned. It also contains the source
+mempool for the operation, if it allocate from a mempool. Finally an
+opaque pointer for user specific data is provided.</p>
+<p>If Crypto operations are allocated from a Crypto operation mempool, see next
+section, there is also the ability to allocate private memory with the
+operation for applications purposes.</p>
+<p>Application software is responsible for specifying all the operation specific
+fields in the <code class="docutils literal"><span class="pre">rte_crypto_op</span></code> structure which are then used by the Crypto PMD
+to process the requested operation.</p>
+</div>
+<div class="section" id="operation-management-and-allocation">
+<h3>8.4.3. Operation Management and Allocation</h3>
+<p>The cryptodev library provides an API set for managing Crypto operations which
+utilize the Mempool Library to allocate operation buffers. Therefore, it ensures
+that the crytpo operation is interleaved optimally across the channels and
+ranks for optimal processing.
+A <code class="docutils literal"><span class="pre">rte_crypto_op</span></code> contains a field indicating the pool that it originated from.
+When calling <code class="docutils literal"><span class="pre">rte_crypto_op_free(op)</span></code>, the operation returns to its original pool.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">extern</span> <span class="k">struct</span> <span class="n">rte_mempool</span> <span class="o">*</span>
+<span class="nf">rte_crypto_op_pool_create</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">,</span> <span class="k">enum</span> <span class="n">rte_crypto_op_type</span> <span class="n">type</span><span class="p">,</span>
+                          <span class="kt">unsigned</span> <span class="n">nb_elts</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="n">cache_size</span><span class="p">,</span> <span class="kt">uint16_t</span> <span class="n">priv_size</span><span class="p">,</span>
+                          <span class="kt">int</span> <span class="n">socket_id</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>During pool creation <code class="docutils literal"><span class="pre">rte_crypto_op_init()</span></code> is called as a constructor to
+initialize each Crypto operation which subsequently calls
+<code class="docutils literal"><span class="pre">__rte_crypto_op_reset()</span></code> to configure any operation type specific fields based
+on the type parameter.</p>
+<p><code class="docutils literal"><span class="pre">rte_crypto_op_alloc()</span></code> and <code class="docutils literal"><span class="pre">rte_crypto_op_bulk_alloc()</span></code> are used to allocate
+Crypto operations of a specific type from a given Crypto operation mempool.
+<code class="docutils literal"><span class="pre">__rte_crypto_op_reset()</span></code> is called on each operation before being returned to
+allocate to a user so the operation is always in a good known state before use
+by the application.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">rte_crypto_op</span> <span class="o">*</span><span class="n">rte_crypto_op_alloc</span><span class="p">(</span><span class="k">struct</span> <span class="n">rte_mempool</span> <span class="o">*</span><span class="n">mempool</span><span class="p">,</span>
+                                          <span class="k">enum</span> <span class="n">rte_crypto_op_type</span> <span class="n">type</span><span class="p">)</span>
+
+<span class="kt">unsigned</span> <span class="n">rte_crypto_op_bulk_alloc</span><span class="p">(</span><span class="k">struct</span> <span class="n">rte_mempool</span> <span class="o">*</span><span class="n">mempool</span><span class="p">,</span>
+                                  <span class="k">enum</span> <span class="n">rte_crypto_op_type</span> <span class="n">type</span><span class="p">,</span>
+                                  <span class="k">struct</span> <span class="n">rte_crypto_op</span> <span class="o">**</span><span class="n">ops</span><span class="p">,</span> <span class="kt">uint16_t</span> <span class="n">nb_ops</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">rte_crypto_op_free()</span></code> is called by the application to return an operation to
+its allocating pool.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="n">rte_crypto_op_free</span><span class="p">(</span><span class="k">struct</span> <span class="n">rte_crypto_op</span> <span class="o">*</span><span class="n">op</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="symmetric-cryptography-support">
+<h2>8.5. Symmetric Cryptography Support</h2>
+<p>The cryptodev library currently provides support for the following symmetric
+Crypto operations; cipher, authentication, including chaining of these
+operations, as well as also supporting AEAD operations.</p>
+<div class="section" id="session-and-session-management">
+<h3>8.5.1. Session and Session Management</h3>
+<p>Session are used in symmetric cryptographic processing to store the immutable
+data defined in a cryptographic transform which is used in the operation
+processing of a packet flow. Sessions are used to manage information such as
+expand cipher keys and HMAC IPADs and OPADs, which need to be calculated for a
+particular Crypto operation, but are immutable on a packet to packet basis for
+a flow. Crypto sessions cache this immutable data in a optimal way for the
+underlying PMD and this allows further acceleration of the offload of
+Crypto workloads.</p>
+<div class="figure">
+<img src="../_images/cryptodev_sym_sess.svg" /></div>
+<p>The Crypto device framework provides a set of session pool management APIs for
+the creation and freeing of the sessions, utilizing the Mempool Library.</p>
+<p>The framework also provides hooks so the PMDs can pass the amount of memory
+required for that PMDs private session parameters, as well as initialization
+functions for the configuration of the session parameters and freeing function
+so the PMD can managed the memory on destruction of a session.</p>
+<p><strong>Note</strong>: Sessions created on a particular device can only be used on Crypto
+devices of the same type, and if you try to use a session on a device different
+to that on which it was created then the Crypto operation will fail.</p>
+<p><code class="docutils literal"><span class="pre">rte_cryptodev_sym_session_create()</span></code> is used to create a symmetric session on
+Crypto device. A symmetric transform chain is used to specify the particular
+operation and its parameters. See the section below for details on transforms.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">rte_cryptodev_sym_session</span> <span class="o">*</span> <span class="nf">rte_cryptodev_sym_session_create</span><span class="p">(</span>
+       <span class="kt">uint8_t</span> <span class="n">dev_id</span><span class="p">,</span> <span class="k">struct</span> <span class="n">rte_crypto_sym_xform</span> <span class="o">*</span><span class="n">xform</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>Note</strong>: For AEAD operations the algorithm selected for authentication and
+ciphering must aligned, eg AES_GCM.</p>
+</div>
+<div class="section" id="transforms-and-transform-chaining">
+<h3>8.5.2. Transforms and Transform Chaining</h3>
+<p>Symmetric Crypto transforms (<code class="docutils literal"><span class="pre">rte_crypto_sym_xform</span></code>) are the mechanism used
+to specify the details of the Crypto operation. For chaining of symmetric
+operations such as cipher encrypt and authentication generate, the next pointer
+allows transform to be chained together. Crypto devices which support chaining
+must publish the chaining of symmetric Crypto operations feature flag.</p>
+<p>Currently there are two transforms types cipher and authentication, to specify
+an AEAD operation it is required to chain a cipher and an authentication
+transform together. Also it is important to note that the order in which the
+transforms are passed indicates the order of the chaining.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">rte_crypto_sym_xform</span> <span class="p">{</span>
+    <span class="k">struct</span> <span class="n">rte_crypto_sym_xform</span> <span class="o">*</span><span class="n">next</span><span class="p">;</span>
+    <span class="cm">/**&lt; next xform in chain */</span>
+    <span class="k">enum</span> <span class="n">rte_crypto_sym_xform_type</span> <span class="n">type</span><span class="p">;</span>
+    <span class="cm">/**&lt; xform type */</span>
+    <span class="k">union</span> <span class="p">{</span>
+        <span class="k">struct</span> <span class="n">rte_crypto_auth_xform</span> <span class="n">auth</span><span class="p">;</span>
+        <span class="cm">/**&lt; Authentication / hash xform */</span>
+        <span class="k">struct</span> <span class="n">rte_crypto_cipher_xform</span> <span class="n">cipher</span><span class="p">;</span>
+        <span class="cm">/**&lt; Cipher xform */</span>
+    <span class="p">};</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>The API does not place a limit on the number of transforms that can be chained
+together but this will be limited by the underlying Crypto device poll mode
+driver which is processing the operation.</p>
+<div class="figure">
+<img src="../_images/crypto_xform_chain.svg" /></div>
+</div>
+<div class="section" id="symmetric-operations">
+<h3>8.5.3. Symmetric Operations</h3>
+<p>The symmetric Crypto operation structure contains all the mutable data relating
+to performing symmetric cryptographic processing on a referenced mbuf data
+buffer. It is used for either cipher, authentication, AEAD and chained
+operations.</p>
+<p>As a minimum the symmetric operation must have a source data buffer (<code class="docutils literal"><span class="pre">m_src</span></code>),
+the session type (session-based/less), a valid session (or transform chain if in
+session-less mode) and the minimum authentication/ cipher parameters required
+depending on the type of operation specified in the session or the transform
+chain.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">rte_crypto_sym_op</span> <span class="p">{</span>
+    <span class="k">struct</span> <span class="n">rte_mbuf</span> <span class="o">*</span><span class="n">m_src</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">rte_mbuf</span> <span class="o">*</span><span class="n">m_dst</span><span class="p">;</span>
+
+    <span class="k">enum</span> <span class="n">rte_crypto_sym_op_sess_type</span> <span class="n">type</span><span class="p">;</span>
+
+    <span class="k">union</span> <span class="p">{</span>
+        <span class="k">struct</span> <span class="n">rte_cryptodev_sym_session</span> <span class="o">*</span><span class="n">session</span><span class="p">;</span>
+        <span class="cm">/**&lt; Handle for the initialised session context */</span>
+        <span class="k">struct</span> <span class="n">rte_crypto_sym_xform</span> <span class="o">*</span><span class="n">xform</span><span class="p">;</span>
+        <span class="cm">/**&lt; Session-less API Crypto operation parameters */</span>
+    <span class="p">};</span>
+
+    <span class="k">struct</span> <span class="p">{</span>
+        <span class="k">struct</span> <span class="p">{</span>
+            <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">;</span>
+            <span class="kt">uint32_t</span> <span class="n">length</span><span class="p">;</span>
+        <span class="p">}</span> <span class="n">data</span><span class="p">;</span>   <span class="cm">/**&lt; Data offsets and length for ciphering */</span>
+
+        <span class="k">struct</span> <span class="p">{</span>
+            <span class="kt">uint8_t</span> <span class="o">*</span><span class="n">data</span><span class="p">;</span>
+            <span class="n">phys_addr_t</span> <span class="n">phys_addr</span><span class="p">;</span>
+            <span class="kt">uint16_t</span> <span class="n">length</span><span class="p">;</span>
+        <span class="p">}</span> <span class="n">iv</span><span class="p">;</span>     <span class="cm">/**&lt; Initialisation vector parameters */</span>
+    <span class="p">}</span> <span class="n">cipher</span><span class="p">;</span>
+
+    <span class="k">struct</span> <span class="p">{</span>
+        <span class="k">struct</span> <span class="p">{</span>
+            <span class="kt">uint32_t</span> <span class="n">offset</span><span class="p">;</span>
+            <span class="kt">uint32_t</span> <span class="n">length</span><span class="p">;</span>
+        <span class="p">}</span> <span class="n">data</span><span class="p">;</span>   <span class="cm">/**&lt; Data offsets and length for authentication */</span>
+
+        <span class="k">struct</span> <span class="p">{</span>
+            <span class="kt">uint8_t</span> <span class="o">*</span><span class="n">data</span><span class="p">;</span>
+            <span class="n">phys_addr_t</span> <span class="n">phys_addr</span><span class="p">;</span>
+            <span class="kt">uint16_t</span> <span class="n">length</span><span class="p">;</span>
+        <span class="p">}</span> <span class="n">digest</span><span class="p">;</span> <span class="cm">/**&lt; Digest parameters */</span>
+
+        <span class="k">struct</span> <span class="p">{</span>
+            <span class="kt">uint8_t</span> <span class="o">*</span><span class="n">data</span><span class="p">;</span>
+            <span class="n">phys_addr_t</span> <span class="n">phys_addr</span><span class="p">;</span>
+            <span class="kt">uint16_t</span> <span class="n">length</span><span class="p">;</span>
+        <span class="p">}</span> <span class="n">aad</span><span class="p">;</span>    <span class="cm">/**&lt; Additional authentication parameters */</span>
+    <span class="p">}</span> <span class="n">auth</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="asymmetric-cryptography">
+<h2>8.6. Asymmetric Cryptography</h2>
+<p>Asymmetric functionality is currently not supported by the cryptodev API.</p>
+<div class="section" id="crypto-device-api">
+<h3>8.6.1. Crypto Device API</h3>
+<p>The cryptodev Library API is described in the <em>DPDK API Reference</em> document.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="ivshmem_lib.html" class="btn btn-neutral float-right" title="9. IVSHMEM Library" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="poll_mode_drv.html" class="btn btn-neutral" title="7. Poll Mode Driver" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

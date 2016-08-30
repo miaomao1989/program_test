@@ -1,0 +1,392 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>2. Overview &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Programmer’s Guide" href="index.html"/>
+        <link rel="next" title="3. Environment Abstraction Layer" href="env_abstraction_layer.html"/>
+        <link rel="prev" title="1. Introduction" href="intro.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Programmer&#8217;s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2. Overview</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#development-environment">2.1. Development Environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#environment-abstraction-layer">2.2. Environment Abstraction Layer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#core-components">2.3. Core Components</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ring-manager-librte-ring">2.3.1. Ring Manager (librte_ring)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memory-pool-manager-librte-mempool">2.3.2. Memory Pool Manager (librte_mempool)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#network-packet-buffer-management-librte-mbuf">2.3.3. Network Packet Buffer Management (librte_mbuf)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#timer-manager-librte-timer">2.3.4. Timer Manager (librte_timer)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#ethernet-poll-mode-driver-architecture">2.4. Ethernet* Poll Mode Driver Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#packet-forwarding-algorithm-support">2.5. Packet Forwarding Algorithm Support</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#librte-net">2.6. librte_net</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="env_abstraction_layer.html">3. Environment Abstraction Layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ring_lib.html">4. Ring Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mempool_lib.html">5. Mempool Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mbuf_lib.html">6. Mbuf Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="poll_mode_drv.html">7. Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cryptodev_lib.html">8. Cryptography Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ivshmem_lib.html">9. IVSHMEM Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_bonding_poll_mode_drv_lib.html">10. Link Bonding Poll Mode Driver Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer_lib.html">11. Timer Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hash_lib.html">12. Hash Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm_lib.html">13. LPM Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm6_lib.html">14. LPM6 Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_distrib_lib.html">15. Packet Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reorder_lib.html">16. Reorder Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_fragment_reassembly_lib.html">17. IP Fragmentation and Reassembly Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_proc_support.html">18. Multi-process Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">19. Kernel NIC Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thread_safety_dpdk_functions.html">20. Thread Safety of DPDK Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_framework.html">21. Quality of Service (QoS) Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="power_man.html">22. Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_classif_access_ctrl.html">23. Packet Classification and Access Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_framework.html">24. Packet Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_lib.html">25. Vhost Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="port_hotplug_framework.html">26. Port Hotplug Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source_org.html">27. Source Organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_kit_build_system.html">28. Development Kit Build System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_kit_root_make_help.html">29. Development Kit Root Makefile Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extend_dpdk.html">30. Extending the DPDK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_app.html">31. Building Your Own Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ext_app_lib_make_help.html">32. External Application/Library Makefile help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perf_opt_guidelines.html">33. Performance Optimization Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing_efficient_code.html">34. Writing Efficient Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="profile_app.html">35. Profile Your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">36. Glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Programmer&#8217;s Guide</a> &raquo;</li>
+      
+    <li>2. Overview</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/prog_guide/overview.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <p><strong>Part 1: Architecture Overview</strong></p>
+<div class="section" id="overview">
+<h1>2. Overview</h1>
+<p>This section gives a global overview of the architecture of Data Plane Development Kit (DPDK).</p>
+<p>The main goal of the DPDK is to provide a simple,
+complete framework for fast packet processing in data plane applications.
+Users may use the code to understand some of the techniques employed,
+to build upon for prototyping or to add their own protocol stacks.
+Alternative ecosystem options that use the DPDK are available.</p>
+<p>The framework creates a set of libraries for specific environments
+through the creation of an Environment Abstraction Layer (EAL),
+which may be specific to a mode of the Intel® architecture (32-bit or 64-bit),
+Linux* user space compilers or a specific platform.
+These environments are created through the use of make files and configuration files.
+Once the EAL library is created, the user may link with the library to create their own applications.
+Other libraries, outside of EAL, including the Hash,
+Longest Prefix Match (LPM) and rings libraries are also provided.
+Sample applications are provided to help show the user how to use various features of the DPDK.</p>
+<p>The DPDK implements a run to completion model for packet processing,
+where all resources must be allocated prior to calling Data Plane applications,
+running as execution units on logical processing cores.
+The model does not support a scheduler and all devices are accessed by polling.
+The primary reason for not using interrupts is the performance overhead imposed by interrupt processing.</p>
+<p>In addition to the run-to-completion model,
+a pipeline model may also be used by passing packets or messages between cores via the rings.
+This allows work to be performed in stages and may allow more efficient use of code on cores.</p>
+<div class="section" id="development-environment">
+<h2>2.1. Development Environment</h2>
+<p>The DPDK project installation requires Linux and the associated toolchain,
+such as one or more compilers, assembler, make utility,
+editor and various libraries to create the DPDK components and libraries.</p>
+<p>Once these libraries are created for the specific environment and architecture,
+they may then be used to create the user&#8217;s data plane application.</p>
+<p>When creating applications for the Linux user space, the glibc library is used.
+For DPDK applications, two environmental variables (RTE_SDK and RTE_TARGET)
+must be configured before compiling the applications.
+The following are examples of how the variables can be set:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export RTE_SDK=/home/user/DPDK</span>
+<span class="go">export RTE_TARGET=x86_64-native-linuxapp-gcc</span>
+</pre></div>
+</div>
+<p>See the <em>DPDK Getting Started Guide</em> for information on setting up the development environment.</p>
+</div>
+<div class="section" id="environment-abstraction-layer">
+<h2>2.2. Environment Abstraction Layer</h2>
+<p>The Environment Abstraction Layer (EAL) provides a generic interface
+that hides the environment specifics from the applications and libraries.
+The services provided by the EAL are:</p>
+<ul class="simple">
+<li>DPDK loading and launching</li>
+<li>Support for multi-process and multi-thread execution types</li>
+<li>Core affinity/assignment procedures</li>
+<li>System memory allocation/de-allocation</li>
+<li>Atomic/lock operations</li>
+<li>Time reference</li>
+<li>PCI bus access</li>
+<li>Trace and debug functions</li>
+<li>CPU feature identification</li>
+<li>Interrupt handling</li>
+<li>Alarm operations</li>
+<li>Memory management (malloc)</li>
+</ul>
+<p>The EAL is fully described in <a class="reference internal" href="env_abstraction_layer.html#environment-abstraction-layer"><span class="std std-ref">Environment Abstraction Layer</span></a>.</p>
+</div>
+<div class="section" id="core-components">
+<h2>2.3. Core Components</h2>
+<p>The <em>core components</em> are a set of libraries that provide all the elements needed
+for high-performance packet processing applications.</p>
+<div class="figure" id="id1">
+<span id="figure-architecture-overview"></span><img src="../_images/architecture-overview.svg" /><p class="caption"><span class="caption-number">Fig. 2.1 </span><span class="caption-text">Core Components Architecture</span></p>
+</div>
+<div class="section" id="ring-manager-librte-ring">
+<h3>2.3.1. Ring Manager (librte_ring)</h3>
+<p>The ring structure provides a lockless multi-producer, multi-consumer FIFO API in a finite size table.
+It has some advantages over lockless queues; easier to implement, adapted to bulk operations and faster.
+A ring is used by the <a class="reference internal" href="mempool_lib.html#mempool-library"><span class="std std-ref">Memory Pool Manager (librte_mempool)</span></a>
+and may be used as a general communication mechanism between cores
+and/or execution blocks connected together on a logical core.</p>
+<p>This ring buffer and its usage are fully described in <a class="reference internal" href="ring_lib.html#ring-library"><span class="std std-ref">Ring Library</span></a>.</p>
+</div>
+<div class="section" id="memory-pool-manager-librte-mempool">
+<h3>2.3.2. Memory Pool Manager (librte_mempool)</h3>
+<p>The Memory Pool Manager is responsible for allocating pools of objects in memory.
+A pool is identified by name and uses a ring to store free objects.
+It provides some other optional services,
+such as a per-core object cache and an alignment helper to ensure that objects are padded to spread them equally on all RAM channels.</p>
+<p>This memory pool allocator is described in  <a class="reference internal" href="mempool_lib.html#mempool-library"><span class="std std-ref">Mempool Library</span></a>.</p>
+</div>
+<div class="section" id="network-packet-buffer-management-librte-mbuf">
+<h3>2.3.3. Network Packet Buffer Management (librte_mbuf)</h3>
+<p>The mbuf library provides the facility to create and destroy buffers
+that may be used by the DPDK application to store message buffers.
+The message buffers are created at startup time and stored in a mempool, using the DPDK mempool library.</p>
+<p>This library provide an API to allocate/free mbufs, manipulate control message buffers (ctrlmbuf) which are generic message buffers,
+and packet buffers (pktmbuf) which are used to carry network packets.</p>
+<p>Network Packet Buffer Management is described in <a class="reference internal" href="mbuf_lib.html#mbuf-library"><span class="std std-ref">Mbuf Library</span></a>.</p>
+</div>
+<div class="section" id="timer-manager-librte-timer">
+<h3>2.3.4. Timer Manager (librte_timer)</h3>
+<p>This library provides a timer service to DPDK execution units,
+providing the ability to execute a function asynchronously.
+It can be periodic function calls, or just a one-shot call.
+It uses the timer interface provided by the Environment Abstraction Layer (EAL)
+to get a precise time reference and can be initiated on a per-core basis as required.</p>
+<p>The library documentation is available in <a class="reference internal" href="timer_lib.html#timer-library"><span class="std std-ref">Timer Library</span></a>.</p>
+</div>
+</div>
+<div class="section" id="ethernet-poll-mode-driver-architecture">
+<h2>2.4. Ethernet* Poll Mode Driver Architecture</h2>
+<p>The DPDK includes Poll Mode Drivers (PMDs) for 1 GbE, 10 GbE and 40GbE, and para virtualized virtio
+Ethernet controllers which are designed to work without asynchronous, interrupt-based signaling mechanisms.</p>
+<p>See  <a class="reference internal" href="poll_mode_drv.html#poll-mode-driver"><span class="std std-ref">Poll Mode Driver</span></a>.</p>
+</div>
+<div class="section" id="packet-forwarding-algorithm-support">
+<h2>2.5. Packet Forwarding Algorithm Support</h2>
+<p>The DPDK includes Hash (librte_hash) and Longest Prefix Match (LPM,librte_lpm)
+libraries to support the corresponding packet forwarding algorithms.</p>
+<p>See <a class="reference internal" href="hash_lib.html#hash-library"><span class="std std-ref">Hash Library</span></a> and  <a class="reference internal" href="lpm_lib.html#lpm-library"><span class="std std-ref">LPM Library</span></a> for more information.</p>
+</div>
+<div class="section" id="librte-net">
+<h2>2.6. librte_net</h2>
+<p>The librte_net library is a collection of IP protocol definitions and convenience macros.
+It is based on code from the FreeBSD* IP stack and contains protocol numbers (for use in IP headers),
+IP-related macros, IPv4/IPv6 header structures and TCP, UDP and SCTP header structures.</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="env_abstraction_layer.html" class="btn btn-neutral float-right" title="3. Environment Abstraction Layer" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="intro.html" class="btn btn-neutral" title="1. Introduction" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

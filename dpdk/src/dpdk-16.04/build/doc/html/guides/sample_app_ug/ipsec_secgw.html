@@ -1,0 +1,940 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>41. IPsec Security Gateway Sample Application &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Sample Applications User Guide" href="index.html"/>
+        <link rel="next" title="Testpmd Application User Guide" href="../testpmd_app_ug/index.html"/>
+        <link rel="prev" title="40. Performance Thread Sample Application" href="performance_thread.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Sample Applications User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmd_line.html">2. Command Line Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethtool.html">3. Ethtool Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exception_path.html">4. Exception Path Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello_world.html">5. Hello World Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skeleton.html">6. Basic Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rxtx_callbacks.html">7. RX/TX Callbacks Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_frag.html">8. IP Fragmentation Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipv4_multicast.html">9. IPv4 Multicast Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_reassembly.html">10. IP Reassembly Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">11. Kernel NIC Interface Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keep_alive.html">12. Keep Alive Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_crypto.html">13. L2 Forwarding with Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_job_stats.html">14. L2 Forwarding Sample Application (in Real and Virtualized Environments) with core load statistics.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_real_virtual.html">15. L2 Forwarding Sample Application (in Real and Virtualized Environments)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_cat.html">16. L2 Forwarding Sample Application with Cache Allocation Technology (CAT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward.html">17. L3 Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_power_man.html">18. L3 Forwarding with Power Management Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_access_ctrl.html">19. L3 Forwarding with Access Control Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_virtual.html">20. L3 Forwarding in a Virtualization Environment Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_status_intr.html">21. Link Status Interrupt Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="load_balancer.html">22. Load Balancer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_process.html">23. Multi-process Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_metering.html">24. QoS Metering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_scheduler.html">25. QoS Scheduler Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intel_quickassist.html">26. Intel® QuickAssist Technology Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quota_watermark.html">27. Quota and Watermark Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer.html">28. Timer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_ordering.html">29. Packet Ordering Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_dcb_forwarding.html">30. VMDQ and DCB Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">31. Vhost Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="netmap_compatibility.html">32. Netmap Compatibility Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_pipeline.html">33. Internet Protocol (IP) Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_pipeline.html">34. Test Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dist_app.html">35. Distributor Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vm_power_management.html">36. VM Power Management Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tep_termination.html">37. TEP termination Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="proc_info.html">38. dpdk_proc_info Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ptpclient.html">39. PTP Client Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance_thread.html">40. Performance Thread Sample Application</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">41. IPsec Security Gateway Sample Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">41.1. Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#constraints">41.2. Constraints</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compiling-the-application">41.3. Compiling the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-application">41.4. Running the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configurations">41.5. Configurations</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#security-policy-initialization">41.5.1. Security Policy Initialization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#security-association-initialization">41.5.2. Security Association Initialization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#routing-initialization">41.5.3. Routing Initialization</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Sample Applications User Guide</a> &raquo;</li>
+      
+    <li>41. IPsec Security Gateway Sample Application</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/sample_app_ug/ipsec_secgw.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="ipsec-security-gateway-sample-application">
+<h1>41. IPsec Security Gateway Sample Application</h1>
+<p>The IPsec Security Gateway application is an example of a &#8220;real world&#8221;
+application using DPDK cryptodev framework.</p>
+<div class="section" id="overview">
+<h2>41.1. Overview</h2>
+<p>The application demonstrates the implementation of a Security Gateway
+(not IPsec compliant, see Constraints bellow) using DPDK based on RFC4301,
+RFC4303, RFC3602 and RFC2404.</p>
+<p>Internet Key Exchange (IKE) is not implemented, so only manual setting of
+Security Policies and Security Associations is supported.</p>
+<p>The Security Policies (SP) are implemented as ACL rules, the Security
+Associations (SA) are stored in a table and the Routing is implemented
+using LPM.</p>
+<p>The application classify the ports between Protected and Unprotected.
+Thus, traffic received in an Unprotected or Protected port is consider
+Inbound or Outbound respectively.</p>
+<p>Path for IPsec Inbound traffic:</p>
+<ul class="simple">
+<li>Read packets from the port</li>
+<li>Classify packets between IPv4 and ESP.</li>
+<li>Inbound SA lookup for ESP packets based on their SPI</li>
+<li>Verification/Decryption</li>
+<li>Removal of ESP and outer IP header</li>
+<li>Inbound SP check using ACL of decrypted packets and any other IPv4 packet
+we read.</li>
+<li>Routing</li>
+<li>Write packet to port</li>
+</ul>
+<p>Path for IPsec Outbound traffic:</p>
+<ul class="simple">
+<li>Read packets from the port</li>
+<li>Outbound SP check using ACL of all IPv4 traffic</li>
+<li>Outbound SA lookup for packets that need IPsec protection</li>
+<li>Add ESP and outer IP header</li>
+<li>Encryption/Digest</li>
+<li>Routing</li>
+<li>Write packet to port</li>
+</ul>
+</div>
+<div class="section" id="constraints">
+<h2>41.2. Constraints</h2>
+<ul class="simple">
+<li>IPv4 traffic</li>
+<li>ESP tunnel mode</li>
+<li>EAS-CBC, HMAC-SHA1 and NULL</li>
+<li>Each SA must be handle by a unique lcore (1 RX queue per port)</li>
+<li>No chained mbufs</li>
+</ul>
+</div>
+<div class="section" id="compiling-the-application">
+<h2>41.3. Compiling the Application</h2>
+<p>To compile the application:</p>
+<ol class="arabic">
+<li><p class="first">Go to the sample application directory:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export RTE_SDK=/path/to/rte_sdk</span>
+<span class="go">cd ${RTE_SDK}/examples/ipsec-secgw</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Set the target (a default target is used if not specified). For example:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export RTE_TARGET=x86_64-native-linuxapp-gcc</span>
+</pre></div>
+</div>
+<p>See the <em>DPDK Getting Started Guide</em> for possible RTE_TARGET values.</p>
+</li>
+<li><p class="first">Build the application:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">make</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="running-the-application">
+<h2>41.4. Running the Application</h2>
+<p>The application has a number of command line options:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./build/ipsec-secgw [EAL options] -- -p PORTMASK -P -u PORTMASK --config</span>
+<span class="go">(port,queue,lcore)[,(port,queue,lcore] --single-sa SAIDX --ep0|--ep1</span>
+</pre></div>
+</div>
+<p>where,</p>
+<ul class="simple">
+<li>-p PORTMASK: Hexadecimal bitmask of ports to configure</li>
+<li>-P: optional, sets all ports to promiscuous mode so that packets are
+accepted regardless of the packet&#8217;s Ethernet MAC destination address.
+Without this option, only packets with the Ethernet MAC destination address
+set to the Ethernet address of the port are accepted (default is enabled).</li>
+<li>-u PORTMASK: hexadecimal bitmask of unprotected ports</li>
+<li>&#8211;config (port,queue,lcore)[,(port,queue,lcore)]: determines which queues
+from which ports are mapped to which cores</li>
+<li>&#8211;single-sa SAIDX: use a single SA for outbound traffic, bypassing the SP
+on both Inbound and Outbound. This option is meant for debugging/performance
+purposes.</li>
+<li>&#8211;ep0: configure the app as Endpoint 0.</li>
+<li>&#8211;ep1: configure the app as Endpoint 1.</li>
+</ul>
+<p>Either one of &#8211;ep0 or &#8211;ep1 <em>must</em> be specified.
+The main purpose of these options is two easily configure two systems
+back-to-back that would forward traffic through an IPsec tunnel.</p>
+<p>The mapping of lcores to port/queues is similar to other l3fwd applications.</p>
+<p>For example, given the following command line:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./build/ipsec-secgw -l 20,21 -n 4 --socket-mem 0,2048</span>
+<span class="go">       --vdev &quot;cryptodev_null_pmd&quot; -- -p 0xf -P -u 0x3</span>
+<span class="go">       --config=&quot;(0,0,20),(1,0,20),(2,0,21),(3,0,21)&quot; --ep0</span>
+</pre></div>
+</div>
+<p>where each options means:</p>
+<ul class="simple">
+<li>The -l option enables cores 20 and 21</li>
+<li>The -n option sets memory 4 channels</li>
+<li>The &#8211;socket-mem to use 2GB on socket 1</li>
+<li>The &#8211;vdev &#8220;cryptodev_null_pmd&#8221; option creates virtual NULL cryptodev PMD</li>
+<li>The -p option enables ports (detected) 0, 1, 2 and 3</li>
+<li>The -P option enables promiscuous mode</li>
+<li>The -u option sets ports 1 and 2 as unprotected, leaving 2 and 3 as protected</li>
+<li>The &#8211;config option enables one queue per port with the following mapping:</li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="15%" />
+<col width="15%" />
+<col width="55%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>Port</strong></td>
+<td><strong>Queue</strong></td>
+<td><strong>lcore</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr class="row-even"><td>0</td>
+<td>0</td>
+<td>20</td>
+<td>Map queue 0 from port 0 to lcore 20.</td>
+</tr>
+<tr class="row-odd"><td>1</td>
+<td>0</td>
+<td>20</td>
+<td>Map queue 0 from port 1 to lcore 20.</td>
+</tr>
+<tr class="row-even"><td>2</td>
+<td>0</td>
+<td>21</td>
+<td>Map queue 0 from port 2 to lcore 21.</td>
+</tr>
+<tr class="row-odd"><td>3</td>
+<td>0</td>
+<td>21</td>
+<td>Map queue 0 from port 3 to lcore 21.</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>The &#8211;ep0 options configures the app with a given set of SP, SA and Routing
+entries as explained below in more detail.</li>
+</ul>
+<p>Refer to the <em>DPDK Getting Started Guide</em> for general information on running
+applications and the Environment Abstraction Layer (EAL) options.</p>
+<p>The application would do a best effort to &#8220;map&#8221; crypto devices to cores, with
+hardware devices having priority.
+This means that if the application is using a single core and both hardware
+and software crypto devices are detected, hardware devices will be used.</p>
+<p>A way to achieve the case where you want to force the use of virtual crypto
+devices is to whitelist the Ethernet devices needed and therefore implicitly
+blacklisting all hardware crypto devices.</p>
+<p>For example, something like the following command line:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./build/ipsec-secgw -l 20,21 -n 4 --socket-mem 0,2048</span>
+<span class="go">        -w 81:00.0 -w 81:00.1 -w 81:00.2 -w 81:00.3</span>
+<span class="go">        --vdev &quot;cryptodev_aesni_mb_pmd&quot; --vdev &quot;cryptodev_null_pmd&quot; --</span>
+<span class="go">        -p 0xf -P -u 0x3 --config=&quot;(0,0,20),(1,0,20),(2,0,21),(3,0,21)&quot;</span>
+<span class="go">        --ep0</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="configurations">
+<h2>41.5. Configurations</h2>
+<p>The following sections provide some details on the default values used to
+initialize the SP, SA and Routing tables.
+Currently all the configuration is hard coded into the application.</p>
+<div class="section" id="security-policy-initialization">
+<h3>41.5.1. Security Policy Initialization</h3>
+<p>As mention in the overview, the Security Policies are ACL rules.
+The application defines two ACLs, one each of Inbound and Outbound, and
+it replicates them per socket in use.</p>
+<p>Following are the default rules:</p>
+<p>Endpoint 0 Outbound Security Policies:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="18%" />
+<col width="36%" />
+<col width="22%" />
+<col width="24%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>Src</strong></td>
+<td><strong>Dst</strong></td>
+<td><strong>proto</strong></td>
+<td><strong>SA idx</strong></td>
+</tr>
+<tr class="row-even"><td>Any</td>
+<td>192.168.105.0/24</td>
+<td>Any</td>
+<td>5</td>
+</tr>
+<tr class="row-odd"><td>Any</td>
+<td>192.168.106.0/24</td>
+<td>Any</td>
+<td>6</td>
+</tr>
+<tr class="row-even"><td>Any</td>
+<td>192.168.107.0/24</td>
+<td>Any</td>
+<td>7</td>
+</tr>
+<tr class="row-odd"><td>Any</td>
+<td>192.168.108.0/24</td>
+<td>Any</td>
+<td>8</td>
+</tr>
+<tr class="row-even"><td>Any</td>
+<td>192.168.200.0/24</td>
+<td>Any</td>
+<td>9</td>
+</tr>
+<tr class="row-odd"><td>Any</td>
+<td>192.168.250.0/24</td>
+<td>Any</td>
+<td>BYPASS</td>
+</tr>
+</tbody>
+</table>
+<p>Endpoint 0 Inbound Security Policies:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="18%" />
+<col width="36%" />
+<col width="22%" />
+<col width="24%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>Src</strong></td>
+<td><strong>Dst</strong></td>
+<td><strong>proto</strong></td>
+<td><strong>SA idx</strong></td>
+</tr>
+<tr class="row-even"><td>Any</td>
+<td>192.168.115.0/24</td>
+<td>Any</td>
+<td>5</td>
+</tr>
+<tr class="row-odd"><td>Any</td>
+<td>192.168.116.0/24</td>
+<td>Any</td>
+<td>6</td>
+</tr>
+<tr class="row-even"><td>Any</td>
+<td>192.168.117.0/24</td>
+<td>Any</td>
+<td>7</td>
+</tr>
+<tr class="row-odd"><td>Any</td>
+<td>192.168.118.0/24</td>
+<td>Any</td>
+<td>8</td>
+</tr>
+<tr class="row-even"><td>Any</td>
+<td>192.168.210.0/24</td>
+<td>Any</td>
+<td>9</td>
+</tr>
+<tr class="row-odd"><td>Any</td>
+<td>192.168.240.0/24</td>
+<td>Any</td>
+<td>BYPASS</td>
+</tr>
+</tbody>
+</table>
+<p>Endpoint 1 Outbound Security Policies:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="18%" />
+<col width="36%" />
+<col width="22%" />
+<col width="24%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>Src</strong></td>
+<td><strong>Dst</strong></td>
+<td><strong>proto</strong></td>
+<td><strong>SA idx</strong></td>
+</tr>
+<tr class="row-even"><td>Any</td>
+<td>192.168.115.0/24</td>
+<td>Any</td>
+<td>5</td>
+</tr>
+<tr class="row-odd"><td>Any</td>
+<td>192.168.116.0/24</td>
+<td>Any</td>
+<td>6</td>
+</tr>
+<tr class="row-even"><td>Any</td>
+<td>192.168.117.0/24</td>
+<td>Any</td>
+<td>7</td>
+</tr>
+<tr class="row-odd"><td>Any</td>
+<td>192.168.118.0/24</td>
+<td>Any</td>
+<td>8</td>
+</tr>
+<tr class="row-even"><td>Any</td>
+<td>192.168.210.0/24</td>
+<td>Any</td>
+<td>9</td>
+</tr>
+<tr class="row-odd"><td>Any</td>
+<td>192.168.240.0/24</td>
+<td>Any</td>
+<td>BYPASS</td>
+</tr>
+</tbody>
+</table>
+<p>Endpoint 1 Inbound Security Policies:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="18%" />
+<col width="36%" />
+<col width="22%" />
+<col width="24%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>Src</strong></td>
+<td><strong>Dst</strong></td>
+<td><strong>proto</strong></td>
+<td><strong>SA idx</strong></td>
+</tr>
+<tr class="row-even"><td>Any</td>
+<td>192.168.105.0/24</td>
+<td>Any</td>
+<td>5</td>
+</tr>
+<tr class="row-odd"><td>Any</td>
+<td>192.168.106.0/24</td>
+<td>Any</td>
+<td>6</td>
+</tr>
+<tr class="row-even"><td>Any</td>
+<td>192.168.107.0/24</td>
+<td>Any</td>
+<td>7</td>
+</tr>
+<tr class="row-odd"><td>Any</td>
+<td>192.168.108.0/24</td>
+<td>Any</td>
+<td>8</td>
+</tr>
+<tr class="row-even"><td>Any</td>
+<td>192.168.200.0/24</td>
+<td>Any</td>
+<td>9</td>
+</tr>
+<tr class="row-odd"><td>Any</td>
+<td>192.168.250.0/24</td>
+<td>Any</td>
+<td>BYPASS</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="security-association-initialization">
+<h3>41.5.2. Security Association Initialization</h3>
+<p>The SAs are kept in a array table.</p>
+<p>For Inbound, the SPI is used as index module the table size.
+This means that on a table for 100 SA, SPI 5 and 105 would use the same index
+and that is not currently supported.</p>
+<p>Notice that it is not an issue for Outbound traffic as we store the index and
+not the SPI in the Security Policy.</p>
+<p>All SAs configured with AES-CBC and HMAC-SHA1 share the same values for cipher
+block size and key, and authentication digest size and key.</p>
+<p>Following are the default values:</p>
+<p>Endpoint 0 Outbound Security Associations:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="18%" />
+<col width="17%" />
+<col width="24%" />
+<col width="27%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>SPI</strong></td>
+<td><strong>Cipher</strong></td>
+<td><strong>Auth</strong></td>
+<td><strong>Tunnel src</strong></td>
+<td><strong>Tunnel dst</strong></td>
+</tr>
+<tr class="row-even"><td>5</td>
+<td>AES-CBC</td>
+<td>HMAC-SHA1</td>
+<td>172.16.1.5</td>
+<td>172.16.2.5</td>
+</tr>
+<tr class="row-odd"><td>6</td>
+<td>AES-CBC</td>
+<td>HMAC-SHA1</td>
+<td>172.16.1.6</td>
+<td>172.16.2.6</td>
+</tr>
+<tr class="row-even"><td>7</td>
+<td>AES-CBC</td>
+<td>HMAC-SHA1</td>
+<td>172.16.1.7</td>
+<td>172.16.2.7</td>
+</tr>
+<tr class="row-odd"><td>8</td>
+<td>AES-CBC</td>
+<td>HMAC-SHA1</td>
+<td>172.16.1.8</td>
+<td>172.16.2.8</td>
+</tr>
+<tr class="row-even"><td>9</td>
+<td>NULL</td>
+<td>NULL</td>
+<td>172.16.1.5</td>
+<td>172.16.2.5</td>
+</tr>
+</tbody>
+</table>
+<p>Endpoint 0 Inbound Security Associations:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="18%" />
+<col width="17%" />
+<col width="24%" />
+<col width="27%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>SPI</strong></td>
+<td><strong>Cipher</strong></td>
+<td><strong>Auth</strong></td>
+<td><strong>Tunnel src</strong></td>
+<td><strong>Tunnel dst</strong></td>
+</tr>
+<tr class="row-even"><td>5</td>
+<td>AES-CBC</td>
+<td>HMAC-SHA1</td>
+<td>172.16.2.5</td>
+<td>172.16.1.5</td>
+</tr>
+<tr class="row-odd"><td>6</td>
+<td>AES-CBC</td>
+<td>HMAC-SHA1</td>
+<td>172.16.2.6</td>
+<td>172.16.1.6</td>
+</tr>
+<tr class="row-even"><td>7</td>
+<td>AES-CBC</td>
+<td>HMAC-SHA1</td>
+<td>172.16.2.7</td>
+<td>172.16.1.7</td>
+</tr>
+<tr class="row-odd"><td>8</td>
+<td>AES-CBC</td>
+<td>HMAC-SHA1</td>
+<td>172.16.2.8</td>
+<td>172.16.1.8</td>
+</tr>
+<tr class="row-even"><td>9</td>
+<td>NULL</td>
+<td>NULL</td>
+<td>172.16.2.5</td>
+<td>172.16.1.5</td>
+</tr>
+</tbody>
+</table>
+<p>Endpoint 1 Outbound Security Associations:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="18%" />
+<col width="17%" />
+<col width="24%" />
+<col width="27%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>SPI</strong></td>
+<td><strong>Cipher</strong></td>
+<td><strong>Auth</strong></td>
+<td><strong>Tunnel src</strong></td>
+<td><strong>Tunnel dst</strong></td>
+</tr>
+<tr class="row-even"><td>5</td>
+<td>AES-CBC</td>
+<td>HMAC-SHA1</td>
+<td>172.16.2.5</td>
+<td>172.16.1.5</td>
+</tr>
+<tr class="row-odd"><td>6</td>
+<td>AES-CBC</td>
+<td>HMAC-SHA1</td>
+<td>172.16.2.6</td>
+<td>172.16.1.6</td>
+</tr>
+<tr class="row-even"><td>7</td>
+<td>AES-CBC</td>
+<td>HMAC-SHA1</td>
+<td>172.16.2.7</td>
+<td>172.16.1.7</td>
+</tr>
+<tr class="row-odd"><td>8</td>
+<td>AES-CBC</td>
+<td>HMAC-SHA1</td>
+<td>172.16.2.8</td>
+<td>172.16.1.8</td>
+</tr>
+<tr class="row-even"><td>9</td>
+<td>NULL</td>
+<td>NULL</td>
+<td>172.16.2.5</td>
+<td>172.16.1.5</td>
+</tr>
+</tbody>
+</table>
+<p>Endpoint 1 Inbound Security Associations:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="18%" />
+<col width="17%" />
+<col width="24%" />
+<col width="27%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>SPI</strong></td>
+<td><strong>Cipher</strong></td>
+<td><strong>Auth</strong></td>
+<td><strong>Tunnel src</strong></td>
+<td><strong>Tunnel dst</strong></td>
+</tr>
+<tr class="row-even"><td>5</td>
+<td>AES-CBC</td>
+<td>HMAC-SHA1</td>
+<td>172.16.1.5</td>
+<td>172.16.2.5</td>
+</tr>
+<tr class="row-odd"><td>6</td>
+<td>AES-CBC</td>
+<td>HMAC-SHA1</td>
+<td>172.16.1.6</td>
+<td>172.16.2.6</td>
+</tr>
+<tr class="row-even"><td>7</td>
+<td>AES-CBC</td>
+<td>HMAC-SHA1</td>
+<td>172.16.1.7</td>
+<td>172.16.2.7</td>
+</tr>
+<tr class="row-odd"><td>8</td>
+<td>AES-CBC</td>
+<td>HMAC-SHA1</td>
+<td>172.16.1.8</td>
+<td>172.16.2.8</td>
+</tr>
+<tr class="row-even"><td>9</td>
+<td>NULL</td>
+<td>NULL</td>
+<td>172.16.1.5</td>
+<td>172.16.2.5</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="routing-initialization">
+<h3>41.5.3. Routing Initialization</h3>
+<p>The Routing is implemented using LPM table.</p>
+<p>Following default values:</p>
+<p>Endpoint 0 Routing Table:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="64%" />
+<col width="36%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>Dst addr</strong></td>
+<td><strong>Port</strong></td>
+</tr>
+<tr class="row-even"><td>172.16.2.5/32</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>172.16.2.6/32</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>172.16.2.7/32</td>
+<td>1</td>
+</tr>
+<tr class="row-odd"><td>172.16.2.8/32</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>192.168.115.0/24</td>
+<td>2</td>
+</tr>
+<tr class="row-odd"><td>192.168.116.0/24</td>
+<td>2</td>
+</tr>
+<tr class="row-even"><td>192.168.117.0/24</td>
+<td>3</td>
+</tr>
+<tr class="row-odd"><td>192.168.118.0/24</td>
+<td>3</td>
+</tr>
+<tr class="row-even"><td>192.168.210.0/24</td>
+<td>2</td>
+</tr>
+<tr class="row-odd"><td>192.168.240.0/24</td>
+<td>2</td>
+</tr>
+<tr class="row-even"><td>192.168.250.0/24</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>Endpoint 1 Routing Table:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="64%" />
+<col width="36%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>Dst addr</strong></td>
+<td><strong>Port</strong></td>
+</tr>
+<tr class="row-even"><td>172.16.1.5/32</td>
+<td>2</td>
+</tr>
+<tr class="row-odd"><td>172.16.1.6/32</td>
+<td>2</td>
+</tr>
+<tr class="row-even"><td>172.16.1.7/32</td>
+<td>3</td>
+</tr>
+<tr class="row-odd"><td>172.16.1.8/32</td>
+<td>3</td>
+</tr>
+<tr class="row-even"><td>192.168.105.0/24</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>192.168.106.0/24</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>192.168.107.0/24</td>
+<td>1</td>
+</tr>
+<tr class="row-odd"><td>192.168.108.0/24</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>192.168.200.0/24</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>192.168.240.0/24</td>
+<td>2</td>
+</tr>
+<tr class="row-even"><td>192.168.250.0/24</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../testpmd_app_ug/index.html" class="btn btn-neutral float-right" title="Testpmd Application User Guide" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="performance_thread.html" class="btn btn-neutral" title="40. Performance Thread Sample Application" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

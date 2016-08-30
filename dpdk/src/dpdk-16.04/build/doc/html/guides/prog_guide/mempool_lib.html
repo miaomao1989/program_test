@@ -1,0 +1,337 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>5. Mempool Library &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Programmer’s Guide" href="index.html"/>
+        <link rel="next" title="6. Mbuf Library" href="mbuf_lib.html"/>
+        <link rel="prev" title="4. Ring Library" href="ring_lib.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Programmer&#8217;s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html">2. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="env_abstraction_layer.html">3. Environment Abstraction Layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ring_lib.html">4. Ring Library</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5. Mempool Library</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cookies">5.1. Cookies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#stats">5.2. Stats</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#memory-alignment-constraints">5.3. Memory Alignment Constraints</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#local-cache">5.4. Local Cache</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#use-cases">5.5. Use Cases</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mbuf_lib.html">6. Mbuf Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="poll_mode_drv.html">7. Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cryptodev_lib.html">8. Cryptography Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ivshmem_lib.html">9. IVSHMEM Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_bonding_poll_mode_drv_lib.html">10. Link Bonding Poll Mode Driver Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer_lib.html">11. Timer Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hash_lib.html">12. Hash Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm_lib.html">13. LPM Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm6_lib.html">14. LPM6 Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_distrib_lib.html">15. Packet Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reorder_lib.html">16. Reorder Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_fragment_reassembly_lib.html">17. IP Fragmentation and Reassembly Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_proc_support.html">18. Multi-process Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">19. Kernel NIC Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thread_safety_dpdk_functions.html">20. Thread Safety of DPDK Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_framework.html">21. Quality of Service (QoS) Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="power_man.html">22. Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_classif_access_ctrl.html">23. Packet Classification and Access Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_framework.html">24. Packet Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_lib.html">25. Vhost Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="port_hotplug_framework.html">26. Port Hotplug Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source_org.html">27. Source Organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_kit_build_system.html">28. Development Kit Build System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_kit_root_make_help.html">29. Development Kit Root Makefile Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extend_dpdk.html">30. Extending the DPDK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_app.html">31. Building Your Own Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ext_app_lib_make_help.html">32. External Application/Library Makefile help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perf_opt_guidelines.html">33. Performance Optimization Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing_efficient_code.html">34. Writing Efficient Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="profile_app.html">35. Profile Your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">36. Glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Programmer&#8217;s Guide</a> &raquo;</li>
+      
+    <li>5. Mempool Library</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/prog_guide/mempool_lib.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="mempool-library">
+<span id="id1"></span><h1>5. Mempool Library</h1>
+<p>A memory pool is an allocator of a fixed-sized object.
+In the DPDK, it is identified by name and uses a ring to store free objects.
+It provides some other optional services such as a per-core object cache and
+an alignment helper to ensure that objects are padded to spread them equally on all DRAM or DDR3 channels.</p>
+<p>This library is used by the
+<a class="reference internal" href="mbuf_lib.html#mbuf-library"><span class="std std-ref">Mbuf Library</span></a> and the
+<a class="reference internal" href="env_abstraction_layer.html#environment-abstraction-layer"><span class="std std-ref">Environment Abstraction Layer</span></a> (for logging history).</p>
+<div class="section" id="cookies">
+<h2>5.1. Cookies</h2>
+<p>In debug mode (CONFIG_RTE_LIBRTE_MEMPOOL_DEBUG is enabled), cookies are added at the beginning and end of allocated blocks.
+The allocated objects then contain overwrite protection fields to help debugging buffer overflows.</p>
+</div>
+<div class="section" id="stats">
+<h2>5.2. Stats</h2>
+<p>In debug mode (CONFIG_RTE_LIBRTE_MEMPOOL_DEBUG is enabled),
+statistics about get from/put in the pool are stored in the mempool structure.
+Statistics are per-lcore to avoid concurrent access to statistics counters.</p>
+</div>
+<div class="section" id="memory-alignment-constraints">
+<h2>5.3. Memory Alignment Constraints</h2>
+<p>Depending on hardware memory configuration, performance can be greatly improved by adding a specific padding between objects.
+The objective is to ensure that the beginning of each object starts on a different channel and rank in memory so that all channels are equally loaded.</p>
+<p>This is particularly true for packet buffers when doing L3 forwarding or flow classification.
+Only the first 64 bytes are accessed, so performance can be increased by spreading the start addresses of objects among the different channels.</p>
+<p>The number of ranks on any DIMM is the number of independent sets of DRAMs that can be accessed for the full data bit-width of the DIMM.
+The ranks cannot be accessed simultaneously since they share the same data path.
+The physical layout of the DRAM chips on the DIMM itself does not necessarily relate to the number of ranks.</p>
+<p>When running an application, the EAL command line options provide the ability to add the number of memory channels and ranks.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The command line must always have the number of memory channels specified for the processor.</p>
+</div>
+<p>Examples of alignment for different DIMM architectures are shown in
+<a class="reference internal" href="#figure-memory-management"><span class="std std-numref">Fig. 5.1</span></a> and <a class="reference internal" href="#figure-memory-management2"><span class="std std-numref">Fig. 5.2</span></a>.</p>
+<div class="figure" id="id2">
+<span id="figure-memory-management"></span><img src="../_images/memory-management.svg" /><p class="caption"><span class="caption-number">Fig. 5.1 </span><span class="caption-text">Two Channels and Quad-ranked DIMM Example</span></p>
+</div>
+<p>In this case, the assumption is that a packet is 16 blocks of 64 bytes, which is not true.</p>
+<p>The Intel® 5520 chipset has three channels, so in most cases,
+no padding is required between objects (except for objects whose size are n x 3 x 64 bytes blocks).</p>
+<div class="figure" id="id3">
+<span id="figure-memory-management2"></span><img src="../_images/memory-management2.svg" /><p class="caption"><span class="caption-number">Fig. 5.2 </span><span class="caption-text">Three Channels and Two Dual-ranked DIMM Example</span></p>
+</div>
+<p>When creating a new pool, the user can specify to use this feature or not.</p>
+</div>
+<div class="section" id="local-cache">
+<span id="mempool-local-cache"></span><h2>5.4. Local Cache</h2>
+<p>In terms of CPU usage, the cost of multiple cores accessing a memory pool&#8217;s ring of free buffers may be high
+since each access requires a compare-and-set (CAS) operation.
+To avoid having too many access requests to the memory pool&#8217;s ring,
+the memory pool allocator can maintain a per-core cache and do bulk requests to the memory pool&#8217;s ring,
+via the cache with many fewer locks on the actual memory pool structure.
+In this way, each core has full access to its own cache (with locks) of free objects and
+only when the cache fills does the core need to shuffle some of the free objects back to the pools ring or
+obtain more objects when the cache is empty.</p>
+<p>While this may mean a number of buffers may sit idle on some core&#8217;s cache,
+the speed at which a core can access its own cache for a specific memory pool without locks provides performance gains.</p>
+<p>The cache is composed of a small, per-core table of pointers and its length (used as a stack).
+This cache can be enabled or disabled at creation of the pool.</p>
+<p>The maximum size of the cache is static and is defined at compilation time (CONFIG_RTE_MEMPOOL_CACHE_MAX_SIZE).</p>
+<p><a class="reference internal" href="#figure-mempool"><span class="std std-numref">Fig. 5.3</span></a> shows a cache in operation.</p>
+<div class="figure" id="id4">
+<span id="figure-mempool"></span><img src="../_images/mempool.svg" /><p class="caption"><span class="caption-number">Fig. 5.3 </span><span class="caption-text">A mempool in Memory with its Associated Ring</span></p>
+</div>
+</div>
+<div class="section" id="use-cases">
+<h2>5.5. Use Cases</h2>
+<p>All allocations that require a high level of performance should use a pool-based memory allocator.
+Below are some examples:</p>
+<ul class="simple">
+<li><a class="reference internal" href="mbuf_lib.html#mbuf-library"><span class="std std-ref">Mbuf Library</span></a></li>
+<li><a class="reference internal" href="env_abstraction_layer.html#environment-abstraction-layer"><span class="std std-ref">Environment Abstraction Layer</span></a> , for logging service</li>
+<li>Any application that needs to allocate fixed-sized objects in the data plane and that will be continuously utilized by the system.</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="mbuf_lib.html" class="btn btn-neutral float-right" title="6. Mbuf Library" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ring_lib.html" class="btn btn-neutral" title="4. Ring Library" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

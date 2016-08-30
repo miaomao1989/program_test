@@ -1,0 +1,566 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>9. IPv4 Multicast Sample Application &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Sample Applications User Guide" href="index.html"/>
+        <link rel="next" title="10. IP Reassembly Sample Application" href="ip_reassembly.html"/>
+        <link rel="prev" title="8. IP Fragmentation Sample Application" href="ip_frag.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Sample Applications User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmd_line.html">2. Command Line Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethtool.html">3. Ethtool Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exception_path.html">4. Exception Path Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello_world.html">5. Hello World Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skeleton.html">6. Basic Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rxtx_callbacks.html">7. RX/TX Callbacks Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_frag.html">8. IP Fragmentation Sample Application</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">9. IPv4 Multicast Sample Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">9.1. Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#building-the-application">9.2. Building the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-application">9.3. Running the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#explanation">9.4. Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#memory-pool-initialization">9.4.1. Memory Pool Initialization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hash-initialization">9.4.2. Hash Initialization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#forwarding">9.4.3. Forwarding</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#buffer-cloning">9.4.4. Buffer Cloning</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ip_reassembly.html">10. IP Reassembly Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">11. Kernel NIC Interface Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keep_alive.html">12. Keep Alive Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_crypto.html">13. L2 Forwarding with Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_job_stats.html">14. L2 Forwarding Sample Application (in Real and Virtualized Environments) with core load statistics.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_real_virtual.html">15. L2 Forwarding Sample Application (in Real and Virtualized Environments)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_cat.html">16. L2 Forwarding Sample Application with Cache Allocation Technology (CAT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward.html">17. L3 Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_power_man.html">18. L3 Forwarding with Power Management Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_access_ctrl.html">19. L3 Forwarding with Access Control Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_virtual.html">20. L3 Forwarding in a Virtualization Environment Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_status_intr.html">21. Link Status Interrupt Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="load_balancer.html">22. Load Balancer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_process.html">23. Multi-process Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_metering.html">24. QoS Metering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_scheduler.html">25. QoS Scheduler Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intel_quickassist.html">26. Intel® QuickAssist Technology Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quota_watermark.html">27. Quota and Watermark Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer.html">28. Timer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_ordering.html">29. Packet Ordering Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_dcb_forwarding.html">30. VMDQ and DCB Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">31. Vhost Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="netmap_compatibility.html">32. Netmap Compatibility Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_pipeline.html">33. Internet Protocol (IP) Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_pipeline.html">34. Test Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dist_app.html">35. Distributor Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vm_power_management.html">36. VM Power Management Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tep_termination.html">37. TEP termination Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="proc_info.html">38. dpdk_proc_info Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ptpclient.html">39. PTP Client Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance_thread.html">40. Performance Thread Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_secgw.html">41. IPsec Security Gateway Sample Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Sample Applications User Guide</a> &raquo;</li>
+      
+    <li>9. IPv4 Multicast Sample Application</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/sample_app_ug/ipv4_multicast.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="ipv4-multicast-sample-application">
+<h1>9. IPv4 Multicast Sample Application</h1>
+<p>The IPv4 Multicast application is a simple example of packet processing
+using the Data Plane Development Kit (DPDK).
+The application performs L3 multicasting.</p>
+<div class="section" id="overview">
+<h2>9.1. Overview</h2>
+<p>The application demonstrates the use of zero-copy buffers for packet forwarding.
+The initialization and run-time paths are very similar to those of the <a class="reference internal" href="l2_forward_real_virtual.html"><span class="doc">L2 Forwarding Sample Application (in Real and Virtualized Environments)</span></a>.
+This guide highlights the differences between the two applications.
+There are two key differences from the L2 Forwarding sample application:</p>
+<ul class="simple">
+<li>The IPv4 Multicast sample application makes use of indirect buffers.</li>
+<li>The forwarding decision is taken based on information read from the input packet&#8217;s IPv4 header.</li>
+</ul>
+<p>The lookup method is the Four-byte Key (FBK) hash-based method.
+The lookup table is composed of pairs of destination IPv4 address (the FBK)
+and a port mask associated with that IPv4 address.</p>
+<p>For convenience and simplicity, this sample application does not take IANA-assigned multicast addresses into account,
+but instead equates the last four bytes of the multicast group (that is, the last four bytes of the destination IP address)
+with the mask of ports to multicast packets to.
+Also, the application does not consider the Ethernet addresses;
+it looks only at the IPv4 destination address for any given packet.</p>
+</div>
+<div class="section" id="building-the-application">
+<h2>9.2. Building the Application</h2>
+<p>To compile the application:</p>
+<ol class="arabic">
+<li><p class="first">Go to the sample application directory:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export RTE_SDK=/path/to/rte_sdk</span>
+<span class="go">cd ${RTE_SDK}/examples/ipv4_multicast</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Set the target (a default target is used if not specified). For example:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export RTE_TARGET=x86_64-native-linuxapp-gcc</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>See the <em>DPDK Getting Started Guide</em> for possible RTE_TARGET values.</p>
+<ol class="arabic">
+<li><p class="first">Build the application:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">make</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The compiled application is written to the build subdirectory.
+To have the application written to a different location,
+the O=/path/to/build/directory option may be specified in the make command.</p>
+</div>
+</div>
+<div class="section" id="running-the-application">
+<h2>9.3. Running the Application</h2>
+<p>The application has a number of command line options:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./build/ipv4_multicast [EAL options] -- -p PORTMASK [-q NQ]</span>
+</pre></div>
+</div>
+<p>where,</p>
+<ul class="simple">
+<li>-p PORTMASK: Hexadecimal bitmask of ports to configure</li>
+<li>-q NQ: determines the number of queues per lcore</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Unlike the basic L2/L3 Forwarding sample applications,
+NUMA support is not provided in the IPv4 Multicast sample application.</p>
+</div>
+<p>Typically, to run the IPv4 Multicast sample application, issue the following command (as root):</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./build/ipv4_multicast -c 0x00f -n 3 -- -p 0x3 -q 1</span>
+</pre></div>
+</div>
+<p>In this command:</p>
+<ul class="simple">
+<li>The -c option enables cores 0, 1, 2 and 3</li>
+<li>The -n option specifies 3 memory channels</li>
+<li>The -p option enables ports 0 and 1</li>
+<li>The -q option assigns 1 queue to each lcore</li>
+</ul>
+<p>Refer to the <em>DPDK Getting Started Guide</em> for general information on running applications
+and the Environment Abstraction Layer (EAL) options.</p>
+</div>
+<div class="section" id="explanation">
+<h2>9.4. Explanation</h2>
+<p>The following sections provide some explanation of the code.
+As mentioned in the overview section,
+the initialization and run-time paths are very similar to those of the <a class="reference internal" href="l2_forward_real_virtual.html"><span class="doc">L2 Forwarding Sample Application (in Real and Virtualized Environments)</span></a>.
+The following sections describe aspects that are specific to the IPv4 Multicast sample application.</p>
+<div class="section" id="memory-pool-initialization">
+<h3>9.4.1. Memory Pool Initialization</h3>
+<p>The IPv4 Multicast sample application uses three memory pools.
+Two of the pools are for indirect buffers used for packet duplication purposes.
+Memory pools for indirect buffers are initialized differently from the memory pool for direct buffers:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="n">packet_pool</span> <span class="o">=</span> <span class="n">rte_mempool_create</span><span class="p">(</span><span class="s">&quot;packet_pool&quot;</span><span class="p">,</span> <span class="n">NB_PKT_MBUF</span><span class="p">,</span> <span class="n">PKT_MBUF_SIZE</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="n">rte_pktmbuf_pool_private</span><span class="p">),</span>
+                                 <span class="n">rte_pktmbuf_pool_init</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">rte_pktmbuf_init</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">rte_socket_id</span><span class="p">(),</span> <span class="mi">0</span><span class="p">);</span>
+
+<span class="n">header_pool</span> <span class="o">=</span> <span class="n">rte_mempool_create</span><span class="p">(</span><span class="s">&quot;header_pool&quot;</span><span class="p">,</span> <span class="n">NB_HDR_MBUF</span><span class="p">,</span> <span class="n">HDR_MBUF_SIZE</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">rte_pktmbuf_init</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">rte_socket_id</span><span class="p">(),</span> <span class="mi">0</span><span class="p">);</span>
+<span class="n">clone_pool</span> <span class="o">=</span> <span class="n">rte_mempool_create</span><span class="p">(</span><span class="s">&quot;clone_pool&quot;</span><span class="p">,</span> <span class="n">NB_CLONE_MBUF</span><span class="p">,</span>
+<span class="n">CLONE_MBUF_SIZE</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">rte_pktmbuf_init</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">rte_socket_id</span><span class="p">(),</span> <span class="mi">0</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The reason for this is because indirect buffers are not supposed to hold any packet data and
+therefore can be initialized with lower amount of reserved memory for each buffer.</p>
+</div>
+<div class="section" id="hash-initialization">
+<h3>9.4.2. Hash Initialization</h3>
+<p>The hash object is created and loaded with the pre-configured entries read from a global array:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">int</span>
+
+<span class="nf">init_mcast_hash</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">uint32_t</span> <span class="n">i</span><span class="p">;</span>
+    <span class="n">mcast_hash_params</span><span class="p">.</span><span class="n">socket_id</span> <span class="o">=</span> <span class="n">rte_socket_id</span><span class="p">();</span>
+
+    <span class="n">mcast_hash</span> <span class="o">=</span> <span class="n">rte_fbk_hash_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mcast_hash_params</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">mcast_hash</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">){</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">N_MCAST_GROUPS</span><span class="p">;</span> <span class="n">i</span> <span class="o">++</span><span class="p">){</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">rte_fbk_hash_add_key</span><span class="p">(</span><span class="n">mcast_hash</span><span class="p">,</span> <span class="n">mcast_group_table</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">ip</span><span class="p">,</span> <span class="n">mcast_group_table</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">port_mask</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="forwarding">
+<h3>9.4.3. Forwarding</h3>
+<p>All forwarding is done inside the mcast_forward() function.
+Firstly, the Ethernet* header is removed from the packet and the IPv4 address is extracted from the IPv4 header:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/* Remove the Ethernet header from the input packet */</span>
+
+<span class="n">iphdr</span> <span class="o">=</span> <span class="p">(</span><span class="k">struct</span> <span class="n">ipv4_hdr</span> <span class="o">*</span><span class="p">)</span><span class="n">rte_pktmbuf_adj</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="n">ether_hdr</span><span class="p">));</span>
+<span class="n">RTE_MBUF_ASSERT</span><span class="p">(</span><span class="n">iphdr</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="n">dest_addr</span> <span class="o">=</span> <span class="n">rte_be_to_cpu_32</span><span class="p">(</span><span class="n">iphdr</span><span class="o">-&gt;</span><span class="n">dst_addr</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Then, the packet is checked to see if it has a multicast destination address and
+if the routing table has any ports assigned to the destination address:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">IS_IPV4_MCAST</span><span class="p">(</span><span class="n">dest_addr</span><span class="p">)</span> <span class="o">||</span>
+   <span class="p">(</span><span class="n">hash</span> <span class="o">=</span> <span class="n">rte_fbk_hash_lookup</span><span class="p">(</span><span class="n">mcast_hash</span><span class="p">,</span> <span class="n">dest_addr</span><span class="p">))</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="o">||</span>
+   <span class="p">(</span><span class="n">port_mask</span> <span class="o">=</span> <span class="n">hash</span> <span class="o">&amp;</span> <span class="n">enabled_port_mask</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+       <span class="n">rte_pktmbuf_free</span><span class="p">(</span><span class="n">m</span><span class="p">);</span>
+       <span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Then, the number of ports in the destination portmask is calculated with the help of the bitcnt() function:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/* Get number of bits set. */</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">uint32_t</span> <span class="nf">bitcnt</span><span class="p">(</span><span class="kt">uint32_t</span> <span class="n">v</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">uint32_t</span> <span class="n">n</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">n</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">v</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">v</span> <span class="o">&amp;=</span> <span class="n">v</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="o">++</span><span class="p">)</span>
+       <span class="p">;</span>
+    <span class="k">return</span> <span class="n">n</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This is done to determine which forwarding algorithm to use.
+This is explained in more detail in the next section.</p>
+<p>Thereafter, a destination Ethernet address is constructed:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/* construct destination Ethernet address */</span>
+
+<span class="n">dst_eth_addr</span> <span class="o">=</span> <span class="n">ETHER_ADDR_FOR_IPV4_MCAST</span><span class="p">(</span><span class="n">dest_addr</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Since Ethernet addresses are also part of the multicast process, each outgoing packet carries the same destination Ethernet address.
+The destination Ethernet address is constructed from the lower 23 bits of the multicast group OR-ed
+with the Ethernet address 01:00:5e:00:00:00, as per RFC 1112:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cp">#define ETHER_ADDR_FOR_IPV4_MCAST(x) \</span>
+<span class="cp">    (rte_cpu_to_be_64(0x01005e000000ULL | ((x) &amp; 0x7fffff)) &gt;&gt; 16)</span>
+</pre></div>
+</div>
+<p>Then, packets are dispatched to the destination ports according to the portmask associated with a multicast group:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="p">(</span><span class="n">port</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">use_clone</span> <span class="o">!=</span> <span class="n">port_mask</span><span class="p">;</span> <span class="n">port_mask</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">port</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* Prepare output packet and send it out. */</span>
+
+    <span class="k">if</span> <span class="p">((</span><span class="n">port_mask</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">likely</span> <span class="p">((</span><span class="n">mc</span> <span class="o">=</span> <span class="n">mcast_out_pkt</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">use_clone</span><span class="p">))</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">))</span>
+            <span class="n">mcast_send_pkt</span><span class="p">(</span><span class="n">mc</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">dst_eth_addr</span><span class="p">.</span><span class="n">as_addr</span><span class="p">,</span> <span class="n">qconf</span><span class="p">,</span> <span class="n">port</span><span class="p">);</span>
+        <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="n">use_clone</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+             <span class="n">rte_pktmbuf_free</span><span class="p">(</span><span class="n">m</span><span class="p">);</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The actual packet transmission is done in the mcast_send_pkt() function:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="nf">mcast_send_pkt</span><span class="p">(</span><span class="k">struct</span> <span class="n">rte_mbuf</span> <span class="o">*</span><span class="n">pkt</span><span class="p">,</span> <span class="k">struct</span> <span class="n">ether_addr</span> <span class="o">*</span><span class="n">dest_addr</span><span class="p">,</span> <span class="k">struct</span> <span class="n">lcore_queue_conf</span> <span class="o">*</span><span class="n">qconf</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">port</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">struct</span> <span class="n">ether_hdr</span> <span class="o">*</span><span class="n">ethdr</span><span class="p">;</span>
+    <span class="kt">uint16_t</span> <span class="n">len</span><span class="p">;</span>
+
+    <span class="cm">/* Construct Ethernet header. */</span>
+
+    <span class="n">ethdr</span> <span class="o">=</span> <span class="p">(</span><span class="k">struct</span> <span class="n">ether_hdr</span> <span class="o">*</span><span class="p">)</span><span class="n">rte_pktmbuf_prepend</span><span class="p">(</span><span class="n">pkt</span><span class="p">,</span> <span class="p">(</span><span class="kt">uint16_t</span><span class="p">)</span> <span class="k">sizeof</span><span class="p">(</span><span class="o">*</span><span class="n">ethdr</span><span class="p">));</span>
+
+    <span class="n">RTE_MBUF_ASSERT</span><span class="p">(</span><span class="n">ethdr</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">);</span>
+
+    <span class="n">ether_addr_copy</span><span class="p">(</span><span class="n">dest_addr</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ethdr</span><span class="o">-&gt;</span><span class="n">d_addr</span><span class="p">);</span>
+    <span class="n">ether_addr_copy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ports_eth_addr</span><span class="p">[</span><span class="n">port</span><span class="p">],</span> <span class="o">&amp;</span><span class="n">ethdr</span><span class="o">-&gt;</span><span class="n">s_addr</span><span class="p">);</span>
+    <span class="n">ethdr</span><span class="o">-&gt;</span><span class="n">ether_type</span> <span class="o">=</span> <span class="n">rte_be_to_cpu_16</span><span class="p">(</span><span class="n">ETHER_TYPE_IPv4</span><span class="p">);</span>
+
+    <span class="cm">/* Put new packet into the output queue */</span>
+
+    <span class="n">len</span> <span class="o">=</span> <span class="n">qconf</span><span class="o">-&gt;</span><span class="n">tx_mbufs</span><span class="p">[</span><span class="n">port</span><span class="p">].</span><span class="n">len</span><span class="p">;</span>
+    <span class="n">qconf</span><span class="o">-&gt;</span><span class="n">tx_mbufs</span><span class="p">[</span><span class="n">port</span><span class="p">].</span><span class="n">m_table</span><span class="p">[</span><span class="n">len</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkt</span><span class="p">;</span>
+    <span class="n">qconf</span><span class="o">-&gt;</span><span class="n">tx_mbufs</span><span class="p">[</span><span class="n">port</span><span class="p">].</span><span class="n">len</span> <span class="o">=</span> <span class="o">++</span><span class="n">len</span><span class="p">;</span>
+
+    <span class="cm">/* Transmit packets */</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">unlikely</span><span class="p">(</span><span class="n">MAX_PKT_BURST</span> <span class="o">==</span> <span class="n">len</span><span class="p">))</span>
+        <span class="n">send_burst</span><span class="p">(</span><span class="n">qconf</span><span class="p">,</span> <span class="n">port</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="buffer-cloning">
+<h3>9.4.4. Buffer Cloning</h3>
+<p>This is the most important part of the application since it demonstrates the use of zero- copy buffer cloning.
+There are two approaches for creating the outgoing packet and although both are based on the data zero-copy idea,
+there are some differences in the detail.</p>
+<p>The first approach creates a clone of the input packet, for example,
+walk though all segments of the input packet and for each of segment,
+create a new buffer and attach that new buffer to the segment
+(refer to rte_pktmbuf_clone() in the rte_mbuf library for more details).
+A new buffer is then allocated for the packet header and is prepended to the cloned buffer.</p>
+<p>The second approach does not make a clone, it just increments the reference counter for all input packet segment,
+allocates a new buffer for the packet header and prepends it to the input packet.</p>
+<p>Basically, the first approach reuses only the input packet&#8217;s data, but creates its own copy of packet&#8217;s metadata.
+The second approach reuses both input packet&#8217;s data and metadata.</p>
+<p>The advantage of first approach is that each outgoing packet has its own copy of the metadata,
+so we can safely modify the data pointer of the input packet.
+That allows us to skip creation if the output packet is for the last destination port
+and instead modify input packet&#8217;s header in place.
+For example, for N destination ports, we need to invoke mcast_out_pkt() (N-1) times.</p>
+<p>The advantage of the second approach is that there is less work to be done for each outgoing packet,
+that is, the &#8220;clone&#8221; operation is skipped completely.
+However, there is a price to pay.
+The input packet&#8217;s metadata must remain intact, so for N destination ports,
+we need to invoke mcast_out_pkt() (N) times.</p>
+<p>Therefore, for a small number of outgoing ports (and segments in the input packet),
+first approach is faster.
+As the number of outgoing ports (and/or input segments) grows, the second approach becomes more preferable.</p>
+<p>Depending on the number of segments or the number of ports in the outgoing portmask,
+either the first (with cloning) or the second (without cloning) approach is taken:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="n">use_clone</span> <span class="o">=</span> <span class="p">(</span><span class="n">port_num</span> <span class="o">&lt;=</span> <span class="n">MCAST_CLONE_PORTS</span> <span class="o">&amp;&amp;</span> <span class="n">m</span><span class="o">-&gt;</span><span class="n">pkt</span><span class="p">.</span><span class="n">nb_segs</span> <span class="o">&lt;=</span> <span class="n">MCAST_CLONE_SEGS</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>It is the mcast_out_pkt() function that performs the packet duplication (either with or without actually cloning the buffers):</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kr">inline</span> <span class="k">struct</span> <span class="n">rte_mbuf</span> <span class="o">*</span><span class="nf">mcast_out_pkt</span><span class="p">(</span><span class="k">struct</span> <span class="n">rte_mbuf</span> <span class="o">*</span><span class="n">pkt</span><span class="p">,</span> <span class="kt">int</span> <span class="n">use_clone</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">struct</span> <span class="n">rte_mbuf</span> <span class="o">*</span><span class="n">hdr</span><span class="p">;</span>
+
+    <span class="cm">/* Create new mbuf for the header. */</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">unlikely</span> <span class="p">((</span><span class="n">hdr</span> <span class="o">=</span> <span class="n">rte_pktmbuf_alloc</span><span class="p">(</span><span class="n">header_pool</span><span class="p">))</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+
+    <span class="cm">/* If requested, then make a new clone packet. */</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">use_clone</span> <span class="o">!=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">unlikely</span> <span class="p">((</span><span class="n">pkt</span> <span class="o">=</span> <span class="n">rte_pktmbuf_clone</span><span class="p">(</span><span class="n">pkt</span><span class="p">,</span> <span class="n">clone_pool</span><span class="p">))</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">rte_pktmbuf_free</span><span class="p">(</span><span class="n">hdr</span><span class="p">);</span>
+        <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="cm">/* prepend new header */</span>
+
+    <span class="n">hdr</span><span class="o">-&gt;</span><span class="n">pkt</span><span class="p">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">pkt</span><span class="p">;</span>
+
+    <span class="cm">/* update header&#39;s fields */</span>
+
+    <span class="n">hdr</span><span class="o">-&gt;</span><span class="n">pkt</span><span class="p">.</span><span class="n">pkt_len</span> <span class="o">=</span> <span class="p">(</span><span class="kt">uint16_t</span><span class="p">)(</span><span class="n">hdr</span><span class="o">-&gt;</span><span class="n">pkt</span><span class="p">.</span><span class="n">data_len</span> <span class="o">+</span> <span class="n">pkt</span><span class="o">-&gt;</span><span class="n">pkt</span><span class="p">.</span><span class="n">pkt_len</span><span class="p">);</span>
+    <span class="n">hdr</span><span class="o">-&gt;</span><span class="n">pkt</span><span class="p">.</span><span class="n">nb_segs</span> <span class="o">=</span> <span class="p">(</span><span class="kt">uint8_t</span><span class="p">)(</span><span class="n">pkt</span><span class="o">-&gt;</span><span class="n">pkt</span><span class="p">.</span><span class="n">nb_segs</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+
+    <span class="cm">/* copy metadata from source packet */</span>
+
+    <span class="n">hdr</span><span class="o">-&gt;</span><span class="n">pkt</span><span class="p">.</span><span class="n">in_port</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">-&gt;</span><span class="n">pkt</span><span class="p">.</span><span class="n">in_port</span><span class="p">;</span>
+    <span class="n">hdr</span><span class="o">-&gt;</span><span class="n">pkt</span><span class="p">.</span><span class="n">vlan_macip</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">-&gt;</span><span class="n">pkt</span><span class="p">.</span><span class="n">vlan_macip</span><span class="p">;</span>
+    <span class="n">hdr</span><span class="o">-&gt;</span><span class="n">pkt</span><span class="p">.</span><span class="n">hash</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">-&gt;</span><span class="n">pkt</span><span class="p">.</span><span class="n">hash</span><span class="p">;</span>
+    <span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ol_flags</span> <span class="o">=</span> <span class="n">pkt</span><span class="o">-&gt;</span><span class="n">ol_flags</span><span class="p">;</span>
+    <span class="n">rte_mbuf_sanity_check</span><span class="p">(</span><span class="n">hdr</span><span class="p">,</span> <span class="n">RTE_MBUF_PKT</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">hdr</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="ip_reassembly.html" class="btn btn-neutral float-right" title="10. IP Reassembly Sample Application" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ip_frag.html" class="btn btn-neutral" title="8. IP Fragmentation Sample Application" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

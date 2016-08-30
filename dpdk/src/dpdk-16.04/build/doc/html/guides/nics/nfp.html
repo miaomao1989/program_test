@@ -1,0 +1,426 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>13. NFP poll mode driver library &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Network Interface Controller Drivers" href="index.html"/>
+        <link rel="next" title="14. SZEDATA2 poll mode driver library" href="szedata2.html"/>
+        <link rel="prev" title="12. MLX5 poll mode driver" href="mlx5.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Network Interface Controller Drivers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">1. Overview of Networking Drivers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bnx2x.html">2. BNX2X Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cxgbe.html">3. CXGBE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="e1000em.html">4. Driver for VM Emulated Devices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ena.html">5. ENA Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="enic.html">6. ENIC Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fm10k.html">7. FM10K Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="i40e.html">8. I40E Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ixgbe.html">9. IXGBE Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intel_vf.html">10. I40E/IXGBE/IGB Virtual Function Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mlx4.html">11. MLX4 poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mlx5.html">12. MLX5 poll mode driver</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">13. NFP poll mode driver library</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dependencies">13.1. Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#building-the-software">13.2. Building the software</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#system-configuration">13.3. System configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="szedata2.html">14. SZEDATA2 poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="virtio.html">15. Poll Mode Driver for Emulated Virtio NIC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">16. Poll Mode Driver that wraps vhost library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmxnet3.html">17. Poll Mode Driver for Paravirtual VMXNET3 NIC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pcap_ring.html">18. Libpcap and Ring Based Poll Mode Drivers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Network Interface Controller Drivers</a> &raquo;</li>
+      
+    <li>13. NFP poll mode driver library</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/nics/nfp.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="nfp-poll-mode-driver-library">
+<h1>13. NFP poll mode driver library</h1>
+<p>Netronome&#8217;s sixth generation of flow processors pack 216 programmable
+cores and over 100 hardware accelerators that uniquely combine packet,
+flow, security and content processing in a single device that scales
+up to 400 Gbps.</p>
+<p>This document explains how to use DPDK with the Netronome Poll Mode
+Driver (PMD) supporting Netronome&#8217;s Network Flow Processor 6xxx
+(NFP-6xxx).</p>
+<p>Currently the driver supports virtual functions (VFs) only.</p>
+<div class="section" id="dependencies">
+<h2>13.1. Dependencies</h2>
+<p>Before using the Netronome&#8217;s DPDK PMD some NFP-6xxx configuration,
+which is not related to DPDK, is required. The system requires
+installation of <strong>Netronome&#8217;s BSP (Board Support Package)</strong> which includes
+Linux drivers, programs and libraries.</p>
+<p>If you have a NFP-6xxx device you should already have the code and
+documentation for doing this configuration. Contact
+<strong>support&#64;netronome.com</strong> to obtain the latest available firmware.</p>
+<p>The NFP Linux kernel drivers (including the required PF driver for the
+NFP) are available on Github at
+<strong>https://github.com/Netronome/nfp-drv-kmods</strong> along with build
+instructions.</p>
+<p>DPDK runs in userspace and PMDs uses the Linux kernel UIO interface to
+allow access to physical devices from userspace. The NFP PMD requires
+a separate UIO driver, <strong>nfp_uio</strong>, to perform correct
+initialization. This driver is part of Netronome´s BSP and it is
+equivalent to Intel&#8217;s igb_uio driver.</p>
+</div>
+<div class="section" id="building-the-software">
+<h2>13.2. Building the software</h2>
+<p>Netronome&#8217;s PMD code is provided in the <strong>drivers/net/nfp</strong> directory.
+Because Netronome´s BSP dependencies the driver is disabled by default
+in DPDK build using <strong>common_linuxapp configuration</strong> file. Enabling the
+driver or if you use another configuration file and want to have NFP
+support, this variable is needed:</p>
+<ul class="simple">
+<li><strong>CONFIG_RTE_LIBRTE_NFP_PMD=y</strong></li>
+</ul>
+<p>Once DPDK is built all the DPDK apps and examples include support for
+the NFP PMD.</p>
+</div>
+<div class="section" id="system-configuration">
+<h2>13.3. System configuration</h2>
+<p>Using the NFP PMD is not different to using other PMDs. Usual steps are:</p>
+<ol class="arabic">
+<li><p class="first"><strong>Configure hugepages:</strong> All major Linux distributions have the hugepages
+functionality enabled by default. By default this allows the system uses for
+working with transparent hugepages. But in this case some hugepages need to
+be created/reserved for use with the DPDK through the hugetlbfs file system.
+First the virtual file system need to be mounted:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">mount -t hugetlbfs none /mnt/hugetlbfs</span>
+</pre></div>
+</div>
+<p>The command uses the common mount point for this file system and it needs to
+be created if necessary.</p>
+<p>Configuring hugepages is performed via sysfs:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">/sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages</span>
+</pre></div>
+</div>
+<p>This sysfs file is used to specify the number of hugepages to reserve.
+For example:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">echo 1024 &gt; /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages</span>
+</pre></div>
+</div>
+<p>This will reserve 2GB of memory using 1024 2MB hugepages. The file may be
+read to see if the operation was performed correctly:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">cat /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages</span>
+</pre></div>
+</div>
+<p>The number of unused hugepages may also be inspected.</p>
+<p>Before executing the DPDK app it should match the value of nr_hugepages.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">cat /sys/kernel/mm/hugepages/hugepages-2048kB/free_hugepages</span>
+</pre></div>
+</div>
+<p>The hugepages reservation should be performed at system initialization and
+it is usual to use a kernel parameter for configuration. If the reservation
+is attempted on a busy system it will likely fail. Reserving memory for
+hugepages may be done adding the following to the grub kernel command line:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">default_hugepagesz=1M hugepagesz=2M hugepages=1024</span>
+</pre></div>
+</div>
+<p>This will reserve 2GBytes of memory using 2Mbytes huge pages.</p>
+<p>Finally, for a NUMA system the allocation needs to be made on the correct
+NUMA node. In a DPDK app there is a master core which will (usually) perform
+memory allocation. It is important that some of the hugepages are reserved
+on the NUMA memory node where the network device is attached. This is because
+of a restriction in DPDK by which TX and RX descriptors rings must be created
+on the master code.</p>
+<p>Per-node allocation of hugepages may be inspected and controlled using sysfs.
+For example:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">cat /sys/devices/system/node/node0/hugepages/hugepages-2048kB/nr_hugepages</span>
+</pre></div>
+</div>
+<p>For a NUMA system there will be a specific hugepage directory per node
+allowing control of hugepage reservation. A common problem may occur when
+hugepages reservation is performed after the system has been working for
+some time. Configuration using the global sysfs hugepage interface will
+succeed but the per-node allocations may be unsatisfactory.</p>
+<p>The number of hugepages that need to be reserved depends on how the app uses
+TX and RX descriptors, and packets mbufs.</p>
+</li>
+<li><p class="first"><strong>Enable SR-IOV on the NFP-6xxx device:</strong> The current NFP PMD works with
+Virtual Functions (VFs) on a NFP device. Make sure that one of the Physical
+Function (PF) drivers from the above Github repository is installed and
+loaded.</p>
+<p>Virtual Functions need to be enabled before they can be used with the PMD.
+Before enabling the VFs it is useful to obtain information about the
+current NFP PCI device detected by the system:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">lspci -d19ee:</span>
+</pre></div>
+</div>
+<p>Now, for example, configure two virtual functions on a NFP-6xxx device
+whose PCI system identity is &#8220;0000:03:00.0&#8221;:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">echo 2 &gt; /sys/bus/pci/devices/0000:03:00.0/sriov_numvfs</span>
+</pre></div>
+</div>
+<p>The result of this command may be shown using lspci again:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">lspci -d19ee: -k</span>
+</pre></div>
+</div>
+<p>Two new PCI devices should appear in the output of the above command. The
+-k option shows the device driver, if any, that devices are bound to.
+Depending on the modules loaded at this point the new PCI devices may be
+bound to nfp_netvf driver.</p>
+</li>
+<li><p class="first"><strong>To install the uio kernel module (manually):</strong> All major Linux
+distributions have support for this kernel module so it is straightforward
+to install it:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">modprobe uio</span>
+</pre></div>
+</div>
+<p>The module should now be listed by the lsmod command.</p>
+</li>
+<li><p class="first"><strong>To install the nfp_uio kernel module (manually):</strong> This module supports
+NFP-6xxx devices through the UIO interface.</p>
+<p>This module is part of Netronome´s BSP and it should be available when the
+BSP is installed.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">modprobe nfp_uio.ko</span>
+</pre></div>
+</div>
+<p>The module should now be listed by the lsmod command.</p>
+<p>Depending on which NFP modules are loaded, nfp_uio may be automatically
+bound to the NFP PCI devices by the system. Otherwise the binding needs
+to be done explicitly. This is the case when nfp_netvf, the Linux kernel
+driver for NFP VFs, was loaded when VFs were created. As described later
+in this document this configuration may also be performed using scripts
+provided by the Netronome´s BSP.</p>
+<p>First the device needs to be unbound, for example from the nfp_netvf
+driver:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">echo 0000:03:08.0 &gt; /sys/bus/pci/devices/0000:03:08.0/driver/unbind</span>
+
+<span class="go">lspci -d19ee: -k</span>
+</pre></div>
+</div>
+<p>The output of lspci should now show that 0000:03:08.0 is not bound to
+any driver.</p>
+<p>The next step is to add the NFP PCI ID to the NFP UIO driver:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">echo 19ee 6003 &gt; /sys/bus/pci/drivers/nfp_uio/new_id</span>
+</pre></div>
+</div>
+<p>And then to bind the device to the nfp_uio driver:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">echo 0000:03:08.0 &gt; /sys/bus/pci/drivers/nfp_uio/bind</span>
+
+<span class="go">lspci -d19ee: -k</span>
+</pre></div>
+</div>
+<p>lspci should show that device bound to nfp_uio driver.</p>
+</li>
+<li><p class="first"><strong>Using tools from Netronome´s BSP to install and bind modules:</strong> DPDK provides
+scripts which are useful for installing the UIO modules and for binding the
+right device to those modules avoiding doing so manually. However, these scripts
+have not support for Netronome´s UIO driver. Along with drivers, the BSP installs
+those DPDK scripts slightly modified with support for Netronome´s UIO driver.</p>
+<p>Those specific scripts can be found in Netronome´s BSP installation directory.
+Refer to BSP documentation for more information.</p>
+<ul class="simple">
+<li><strong>setup.sh</strong></li>
+<li><strong>dpdk_nic_bind.py</strong></li>
+</ul>
+<p>Configuration may be performed by running setup.sh which invokes
+dpdk_nic_bind.py as needed. Executing setup.sh will display a menu of
+configuration options.</p>
+</li>
+</ol>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="szedata2.html" class="btn btn-neutral float-right" title="14. SZEDATA2 poll mode driver library" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="mlx5.html" class="btn btn-neutral" title="12. MLX5 poll mode driver" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

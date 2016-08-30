@@ -1,0 +1,384 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>15. Poll Mode Driver for Emulated Virtio NIC &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Network Interface Controller Drivers" href="index.html"/>
+        <link rel="next" title="16. Poll Mode Driver that wraps vhost library" href="vhost.html"/>
+        <link rel="prev" title="14. SZEDATA2 poll mode driver library" href="szedata2.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Network Interface Controller Drivers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">1. Overview of Networking Drivers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bnx2x.html">2. BNX2X Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cxgbe.html">3. CXGBE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="e1000em.html">4. Driver for VM Emulated Devices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ena.html">5. ENA Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="enic.html">6. ENIC Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fm10k.html">7. FM10K Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="i40e.html">8. I40E Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ixgbe.html">9. IXGBE Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intel_vf.html">10. I40E/IXGBE/IGB Virtual Function Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mlx4.html">11. MLX4 poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mlx5.html">12. MLX5 poll mode driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nfp.html">13. NFP poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="szedata2.html">14. SZEDATA2 poll mode driver library</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">15. Poll Mode Driver for Emulated Virtio NIC</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#virtio-implementation-in-dpdk">15.1. Virtio Implementation in DPDK</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#features-and-limitations-of-virtio-pmd">15.2. Features and Limitations of virtio PMD</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prerequisites">15.3. Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#virtio-with-kni-vhost-back-end">15.4. Virtio with kni vhost Back End</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#virtio-with-qemu-virtio-back-end">15.5. Virtio with qemu virtio Back End</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">16. Poll Mode Driver that wraps vhost library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmxnet3.html">17. Poll Mode Driver for Paravirtual VMXNET3 NIC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pcap_ring.html">18. Libpcap and Ring Based Poll Mode Drivers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Network Interface Controller Drivers</a> &raquo;</li>
+      
+    <li>15. Poll Mode Driver for Emulated Virtio NIC</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/nics/virtio.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="poll-mode-driver-for-emulated-virtio-nic">
+<h1>15. Poll Mode Driver for Emulated Virtio NIC</h1>
+<p>Virtio is a para-virtualization framework initiated by IBM, and supported by KVM hypervisor.
+In the Data Plane Development Kit (DPDK),
+we provide a virtio Poll Mode Driver (PMD) as a software solution, comparing to SRIOV hardware solution,
+for fast guest VM to guest VM communication and guest VM to host communication.</p>
+<p>Vhost is a kernel acceleration module for virtio qemu backend.
+The DPDK extends kni to support vhost raw socket interface,
+which enables vhost to directly read/ write packets from/to a physical port.
+With this enhancement, virtio could achieve quite promising performance.</p>
+<p>In future release, we will also make enhancement to vhost backend,
+releasing peak performance of virtio PMD driver.</p>
+<p>For basic qemu-KVM installation and other Intel EM poll mode driver in guest VM,
+please refer to Chapter &#8220;Driver for VM Emulated Devices&#8221;.</p>
+<p>In this chapter, we will demonstrate usage of virtio PMD driver with two backends,
+standard qemu vhost back end and vhost kni back end.</p>
+<div class="section" id="virtio-implementation-in-dpdk">
+<h2>15.1. Virtio Implementation in DPDK</h2>
+<p>For details about the virtio spec, refer to Virtio PCI Card Specification written by Rusty Russell.</p>
+<p>As a PMD, virtio provides packet reception and transmission callbacks virtio_recv_pkts and virtio_xmit_pkts.</p>
+<p>In virtio_recv_pkts, index in range [vq-&gt;vq_used_cons_idx , vq-&gt;vq_ring.used-&gt;idx) in vring is available for virtio to burst out.</p>
+<p>In virtio_xmit_pkts, same index range in vring is available for virtio to clean.
+Virtio will enqueue to be transmitted packets into vring, advance the vq-&gt;vq_ring.avail-&gt;idx,
+and then notify the host back end if necessary.</p>
+</div>
+<div class="section" id="features-and-limitations-of-virtio-pmd">
+<h2>15.2. Features and Limitations of virtio PMD</h2>
+<p>In this release, the virtio PMD driver provides the basic functionality of packet reception and transmission.</p>
+<ul class="simple">
+<li>It supports merge-able buffers per packet when receiving packets and scattered buffer per packet
+when transmitting packets. The packet size supported is from 64 to 1518.</li>
+<li>It supports multicast packets and promiscuous mode.</li>
+<li>The descriptor number for the RX/TX queue is hard-coded to be 256 by qemu.
+If given a different descriptor number by the upper application,
+the virtio PMD generates a warning and fall back to the hard-coded value.</li>
+<li>Features of mac/vlan filter are supported, negotiation with vhost/backend are needed to support them.
+When backend can&#8217;t support vlan filter, virtio app on guest should disable vlan filter to make sure
+the virtio port is configured correctly. E.g. specify &#8216;&#8211;disable-hw-vlan&#8217; in testpmd command line.</li>
+<li>RTE_PKTMBUF_HEADROOM should be defined larger than sizeof(struct virtio_net_hdr), which is 10 bytes.</li>
+<li>Virtio does not support runtime configuration.</li>
+<li>Virtio supports Link State interrupt.</li>
+<li>Virtio supports software vlan stripping and inserting.</li>
+<li>Virtio supports using port IO to get PCI resource when uio/igb_uio module is not available.</li>
+</ul>
+</div>
+<div class="section" id="prerequisites">
+<h2>15.3. Prerequisites</h2>
+<p>The following prerequisites apply:</p>
+<ul class="simple">
+<li>In the BIOS, turn VT-x and VT-d on</li>
+<li>Linux kernel with KVM module; vhost module loaded and ioeventfd supported.
+Qemu standard backend without vhost support isn&#8217;t tested, and probably isn&#8217;t supported.</li>
+</ul>
+</div>
+<div class="section" id="virtio-with-kni-vhost-back-end">
+<h2>15.4. Virtio with kni vhost Back End</h2>
+<p>This section demonstrates kni vhost back end example setup for Phy-VM Communication.</p>
+<div class="figure" id="id1">
+<span id="figure-host-vm-comms"></span><img alt="../_images/host_vm_comms.png" src="../_images/host_vm_comms.png" />
+<p class="caption"><span class="caption-number">Fig. 15.3 </span><span class="caption-text">Host2VM Communication Example Using kni vhost Back End</span></p>
+</div>
+<p>Host2VM communication example</p>
+<ol class="arabic">
+<li><p class="first">Load the kni kernel module:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">insmod rte_kni.ko</span>
+</pre></div>
+</div>
+<p>Other basic DPDK preparations like hugepage enabling, uio port binding are not listed here.
+Please refer to the <em>DPDK Getting Started Guide</em> for detailed instructions.</p>
+</li>
+<li><p class="first">Launch the kni user application:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">examples/kni/build/app/kni -c 0xf -n 4 -- -p 0x1 -P --config=&quot;(0,1,3)&quot;</span>
+</pre></div>
+</div>
+<p>This command generates one network device vEth0 for physical port.
+If specify more physical ports, the generated network device will be vEth1, vEth2, and so on.</p>
+<p>For each physical port, kni creates two user threads.
+One thread loops to fetch packets from the physical NIC port into the kni receive queue.
+The other user thread loops to send packets in the kni transmit queue.</p>
+<p>For each physical port, kni also creates a kernel thread that retrieves packets from the kni receive queue,
+place them onto kni&#8217;s raw socket&#8217;s queue and wake up the vhost kernel thread to exchange packets with the virtio virt queue.</p>
+<p>For more details about kni, please refer to <a class="reference internal" href="../prog_guide/kernel_nic_interface.html#kni"><span class="std std-ref">Kernel NIC Interface</span></a>.</p>
+</li>
+<li><p class="first">Enable the kni raw socket functionality for the specified physical NIC port,
+get the generated file descriptor and set it in the qemu command line parameter.
+Always remember to set ioeventfd_on and vhost_on.</p>
+<p>Example:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">echo 1 &gt; /sys/class/net/vEth0/sock_en</span>
+<span class="go">fd=`cat /sys/class/net/vEth0/sock_fd`</span>
+<span class="go">exec qemu-system-x86_64 -enable-kvm -cpu host \</span>
+<span class="go">-m 2048 -smp 4 -name dpdk-test1-vm1 \</span>
+<span class="go">-drive file=/data/DPDKVMS/dpdk-vm.img \</span>
+<span class="go">-netdev tap, fd=$fd,id=mynet_kni, script=no,vhost=on \</span>
+<span class="go">-device virtio-net-pci,netdev=mynet_kni,bus=pci.0,addr=0x3,ioeventfd=on \</span>
+<span class="go">-vnc:1 -daemonize</span>
+</pre></div>
+</div>
+<p>In the above example, virtio port 0 in the guest VM will be associated with vEth0, which in turns corresponds to a physical port,
+which means received packets come from vEth0, and transmitted packets is sent to vEth0.</p>
+</li>
+<li><p class="first">In the guest, bind the virtio device to the uio_pci_generic kernel module and start the forwarding application.
+When the virtio port in guest bursts rx, it is getting packets from the raw socket&#8217;s receive queue.
+When the virtio port bursts tx, it is sending packet to the tx_q.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">modprobe uio</span>
+<span class="go">echo 512 &gt; /sys/devices/system/node/node0/hugepages/hugepages-2048kB/nr_hugepages</span>
+<span class="go">modprobe uio_pci_generic</span>
+<span class="go">python tools/dpdk_nic_bind.py -b uio_pci_generic 00:03.0</span>
+</pre></div>
+</div>
+<p>We use testpmd as the forwarding application in this example.</p>
+<div class="figure" id="id2">
+<img alt="../_images/console.png" src="../_images/console.png" />
+<p class="caption"><span class="caption-number">Fig. 15.4 </span><span class="caption-text">Running testpmd</span></p>
+</div>
+</li>
+<li><p class="first">Use IXIA packet generator to inject a packet stream into the KNI physical port.</p>
+<p>The packet reception and transmission flow path is:</p>
+<p>IXIA packet generator-&gt;82599 PF-&gt;KNI rx queue-&gt;KNI raw socket queue-&gt;Guest VM virtio port 0 rx burst-&gt;Guest VM virtio port 0 tx burst-&gt; KNI tx queue-&gt;82599 PF-&gt; IXIA packet generator</p>
+</li>
+</ol>
+</div>
+<div class="section" id="virtio-with-qemu-virtio-back-end">
+<h2>15.5. Virtio with qemu virtio Back End</h2>
+<div class="figure" id="id3">
+<span id="figure-host-vm-comms-qemu"></span><img alt="../_images/host_vm_comms_qemu.png" src="../_images/host_vm_comms_qemu.png" />
+<p class="caption"><span class="caption-number">Fig. 15.5 </span><span class="caption-text">Host2VM Communication Example Using qemu vhost Back End</span></p>
+</div>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">qemu-system-x86_64 -enable-kvm -cpu host -m 2048 -smp 2 -mem-path /dev/</span>
+<span class="go">hugepages -mem-prealloc</span>
+<span class="go">-drive file=/data/DPDKVMS/dpdk-vm1</span>
+<span class="go">-netdev tap,id=vm1_p1,ifname=tap0,script=no,vhost=on</span>
+<span class="go">-device virtio-net-pci,netdev=vm1_p1,bus=pci.0,addr=0x3,ioeventfd=on</span>
+<span class="go">-device pci-assign,host=04:10.1 \</span>
+</pre></div>
+</div>
+<p>In this example, the packet reception flow path is:</p>
+<blockquote>
+<div>IXIA packet generator-&gt;82599 PF-&gt;Linux Bridge-&gt;TAP0&#8217;s socket queue-&gt; Guest VM virtio port 0 rx burst-&gt; Guest VM 82599 VF port1 tx burst-&gt; IXIA packet generator</div></blockquote>
+<p>The packet transmission flow is:</p>
+<blockquote>
+<div>IXIA packet generator-&gt; Guest VM 82599 VF port1 rx burst-&gt; Guest VM virtio port 0 tx burst-&gt; tap -&gt; Linux Bridge-&gt;82599 PF-&gt; IXIA packet generator</div></blockquote>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="vhost.html" class="btn btn-neutral float-right" title="16. Poll Mode Driver that wraps vhost library" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="szedata2.html" class="btn btn-neutral" title="14. SZEDATA2 poll mode driver library" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

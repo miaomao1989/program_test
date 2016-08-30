@@ -1,0 +1,444 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>2. System Requirements &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Getting Started Guide for Linux" href="index.html"/>
+        <link rel="next" title="3. Compiling the DPDK Target from Source" href="build_dpdk.html"/>
+        <link rel="prev" title="1. Introduction" href="intro.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Getting Started Guide for Linux</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2. System Requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#bios-setting-prerequisite-on-x86">2.1. BIOS Setting Prerequisite on x86</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compilation-of-the-dpdk">2.2. Compilation of the DPDK</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-dpdk-applications">2.3. Running DPDK Applications</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#system-software">2.3.1. System Software</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#use-of-hugepages-in-the-linux-environment">2.3.2. Use of Hugepages in the Linux Environment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#xen-domain0-support-in-the-linux-environment">2.3.3. Xen Domain0 Support in the Linux Environment</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="build_dpdk.html">3. Compiling the DPDK Target from Source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_sample_apps.html">4. Compiling and Running Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="enable_func.html">5. Enabling Additional Functionality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quick_start.html">6. Quick Start Setup Script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nic_perf_intel_platform.html">7. How to get best performance with NICs on Intel platforms</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Getting Started Guide for Linux</a> &raquo;</li>
+      
+    <li>2. System Requirements</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/linux_gsg/sys_reqs.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="system-requirements">
+<h1>2. System Requirements</h1>
+<p>This chapter describes the packages required to compile the DPDK.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If the DPDK is being used on an Intel® Communications Chipset 89xx Series platform,
+please consult the <em>Intel® Communications Chipset 89xx Series Software for Linux Getting Started Guide</em>.</p>
+</div>
+<div class="section" id="bios-setting-prerequisite-on-x86">
+<h2>2.1. BIOS Setting Prerequisite on x86</h2>
+<p>For the majority of platforms, no special BIOS settings are needed to use basic DPDK functionality.
+However, for additional HPET timer and power management functionality,
+and high performance of small packets on 40G NIC, BIOS setting changes may be needed.
+Consult the section on <a class="reference internal" href="enable_func.html#enabling-additional-functionality"><span class="std std-ref">Enabling Additional Functionality</span></a>
+for more information on the required changes.</p>
+</div>
+<div class="section" id="compilation-of-the-dpdk">
+<h2>2.2. Compilation of the DPDK</h2>
+<p><strong>Required Tools:</strong></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Testing has been performed using Fedora 18. The setup commands and installed packages needed on other systems may be different.
+For details on other Linux distributions and the versions tested, please consult the DPDK Release Notes.</p>
+</div>
+<ul class="simple">
+<li>GNU <code class="docutils literal"><span class="pre">make</span></code>.</li>
+<li>coreutils: <code class="docutils literal"><span class="pre">cmp</span></code>, <code class="docutils literal"><span class="pre">sed</span></code>, <code class="docutils literal"><span class="pre">grep</span></code>, <code class="docutils literal"><span class="pre">arch</span></code>, etc.</li>
+<li>gcc: versions 4.5.x or later is recommended for <code class="docutils literal"><span class="pre">i686/x86_64</span></code>. Versions 4.8.x or later is recommended
+for <code class="docutils literal"><span class="pre">ppc_64</span></code> and <code class="docutils literal"><span class="pre">x86_x32</span></code> ABI. On some distributions, some specific compiler flags and linker flags are enabled by
+default and affect performance (<code class="docutils literal"><span class="pre">-fstack-protector</span></code>, for example). Please refer to the documentation
+of your distribution and to <code class="docutils literal"><span class="pre">gcc</span> <span class="pre">-dumpspecs</span></code>.</li>
+<li>libc headers, often packaged as <code class="docutils literal"><span class="pre">gcc-multilib</span></code> (<code class="docutils literal"><span class="pre">glibc-devel.i686</span></code> / <code class="docutils literal"><span class="pre">libc6-dev-i386</span></code>;
+<code class="docutils literal"><span class="pre">glibc-devel.x86_64</span></code> / <code class="docutils literal"><span class="pre">libc6-dev</span></code> for 64-bit compilation on Intel architecture;
+<code class="docutils literal"><span class="pre">glibc-devel.ppc64</span></code> for 64 bit IBM Power architecture;)</li>
+<li>Linux kernel headers or sources required to build kernel modules. (kernel - devel.x86_64;
+kernel - devel.ppc64)</li>
+<li>Additional packages required for 32-bit compilation on 64-bit systems are:<ul>
+<li>glibc.i686, libgcc.i686, libstdc++.i686 and glibc-devel.i686 for Intel i686/x86_64;</li>
+<li>glibc.ppc64, libgcc.ppc64, libstdc++.ppc64 and glibc-devel.ppc64 for IBM ppc_64;</li>
+</ul>
+</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">x86_x32 ABI is currently supported with distribution packages only on Ubuntu
+higher than 13.10 or recent Debian distribution. The only supported  compiler is gcc 4.8+.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Python, version 2.6 or 2.7, to use various helper scripts included in the DPDK package.</p>
+</div>
+<p><strong>Optional Tools:</strong></p>
+<ul class="simple">
+<li>Intel® C++ Compiler (icc). For installation, additional libraries may be required.
+See the icc Installation Guide found in the Documentation directory under the compiler installation.</li>
+<li>IBM® Advance ToolChain for Powerlinux. This is a set of open source development tools and runtime libraries
+which allows users to take leading edge advantage of IBM&#8217;s latest POWER hardware features on Linux. To install
+it, see the IBM official installation document.</li>
+<li>libpcap headers and libraries (libpcap-devel) to compile and use the libpcap-based poll-mode driver.
+This driver is disabled by default and can be enabled by setting <code class="docutils literal"><span class="pre">CONFIG_RTE_LIBRTE_PMD_PCAP=y</span></code> in the build time config file.</li>
+</ul>
+</div>
+<div class="section" id="running-dpdk-applications">
+<h2>2.3. Running DPDK Applications</h2>
+<p>To run an DPDK application, some customization may be required on the target machine.</p>
+<div class="section" id="system-software">
+<h3>2.3.1. System Software</h3>
+<p><strong>Required:</strong></p>
+<ul>
+<li><p class="first">Kernel version &gt;= 2.6.34</p>
+<p>The kernel version in use can be checked using the command:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>uname -r
+</pre></div>
+</div>
+</li>
+<li><p class="first">glibc &gt;= 2.7 (for features related to cpuset)</p>
+<p>The version can be checked using the <code class="docutils literal"><span class="pre">ldd</span> <span class="pre">--version</span></code> command.</p>
+</li>
+<li><p class="first">Kernel configuration</p>
+<p>In the Fedora OS and other common distributions, such as Ubuntu, or Red Hat Enterprise Linux,
+the vendor supplied kernel configurations can be used to run most DPDK applications.</p>
+<p>For other kernel builds, options which should be enabled for DPDK include:</p>
+<ul class="simple">
+<li>UIO support</li>
+<li>HUGETLBFS</li>
+<li>PROC_PAGE_MONITOR  support</li>
+<li>HPET and HPET_MMAP configuration options should also be enabled if HPET  support is required.
+See the section on <a class="reference internal" href="enable_func.html#high-precision-event-timer"><span class="std std-ref">High Precision Event Timer (HPET) Functionality</span></a> for more details.</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="use-of-hugepages-in-the-linux-environment">
+<span id="linux-gsg-hugepages"></span><h3>2.3.2. Use of Hugepages in the Linux Environment</h3>
+<p>Hugepage support is required for the large memory pool allocation used for packet buffers
+(the HUGETLBFS option must be enabled in the running kernel as indicated the previous section).
+By using hugepage allocations, performance is increased since fewer pages are needed,
+and therefore less Translation Lookaside Buffers (TLBs, high speed translation caches),
+which reduce the time it takes to translate a virtual page address to a physical page address.
+Without hugepages, high TLB miss rates would occur with the standard 4k page size, slowing performance.</p>
+<div class="section" id="reserving-hugepages-for-dpdk-use">
+<h4>2.3.2.1. Reserving Hugepages for DPDK Use</h4>
+<p>The allocation of hugepages should be done at boot time or as soon as possible after system boot
+to prevent memory from being fragmented in physical memory.
+To reserve hugepages at boot time, a parameter is passed to the Linux kernel on the kernel command line.</p>
+<p>For 2 MB pages, just pass the hugepages option to the kernel. For example, to reserve 1024 pages of 2 MB, use:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>hugepages=1024
+</pre></div>
+</div>
+<p>For other hugepage sizes, for example 1G pages, the size must be specified explicitly and
+can also be optionally set as the default hugepage size for the system.
+For example, to reserve 4G of hugepage memory in the form of four 1G pages, the following options should be passed to the kernel:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>default_hugepagesz=1G hugepagesz=1G hugepages=4
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The hugepage sizes that a CPU supports can be determined from the CPU flags on Intel architecture.
+If pse exists, 2M hugepages are supported; if pdpe1gb exists, 1G hugepages are supported.
+On IBM Power architecture, the supported hugepage sizes are 16MB and 16GB.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">For 64-bit applications, it is recommended to use 1 GB hugepages if the platform supports them.</p>
+</div>
+<p>In the case of a dual-socket NUMA system,
+the number of hugepages reserved at boot time is generally divided equally between the two sockets
+(on the assumption that sufficient memory is present on both sockets).</p>
+<p>See the Documentation/kernel-parameters.txt file in your Linux source tree for further details of these and other kernel options.</p>
+<p><strong>Alternative:</strong></p>
+<p>For 2 MB pages, there is also the option of allocating hugepages after the system has booted.
+This is done by echoing the number of hugepages required to a nr_hugepages file in the <code class="docutils literal"><span class="pre">/sys/devices/</span></code> directory.
+For a single-node system, the command to use is as follows (assuming that 1024 pages are required):</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>echo 1024 &gt; /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
+</pre></div>
+</div>
+<p>On a NUMA machine, pages should be allocated explicitly on separate nodes:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>echo 1024 &gt; /sys/devices/system/node/node0/hugepages/hugepages-2048kB/nr_hugepages
+echo 1024 &gt; /sys/devices/system/node/node1/hugepages/hugepages-2048kB/nr_hugepages
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">For 1G pages, it is not possible to reserve the hugepage memory after the system has booted.</p>
+</div>
+</div>
+<div class="section" id="using-hugepages-with-the-dpdk">
+<h4>2.3.2.2. Using Hugepages with the DPDK</h4>
+<p>Once the hugepage memory is reserved, to make the memory available for DPDK use, perform the following steps:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>mkdir /mnt/huge
+mount -t hugetlbfs nodev /mnt/huge
+</pre></div>
+</div>
+<p>The mount point can be made permanent across reboots, by adding the following line to the <code class="docutils literal"><span class="pre">/etc/fstab</span></code> file:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>nodev /mnt/huge hugetlbfs defaults 0 0
+</pre></div>
+</div>
+<p>For 1GB pages, the page size must be specified as a mount option:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>nodev /mnt/huge_1GB hugetlbfs pagesize=1GB 0 0
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="xen-domain0-support-in-the-linux-environment">
+<h3>2.3.3. Xen Domain0 Support in the Linux Environment</h3>
+<p>The existing memory management implementation is based on the Linux kernel hugepage mechanism.
+On the Xen hypervisor, hugepage support for DomainU (DomU) Guests means that DPDK applications work as normal for guests.</p>
+<p>However, Domain0 (Dom0) does not support hugepages.
+To work around this limitation, a new kernel module rte_dom0_mm is added to facilitate the allocation and mapping of memory via
+<strong>IOCTL</strong> (allocation) and <strong>MMAP</strong> (mapping).</p>
+<div class="section" id="enabling-xen-dom0-mode-in-the-dpdk">
+<h4>2.3.3.1. Enabling Xen Dom0 Mode in the DPDK</h4>
+<p>By default, Xen Dom0 mode is disabled in the DPDK build configuration files.
+To support Xen Dom0, the CONFIG_RTE_LIBRTE_XEN_DOM0 setting should be changed to “y”, which enables the Xen Dom0 mode at compile time.</p>
+<p>Furthermore, the CONFIG_RTE_EAL_ALLOW_INV_SOCKET_ID setting should also be changed to “y” in the case of the wrong socket ID being received.</p>
+</div>
+<div class="section" id="loading-the-dpdk-rte-dom0-mm-module">
+<h4>2.3.3.2. Loading the DPDK rte_dom0_mm Module</h4>
+<p>To run any DPDK application on Xen Dom0, the <code class="docutils literal"><span class="pre">rte_dom0_mm</span></code> module must be loaded into the running kernel with rsv_memsize option.
+The module is found in the kmod sub-directory of the DPDK target directory.
+This module should be loaded using the insmod command as shown below (assuming that the current directory is the DPDK target directory):</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>sudo insmod kmod/rte_dom0_mm.ko rsv_memsize=X
+</pre></div>
+</div>
+<p>The value X cannot be greater than 4096(MB).</p>
+</div>
+<div class="section" id="configuring-memory-for-dpdk-use">
+<h4>2.3.3.3. Configuring Memory for DPDK Use</h4>
+<p>After the rte_dom0_mm.ko kernel module has been loaded, the user must configure the memory size for DPDK usage.
+This is done by echoing the memory size to a memsize file in the /sys/devices/ directory.
+Use the following command (assuming that 2048 MB is required):</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>echo 2048 &gt; /sys/kernel/mm/dom0-mm/memsize-mB/memsize
+</pre></div>
+</div>
+<p>The user can also check how much memory has already been used:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>cat /sys/kernel/mm/dom0-mm/memsize-mB/memsize_rsvd
+</pre></div>
+</div>
+<p>Xen Domain0 does not support NUMA configuration, as a result the <code class="docutils literal"><span class="pre">--socket-mem</span></code> command line option is invalid for Xen Domain0.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The memsize value cannot be greater than the rsv_memsize value.</p>
+</div>
+</div>
+<div class="section" id="running-the-dpdk-application-on-xen-domain0">
+<h4>2.3.3.4. Running the DPDK Application on Xen Domain0</h4>
+<p>To run the DPDK application on Xen Domain0, an extra command line option <code class="docutils literal"><span class="pre">--xen-dom0</span></code> is required.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="build_dpdk.html" class="btn btn-neutral float-right" title="3. Compiling the DPDK Target from Source" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="intro.html" class="btn btn-neutral" title="1. Introduction" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

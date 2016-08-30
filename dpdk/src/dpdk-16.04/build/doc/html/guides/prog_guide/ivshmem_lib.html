@@ -1,0 +1,367 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>9. IVSHMEM Library &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Programmer’s Guide" href="index.html"/>
+        <link rel="next" title="10. Link Bonding Poll Mode Driver Library" href="link_bonding_poll_mode_drv_lib.html"/>
+        <link rel="prev" title="8. Cryptography Device Library" href="cryptodev_lib.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Programmer&#8217;s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html">2. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="env_abstraction_layer.html">3. Environment Abstraction Layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ring_lib.html">4. Ring Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mempool_lib.html">5. Mempool Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mbuf_lib.html">6. Mbuf Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="poll_mode_drv.html">7. Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cryptodev_lib.html">8. Cryptography Device Library</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">9. IVSHMEM Library</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ivhshmem-library-api-overview">9.1. IVHSHMEM Library API Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ivshmem-environment-configuration">9.2. IVSHMEM Environment Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#best-practices-for-writing-ivshmem-applications">9.3. Best Practices for Writing IVSHMEM Applications</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#best-practices-for-running-ivshmem-applications">9.4. Best Practices for Running IVSHMEM Applications</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="link_bonding_poll_mode_drv_lib.html">10. Link Bonding Poll Mode Driver Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer_lib.html">11. Timer Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hash_lib.html">12. Hash Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm_lib.html">13. LPM Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm6_lib.html">14. LPM6 Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_distrib_lib.html">15. Packet Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reorder_lib.html">16. Reorder Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_fragment_reassembly_lib.html">17. IP Fragmentation and Reassembly Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_proc_support.html">18. Multi-process Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">19. Kernel NIC Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thread_safety_dpdk_functions.html">20. Thread Safety of DPDK Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_framework.html">21. Quality of Service (QoS) Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="power_man.html">22. Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_classif_access_ctrl.html">23. Packet Classification and Access Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_framework.html">24. Packet Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_lib.html">25. Vhost Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="port_hotplug_framework.html">26. Port Hotplug Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source_org.html">27. Source Organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_kit_build_system.html">28. Development Kit Build System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_kit_root_make_help.html">29. Development Kit Root Makefile Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extend_dpdk.html">30. Extending the DPDK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_app.html">31. Building Your Own Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ext_app_lib_make_help.html">32. External Application/Library Makefile help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perf_opt_guidelines.html">33. Performance Optimization Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing_efficient_code.html">34. Writing Efficient Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="profile_app.html">35. Profile Your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">36. Glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Programmer&#8217;s Guide</a> &raquo;</li>
+      
+    <li>9. IVSHMEM Library</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/prog_guide/ivshmem_lib.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="ivshmem-library">
+<h1>9. IVSHMEM Library</h1>
+<p>The DPDK IVSHMEM library facilitates fast zero-copy data sharing among virtual machines
+(host-to-guest or guest-to-guest) by means of QEMU&#8217;s IVSHMEM mechanism.</p>
+<p>The library works by providing a command line for QEMU to map several hugepages into a single IVSHMEM device.
+For the guest to know what is inside any given IVSHMEM device
+(and to distinguish between DPDK and non-DPDK IVSHMEM devices),
+a metadata file is also mapped into the IVSHMEM segment.
+No work needs to be done by the guest application to map IVSHMEM devices into memory;
+they are automatically recognized by the DPDK Environment Abstraction Layer (EAL).</p>
+<p>A typical DPDK IVSHMEM use case looks like the following.</p>
+<div class="figure" id="id1">
+<img alt="../_images/ivshmem.png" src="../_images/ivshmem.png" />
+<p class="caption"><span class="caption-number">Fig. 9.1 </span><span class="caption-text">Typical Ivshmem use case</span></p>
+</div>
+<p>The same could work with several virtual machines, providing host-to-VM or VM-to-VM communication.
+The maximum number of metadata files is 32 (by default) and each metadata file can contain different (or even the same) hugepages.
+The only constraint is that each VM has to have access to the memory it is sharing with other entities (be it host or another VM).
+For example, if the user wants to share the same memzone across two VMs, each VM must have that memzone in its metadata file.</p>
+<div class="section" id="ivhshmem-library-api-overview">
+<h2>9.1. IVHSHMEM Library API Overview</h2>
+<p>The following is a simple guide to using the IVSHMEM Library API:</p>
+<ul class="simple">
+<li>Call rte_ivshmem_metadata_create() to create a new metadata file.
+The metadata name is used to distinguish between multiple metadata files.</li>
+<li>Populate each metadata file with DPDK data structures.
+This can be done using the following API calls:<ul>
+<li>rte_ivhshmem_metadata_add_memzone() to add rte_memzone to metadata file</li>
+<li>rte_ivshmem_metadata_add_ring() to add rte_ring to metadata file</li>
+<li>rte_ivshmem_metadata_add_mempool() to add rte_mempool to metadata file</li>
+</ul>
+</li>
+<li>Finally, call rte_ivshmem_metadata_cmdline_generate() to generate the command line for QEMU.
+Multiple metadata files (and thus multiple command lines) can be supplied to a single VM.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Only data structures fully residing in DPDK hugepage memory work correctly.
+Supported data structures created by malloc(), mmap()
+or otherwise using non-DPDK memory cause undefined behavior and even a segmentation fault.</p>
+</div>
+</div>
+<div class="section" id="ivshmem-environment-configuration">
+<h2>9.2. IVSHMEM Environment Configuration</h2>
+<p>The steps needed to successfully run IVSHMEM applications are the following:</p>
+<ul>
+<li><p class="first">Compile a special version of QEMU from sources.</p>
+<p>The source code can be found on the QEMU website (currently, version 1.4.x is supported, but version 1.5.x is known to work also),
+however, the source code will need to be patched to support using regular files as the IVSHMEM memory backend.
+The patch is not included in the DPDK package,
+but is available on the <a class="reference external" href="https://01.org/packet-processing/intel%C2%AE-ovdk">Intel®DPDK-vswitch project webpage</a>
+(either separately or in a DPDK vSwitch package).</p>
+</li>
+<li><p class="first">Enable IVSHMEM library in the DPDK build configuration.</p>
+<p>In the default configuration, IVSHMEM library is not compiled. To compile the IVSHMEM library,
+one has to either use one of the provided IVSHMEM targets
+(for example, x86_64-ivshmem-linuxapp-gcc),
+or set CONFIG_RTE_LIBRTE_IVSHMEM to &#8220;y&#8221; in the build configuration.</p>
+</li>
+<li><p class="first">Set up hugepage memory on the virtual machine.</p>
+<p>The guest applications run as regular DPDK (primary) processes and thus need their own hugepage memory set up inside the VM.
+The process is identical to the one described in the <em>DPDK Getting Started Guide</em>.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="best-practices-for-writing-ivshmem-applications">
+<h2>9.3. Best Practices for Writing IVSHMEM Applications</h2>
+<p>When considering the use of IVSHMEM for sharing memory, security implications need to be carefully evaluated.
+IVSHMEM is not suitable for untrusted guests, as IVSHMEM is essentially a window into the host process memory.
+This also has implications for the multiple VM scenarios.
+While the IVSHMEM library tries to share as little memory as possible,
+it is quite probable that data designated for one VM might also be present in an IVSMHMEM device designated for another VM.
+Consequently, any shared memory corruption will affect both host and all VMs sharing that particular memory.</p>
+<p>IVSHMEM applications essentially behave like multi-process applications,
+so it is important to implement access serialization to data and thread safety.
+DPDK ring structures are already thread-safe, however,
+any custom data structures that the user might need would have to be thread-safe also.</p>
+<p>Similar to regular DPDK multi-process applications,
+it is not recommended to use function pointers as functions might have different memory addresses in different processes.</p>
+<p>It is best to avoid freeing the rte_mbuf structure on a different machine from where it was allocated,
+that is, if the mbuf was allocated on the host, the host should free it.
+Consequently, any packet transmission and reception should also happen on the same machine (whether virtual or physical).
+Failing to do so may lead to data corruption in the mempool cache.</p>
+<p>Despite the IVSHMEM mechanism being zero-copy and having good performance,
+it is still desirable to do processing in batches and follow other procedures described in
+<a class="reference internal" href="perf_opt_guidelines.html#performance-optimization"><span class="std std-ref">Performance Optimization</span></a>.</p>
+</div>
+<div class="section" id="best-practices-for-running-ivshmem-applications">
+<h2>9.4. Best Practices for Running IVSHMEM Applications</h2>
+<p>For performance reasons,
+it is best to pin host processes and QEMU processes to different cores so that they do not interfere with each other.
+If NUMA support is enabled, it is also desirable to keep host process&#8217; hugepage memory and QEMU process on the same NUMA node.</p>
+<p>For the best performance across all NUMA nodes, each QEMU core should be pinned to host CPU core on the appropriate NUMA node.
+QEMU&#8217;s virtual NUMA nodes should also be set up to correspond to physical NUMA nodes.
+More on how to set up DPDK and QEMU NUMA support can be found in <em>DPDK Getting Started Guide</em> and
+<a class="reference external" href="http://qemu.weilnetz.de/qemu-doc.html">QEMU documentation</a> respectively.
+A script called cpu_layout.py is provided with the DPDK package (in the tools directory)
+that can be used to identify which CPU cores correspond to which NUMA node.</p>
+<p>The QEMU IVSHMEM command line creation should be considered the last step before starting the virtual machine.
+Currently, there is no hot plug support for QEMU IVSHMEM devices,
+so one cannot add additional memory to an IVSHMEM device once it has been created.
+Therefore, the correct sequence to run an IVSHMEM application is to run host application first,
+obtain the command lines for each IVSHMEM device and then run all QEMU instances with guest applications afterwards.</p>
+<p>It is important to note that once QEMU is started, it holds on to the hugepages it uses for IVSHMEM devices.
+As a result, if the user wishes to shut down or restart the IVSHMEM host application,
+it is not enough to simply shut the application down.
+The virtual machine must also be shut down (if not, it will hold onto outdated host data).</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="link_bonding_poll_mode_drv_lib.html" class="btn btn-neutral float-right" title="10. Link Bonding Poll Mode Driver Library" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="cryptodev_lib.html" class="btn btn-neutral" title="8. Cryptography Device Library" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

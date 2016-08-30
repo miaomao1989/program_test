@@ -1,0 +1,797 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>11. Kernel NIC Interface Sample Application &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Sample Applications User Guide" href="index.html"/>
+        <link rel="next" title="12. Keep Alive Sample Application" href="keep_alive.html"/>
+        <link rel="prev" title="10. IP Reassembly Sample Application" href="ip_reassembly.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Sample Applications User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmd_line.html">2. Command Line Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethtool.html">3. Ethtool Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exception_path.html">4. Exception Path Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello_world.html">5. Hello World Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skeleton.html">6. Basic Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rxtx_callbacks.html">7. RX/TX Callbacks Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_frag.html">8. IP Fragmentation Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipv4_multicast.html">9. IPv4 Multicast Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_reassembly.html">10. IP Reassembly Sample Application</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">11. Kernel NIC Interface Sample Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">11.1. Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compiling-the-application">11.2. Compiling the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#loading-the-kernel-module">11.3. Loading the Kernel Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-application">11.4. Running the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#kni-operations">11.5. KNI Operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#explanation">11.6. Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#initialization">11.6.1. Initialization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#packet-forwarding">11.6.2. Packet Forwarding</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#callbacks-for-kernel-requests">11.6.3. Callbacks for Kernel Requests</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="keep_alive.html">12. Keep Alive Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_crypto.html">13. L2 Forwarding with Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_job_stats.html">14. L2 Forwarding Sample Application (in Real and Virtualized Environments) with core load statistics.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_real_virtual.html">15. L2 Forwarding Sample Application (in Real and Virtualized Environments)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_cat.html">16. L2 Forwarding Sample Application with Cache Allocation Technology (CAT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward.html">17. L3 Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_power_man.html">18. L3 Forwarding with Power Management Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_access_ctrl.html">19. L3 Forwarding with Access Control Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_virtual.html">20. L3 Forwarding in a Virtualization Environment Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_status_intr.html">21. Link Status Interrupt Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="load_balancer.html">22. Load Balancer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_process.html">23. Multi-process Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_metering.html">24. QoS Metering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_scheduler.html">25. QoS Scheduler Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intel_quickassist.html">26. Intel® QuickAssist Technology Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quota_watermark.html">27. Quota and Watermark Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer.html">28. Timer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_ordering.html">29. Packet Ordering Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_dcb_forwarding.html">30. VMDQ and DCB Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">31. Vhost Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="netmap_compatibility.html">32. Netmap Compatibility Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_pipeline.html">33. Internet Protocol (IP) Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_pipeline.html">34. Test Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dist_app.html">35. Distributor Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vm_power_management.html">36. VM Power Management Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tep_termination.html">37. TEP termination Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="proc_info.html">38. dpdk_proc_info Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ptpclient.html">39. PTP Client Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance_thread.html">40. Performance Thread Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_secgw.html">41. IPsec Security Gateway Sample Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Sample Applications User Guide</a> &raquo;</li>
+      
+    <li>11. Kernel NIC Interface Sample Application</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/sample_app_ug/kernel_nic_interface.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="kernel-nic-interface-sample-application">
+<h1>11. Kernel NIC Interface Sample Application</h1>
+<p>The Kernel NIC Interface (KNI) is a DPDK control plane solution that
+allows userspace applications to exchange packets with the kernel networking stack.
+To accomplish this, DPDK userspace applications use an IOCTL call
+to request the creation of a KNI virtual device in the Linux* kernel.
+The IOCTL call provides interface information and the DPDK&#8217;s physical address space,
+which is re-mapped into the kernel address space by the KNI kernel loadable module
+that saves the information to a virtual device context.
+The DPDK creates FIFO queues for packet ingress and egress
+to the kernel module for each device allocated.</p>
+<p>The KNI kernel loadable module is a standard net driver,
+which upon receiving the IOCTL call access the DPDK&#8217;s FIFO queue to
+receive/transmit packets from/to the DPDK userspace application.
+The FIFO queues contain pointers to data packets in the DPDK. This:</p>
+<ul class="simple">
+<li>Provides a faster mechanism to interface with the kernel net stack and eliminates system calls</li>
+<li>Facilitates the DPDK using standard Linux* userspace net tools (tcpdump, ftp, and so on)</li>
+<li>Eliminate the copy_to_user and copy_from_user operations on packets.</li>
+</ul>
+<p>The Kernel NIC Interface sample application is a simple example that demonstrates the use
+of the DPDK to create a path for packets to go through the Linux* kernel.
+This is done by creating one or more kernel net devices for each of the DPDK ports.
+The application allows the use of standard Linux tools (ethtool, ifconfig, tcpdump) with the DPDK ports and
+also the exchange of packets between the DPDK application and the Linux* kernel.</p>
+<div class="section" id="overview">
+<h2>11.1. Overview</h2>
+<p>The Kernel NIC Interface sample application uses two threads in user space for each physical NIC port being used,
+and allocates one or more KNI device for each physical NIC port with kernel module&#8217;s support.
+For a physical NIC port, one thread reads from the port and writes to KNI devices,
+and another thread reads from KNI devices and writes the data unmodified to the physical NIC port.
+It is recommended to configure one KNI device for each physical NIC port.
+If configured with more than one KNI devices for a physical NIC port,
+it is just for performance testing, or it can work together with VMDq support in future.</p>
+<p>The packet flow through the Kernel NIC Interface application is as shown in the following figure.</p>
+<div class="figure" id="id1">
+<span id="figure-kernel-nic"></span><img alt="../_images/kernel_nic.png" src="../_images/kernel_nic.png" />
+<p class="caption"><span class="caption-number">Fig. 11.1 </span><span class="caption-text">Kernel NIC Application Packet Flow</span></p>
+</div>
+</div>
+<div class="section" id="compiling-the-application">
+<h2>11.2. Compiling the Application</h2>
+<p>Compile the application as follows:</p>
+<ol class="arabic">
+<li><p class="first">Go to the example directory:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export RTE_SDK=/path/to/rte_sdk</span>
+<span class="go">cd ${RTE_SDK}/examples/kni</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Set the target (a default target is used if not specified)</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This application is intended as a linuxapp only.</p>
+</div>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export RTE_TARGET=x86_64-native-linuxapp-gcc</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Build the application:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">make</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="loading-the-kernel-module">
+<h2>11.3. Loading the Kernel Module</h2>
+<p>Loading the KNI kernel module without any parameter is the typical way a DPDK application
+gets packets into and out of the kernel net stack.
+This way, only one kernel thread is created for all KNI devices for packet receiving in kernel side:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span>insmod rte_kni.ko
+</pre></div>
+</div>
+<p>Pinning the kernel thread to a specific core can be done using a taskset command such as following:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span>taskset -p <span class="m">100000</span> <span class="sb">`</span>pgrep --fl kni_thread <span class="p">|</span> awk <span class="s1">&#39;{print $1}&#39;</span><span class="sb">`</span>
+</pre></div>
+</div>
+<p>This command line tries to pin the specific kni_thread on the 20th lcore (lcore numbering starts at 0),
+which means it needs to check if that lcore is available on the board.
+This command must be sent after the application has been launched, as insmod does not start the kni thread.</p>
+<p>For optimum performance,
+the lcore in the mask must be selected to be on the same socket as the lcores used in the KNI application.</p>
+<p>To provide flexibility of performance, the kernel module of the KNI,
+located in the kmod sub-directory of the DPDK target directory,
+can be loaded with parameter of kthread_mode as follows:</p>
+<ul>
+<li><p class="first">#insmod rte_kni.ko kthread_mode=single</p>
+<p>This mode will create only one kernel thread for all KNI devices for packet receiving in kernel side.
+By default, it is in this single kernel thread mode.
+It can set core affinity for this kernel thread by using Linux command taskset.</p>
+</li>
+<li><p class="first">#insmod rte_kni.ko kthread_mode =multiple</p>
+<p>This mode will create a kernel thread for each KNI device for packet receiving in kernel side.
+The core affinity of each kernel thread is set when creating the KNI device.
+The lcore ID for each kernel thread is provided in the command line of launching the application.
+Multiple kernel thread mode can provide scalable higher performance.</p>
+</li>
+</ul>
+<p>To measure the throughput in a loopback mode, the kernel module of the KNI,
+located in the kmod sub-directory of the DPDK target directory,
+can be loaded with parameters as follows:</p>
+<ul>
+<li><p class="first">#insmod rte_kni.ko lo_mode=lo_mode_fifo</p>
+<p>This loopback mode will involve ring enqueue/dequeue operations in kernel space.</p>
+</li>
+<li><p class="first">#insmod rte_kni.ko lo_mode=lo_mode_fifo_skb</p>
+<p>This loopback mode will involve ring enqueue/dequeue operations and sk buffer copies in kernel space.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="running-the-application">
+<h2>11.4. Running the Application</h2>
+<p>The application requires a number of command line options:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">kni [EAL options] -- -P -p PORTMASK --config=&quot;(port,lcore_rx,lcore_tx[,lcore_kthread,...])[,port,lcore_rx,lcore_tx[,lcore_kthread,...]]&quot;</span>
+</pre></div>
+</div>
+<p>Where:</p>
+<ul class="simple">
+<li>-P: Set all ports to promiscuous mode so that packets are accepted regardless of the packet&#8217;s Ethernet MAC destination address.
+Without this option, only packets with the Ethernet MAC destination address set to the Ethernet address of the port are accepted.</li>
+<li>-p PORTMASK: Hexadecimal bitmask of ports to configure.</li>
+<li>&#8211;config=&#8221;(port,lcore_rx, lcore_tx[,lcore_kthread, ...]) [, port,lcore_rx, lcore_tx[,lcore_kthread, ...]]&#8221;:
+Determines which lcores of RX, TX, kernel thread are mapped to which ports.</li>
+</ul>
+<p>Refer to <em>DPDK Getting Started Guide</em> for general information on running applications and the Environment Abstraction Layer (EAL) options.</p>
+<p>The -c coremask parameter of the EAL options should include the lcores indicated by the lcore_rx and lcore_tx,
+but does not need to include lcores indicated by lcore_kthread as they are used to pin the kernel thread on.
+The -p PORTMASK parameter should include the ports indicated by the port in &#8211;config, neither more nor less.</p>
+<p>The lcore_kthread in &#8211;config can be configured none, one or more lcore IDs.
+In multiple kernel thread mode, if configured none, a KNI device will be allocated for each port,
+while no specific lcore affinity will be set for its kernel thread.
+If configured one or more lcore IDs, one or more KNI devices will be allocated for each port,
+while specific lcore affinity will be set for its kernel thread.
+In single kernel thread mode, if configured none, a KNI device will be allocated for each port.
+If configured one or more lcore IDs,
+one or more KNI devices will be allocated for each port while
+no lcore affinity will be set as there is only one kernel thread for all KNI devices.</p>
+<p>For example, to run the application with two ports served by six lcores, one lcore of RX, one lcore of TX,
+and one lcore of kernel thread for each port:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./build/kni -c 0xf0 -n 4 -- -P -p 0x3 -config=&quot;(0,4,6,8),(1,5,7,9)&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="kni-operations">
+<h2>11.5. KNI Operations</h2>
+<p>Once the KNI application is started, one can use different Linux* commands to manage the net interfaces.
+If more than one KNI devices configured for a physical port,
+only the first KNI device will be paired to the physical device.
+Operations on other KNI devices will not affect the physical port handled in user space application.</p>
+<p>Assigning an IP address:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span>ifconfig vEth0_0 192.168.0.1
+</pre></div>
+</div>
+<p>Displaying the NIC registers:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span>ethtool -d vEth0_0
+</pre></div>
+</div>
+<p>Dumping the network traffic:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span>tcpdump -i vEth0_0
+</pre></div>
+</div>
+<p>When the DPDK userspace application is closed, all the KNI devices are deleted from Linux*.</p>
+</div>
+<div class="section" id="explanation">
+<h2>11.6. Explanation</h2>
+<p>The following sections provide some explanation of code.</p>
+<div class="section" id="initialization">
+<h3>11.6.1. Initialization</h3>
+<p>Setup of mbuf pool, driver and queues is similar to the setup done in the <a class="reference internal" href="l2_forward_real_virtual.html"><span class="doc">L2 Forwarding Sample Application (in Real and Virtualized Environments)</span></a>..
+In addition, one or more kernel NIC interfaces are allocated for each
+of the configured ports according to the command line parameters.</p>
+<p>The code for allocating the kernel NIC interfaces for a specific port is as follows:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span> <span class="k">static</span> <span class="kt">int</span>
+ <span class="nf">kni_alloc</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="n">port_id</span><span class="p">)</span>
+ <span class="p">{</span>
+     <span class="kt">uint8_t</span> <span class="n">i</span><span class="p">;</span>
+     <span class="k">struct</span> <span class="n">rte_kni</span> <span class="o">*</span><span class="n">kni</span><span class="p">;</span>
+     <span class="k">struct</span> <span class="n">rte_kni_conf</span> <span class="n">conf</span><span class="p">;</span>
+     <span class="k">struct</span> <span class="n">kni_port_params</span> <span class="o">**</span><span class="n">params</span> <span class="o">=</span> <span class="n">kni_port_params_array</span><span class="p">;</span>
+
+     <span class="k">if</span> <span class="p">(</span><span class="n">port_id</span> <span class="o">&gt;=</span> <span class="n">RTE_MAX_ETHPORTS</span> <span class="o">||</span> <span class="o">!</span><span class="n">params</span><span class="p">[</span><span class="n">port_id</span><span class="p">])</span>
+         <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+
+     <span class="n">params</span><span class="p">[</span><span class="n">port_id</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">nb_kni</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="n">port_id</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">nb_lcore_k</span> <span class="o">?</span> <span class="n">params</span><span class="p">[</span><span class="n">port_id</span><span class="p">]</span><span class="o">-&gt;</span><span class="nl">nb_lcore_k</span> <span class="p">:</span> <span class="mi">1</span><span class="p">;</span>
+
+     <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">params</span><span class="p">[</span><span class="n">port_id</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">nb_kni</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+
+         <span class="cm">/* Clear conf at first */</span>
+
+         <span class="n">memset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">conf</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">conf</span><span class="p">));</span>
+         <span class="k">if</span> <span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="n">port_id</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">nb_lcore_k</span><span class="p">)</span> <span class="p">{</span>
+             <span class="n">snprintf</span><span class="p">(</span><span class="n">conf</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">RTE_KNI_NAMESIZE</span><span class="p">,</span> <span class="s">&quot;vEth%u_%u&quot;</span><span class="p">,</span> <span class="n">port_id</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+             <span class="n">conf</span><span class="p">.</span><span class="n">core_id</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="n">port_id</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">lcore_k</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+             <span class="n">conf</span><span class="p">.</span><span class="n">force_bind</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+         <span class="p">}</span> <span class="k">else</span>
+             <span class="n">snprintf</span><span class="p">(</span><span class="n">conf</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">RTE_KNI_NAMESIZE</span><span class="p">,</span> <span class="s">&quot;vEth%u&quot;</span><span class="p">,</span> <span class="n">port_id</span><span class="p">);</span>
+             <span class="n">conf</span><span class="p">.</span><span class="n">group_id</span> <span class="o">=</span> <span class="p">(</span><span class="kt">uint16_t</span><span class="p">)</span><span class="n">port_id</span><span class="p">;</span>
+             <span class="n">conf</span><span class="p">.</span><span class="n">mbuf_size</span> <span class="o">=</span> <span class="n">MAX_PACKET_SZ</span><span class="p">;</span>
+
+             <span class="cm">/*</span>
+<span class="cm">              *   The first KNI device associated to a port</span>
+<span class="cm">              *   is the master, for multiple kernel thread</span>
+<span class="cm">              *   environment.</span>
+<span class="cm">              */</span>
+
+             <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                 <span class="k">struct</span> <span class="n">rte_kni_ops</span> <span class="n">ops</span><span class="p">;</span>
+                 <span class="k">struct</span> <span class="n">rte_eth_dev_info</span> <span class="n">dev_info</span><span class="p">;</span>
+
+                 <span class="n">memset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">dev_info</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">dev_info</span><span class="p">));</span> <span class="n">rte_eth_dev_info_get</span><span class="p">(</span><span class="n">port_id</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">dev_info</span><span class="p">);</span>
+
+                 <span class="n">conf</span><span class="p">.</span><span class="n">addr</span> <span class="o">=</span> <span class="n">dev_info</span><span class="p">.</span><span class="n">pci_dev</span><span class="o">-&gt;</span><span class="n">addr</span><span class="p">;</span>
+                 <span class="n">conf</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">dev_info</span><span class="p">.</span><span class="n">pci_dev</span><span class="o">-&gt;</span><span class="n">id</span><span class="p">;</span>
+
+                 <span class="n">memset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ops</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">ops</span><span class="p">));</span>
+
+                 <span class="n">ops</span><span class="p">.</span><span class="n">port_id</span> <span class="o">=</span> <span class="n">port_id</span><span class="p">;</span>
+                 <span class="n">ops</span><span class="p">.</span><span class="n">change_mtu</span> <span class="o">=</span> <span class="n">kni_change_mtu</span><span class="p">;</span>
+                 <span class="n">ops</span><span class="p">.</span><span class="n">config_network_if</span> <span class="o">=</span> <span class="n">kni_config_network_interface</span><span class="p">;</span>
+
+                 <span class="n">kni</span> <span class="o">=</span> <span class="n">rte_kni_alloc</span><span class="p">(</span><span class="n">pktmbuf_pool</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">conf</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ops</span><span class="p">);</span>
+             <span class="p">}</span> <span class="k">else</span>
+                 <span class="n">kni</span> <span class="o">=</span> <span class="n">rte_kni_alloc</span><span class="p">(</span><span class="n">pktmbuf_pool</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">conf</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+
+             <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">kni</span><span class="p">)</span>
+                 <span class="n">rte_exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">,</span> <span class="s">&quot;Fail to create kni for &quot;</span>
+                         <span class="s">&quot;port: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">port_id</span><span class="p">);</span>
+
+             <span class="n">params</span><span class="p">[</span><span class="n">port_id</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">kni</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">kni</span><span class="p">;</span>
+         <span class="p">}</span>
+     <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The other step in the initialization process that is unique to this sample application
+is the association of each port with lcores for RX, TX and kernel threads.</p>
+<ul class="simple">
+<li>One lcore to read from the port and write to the associated one or more KNI devices</li>
+<li>Another lcore to read from one or more KNI devices and write to the port</li>
+<li>Other lcores for pinning the kernel threads on one by one</li>
+</ul>
+<p>This is done by using the`kni_port_params_array[]` array, which is indexed by the port ID.
+The code is as follows:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">static int</span>
+<span class="go">parse_config(const char *arg)</span>
+<span class="go">{</span>
+<span class="go">    const char *p, *p0 = arg;</span>
+<span class="go">    char s[256], *end;</span>
+<span class="go">    unsigned size;</span>
+<span class="go">    enum fieldnames {</span>
+<span class="go">        FLD_PORT = 0,</span>
+<span class="go">        FLD_LCORE_RX,</span>
+<span class="go">        FLD_LCORE_TX,</span>
+<span class="go">        _NUM_FLD = KNI_MAX_KTHREAD + 3,</span>
+<span class="go">    };</span>
+<span class="go">    int i, j, nb_token;</span>
+<span class="go">    char *str_fld[_NUM_FLD];</span>
+<span class="go">    unsigned long int_fld[_NUM_FLD];</span>
+<span class="go">    uint8_t port_id, nb_kni_port_params = 0;</span>
+
+<span class="go">    memset(&amp;kni_port_params_array, 0, sizeof(kni_port_params_array));</span>
+
+<span class="go">    while (((p = strchr(p0, &#39;(&#39;)) != NULL) &amp;&amp; nb_kni_port_params &lt; RTE_MAX_ETHPORTS) {</span>
+<span class="go">        p++;</span>
+<span class="go">        if ((p0 = strchr(p, &#39;)&#39;)) == NULL)</span>
+<span class="go">            goto fail;</span>
+
+<span class="go">        size = p0 - p;</span>
+
+<span class="go">        if (size &gt;= sizeof(s)) {</span>
+<span class="go">            printf(&quot;Invalid config parameters\n&quot;);</span>
+<span class="go">            goto fail;</span>
+<span class="go">        }</span>
+
+<span class="go">        snprintf(s, sizeof(s), &quot;%.*s&quot;, size, p);</span>
+<span class="go">        nb_token = rte_strsplit(s, sizeof(s), str_fld, _NUM_FLD, &#39;,&#39;);</span>
+
+<span class="go">        if (nb_token &lt;= FLD_LCORE_TX) {</span>
+<span class="go">            printf(&quot;Invalid config parameters\n&quot;);</span>
+<span class="go">            goto fail;</span>
+<span class="go">        }</span>
+
+<span class="go">        for (i = 0; i &lt; nb_token; i++) {</span>
+<span class="go">            errno = 0;</span>
+<span class="go">            int_fld[i] = strtoul(str_fld[i], &amp;end, 0);</span>
+<span class="go">            if (errno != 0 || end == str_fld[i]) {</span>
+<span class="go">                printf(&quot;Invalid config parameters\n&quot;);</span>
+<span class="go">                goto fail;</span>
+<span class="go">            }</span>
+<span class="go">        }</span>
+
+<span class="go">        i = 0;</span>
+<span class="go">        port_id = (uint8_t)int_fld[i++];</span>
+
+<span class="go">        if (port_id &gt;= RTE_MAX_ETHPORTS) {</span>
+<span class="go">            printf(&quot;Port ID %u could not exceed the maximum %u\n&quot;, port_id, RTE_MAX_ETHPORTS);</span>
+<span class="go">            goto fail;</span>
+<span class="go">        }</span>
+
+<span class="go">        if (kni_port_params_array[port_id]) {</span>
+<span class="go">            printf(&quot;Port %u has been configured\n&quot;, port_id);</span>
+<span class="go">            goto fail;</span>
+<span class="go">        }</span>
+
+<span class="go">        kni_port_params_array[port_id] = (struct kni_port_params*)rte_zmalloc(&quot;KNI_port_params&quot;, sizeof(struct kni_port_params), RTE_CACHE_LINE_SIZE);</span>
+<span class="go">        kni_port_params_array[port_id]-&gt;port_id = port_id;</span>
+<span class="go">        kni_port_params_array[port_id]-&gt;lcore_rx = (uint8_t)int_fld[i++];</span>
+<span class="go">        kni_port_params_array[port_id]-&gt;lcore_tx = (uint8_t)int_fld[i++];</span>
+
+<span class="go">        if (kni_port_params_array[port_id]-&gt;lcore_rx &gt;= RTE_MAX_LCORE || kni_port_params_array[port_id]-&gt;lcore_tx &gt;= RTE_MAX_LCORE) {</span>
+<span class="go">            printf(&quot;lcore_rx %u or lcore_tx %u ID could not &quot;</span>
+<span class="go">                    &quot;exceed the maximum %u\n&quot;,</span>
+<span class="go">                    kni_port_params_array[port_id]-&gt;lcore_rx, kni_port_params_array[port_id]-&gt;lcore_tx, RTE_MAX_LCORE);</span>
+<span class="go">            goto fail;</span>
+<span class="go">       }</span>
+
+<span class="go">    for (j = 0; i &lt; nb_token &amp;&amp; j &lt; KNI_MAX_KTHREAD; i++, j++)</span>
+<span class="go">        kni_port_params_array[port_id]-&gt;lcore_k[j] = (uint8_t)int_fld[i];</span>
+<span class="go">        kni_port_params_array[port_id]-&gt;nb_lcore_k = j;</span>
+<span class="go">    }</span>
+
+<span class="go">    print_config();</span>
+
+<span class="go">    return 0;</span>
+
+<span class="go">fail:</span>
+
+<span class="go">    for (i = 0; i &lt; RTE_MAX_ETHPORTS; i++) {</span>
+<span class="go">        if (kni_port_params_array[i]) {</span>
+<span class="go">            rte_free(kni_port_params_array[i]);</span>
+<span class="go">            kni_port_params_array[i] = NULL;</span>
+<span class="go">        }</span>
+<span class="go">    }</span>
+
+<span class="go">    return -1;</span>
+
+<span class="go">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="packet-forwarding">
+<h3>11.6.2. Packet Forwarding</h3>
+<p>After the initialization steps are completed, the main_loop() function is run on each lcore.
+This function first checks the lcore_id against the user provided lcore_rx and lcore_tx
+to see if this lcore is reading from or writing to kernel NIC interfaces.</p>
+<p>For the case that reads from a NIC port and writes to the kernel NIC interfaces,
+the packet reception is the same as in L2 Forwarding sample application
+(see <a class="reference internal" href="l2_forward_real_virtual.html#l2-fwd-app-rx-tx-packets"><span class="std std-ref">Receive, Process and Transmit Packets</span></a>).
+The packet transmission is done by sending mbufs into the kernel NIC interfaces by rte_kni_tx_burst().
+The KNI library automatically frees the mbufs after the kernel successfully copied the mbufs.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> *   Interface to burst rx and enqueue mbufs into rx_q</span>
+<span class="cm"> */</span>
+
+<span class="k">static</span> <span class="kt">void</span>
+<span class="nf">kni_ingress</span><span class="p">(</span><span class="k">struct</span> <span class="n">kni_port_params</span> <span class="o">*</span><span class="n">p</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">uint8_t</span> <span class="n">i</span><span class="p">,</span> <span class="n">nb_kni</span><span class="p">,</span> <span class="n">port_id</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="n">nb_rx</span><span class="p">,</span> <span class="n">num</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">rte_mbuf</span> <span class="o">*</span><span class="n">pkts_burst</span><span class="p">[</span><span class="n">PKT_BURST_SZ</span><span class="p">];</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">p</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="n">nb_kni</span> <span class="o">=</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">nb_kni</span><span class="p">;</span>
+    <span class="n">port_id</span> <span class="o">=</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">port_id</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nb_kni</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="cm">/* Burst rx from eth */</span>
+        <span class="n">nb_rx</span> <span class="o">=</span> <span class="n">rte_eth_rx_burst</span><span class="p">(</span><span class="n">port_id</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">pkts_burst</span><span class="p">,</span> <span class="n">PKT_BURST_SZ</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">unlikely</span><span class="p">(</span><span class="n">nb_rx</span> <span class="o">&gt;</span> <span class="n">PKT_BURST_SZ</span><span class="p">))</span> <span class="p">{</span>
+            <span class="n">RTE_LOG</span><span class="p">(</span><span class="n">ERR</span><span class="p">,</span> <span class="n">APP</span><span class="p">,</span> <span class="s">&quot;Error receiving from eth</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="cm">/* Burst tx to kni */</span>
+        <span class="n">num</span> <span class="o">=</span> <span class="n">rte_kni_tx_burst</span><span class="p">(</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">kni</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">pkts_burst</span><span class="p">,</span> <span class="n">nb_rx</span><span class="p">);</span>
+        <span class="n">kni_stats</span><span class="p">[</span><span class="n">port_id</span><span class="p">].</span><span class="n">rx_packets</span> <span class="o">+=</span> <span class="n">num</span><span class="p">;</span>
+        <span class="n">rte_kni_handle_request</span><span class="p">(</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">kni</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">unlikely</span><span class="p">(</span><span class="n">num</span> <span class="o">&lt;</span> <span class="n">nb_rx</span><span class="p">))</span> <span class="p">{</span>
+            <span class="cm">/* Free mbufs not tx to kni interface */</span>
+            <span class="n">kni_burst_free_mbufs</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pkts_burst</span><span class="p">[</span><span class="n">num</span><span class="p">],</span> <span class="n">nb_rx</span> <span class="o">-</span> <span class="n">num</span><span class="p">);</span>
+            <span class="n">kni_stats</span><span class="p">[</span><span class="n">port_id</span><span class="p">].</span><span class="n">rx_dropped</span> <span class="o">+=</span> <span class="n">nb_rx</span> <span class="o">-</span> <span class="n">num</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>For the other case that reads from kernel NIC interfaces and writes to a physical NIC port, packets are retrieved by reading
+mbufs from kernel NIC interfaces by <cite>rte_kni_rx_burst()</cite>.
+The packet transmission is the same as in the L2 Forwarding sample application
+(see <a class="reference internal" href="l2_forward_real_virtual.html#l2-fwd-app-rx-tx-packets"><span class="std std-ref">Receive, Process and Transmit Packets</span></a>).</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> *   Interface to dequeue mbufs from tx_q and burst tx</span>
+<span class="cm"> */</span>
+
+<span class="k">static</span> <span class="kt">void</span>
+
+<span class="nf">kni_egress</span><span class="p">(</span><span class="k">struct</span> <span class="n">kni_port_params</span> <span class="o">*</span><span class="n">p</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">uint8_t</span> <span class="n">i</span><span class="p">,</span> <span class="n">nb_kni</span><span class="p">,</span> <span class="n">port_id</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="n">nb_tx</span><span class="p">,</span> <span class="n">num</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">rte_mbuf</span> <span class="o">*</span><span class="n">pkts_burst</span><span class="p">[</span><span class="n">PKT_BURST_SZ</span><span class="p">];</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">p</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="n">nb_kni</span> <span class="o">=</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">nb_kni</span><span class="p">;</span>
+    <span class="n">port_id</span> <span class="o">=</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">port_id</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nb_kni</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="cm">/* Burst rx from kni */</span>
+        <span class="n">num</span> <span class="o">=</span> <span class="n">rte_kni_rx_burst</span><span class="p">(</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">kni</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">pkts_burst</span><span class="p">,</span> <span class="n">PKT_BURST_SZ</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">unlikely</span><span class="p">(</span><span class="n">num</span> <span class="o">&gt;</span> <span class="n">PKT_BURST_SZ</span><span class="p">))</span> <span class="p">{</span>
+            <span class="n">RTE_LOG</span><span class="p">(</span><span class="n">ERR</span><span class="p">,</span> <span class="n">APP</span><span class="p">,</span> <span class="s">&quot;Error receiving from KNI</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="cm">/* Burst tx to eth */</span>
+
+        <span class="n">nb_tx</span> <span class="o">=</span> <span class="n">rte_eth_tx_burst</span><span class="p">(</span><span class="n">port_id</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">pkts_burst</span><span class="p">,</span> <span class="p">(</span><span class="kt">uint16_t</span><span class="p">)</span><span class="n">num</span><span class="p">);</span>
+
+        <span class="n">kni_stats</span><span class="p">[</span><span class="n">port_id</span><span class="p">].</span><span class="n">tx_packets</span> <span class="o">+=</span> <span class="n">nb_tx</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">unlikely</span><span class="p">(</span><span class="n">nb_tx</span> <span class="o">&lt;</span> <span class="n">num</span><span class="p">))</span> <span class="p">{</span>
+            <span class="cm">/* Free mbufs not tx to NIC */</span>
+            <span class="n">kni_burst_free_mbufs</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pkts_burst</span><span class="p">[</span><span class="n">nb_tx</span><span class="p">],</span> <span class="n">num</span> <span class="o">-</span> <span class="n">nb_tx</span><span class="p">);</span>
+            <span class="n">kni_stats</span><span class="p">[</span><span class="n">port_id</span><span class="p">].</span><span class="n">tx_dropped</span> <span class="o">+=</span> <span class="n">num</span> <span class="o">-</span> <span class="n">nb_tx</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="callbacks-for-kernel-requests">
+<h3>11.6.3. Callbacks for Kernel Requests</h3>
+<p>To execute specific PMD operations in user space requested by some Linux* commands,
+callbacks must be implemented and filled in the struct rte_kni_ops structure.
+Currently, setting a new MTU and configuring the network interface (up/ down) are supported.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="k">struct</span> <span class="n">rte_kni_ops</span> <span class="n">kni_ops</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">.</span><span class="n">change_mtu</span> <span class="o">=</span> <span class="n">kni_change_mtu</span><span class="p">,</span>
+    <span class="p">.</span><span class="n">config_network_if</span> <span class="o">=</span> <span class="n">kni_config_network_interface</span><span class="p">,</span>
+<span class="p">};</span>
+
+<span class="cm">/* Callback for request of changing MTU */</span>
+
+<span class="k">static</span> <span class="kt">int</span>
+<span class="nf">kni_change_mtu</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="n">port_id</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="n">new_mtu</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">ret</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">rte_eth_conf</span> <span class="n">conf</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">port_id</span> <span class="o">&gt;=</span> <span class="n">rte_eth_dev_count</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">RTE_LOG</span><span class="p">(</span><span class="n">ERR</span><span class="p">,</span> <span class="n">APP</span><span class="p">,</span> <span class="s">&quot;Invalid port id %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">port_id</span><span class="p">);</span>
+        <span class="k">return</span> <span class="o">-</span><span class="n">EINVAL</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">RTE_LOG</span><span class="p">(</span><span class="n">INFO</span><span class="p">,</span> <span class="n">APP</span><span class="p">,</span> <span class="s">&quot;Change MTU of port %d to %u</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">port_id</span><span class="p">,</span> <span class="n">new_mtu</span><span class="p">);</span>
+
+    <span class="cm">/* Stop specific port */</span>
+
+    <span class="n">rte_eth_dev_stop</span><span class="p">(</span><span class="n">port_id</span><span class="p">);</span>
+
+    <span class="n">memcpy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">conf</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">port_conf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">conf</span><span class="p">));</span>
+
+    <span class="cm">/* Set new MTU */</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">new_mtu</span> <span class="o">&gt;</span> <span class="n">ETHER_MAX_LEN</span><span class="p">)</span>
+        <span class="n">conf</span><span class="p">.</span><span class="n">rxmode</span><span class="p">.</span><span class="n">jumbo_frame</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">else</span>
+        <span class="n">conf</span><span class="p">.</span><span class="n">rxmode</span><span class="p">.</span><span class="n">jumbo_frame</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="cm">/* mtu + length of header + length of FCS = max pkt length */</span>
+
+    <span class="n">conf</span><span class="p">.</span><span class="n">rxmode</span><span class="p">.</span><span class="n">max_rx_pkt_len</span> <span class="o">=</span> <span class="n">new_mtu</span> <span class="o">+</span> <span class="n">KNI_ENET_HEADER_SIZE</span> <span class="o">+</span> <span class="n">KNI_ENET_FCS_SIZE</span><span class="p">;</span>
+
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">rte_eth_dev_configure</span><span class="p">(</span><span class="n">port_id</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">conf</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">RTE_LOG</span><span class="p">(</span><span class="n">ERR</span><span class="p">,</span> <span class="n">APP</span><span class="p">,</span> <span class="s">&quot;Fail to reconfigure port %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">port_id</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="cm">/* Restart specific port */</span>
+
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">rte_eth_dev_start</span><span class="p">(</span><span class="n">port_id</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+         <span class="n">RTE_LOG</span><span class="p">(</span><span class="n">ERR</span><span class="p">,</span> <span class="n">APP</span><span class="p">,</span> <span class="s">&quot;Fail to restart port %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">port_id</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/* Callback for request of configuring network interface up/down */</span>
+
+<span class="k">static</span> <span class="kt">int</span>
+<span class="nf">kni_config_network_interface</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="n">port_id</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">if_up</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">ret</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">port_id</span> <span class="o">&gt;=</span> <span class="n">rte_eth_dev_count</span><span class="p">()</span> <span class="o">||</span> <span class="n">port_id</span> <span class="o">&gt;=</span> <span class="n">RTE_MAX_ETHPORTS</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">RTE_LOG</span><span class="p">(</span><span class="n">ERR</span><span class="p">,</span> <span class="n">APP</span><span class="p">,</span> <span class="s">&quot;Invalid port id %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">port_id</span><span class="p">);</span>
+        <span class="k">return</span> <span class="o">-</span><span class="n">EINVAL</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">RTE_LOG</span><span class="p">(</span><span class="n">INFO</span><span class="p">,</span> <span class="n">APP</span><span class="p">,</span> <span class="s">&quot;Configure network interface of %d %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span>
+
+    <span class="n">port_id</span><span class="p">,</span> <span class="n">if_up</span> <span class="o">?</span> <span class="s">&quot;up&quot;</span> <span class="o">:</span> <span class="s">&quot;down&quot;</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">if_up</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="cm">/* Configure network interface up */</span>
+        <span class="n">rte_eth_dev_stop</span><span class="p">(</span><span class="n">port_id</span><span class="p">);</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">rte_eth_dev_start</span><span class="p">(</span><span class="n">port_id</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="cm">/* Configure network interface down */</span>
+        <span class="n">rte_eth_dev_stop</span><span class="p">(</span><span class="n">port_id</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">RTE_LOG</span><span class="p">(</span><span class="n">ERR</span><span class="p">,</span> <span class="n">APP</span><span class="p">,</span> <span class="s">&quot;Failed to start port %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">port_id</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="keep_alive.html" class="btn btn-neutral float-right" title="12. Keep Alive Sample Application" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ip_reassembly.html" class="btn btn-neutral" title="10. IP Reassembly Sample Application" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,347 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>17. IP Fragmentation and Reassembly Library &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Programmer’s Guide" href="index.html"/>
+        <link rel="next" title="18. Multi-process Support" href="multi_proc_support.html"/>
+        <link rel="prev" title="16. Reorder Library" href="reorder_lib.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Programmer&#8217;s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html">2. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="env_abstraction_layer.html">3. Environment Abstraction Layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ring_lib.html">4. Ring Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mempool_lib.html">5. Mempool Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mbuf_lib.html">6. Mbuf Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="poll_mode_drv.html">7. Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cryptodev_lib.html">8. Cryptography Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ivshmem_lib.html">9. IVSHMEM Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_bonding_poll_mode_drv_lib.html">10. Link Bonding Poll Mode Driver Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer_lib.html">11. Timer Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hash_lib.html">12. Hash Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm_lib.html">13. LPM Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm6_lib.html">14. LPM6 Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_distrib_lib.html">15. Packet Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reorder_lib.html">16. Reorder Library</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">17. IP Fragmentation and Reassembly Library</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#packet-fragmentation">17.1. Packet fragmentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#packet-reassembly">17.2. Packet reassembly</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ip-fragment-table">17.2.1. IP Fragment Table</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">17.2.2. Packet Reassembly</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#debug-logging-and-statistics-collection">17.2.3. Debug logging and Statistics Collection</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="multi_proc_support.html">18. Multi-process Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">19. Kernel NIC Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thread_safety_dpdk_functions.html">20. Thread Safety of DPDK Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_framework.html">21. Quality of Service (QoS) Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="power_man.html">22. Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_classif_access_ctrl.html">23. Packet Classification and Access Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_framework.html">24. Packet Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_lib.html">25. Vhost Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="port_hotplug_framework.html">26. Port Hotplug Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source_org.html">27. Source Organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_kit_build_system.html">28. Development Kit Build System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_kit_root_make_help.html">29. Development Kit Root Makefile Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extend_dpdk.html">30. Extending the DPDK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_app.html">31. Building Your Own Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ext_app_lib_make_help.html">32. External Application/Library Makefile help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perf_opt_guidelines.html">33. Performance Optimization Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing_efficient_code.html">34. Writing Efficient Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="profile_app.html">35. Profile Your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">36. Glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Programmer&#8217;s Guide</a> &raquo;</li>
+      
+    <li>17. IP Fragmentation and Reassembly Library</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/prog_guide/ip_fragment_reassembly_lib.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="ip-fragmentation-and-reassembly-library">
+<h1>17. IP Fragmentation and Reassembly Library</h1>
+<p>The IP Fragmentation and Reassembly Library implements IPv4 and IPv6 packet fragmentation and reassembly.</p>
+<div class="section" id="packet-fragmentation">
+<h2>17.1. Packet fragmentation</h2>
+<p>Packet fragmentation routines divide input packet into number of fragments.
+Both rte_ipv4_fragment_packet() and rte_ipv6_fragment_packet() functions assume that input mbuf data
+points to the start of the IP header of the packet (i.e. L2 header is already stripped out).
+To avoid copying of the actual packet&#8217;s data zero-copy technique is used (rte_pktmbuf_attach).
+For each fragment two new mbufs are created:</p>
+<ul class="simple">
+<li>Direct mbuf &#8211; mbuf that will contain L3 header of the new fragment.</li>
+<li>Indirect mbuf &#8211; mbuf that is attached to the mbuf with the original packet.
+It&#8217;s data field points to the start of the original packets data plus fragment offset.</li>
+</ul>
+<p>Then L3 header is copied from the original mbuf into the &#8216;direct&#8217; mbuf and updated to reflect new fragmented status.
+Note that for IPv4, header checksum is not recalculated and is set to zero.</p>
+<p>Finally &#8216;direct&#8217; and &#8216;indirect&#8217; mbufs for each fragment are linked together via mbuf&#8217;s next filed to compose a packet for the new fragment.</p>
+<p>The caller has an ability to explicitly specify which mempools should be used to allocate &#8216;direct&#8217; and &#8216;indirect&#8217; mbufs from.</p>
+<p>For more information about direct and indirect mbufs, refer to <a class="reference internal" href="mbuf_lib.html#direct-indirect-buffer"><span class="std std-ref">Direct and Indirect Buffers</span></a>.</p>
+</div>
+<div class="section" id="packet-reassembly">
+<h2>17.2. Packet reassembly</h2>
+<div class="section" id="ip-fragment-table">
+<h3>17.2.1. IP Fragment Table</h3>
+<p>Fragment table maintains information about already received fragments of the packet.</p>
+<p>Each IP packet is uniquely identified by triple &lt;Source IP address&gt;, &lt;Destination IP address&gt;, &lt;ID&gt;.</p>
+<p>Note that all update/lookup operations on Fragment Table are not thread safe.
+So if different execution contexts (threads/processes) will access the same table simultaneously,
+then some external syncing mechanism have to be provided.</p>
+<p>Each table entry can hold information about packets consisting of up to RTE_LIBRTE_IP_FRAG_MAX (by default: 4) fragments.</p>
+<p>Code example, that demonstrates creation of a new Fragment table:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="n">frag_cycles</span> <span class="o">=</span> <span class="p">(</span><span class="n">rte_get_tsc_hz</span><span class="p">()</span> <span class="o">+</span> <span class="n">MS_PER_S</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">MS_PER_S</span> <span class="o">*</span> <span class="n">max_flow_ttl</span><span class="p">;</span>
+<span class="n">bucket_num</span> <span class="o">=</span> <span class="n">max_flow_num</span> <span class="o">+</span> <span class="n">max_flow_num</span> <span class="o">/</span> <span class="mi">4</span><span class="p">;</span>
+<span class="n">frag_tbl</span> <span class="o">=</span> <span class="n">rte_ip_frag_table_create</span><span class="p">(</span><span class="n">max_flow_num</span><span class="p">,</span> <span class="n">bucket_entries</span><span class="p">,</span> <span class="n">max_flow_num</span><span class="p">,</span> <span class="n">frag_cycles</span><span class="p">,</span> <span class="n">socket_id</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Internally Fragment table is a simple hash table.
+The basic idea is to use two hash functions and &lt;bucket_entries&gt; * associativity.
+This provides 2 * &lt;bucket_entries&gt; possible locations in the hash table for each key.
+When the collision occurs and all 2 * &lt;bucket_entries&gt; are occupied,
+instead of reinserting existing keys into alternative locations, ip_frag_tbl_add() just returns a failure.</p>
+<p>Also, entries that resides in the table longer then &lt;max_cycles&gt; are considered as invalid,
+and could be removed/replaced by the new ones.</p>
+<p>Note that reassembly demands a lot of mbuf&#8217;s to be allocated.
+At any given time up to (2 * bucket_entries * RTE_LIBRTE_IP_FRAG_MAX * &lt;maximum number of mbufs per packet&gt;)
+can be stored inside Fragment Table waiting for remaining fragments.</p>
+</div>
+<div class="section" id="id1">
+<h3>17.2.2. Packet Reassembly</h3>
+<p>Fragmented packets processing and reassembly is done by the rte_ipv4_frag_reassemble_packet()/rte_ipv6_frag_reassemble_packet.
+Functions. They either return a pointer to valid mbuf that contains reassembled packet,
+or NULL (if the packet can&#8217;t be reassembled for some reason).</p>
+<p>These functions are responsible for:</p>
+<ol class="arabic simple">
+<li>Search the Fragment Table for entry with packet&#8217;s &lt;IPv4 Source Address, IPv4 Destination Address, Packet ID&gt;.</li>
+<li>If the entry is found, then check if that entry already timed-out.
+If yes, then free all previously received fragments, and remove information about them from the entry.</li>
+<li>If no entry with such key is found, then try to create a new one by one of two ways:<ol class="loweralpha">
+<li>Use as empty entry.</li>
+<li>Delete a timed-out entry, free mbufs associated with it mbufs and store a new entry with specified key in it.</li>
+</ol>
+</li>
+<li>Update the entry with new fragment information and check if a packet can be reassembled
+(the packet&#8217;s entry contains all fragments).<ol class="loweralpha">
+<li>If yes, then, reassemble the packet, mark table&#8217;s entry as empty and return the reassembled mbuf to the caller.</li>
+<li>If no, then return a NULL to the caller.</li>
+</ol>
+</li>
+</ol>
+<p>If at any stage of packet processing an error is encountered
+(e.g: can&#8217;t insert new entry into the Fragment Table, or invalid/timed-out fragment),
+then the function will free all associated with the packet fragments,
+mark the table entry as invalid and return NULL to the caller.</p>
+</div>
+<div class="section" id="debug-logging-and-statistics-collection">
+<h3>17.2.3. Debug logging and Statistics Collection</h3>
+<p>The RTE_LIBRTE_IP_FRAG_TBL_STAT config macro controls statistics collection for the Fragment Table.
+This macro is not enabled by default.</p>
+<p>The RTE_LIBRTE_IP_FRAG_DEBUG controls debug logging of IP fragments processing and reassembling.
+This macro is disabled by default.
+Note that while logging contains a lot of detailed information,
+it slows down packet processing and might cause the loss of a lot of packets.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="multi_proc_support.html" class="btn btn-neutral float-right" title="18. Multi-process Support" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="reorder_lib.html" class="btn btn-neutral" title="16. Reorder Library" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

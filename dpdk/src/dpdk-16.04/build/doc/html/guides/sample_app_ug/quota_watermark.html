@@ -1,0 +1,658 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>27. Quota and Watermark Sample Application &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Sample Applications User Guide" href="index.html"/>
+        <link rel="next" title="28. Timer Sample Application" href="timer.html"/>
+        <link rel="prev" title="26. Intel® QuickAssist Technology Sample Application" href="intel_quickassist.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Sample Applications User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmd_line.html">2. Command Line Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethtool.html">3. Ethtool Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exception_path.html">4. Exception Path Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello_world.html">5. Hello World Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skeleton.html">6. Basic Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rxtx_callbacks.html">7. RX/TX Callbacks Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_frag.html">8. IP Fragmentation Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipv4_multicast.html">9. IPv4 Multicast Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_reassembly.html">10. IP Reassembly Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">11. Kernel NIC Interface Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keep_alive.html">12. Keep Alive Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_crypto.html">13. L2 Forwarding with Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_job_stats.html">14. L2 Forwarding Sample Application (in Real and Virtualized Environments) with core load statistics.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_real_virtual.html">15. L2 Forwarding Sample Application (in Real and Virtualized Environments)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_cat.html">16. L2 Forwarding Sample Application with Cache Allocation Technology (CAT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward.html">17. L3 Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_power_man.html">18. L3 Forwarding with Power Management Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_access_ctrl.html">19. L3 Forwarding with Access Control Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_virtual.html">20. L3 Forwarding in a Virtualization Environment Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_status_intr.html">21. Link Status Interrupt Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="load_balancer.html">22. Load Balancer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_process.html">23. Multi-process Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_metering.html">24. QoS Metering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_scheduler.html">25. QoS Scheduler Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intel_quickassist.html">26. Intel® QuickAssist Technology Sample Application</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">27. Quota and Watermark Sample Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">27.1. Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compiling-the-application">27.2. Compiling the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-application">27.3. Running the Application</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#running-the-core-application">27.3.1. Running the Core Application</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#running-the-control-application">27.3.2. Running the Control Application</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#code-overview">27.4. Code Overview</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#core-application-qw">27.4.1. Core Application - qw</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#control-application-qwctl">27.4.2. Control Application - qwctl</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="timer.html">28. Timer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_ordering.html">29. Packet Ordering Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_dcb_forwarding.html">30. VMDQ and DCB Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">31. Vhost Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="netmap_compatibility.html">32. Netmap Compatibility Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_pipeline.html">33. Internet Protocol (IP) Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_pipeline.html">34. Test Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dist_app.html">35. Distributor Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vm_power_management.html">36. VM Power Management Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tep_termination.html">37. TEP termination Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="proc_info.html">38. dpdk_proc_info Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ptpclient.html">39. PTP Client Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance_thread.html">40. Performance Thread Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_secgw.html">41. IPsec Security Gateway Sample Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Sample Applications User Guide</a> &raquo;</li>
+      
+    <li>27. Quota and Watermark Sample Application</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/sample_app_ug/quota_watermark.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="quota-and-watermark-sample-application">
+<h1>27. Quota and Watermark Sample Application</h1>
+<p>The Quota and Watermark sample application is a simple example of packet processing using Data Plane Development Kit (DPDK) that
+showcases the use of a quota as the maximum number of packets enqueue/dequeue at a time and low and high watermarks
+to signal low and high ring usage respectively.</p>
+<p>Additionally, it shows how ring watermarks can be used to feedback congestion notifications to data producers by
+temporarily stopping processing overloaded rings and sending Ethernet flow control frames.</p>
+<p>This sample application is split in two parts:</p>
+<ul class="simple">
+<li>qw - The core quota and watermark sample application</li>
+<li>qwctl - A command line tool to alter quota and watermarks while qw is running</li>
+</ul>
+<div class="section" id="overview">
+<h2>27.1. Overview</h2>
+<p>The Quota and Watermark sample application performs forwarding for each packet that is received on a given port.
+The destination port is the adjacent port from the enabled port mask, that is,
+if the first four ports are enabled (port mask 0xf), ports 0 and 1 forward into each other,
+and ports 2 and 3 forward into each other.
+The MAC addresses of the forwarded Ethernet frames are not affected.</p>
+<p>Internally, packets are pulled from the ports by the master logical core and put on a variable length processing pipeline,
+each stage of which being connected by rings, as shown in <a class="reference internal" href="#figure-pipeline-overview"><span class="std std-numref">Fig. 27.1</span></a>.</p>
+<div class="figure" id="id1">
+<span id="figure-pipeline-overview"></span><img alt="../_images/pipeline_overview.png" src="../_images/pipeline_overview.png" />
+<p class="caption"><span class="caption-number">Fig. 27.1 </span><span class="caption-text">Pipeline Overview</span></p>
+</div>
+<p>An adjustable quota value controls how many packets are being moved through the pipeline per enqueue and dequeue.
+Adjustable watermark values associated with the rings control a back-off mechanism that
+tries to prevent the pipeline from being overloaded by:</p>
+<ul class="simple">
+<li>Stopping enqueuing on rings for which the usage has crossed the high watermark threshold</li>
+<li>Sending Ethernet pause frames</li>
+<li>Only resuming enqueuing on a ring once its usage goes below a global low watermark threshold</li>
+</ul>
+<p>This mechanism allows congestion notifications to go up the ring pipeline and
+eventually lead to an Ethernet flow control frame being send to the source.</p>
+<p>On top of serving as an example of quota and watermark usage,
+this application can be used to benchmark ring based processing pipelines performance using a traffic- generator,
+as shown in <a class="reference internal" href="#figure-ring-pipeline-perf-setup"><span class="std std-numref">Fig. 27.2</span></a>.</p>
+<div class="figure" id="id2">
+<span id="figure-ring-pipeline-perf-setup"></span><img alt="../_images/ring_pipeline_perf_setup.png" src="../_images/ring_pipeline_perf_setup.png" />
+<p class="caption"><span class="caption-number">Fig. 27.2 </span><span class="caption-text">Ring-based Processing Pipeline Performance Setup</span></p>
+</div>
+</div>
+<div class="section" id="compiling-the-application">
+<h2>27.2. Compiling the Application</h2>
+<ol class="arabic">
+<li><p class="first">Go to the example directory:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export RTE_SDK=/path/to/rte_sdk</span>
+<span class="go">cd ${RTE_SDK}/examples/quota_watermark</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Set the target (a default target is used if not specified). For example:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export RTE_TARGET=x86_64-native-linuxapp-gcc</span>
+</pre></div>
+</div>
+<p>See the <em>DPDK Getting Started Guide</em> for possible RTE_TARGET values.</p>
+</li>
+<li><p class="first">Build the application:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">make</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="running-the-application">
+<h2>27.3. Running the Application</h2>
+<p>The core application, qw, has to be started first.</p>
+<p>Once it is up and running, one can alter quota and watermarks while it runs using the control application, qwctl.</p>
+<div class="section" id="running-the-core-application">
+<h3>27.3.1. Running the Core Application</h3>
+<p>The application requires a single command line option:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./qw/build/qw [EAL options] -- -p PORTMASK</span>
+</pre></div>
+</div>
+<p>where,</p>
+<p>-p PORTMASK: A hexadecimal bitmask of the ports to configure</p>
+<p>To run the application in a linuxapp environment with four logical cores and ports 0 and 2,
+issue the following command:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./qw/build/qw -c f -n 4 -- -p 5</span>
+</pre></div>
+</div>
+<p>Refer to the <em>DPDK Getting Started Guide</em> for general information on running applications and
+the Environment Abstraction Layer (EAL) options.</p>
+</div>
+<div class="section" id="running-the-control-application">
+<h3>27.3.2. Running the Control Application</h3>
+<p>The control application requires a number of command line options:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./qwctl/build/qwctl [EAL options] --proc-type=secondary</span>
+</pre></div>
+</div>
+<p>The &#8211;proc-type=secondary option is necessary for the EAL to properly initialize the control application to
+use the same huge pages as the core application and  thus be able to access its rings.</p>
+<p>To run the application in a linuxapp environment on logical core 0, issue the following command:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./qwctl/build/qwctl -c 1 -n 4 --proc-type=secondary</span>
+</pre></div>
+</div>
+<p>Refer to the <em>DPDK Getting Started</em> Guide for general information on running applications and
+the Environment Abstraction Layer (EAL) options.</p>
+<p>qwctl is an interactive command line that let the user change variables in a running instance of qw.
+The help command gives a list of available commands:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> qwctl &gt; <span class="nb">help</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="code-overview">
+<h2>27.4. Code Overview</h2>
+<p>The following sections provide a quick guide to the application&#8217;s source code.</p>
+<div class="section" id="core-application-qw">
+<h3>27.4.1. Core Application - qw</h3>
+<div class="section" id="eal-and-drivers-setup">
+<h4>27.4.1.1. EAL and Drivers Setup</h4>
+<p>The EAL arguments are parsed at the beginning of the main() function:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="n">ret</span> <span class="o">=</span> <span class="n">rte_eal_init</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">rte_exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">,</span> <span class="s">&quot;Cannot initialize EAL</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+
+<span class="n">argc</span> <span class="o">-=</span> <span class="n">ret</span><span class="p">;</span>
+<span class="n">argv</span> <span class="o">+=</span> <span class="n">ret</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Then, a call to init_dpdk(), defined in init.c, is made to initialize the poll mode drivers:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">void</span>
+<span class="nf">init_dpdk</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">ret</span><span class="p">;</span>
+
+    <span class="cm">/* Bind the drivers to usable devices */</span>
+
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">rte_eal_pci_probe</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">rte_exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">,</span> <span class="s">&quot;rte_eal_pci_probe(): error %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">ret</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">rte_eth_dev_count</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">rte_exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">,</span> <span class="s">&quot;Not enough Ethernet port available</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>To fully understand this code, it is recommended to study the chapters that relate to the <em>Poll Mode Driver</em>
+in the <em>DPDK Getting Started Guide</em> and the <em>DPDK API Reference</em>.</p>
+</div>
+<div class="section" id="shared-variables-setup">
+<h4>27.4.1.2. Shared Variables Setup</h4>
+<p>The quota and low_watermark shared variables are put into an rte_memzone using a call to setup_shared_variables():</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span> <span class="kt">void</span>
+ <span class="nf">setup_shared_variables</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+ <span class="p">{</span>
+     <span class="k">const</span> <span class="k">struct</span> <span class="n">rte_memzone</span> <span class="o">*</span><span class="n">qw_memzone</span><span class="p">;</span>
+
+     <span class="n">qw_memzone</span> <span class="o">=</span> <span class="n">rte_memzone_reserve</span><span class="p">(</span><span class="n">QUOTA_WATERMARK_MEMZONE_NAME</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">),</span> <span class="n">rte_socket_id</span><span class="p">(),</span> <span class="n">RTE_MEMZONE_2MB</span><span class="p">);</span>
+
+     <span class="k">if</span> <span class="p">(</span><span class="n">qw_memzone</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+         <span class="n">rte_exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">,</span> <span class="s">&quot;%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">rte_strerror</span><span class="p">(</span><span class="n">rte_errno</span><span class="p">));</span>
+
+     <span class="n">quota</span> <span class="o">=</span> <span class="n">qw_memzone</span><span class="o">-&gt;</span><span class="n">addr</span><span class="p">;</span>
+     <span class="n">low_watermark</span> <span class="o">=</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="o">*</span><span class="p">)</span> <span class="n">qw_memzone</span><span class="o">-&gt;</span><span class="n">addr</span> <span class="o">+</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>These two variables are initialized to a default value in main() and
+can be changed while qw is running using the qwctl control program.</p>
+</div>
+<div class="section" id="application-arguments">
+<h4>27.4.1.3. Application Arguments</h4>
+<p>The qw application only takes one argument: a port mask that specifies which ports should be used by the application.
+At least two ports are needed to run the application and there should be an even number of ports given in the port mask.</p>
+<p>The port mask parsing is done in parse_qw_args(), defined in args.c.</p>
+</div>
+<div class="section" id="mbuf-pool-initialization">
+<h4>27.4.1.4. Mbuf Pool Initialization</h4>
+<p>Once the application&#8217;s arguments are parsed, an mbuf pool is created.
+It contains a set of mbuf objects that are used by the driver and the application to store network packets:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/* Create a pool of mbuf to store packets */</span>
+
+<span class="n">mbuf_pool</span> <span class="o">=</span> <span class="n">rte_mempool_create</span><span class="p">(</span><span class="s">&quot;mbuf_pool&quot;</span><span class="p">,</span> <span class="n">MBUF_PER_POOL</span><span class="p">,</span> <span class="n">MBUF_SIZE</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="n">rte_pktmbuf_pool_private</span><span class="p">),</span>
+    <span class="n">rte_pktmbuf_pool_init</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">rte_pktmbuf_init</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">rte_socket_id</span><span class="p">(),</span> <span class="mi">0</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">mbuf_pool</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+    <span class="n">rte_panic</span><span class="p">(</span><span class="s">&quot;%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">rte_strerror</span><span class="p">(</span><span class="n">rte_errno</span><span class="p">));</span>
+</pre></div>
+</div>
+<p>The rte_mempool is a generic structure used to handle pools of objects.
+In this case, it is necessary to create a pool that will be used by the driver,
+which expects to have some reserved space in the mempool structure, sizeof(struct rte_pktmbuf_pool_private) bytes.</p>
+<p>The number of allocated pkt mbufs is MBUF_PER_POOL, with a size of MBUF_SIZE each.
+A per-lcore cache of 32 mbufs is kept.
+The memory is allocated in on the master lcore&#8217;s socket, but it is possible to extend this code to allocate one mbuf pool per socket.</p>
+<p>Two callback pointers are also given to the rte_mempool_create() function:</p>
+<ul class="simple">
+<li>The first callback pointer is to rte_pktmbuf_pool_init() and is used to initialize the private data of the mempool,
+which is needed by the driver.
+This function is provided by the mbuf API, but can be copied and extended by the developer.</li>
+<li>The second callback pointer given to rte_mempool_create() is the mbuf initializer.</li>
+</ul>
+<p>The default is used, that is, rte_pktmbuf_init(), which is provided in the rte_mbuf library.
+If a more complex application wants to extend the rte_pktmbuf structure for its own needs,
+a new function derived from rte_pktmbuf_init() can be created.</p>
+</div>
+<div class="section" id="ports-configuration-and-pairing">
+<h4>27.4.1.5. Ports Configuration and Pairing</h4>
+<p>Each port in the port mask is configured and a corresponding ring is created in the master lcore&#8217;s array of rings.
+This ring is the first in the pipeline and will hold the packets directly coming from the port.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="p">(</span><span class="n">port_id</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">port_id</span> <span class="o">&lt;</span> <span class="n">RTE_MAX_ETHPORTS</span><span class="p">;</span> <span class="n">port_id</span><span class="o">++</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">is_bit_set</span><span class="p">(</span><span class="n">port_id</span><span class="p">,</span> <span class="n">portmask</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">configure_eth_port</span><span class="p">(</span><span class="n">port_id</span><span class="p">);</span>
+        <span class="n">init_ring</span><span class="p">(</span><span class="n">master_lcore_id</span><span class="p">,</span> <span class="n">port_id</span><span class="p">);</span>
+    <span class="p">}</span>
+
+<span class="n">pair_ports</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>The configure_eth_port() and init_ring() functions are used to configure a port and a ring respectively and are defined in init.c.
+They make use of the DPDK APIs defined in rte_eth.h and rte_ring.h.</p>
+<p>pair_ports() builds the port_pairs[] array so that its key-value pairs are a mapping between reception and transmission ports.
+It is defined in init.c.</p>
+</div>
+<div class="section" id="logical-cores-assignment">
+<h4>27.4.1.6. Logical Cores Assignment</h4>
+<p>The application uses the master logical core to poll all the ports for new packets and enqueue them on a ring associated with the port.</p>
+<p>Each logical core except the last runs pipeline_stage() after a ring for each used port is initialized on that core.
+pipeline_stage() on core X dequeues packets from core X-1&#8217;s rings and enqueue them on its own rings. See <a class="reference internal" href="#figure-threads-pipelines"><span class="std std-numref">Fig. 27.3</span></a>.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/* Start pipeline_stage() on all the available slave lcore but the last */</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="n">lcore_id</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="n">lcore_id</span> <span class="o">&lt;</span> <span class="n">last_lcore_id</span><span class="p">;</span> <span class="n">lcore_id</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">rte_lcore_is_enabled</span><span class="p">(</span><span class="n">lcore_id</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">lcore_id</span> <span class="o">!=</span> <span class="n">master_lcore_id</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">port_id</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">port_id</span> <span class="o">&lt;</span> <span class="n">RTE_MAX_ETHPORTS</span><span class="p">;</span> <span class="n">port_id</span><span class="o">++</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">is_bit_set</span><span class="p">(</span><span class="n">port_id</span><span class="p">,</span> <span class="n">portmask</span><span class="p">))</span>
+                <span class="n">init_ring</span><span class="p">(</span><span class="n">lcore_id</span><span class="p">,</span> <span class="n">port_id</span><span class="p">);</span>
+
+            <span class="n">rte_eal_remote_launch</span><span class="p">(</span><span class="n">pipeline_stage</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">lcore_id</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The last available logical core runs send_stage(),
+which is the last stage of the pipeline dequeuing packets from the last ring in the pipeline and
+sending them out on the destination port setup by pair_ports().</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/* Start send_stage() on the last slave core */</span>
+
+<span class="n">rte_eal_remote_launch</span><span class="p">(</span><span class="n">send_stage</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">last_lcore_id</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="receive-process-and-transmit-packets">
+<h4>27.4.1.7. Receive, Process and Transmit Packets</h4>
+<div class="figure" id="id3">
+<span id="figure-threads-pipelines"></span><img alt="../_images/threads_pipelines.png" src="../_images/threads_pipelines.png" />
+<p class="caption"><span class="caption-number">Fig. 27.3 </span><span class="caption-text">Threads and Pipelines</span></p>
+</div>
+<p>In the receive_stage() function running on the master logical core,
+the main task is to read ingress packets from the RX ports and enqueue them
+on the port&#8217;s corresponding first ring in the pipeline.
+This is done using the following code:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="n">lcore_id</span> <span class="o">=</span> <span class="n">rte_lcore_id</span><span class="p">();</span>
+
+<span class="cm">/* Process each port round robin style */</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="n">port_id</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">port_id</span> <span class="o">&lt;</span> <span class="n">RTE_MAX_ETHPORTS</span><span class="p">;</span> <span class="n">port_id</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">is_bit_set</span><span class="p">(</span><span class="n">port_id</span><span class="p">,</span> <span class="n">portmask</span><span class="p">))</span>
+        <span class="k">continue</span><span class="p">;</span>
+
+    <span class="n">ring</span> <span class="o">=</span> <span class="n">rings</span><span class="p">[</span><span class="n">lcore_id</span><span class="p">][</span><span class="n">port_id</span><span class="p">];</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">ring_state</span><span class="p">[</span><span class="n">port_id</span><span class="p">]</span> <span class="o">!=</span> <span class="n">RING_READY</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">rte_ring_count</span><span class="p">(</span><span class="n">ring</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">*</span><span class="n">low_watermark</span><span class="p">)</span>
+            <span class="k">continue</span><span class="p">;</span>
+    <span class="k">else</span>
+        <span class="n">ring_state</span><span class="p">[</span><span class="n">port_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">RING_READY</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="cm">/* Enqueue received packets on the RX ring */</span>
+
+    <span class="n">nb_rx_pkts</span> <span class="o">=</span> <span class="n">rte_eth_rx_burst</span><span class="p">(</span><span class="n">port_id</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">pkts</span><span class="p">,</span> <span class="o">*</span><span class="n">quota</span><span class="p">);</span>
+
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">rte_ring_enqueue_bulk</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span> <span class="n">pkts</span><span class="p">,</span> <span class="n">nb_rx_pkts</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">==</span> <span class="o">-</span><span class="n">EDQUOT</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">ring_state</span><span class="p">[</span><span class="n">port_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">RING_OVERLOADED</span><span class="p">;</span>
+        <span class="n">send_pause_frame</span><span class="p">(</span><span class="n">port_id</span><span class="p">,</span> <span class="mi">1337</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>For each port in the port mask, the corresponding ring&#8217;s pointer is fetched into ring and that ring&#8217;s state is checked:</p>
+<ul class="simple">
+<li>If it is in the RING_READY state, *quota packets are grabbed from the port and put on the ring.
+Should this operation make the ring&#8217;s usage cross its high watermark,
+the ring is marked as overloaded and an Ethernet flow control frame is sent to the source.</li>
+<li>If it is not in the RING_READY state, this port is ignored until the ring&#8217;s usage crosses the *low_watermark  value.</li>
+</ul>
+<p>The pipeline_stage() function&#8217;s task is to process and move packets from the preceding pipeline stage.
+This thread is running on most of the logical cores to create and arbitrarily long pipeline.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="n">lcore_id</span> <span class="o">=</span> <span class="n">rte_lcore_id</span><span class="p">();</span>
+
+<span class="n">previous_lcore_id</span> <span class="o">=</span> <span class="n">get_previous_lcore_id</span><span class="p">(</span><span class="n">lcore_id</span><span class="p">);</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="n">port_id</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">port_id</span> <span class="o">&lt;</span> <span class="n">RTE_MAX_ETHPORTS</span><span class="p">;</span> <span class="n">port_id</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">is_bit_set</span><span class="p">(</span><span class="n">port_id</span><span class="p">,</span> <span class="n">portmask</span><span class="p">))</span>
+        <span class="k">continue</span><span class="p">;</span>
+
+    <span class="n">tx</span> <span class="o">=</span> <span class="n">rings</span><span class="p">[</span><span class="n">lcore_id</span><span class="p">][</span><span class="n">port_id</span><span class="p">];</span>
+    <span class="n">rx</span> <span class="o">=</span> <span class="n">rings</span><span class="p">[</span><span class="n">previous_lcore_id</span><span class="p">][</span><span class="n">port_id</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">ring_state</span><span class="p">[</span><span class="n">port_id</span><span class="p">]</span> <span class="o">!=</span> <span class="n">RING_READY</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">rte_ring_count</span><span class="p">(</span><span class="n">tx</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">*</span><span class="n">low_watermark</span><span class="p">)</span>
+            <span class="k">continue</span><span class="p">;</span>
+    <span class="k">else</span>
+        <span class="n">ring_state</span><span class="p">[</span><span class="n">port_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">RING_READY</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="cm">/* Dequeue up to quota mbuf from rx */</span>
+
+    <span class="n">nb_dq_pkts</span> <span class="o">=</span> <span class="n">rte_ring_dequeue_burst</span><span class="p">(</span><span class="n">rx</span><span class="p">,</span> <span class="n">pkts</span><span class="p">,</span> <span class="o">*</span><span class="n">quota</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">unlikely</span><span class="p">(</span><span class="n">nb_dq_pkts</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="k">continue</span><span class="p">;</span>
+
+    <span class="cm">/* Enqueue them on tx */</span>
+
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">rte_ring_enqueue_bulk</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="n">pkts</span><span class="p">,</span> <span class="n">nb_dq_pkts</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">==</span> <span class="o">-</span><span class="n">EDQUOT</span><span class="p">)</span>
+        <span class="n">ring_state</span><span class="p">[</span><span class="n">port_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">RING_OVERLOADED</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The thread&#8217;s logic works mostly like receive_stage(),
+except that packets are moved from ring to ring instead of port to ring.</p>
+<p>In this example, no actual processing is done on the packets,
+but pipeline_stage() is an ideal place to perform any processing required by the application.</p>
+<p>Finally, the send_stage() function&#8217;s task is to read packets from the last ring in a pipeline and
+send them on the destination port defined in the port_pairs[] array.
+It is running on the last available logical core only.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="n">lcore_id</span> <span class="o">=</span> <span class="n">rte_lcore_id</span><span class="p">();</span>
+
+<span class="n">previous_lcore_id</span> <span class="o">=</span> <span class="n">get_previous_lcore_id</span><span class="p">(</span><span class="n">lcore_id</span><span class="p">);</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="n">port_id</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">port_id</span> <span class="o">&lt;</span> <span class="n">RTE_MAX_ETHPORTS</span><span class="p">;</span> <span class="n">port_id</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">is_bit_set</span><span class="p">(</span><span class="n">port_id</span><span class="p">,</span> <span class="n">portmask</span><span class="p">))</span> <span class="k">continue</span><span class="p">;</span>
+
+    <span class="n">dest_port_id</span> <span class="o">=</span> <span class="n">port_pairs</span><span class="p">[</span><span class="n">port_id</span><span class="p">];</span>
+    <span class="n">tx</span> <span class="o">=</span> <span class="n">rings</span><span class="p">[</span><span class="n">previous_lcore_id</span><span class="p">][</span><span class="n">port_id</span><span class="p">];</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">rte_ring_empty</span><span class="p">(</span><span class="n">tx</span><span class="p">))</span> <span class="k">continue</span><span class="p">;</span>
+
+    <span class="cm">/* Dequeue packets from tx and send them */</span>
+
+    <span class="n">nb_dq_pkts</span> <span class="o">=</span> <span class="n">rte_ring_dequeue_burst</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span> <span class="n">tx_pkts</span><span class="p">,</span> <span class="o">*</span><span class="n">quota</span><span class="p">);</span>
+    <span class="n">nb_tx_pkts</span> <span class="o">=</span> <span class="n">rte_eth_tx_burst</span><span class="p">(</span><span class="n">dest_port_id</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">tx_pkts</span><span class="p">,</span> <span class="n">nb_dq_pkts</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>For each port in the port mask, up to *quota packets are pulled from the last ring in its pipeline and
+sent on the destination port paired with the current port.</p>
+</div>
+</div>
+<div class="section" id="control-application-qwctl">
+<h3>27.4.2. Control Application - qwctl</h3>
+<p>The qwctl application uses the rte_cmdline library to provide the user with an interactive command line that
+can be used to modify and inspect parameters in a running qw application.
+Those parameters are the global quota and low_watermark value as well as each ring&#8217;s built-in high watermark.</p>
+<div class="section" id="command-definitions">
+<h4>27.4.2.1. Command Definitions</h4>
+<p>The available commands are defined in commands.c.</p>
+<p>It is advised to use the cmdline sample application user guide as a reference for everything related to the rte_cmdline library.</p>
+</div>
+<div class="section" id="accessing-shared-variables">
+<h4>27.4.2.2. Accessing Shared Variables</h4>
+<p>The setup_shared_variables() function retrieves the shared variables quota and
+low_watermark from the rte_memzone previously created by qw.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">void</span>
+<span class="nf">setup_shared_variables</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">struct</span> <span class="n">rte_memzone</span> <span class="o">*</span><span class="n">qw_memzone</span><span class="p">;</span>
+
+    <span class="n">qw_memzone</span> <span class="o">=</span> <span class="n">rte_memzone_lookup</span><span class="p">(</span><span class="n">QUOTA_WATERMARK_MEMZONE_NAME</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">qw_memzone</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+        <span class="n">rte_exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">,</span> <span class="s">&quot;Couldn&#39;t find memzone</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+
+    <span class="n">quota</span> <span class="o">=</span> <span class="n">qw_memzone</span><span class="o">-&gt;</span><span class="n">addr</span><span class="p">;</span>
+
+    <span class="n">low_watermark</span> <span class="o">=</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="o">*</span><span class="p">)</span> <span class="n">qw_memzone</span><span class="o">-&gt;</span><span class="n">addr</span> <span class="o">+</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="timer.html" class="btn btn-neutral float-right" title="28. Timer Sample Application" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="intel_quickassist.html" class="btn btn-neutral" title="26. Intel® QuickAssist Technology Sample Application" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

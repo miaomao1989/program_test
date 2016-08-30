@@ -1,0 +1,617 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>18. L3 Forwarding with Power Management Sample Application &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Sample Applications User Guide" href="index.html"/>
+        <link rel="next" title="19. L3 Forwarding with Access Control Sample Application" href="l3_forward_access_ctrl.html"/>
+        <link rel="prev" title="17. L3 Forwarding Sample Application" href="l3_forward.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Sample Applications User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmd_line.html">2. Command Line Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethtool.html">3. Ethtool Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exception_path.html">4. Exception Path Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello_world.html">5. Hello World Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skeleton.html">6. Basic Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rxtx_callbacks.html">7. RX/TX Callbacks Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_frag.html">8. IP Fragmentation Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipv4_multicast.html">9. IPv4 Multicast Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_reassembly.html">10. IP Reassembly Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">11. Kernel NIC Interface Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keep_alive.html">12. Keep Alive Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_crypto.html">13. L2 Forwarding with Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_job_stats.html">14. L2 Forwarding Sample Application (in Real and Virtualized Environments) with core load statistics.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_real_virtual.html">15. L2 Forwarding Sample Application (in Real and Virtualized Environments)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_cat.html">16. L2 Forwarding Sample Application with Cache Allocation Technology (CAT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward.html">17. L3 Forwarding Sample Application</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">18. L3 Forwarding with Power Management Sample Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">18.1. Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#overview">18.2. Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compiling-the-application">18.3. Compiling the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-application">18.4. Running the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#explanation">18.5. Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#power-library-initialization">18.5.1. Power Library Initialization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#monitoring-loads-of-rx-queues">18.5.2. Monitoring Loads of Rx Queues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#p-state-heuristic-algorithm">18.5.3. P-State Heuristic Algorithm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#c-state-heuristic-algorithm">18.5.4. C-State Heuristic Algorithm</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_access_ctrl.html">19. L3 Forwarding with Access Control Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_virtual.html">20. L3 Forwarding in a Virtualization Environment Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_status_intr.html">21. Link Status Interrupt Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="load_balancer.html">22. Load Balancer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_process.html">23. Multi-process Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_metering.html">24. QoS Metering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_scheduler.html">25. QoS Scheduler Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intel_quickassist.html">26. Intel® QuickAssist Technology Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quota_watermark.html">27. Quota and Watermark Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer.html">28. Timer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_ordering.html">29. Packet Ordering Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_dcb_forwarding.html">30. VMDQ and DCB Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">31. Vhost Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="netmap_compatibility.html">32. Netmap Compatibility Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_pipeline.html">33. Internet Protocol (IP) Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_pipeline.html">34. Test Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dist_app.html">35. Distributor Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vm_power_management.html">36. VM Power Management Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tep_termination.html">37. TEP termination Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="proc_info.html">38. dpdk_proc_info Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ptpclient.html">39. PTP Client Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance_thread.html">40. Performance Thread Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_secgw.html">41. IPsec Security Gateway Sample Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Sample Applications User Guide</a> &raquo;</li>
+      
+    <li>18. L3 Forwarding with Power Management Sample Application</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/sample_app_ug/l3_forward_power_man.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="l3-forwarding-with-power-management-sample-application">
+<h1>18. L3 Forwarding with Power Management Sample Application</h1>
+<div class="section" id="introduction">
+<h2>18.1. Introduction</h2>
+<p>The L3 Forwarding with Power Management application is an example of power-aware packet processing using the DPDK.
+The application is based on existing L3 Forwarding sample application,
+with the power management algorithms to control the P-states and
+C-states of the Intel processor via a power management library.</p>
+</div>
+<div class="section" id="overview">
+<h2>18.2. Overview</h2>
+<p>The application demonstrates the use of the Power libraries in the DPDK to implement packet forwarding.
+The initialization and run-time paths are very similar to those of the <a class="reference internal" href="l3_forward.html"><span class="doc">L3 Forwarding Sample Application</span></a>.
+The main difference from the L3 Forwarding sample application is that this application introduces power-aware optimization algorithms
+by leveraging the Power library to control P-state and C-state of processor based on packet load.</p>
+<p>The DPDK includes poll-mode drivers to configure Intel NIC devices and their receive (Rx) and transmit (Tx) queues.
+The design principle of this PMD is to access the Rx and Tx descriptors directly without any interrupts to quickly receive,
+process and deliver packets in the user space.</p>
+<p>In general, the DPDK executes an endless packet processing loop on dedicated IA cores that include the following steps:</p>
+<ul class="simple">
+<li>Retrieve input packets through the PMD to poll Rx queue</li>
+<li>Process each received packet or provide received packets to other processing cores through software queues</li>
+<li>Send pending output packets to Tx queue through the PMD</li>
+</ul>
+<p>In this way, the PMD achieves better performance than a traditional interrupt-mode driver,
+at the cost of keeping cores active and running at the highest frequency,
+hence consuming the maximum power all the time.
+However, during the period of processing light network traffic,
+which happens regularly in communication infrastructure systems due to well-known &#8220;tidal effect&#8221;,
+the PMD is still busy waiting for network packets, which wastes a lot of power.</p>
+<p>Processor performance states (P-states) are the capability of an Intel processor
+to switch between different supported operating frequencies and voltages.
+If configured correctly, according to system workload, this feature provides power savings.
+CPUFreq is the infrastructure provided by the Linux* kernel to control the processor performance state capability.
+CPUFreq supports a user space governor that enables setting frequency via manipulating the virtual file device from a user space application.
+The Power library in the DPDK provides a set of APIs for manipulating a virtual file device to allow user space application
+to set the CPUFreq governor and set the frequency of specific cores.</p>
+<p>This application includes a P-state power management algorithm to generate a frequency hint to be sent to CPUFreq.
+The algorithm uses the number of received and available Rx packets on recent polls to make a heuristic decision to scale frequency up/down.
+Specifically, some thresholds are checked to see whether a specific core running an DPDK polling thread needs to increase frequency
+a step up based on the near to full trend of polled Rx queues.
+Also, it decreases frequency a step if packet processed per loop is far less than the expected threshold
+or the thread&#8217;s sleeping time exceeds a threshold.</p>
+<p>C-States are also known as sleep states.
+They allow software to put an Intel core into a low power idle state from which it is possible to exit via an event, such as an interrupt.
+However, there is a tradeoff between the power consumed in the idle state and the time required to wake up from the idle state (exit latency).
+Therefore, as you go into deeper C-states, the power consumed is lower but the exit latency is increased. Each C-state has a target residency.
+It is essential that when entering into a C-state, the core remains in this C-state for at least as long as the target residency in order
+to fully realize the benefits of entering the C-state.
+CPUIdle is the infrastructure provide by the Linux kernel to control the processor C-state capability.
+Unlike CPUFreq, CPUIdle does not provide a mechanism that allows the application to change C-state.
+It actually has its own heuristic algorithms in kernel space to select target C-state to enter by executing privileged instructions like HLT and MWAIT,
+based on the speculative sleep duration of the core.
+In this application, we introduce a heuristic algorithm that allows packet processing cores to sleep for a short period
+if there is no Rx packet received on recent polls.
+In this way, CPUIdle automatically forces the corresponding cores to enter deeper C-states
+instead of always running to the C0 state waiting for packets.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">To fully demonstrate the power saving capability of using C-states,
+it is recommended to enable deeper C3 and C6 states in the BIOS during system boot up.</p>
+</div>
+</div>
+<div class="section" id="compiling-the-application">
+<h2>18.3. Compiling the Application</h2>
+<p>To compile the application:</p>
+<ol class="arabic">
+<li><p class="first">Go to the sample application directory:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export RTE_SDK=/path/to/rte_sdk</span>
+<span class="go">cd ${RTE_SDK}/examples/l3fwd-power</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Set the target (a default target is used if not specified). For example:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export RTE_TARGET=x86_64-native-linuxapp-gcc</span>
+</pre></div>
+</div>
+<p>See the <em>DPDK Getting Started Guide</em> for possible RTE_TARGET values.</p>
+</li>
+<li><p class="first">Build the application:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">make</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="running-the-application">
+<h2>18.4. Running the Application</h2>
+<p>The application has a number of command line options:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./build/l3fwd_power [EAL options] -- -p PORTMASK [-P]  --config(port,queue,lcore)[,(port,queue,lcore)] [--enable-jumbo [--max-pkt-len PKTLEN]] [--no-numa]</span>
+</pre></div>
+</div>
+<p>where,</p>
+<ul class="simple">
+<li>-p PORTMASK: Hexadecimal bitmask of ports to configure</li>
+<li>-P: Sets all ports to promiscuous mode so that packets are accepted regardless of the packet&#8217;s Ethernet MAC destination address.
+Without this option, only packets with the Ethernet MAC destination address set to the Ethernet address of the port are accepted.</li>
+<li>&#8211;config (port,queue,lcore)[,(port,queue,lcore)]: determines which queues from which ports are mapped to which cores.</li>
+<li>&#8211;enable-jumbo: optional, enables jumbo frames</li>
+<li>&#8211;max-pkt-len: optional, maximum packet length in decimal (64-9600)</li>
+<li>&#8211;no-numa: optional, disables numa awareness</li>
+</ul>
+<p>See <a class="reference internal" href="l3_forward.html"><span class="doc">L3 Forwarding Sample Application</span></a> for details.
+The L3fwd-power example reuses the L3fwd command line options.</p>
+</div>
+<div class="section" id="explanation">
+<h2>18.5. Explanation</h2>
+<p>The following sections provide some explanation of the sample application code.
+As mentioned in the overview section,
+the initialization and run-time paths are identical to those of the L3 forwarding application.
+The following sections describe aspects that are specific to the L3 Forwarding with Power Management sample application.</p>
+<div class="section" id="power-library-initialization">
+<h3>18.5.1. Power Library Initialization</h3>
+<p>The Power library is initialized in the main routine.
+It changes the P-state governor to userspace for specific cores that are under control.
+The Timer library is also initialized and several timers are created later on,
+responsible for checking if it needs to scale down frequency at run time by checking CPU utilization statistics.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Only the power management related initialization is shown.</p>
+</div>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">struct</span> <span class="n">lcore_conf</span> <span class="o">*</span><span class="n">qconf</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">ret</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="n">nb_ports</span><span class="p">;</span>
+    <span class="kt">uint16_t</span> <span class="n">queueid</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="n">lcore_id</span><span class="p">;</span>
+    <span class="kt">uint64_t</span> <span class="n">hz</span><span class="p">;</span>
+    <span class="kt">uint32_t</span> <span class="n">n_tx_queue</span><span class="p">,</span> <span class="n">nb_lcores</span><span class="p">;</span>
+    <span class="kt">uint8_t</span> <span class="n">portid</span><span class="p">,</span> <span class="n">nb_rx_queue</span><span class="p">,</span> <span class="n">queue</span><span class="p">,</span> <span class="n">socketid</span><span class="p">;</span>
+
+    <span class="c1">// ...</span>
+
+    <span class="cm">/* init RTE timer library to be used to initialize per-core timers */</span>
+
+    <span class="n">rte_timer_subsystem_init</span><span class="p">();</span>
+
+    <span class="c1">// ...</span>
+
+
+    <span class="cm">/* per-core initialization */</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">lcore_id</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">lcore_id</span> <span class="o">&lt;</span> <span class="n">RTE_MAX_LCORE</span><span class="p">;</span> <span class="n">lcore_id</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">rte_lcore_is_enabled</span><span class="p">(</span><span class="n">lcore_id</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="k">continue</span><span class="p">;</span>
+
+        <span class="cm">/* init power management library for a specified core */</span>
+
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">rte_power_init</span><span class="p">(</span><span class="n">lcore_id</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+            <span class="n">rte_exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">,</span> <span class="s">&quot;Power management library &quot;</span>
+                <span class="s">&quot;initialization failed on core%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">lcore_id</span><span class="p">);</span>
+
+        <span class="cm">/* init timer structures for each enabled lcore */</span>
+
+        <span class="n">rte_timer_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">power_timers</span><span class="p">[</span><span class="n">lcore_id</span><span class="p">]);</span>
+
+        <span class="n">hz</span> <span class="o">=</span> <span class="n">rte_get_hpet_hz</span><span class="p">();</span>
+
+        <span class="n">rte_timer_reset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">power_timers</span><span class="p">[</span><span class="n">lcore_id</span><span class="p">],</span> <span class="n">hz</span><span class="o">/</span><span class="n">TIMER_NUMBER_PER_SECOND</span><span class="p">,</span> <span class="n">SINGLE</span><span class="p">,</span> <span class="n">lcore_id</span><span class="p">,</span> <span class="n">power_timer_cb</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+
+        <span class="c1">// ...</span>
+    <span class="p">}</span>
+
+    <span class="c1">// ...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="monitoring-loads-of-rx-queues">
+<h3>18.5.2. Monitoring Loads of Rx Queues</h3>
+<p>In general, the polling nature of the DPDK prevents the OS power management subsystem from knowing
+if the network load is actually heavy or light.
+In this sample, sampling network load work is done by monitoring received and
+available descriptors on NIC Rx queues in recent polls.
+Based on the number of returned and available Rx descriptors,
+this example implements algorithms to generate frequency scaling hints and speculative sleep duration,
+and use them to control P-state and C-state of processors via the power management library.
+Frequency (P-state) control and sleep state (C-state) control work individually for each logical core,
+and the combination of them contributes to a power efficient packet processing solution when serving light network loads.</p>
+<p>The rte_eth_rx_burst() function and the newly-added rte_eth_rx_queue_count() function are used in the endless packet processing loop
+to return the number of received and available Rx descriptors.
+And those numbers of specific queue are passed to P-state and C-state heuristic algorithms
+to generate hints based on recent network load trends.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Only power control related code is shown.</p>
+</div>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span>
+<span class="nf">attribute</span> <span class="p">((</span><span class="n">noreturn</span><span class="p">))</span> <span class="kt">int</span> <span class="n">main_loop</span><span class="p">(</span> <span class="n">attribute</span> <span class="p">((</span><span class="n">unused</span><span class="p">))</span> <span class="kt">void</span> <span class="o">*</span><span class="n">dummy</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// ...</span>
+
+    <span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+
+    <span class="cm">/**</span>
+<span class="cm">     * Read packet from RX queues</span>
+<span class="cm">     */</span>
+
+    <span class="n">lcore_scaleup_hint</span> <span class="o">=</span> <span class="n">FREQ_CURRENT</span><span class="p">;</span>
+    <span class="n">lcore_rx_idle_count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">qconf</span><span class="o">-&gt;</span><span class="n">n_rx_queue</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">rx_queue</span> <span class="o">=</span> <span class="o">&amp;</span><span class="p">(</span><span class="n">qconf</span><span class="o">-&gt;</span><span class="n">rx_queue_list</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+        <span class="n">rx_queue</span><span class="o">-&gt;</span><span class="n">idle_hint</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">portid</span> <span class="o">=</span> <span class="n">rx_queue</span><span class="o">-&gt;</span><span class="n">port_id</span><span class="p">;</span>
+        <span class="n">queueid</span> <span class="o">=</span> <span class="n">rx_queue</span><span class="o">-&gt;</span><span class="n">queue_id</span><span class="p">;</span>
+
+        <span class="n">nb_rx</span> <span class="o">=</span> <span class="n">rte_eth_rx_burst</span><span class="p">(</span><span class="n">portid</span><span class="p">,</span> <span class="n">queueid</span><span class="p">,</span> <span class="n">pkts_burst</span><span class="p">,</span> <span class="n">MAX_PKT_BURST</span><span class="p">);</span>
+        <span class="n">stats</span><span class="p">[</span><span class="n">lcore_id</span><span class="p">].</span><span class="n">nb_rx_processed</span> <span class="o">+=</span> <span class="n">nb_rx</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">unlikely</span><span class="p">(</span><span class="n">nb_rx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span> <span class="p">{</span>
+            <span class="cm">/**</span>
+<span class="cm">             * no packet received from rx queue, try to</span>
+<span class="cm">             * sleep for a while forcing CPU enter deeper</span>
+<span class="cm">             * C states.</span>
+<span class="cm">             */</span>
+
+            <span class="n">rx_queue</span><span class="o">-&gt;</span><span class="n">zero_rx_packet_count</span><span class="o">++</span><span class="p">;</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">rx_queue</span><span class="o">-&gt;</span><span class="n">zero_rx_packet_count</span> <span class="o">&lt;=</span> <span class="n">MIN_ZERO_POLL_COUNT</span><span class="p">)</span>
+                <span class="k">continue</span><span class="p">;</span>
+
+            <span class="n">rx_queue</span><span class="o">-&gt;</span><span class="n">idle_hint</span> <span class="o">=</span> <span class="n">power_idle_heuristic</span><span class="p">(</span><span class="n">rx_queue</span><span class="o">-&gt;</span><span class="n">zero_rx_packet_count</span><span class="p">);</span>
+            <span class="n">lcore_rx_idle_count</span><span class="o">++</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="n">rx_ring_length</span> <span class="o">=</span> <span class="n">rte_eth_rx_queue_count</span><span class="p">(</span><span class="n">portid</span><span class="p">,</span> <span class="n">queueid</span><span class="p">);</span>
+
+            <span class="n">rx_queue</span><span class="o">-&gt;</span><span class="n">zero_rx_packet_count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+            <span class="cm">/**</span>
+<span class="cm">             * do not scale up frequency immediately as</span>
+<span class="cm">             * user to kernel space communication is costly</span>
+<span class="cm">             * which might impact packet I/O for received</span>
+<span class="cm">             * packets.</span>
+<span class="cm">             */</span>
+
+            <span class="n">rx_queue</span><span class="o">-&gt;</span><span class="n">freq_up_hint</span> <span class="o">=</span> <span class="n">power_freq_scaleup_heuristic</span><span class="p">(</span><span class="n">lcore_id</span><span class="p">,</span> <span class="n">rx_ring_length</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="cm">/* Prefetch and forward packets */</span>
+
+        <span class="c1">// ...</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">likely</span><span class="p">(</span><span class="n">lcore_rx_idle_count</span> <span class="o">!=</span> <span class="n">qconf</span><span class="o">-&gt;</span><span class="n">n_rx_queue</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">lcore_scaleup_hint</span> <span class="o">=</span> <span class="n">qconf</span><span class="o">-&gt;</span><span class="n">rx_queue_list</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">freq_up_hint</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">qconf</span><span class="o">-&gt;</span><span class="n">n_rx_queue</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">x_queue</span> <span class="o">=</span> <span class="o">&amp;</span><span class="p">(</span><span class="n">qconf</span><span class="o">-&gt;</span><span class="n">rx_queue_list</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">rx_queue</span><span class="o">-&gt;</span><span class="n">freq_up_hint</span> <span class="o">&gt;</span> <span class="n">lcore_scaleup_hint</span><span class="p">)</span>
+
+                <span class="n">lcore_scaleup_hint</span> <span class="o">=</span> <span class="n">rx_queue</span><span class="o">-&gt;</span><span class="n">freq_up_hint</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">lcore_scaleup_hint</span> <span class="o">==</span> <span class="n">FREQ_HIGHEST</span><span class="p">)</span>
+
+            <span class="n">rte_power_freq_max</span><span class="p">(</span><span class="n">lcore_id</span><span class="p">);</span>
+
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">lcore_scaleup_hint</span> <span class="o">==</span> <span class="n">FREQ_HIGHER</span><span class="p">)</span>
+            <span class="n">rte_power_freq_up</span><span class="p">(</span><span class="n">lcore_id</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="cm">/**</span>
+<span class="cm">             *  All Rx queues empty in recent consecutive polls,</span>
+<span class="cm">             *  sleep in a conservative manner, meaning sleep as</span>
+<span class="cm">             * less as possible.</span>
+<span class="cm">             */</span>
+
+            <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">lcore_idle_hint</span> <span class="o">=</span> <span class="n">qconf</span><span class="o">-&gt;</span><span class="n">rx_queue_list</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">idle_hint</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">qconf</span><span class="o">-&gt;</span><span class="n">n_rx_queue</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">rx_queue</span> <span class="o">=</span> <span class="o">&amp;</span><span class="p">(</span><span class="n">qconf</span><span class="o">-&gt;</span><span class="n">rx_queue_list</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">rx_queue</span><span class="o">-&gt;</span><span class="n">idle_hint</span> <span class="o">&lt;</span> <span class="n">lcore_idle_hint</span><span class="p">)</span>
+                    <span class="n">lcore_idle_hint</span> <span class="o">=</span> <span class="n">rx_queue</span><span class="o">-&gt;</span><span class="n">idle_hint</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">lcore_idle_hint</span> <span class="o">&lt;</span> <span class="n">SLEEP_GEAR1_THRESHOLD</span><span class="p">)</span>
+                <span class="cm">/**</span>
+<span class="cm">                 *   execute &quot;pause&quot; instruction to avoid context</span>
+<span class="cm">                 *   switch for short sleep.</span>
+<span class="cm">                 */</span>
+                <span class="n">rte_delay_us</span><span class="p">(</span><span class="n">lcore_idle_hint</span><span class="p">);</span>
+            <span class="k">else</span>
+                <span class="cm">/* long sleep force ruining thread to suspend */</span>
+                <span class="n">usleep</span><span class="p">(</span><span class="n">lcore_idle_hint</span><span class="p">);</span>
+
+           <span class="n">stats</span><span class="p">[</span><span class="n">lcore_id</span><span class="p">].</span><span class="n">sleep_time</span> <span class="o">+=</span> <span class="n">lcore_idle_hint</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="p-state-heuristic-algorithm">
+<h3>18.5.3. P-State Heuristic Algorithm</h3>
+<p>The power_freq_scaleup_heuristic() function is responsible for generating a frequency hint for the specified logical core
+according to available descriptor number returned from rte_eth_rx_queue_count().
+On every poll for new packets, the length of available descriptor on an Rx queue is evaluated,
+and the algorithm used for frequency hinting is as follows:</p>
+<ul class="simple">
+<li>If the size of available descriptors exceeds 96, the maximum frequency is hinted.</li>
+<li>If the size of available descriptors exceeds 64, a trend counter is incremented by 100.</li>
+<li>If the length of the ring exceeds 32, the trend counter is incremented by 1.</li>
+<li>When the trend counter reached 10000 the frequency hint is changed to the next higher frequency.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The assumption is that the Rx queue size is 128 and the thresholds specified above
+must be adjusted accordingly based on actual hardware Rx queue size,
+which are configured via the rte_eth_rx_queue_setup() function.</p>
+</div>
+<p>In general, a thread needs to poll packets from multiple Rx queues.
+Most likely, different queue have different load, so they would return different frequency hints.
+The algorithm evaluates all the hints and then scales up frequency in an aggressive manner
+by scaling up to highest frequency as long as one Rx queue requires.
+In this way, we can minimize any negative performance impact.</p>
+<p>On the other hand, frequency scaling down is controlled in the timer callback function.
+Specifically, if the sleep times of a logical core indicate that it is sleeping more than 25% of the sampling period,
+or if the average packet per iteration is less than expectation, the frequency is decreased by one step.</p>
+</div>
+<div class="section" id="c-state-heuristic-algorithm">
+<h3>18.5.4. C-State Heuristic Algorithm</h3>
+<p>Whenever recent rte_eth_rx_burst() polls return 5 consecutive zero packets,
+an idle counter begins incrementing for each successive zero poll.
+At the same time, the function power_idle_heuristic() is called to generate speculative sleep duration
+in order to force logical to enter deeper sleeping C-state.
+There is no way to control C- state directly, and the CPUIdle subsystem in OS is intelligent enough
+to select C-state to enter based on actual sleep period time of giving logical core.
+The algorithm has the following sleeping behavior depending on the idle counter:</p>
+<ul class="simple">
+<li>If idle count less than 100, the counter value is used as a microsecond sleep value through rte_delay_us()
+which execute pause instructions to avoid costly context switch but saving power at the same time.</li>
+<li>If idle count is between 100 and 999, a fixed sleep interval of 100 μs is used.
+A 100 μs sleep interval allows the core to enter the C1 state while keeping a fast response time in case new traffic arrives.</li>
+<li>If idle count is greater than 1000, a fixed sleep value of 1 ms is used until the next timer expiration is used.
+This allows the core to enter the C3/C6 states.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The thresholds specified above need to be adjusted for different Intel processors and traffic profiles.</p>
+</div>
+<p>If a thread polls multiple Rx queues and different queue returns different sleep duration values,
+the algorithm controls the sleep time in a conservative manner by sleeping for the least possible time
+in order to avoid a potential performance impact.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="l3_forward_access_ctrl.html" class="btn btn-neutral float-right" title="19. L3 Forwarding with Access Control Sample Application" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="l3_forward.html" class="btn btn-neutral" title="17. L3 Forwarding Sample Application" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,670 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>21. Link Status Interrupt Sample Application &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Sample Applications User Guide" href="index.html"/>
+        <link rel="next" title="22. Load Balancer Sample Application" href="load_balancer.html"/>
+        <link rel="prev" title="20. L3 Forwarding in a Virtualization Environment Sample Application" href="l3_forward_virtual.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Sample Applications User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmd_line.html">2. Command Line Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethtool.html">3. Ethtool Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exception_path.html">4. Exception Path Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello_world.html">5. Hello World Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skeleton.html">6. Basic Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rxtx_callbacks.html">7. RX/TX Callbacks Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_frag.html">8. IP Fragmentation Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipv4_multicast.html">9. IPv4 Multicast Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_reassembly.html">10. IP Reassembly Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">11. Kernel NIC Interface Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keep_alive.html">12. Keep Alive Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_crypto.html">13. L2 Forwarding with Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_job_stats.html">14. L2 Forwarding Sample Application (in Real and Virtualized Environments) with core load statistics.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_real_virtual.html">15. L2 Forwarding Sample Application (in Real and Virtualized Environments)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_cat.html">16. L2 Forwarding Sample Application with Cache Allocation Technology (CAT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward.html">17. L3 Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_power_man.html">18. L3 Forwarding with Power Management Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_access_ctrl.html">19. L3 Forwarding with Access Control Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_virtual.html">20. L3 Forwarding in a Virtualization Environment Sample Application</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">21. Link Status Interrupt Sample Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">21.1. Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compiling-the-application">21.2. Compiling the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-application">21.3. Running the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#explanation">21.4. Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#command-line-arguments">21.4.1. Command Line Arguments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mbuf-pool-initialization">21.4.2. Mbuf Pool Initialization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#driver-initialization">21.4.3. Driver Initialization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#interrupt-callback-registration">21.4.4. Interrupt Callback Registration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rx-queue-initialization">21.4.5. RX Queue Initialization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tx-queue-initialization">21.4.6. TX Queue Initialization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#receive-process-and-transmit-packets">21.4.7. Receive, Process and Transmit Packets</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="load_balancer.html">22. Load Balancer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_process.html">23. Multi-process Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_metering.html">24. QoS Metering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_scheduler.html">25. QoS Scheduler Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intel_quickassist.html">26. Intel® QuickAssist Technology Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quota_watermark.html">27. Quota and Watermark Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer.html">28. Timer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_ordering.html">29. Packet Ordering Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_dcb_forwarding.html">30. VMDQ and DCB Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">31. Vhost Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="netmap_compatibility.html">32. Netmap Compatibility Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_pipeline.html">33. Internet Protocol (IP) Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_pipeline.html">34. Test Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dist_app.html">35. Distributor Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vm_power_management.html">36. VM Power Management Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tep_termination.html">37. TEP termination Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="proc_info.html">38. dpdk_proc_info Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ptpclient.html">39. PTP Client Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance_thread.html">40. Performance Thread Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_secgw.html">41. IPsec Security Gateway Sample Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Sample Applications User Guide</a> &raquo;</li>
+      
+    <li>21. Link Status Interrupt Sample Application</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/sample_app_ug/link_status_intr.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="link-status-interrupt-sample-application">
+<h1>21. Link Status Interrupt Sample Application</h1>
+<p>The Link Status Interrupt sample application is a simple example of packet processing using
+the Data Plane Development Kit (DPDK) that
+demonstrates how network link status changes for a network port can be captured and
+used by a DPDK application.</p>
+<div class="section" id="overview">
+<h2>21.1. Overview</h2>
+<p>The Link Status Interrupt sample application registers a user space callback for the link status interrupt of each port
+and performs L2 forwarding for each packet that is received on an RX_PORT.
+The following operations are performed:</p>
+<ul class="simple">
+<li>RX_PORT and TX_PORT are paired with available ports one-by-one according to the core mask</li>
+<li>The source MAC address is replaced by the TX_PORT MAC address</li>
+<li>The destination MAC address is replaced by 02:00:00:00:00:TX_PORT_ID</li>
+</ul>
+<p>This application can be used to demonstrate the usage of link status interrupt and its user space callbacks
+and the behavior of L2 forwarding each time the link status changes.</p>
+</div>
+<div class="section" id="compiling-the-application">
+<h2>21.2. Compiling the Application</h2>
+<ol class="arabic">
+<li><p class="first">Go to the example directory:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export RTE_SDK=/path/to/rte_sdk</span>
+<span class="go">cd ${RTE_SDK}/examples/link_status_interrupt</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Set the target (a default target is used if not specified). For example:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export RTE_TARGET=x86_64-native-linuxapp-gcc</span>
+</pre></div>
+</div>
+<p>See the <em>DPDK Getting Started Guide</em> for possible RTE_TARGET values.</p>
+</li>
+<li><p class="first">Build the application:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">make</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The compiled application is written to the build subdirectory.
+To have the application written to a different location,
+the O=/path/to/build/directory option may be specified on the make command line.</p>
+</div>
+</div>
+<div class="section" id="running-the-application">
+<h2>21.3. Running the Application</h2>
+<p>The application requires a number of command line options:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./build/link_status_interrupt [EAL options] -- -p PORTMASK [-q NQ][-T PERIOD]</span>
+</pre></div>
+</div>
+<p>where,</p>
+<ul class="simple">
+<li>-p PORTMASK: A hexadecimal bitmask of the ports to configure</li>
+<li>-q NQ: A number of queues (=ports) per lcore (default is 1)</li>
+<li>-T PERIOD: statistics will be refreshed each PERIOD seconds (0 to disable, 10 default)</li>
+</ul>
+<p>To run the application in a linuxapp environment with 4 lcores, 4 memory channels, 16 ports and 8 RX queues per lcore,
+issue the command:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> ./build/link_status_interrupt -c f -n 4-- -q <span class="m">8</span> -p ffff
+</pre></div>
+</div>
+<p>Refer to the <em>DPDK Getting Started Guide</em> for general information on running applications
+and the Environment Abstraction Layer (EAL) options.</p>
+</div>
+<div class="section" id="explanation">
+<h2>21.4. Explanation</h2>
+<p>The following sections provide some explanation of the code.</p>
+<div class="section" id="command-line-arguments">
+<h3>21.4.1. Command Line Arguments</h3>
+<p>The Link Status Interrupt sample application takes specific parameters,
+in addition to Environment Abstraction Layer (EAL) arguments (see Section <a class="reference internal" href="#running-the-application">Running the Application</a>).</p>
+<p>Command line parsing is done in the same way as it is done in the L2 Forwarding Sample Application.
+See <a class="reference internal" href="l2_forward_real_virtual.html#l2-fwd-app-cmd-arguments"><span class="std std-ref">Command Line Arguments</span></a> for more information.</p>
+</div>
+<div class="section" id="mbuf-pool-initialization">
+<h3>21.4.2. Mbuf Pool Initialization</h3>
+<p>Mbuf pool initialization is done in the same way as it is done in the L2 Forwarding Sample Application.
+See <a class="reference internal" href="l2_forward_real_virtual.html#l2-fwd-app-mbuf-init"><span class="std std-ref">Mbuf Pool Initialization</span></a> for more information.</p>
+</div>
+<div class="section" id="driver-initialization">
+<h3>21.4.3. Driver Initialization</h3>
+<p>The main part of the code in the main() function relates to the initialization of the driver.
+To fully understand this code, it is recommended to study the chapters that related to the Poll Mode Driver in the
+<em>DPDK Programmer&#8217;s Guide and the DPDK API Reference</em>.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">rte_eal_pci_probe</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">rte_exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">,</span> <span class="s">&quot;Cannot probe PCI</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+
+<span class="n">nb_ports</span> <span class="o">=</span> <span class="n">rte_eth_dev_count</span><span class="p">();</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">nb_ports</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">rte_exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">,</span> <span class="s">&quot;No Ethernet ports - bye</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">nb_ports</span> <span class="o">&gt;</span> <span class="n">RTE_MAX_ETHPORTS</span><span class="p">)</span>
+    <span class="n">nb_ports</span> <span class="o">=</span> <span class="n">RTE_MAX_ETHPORTS</span><span class="p">;</span>
+
+<span class="cm">/*</span>
+<span class="cm"> * Each logical core is assigned a dedicated TX queue on each port.</span>
+<span class="cm"> */</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="n">portid</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">portid</span> <span class="o">&lt;</span> <span class="n">nb_ports</span><span class="p">;</span> <span class="n">portid</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* skip ports that are not enabled */</span>
+
+    <span class="k">if</span> <span class="p">((</span><span class="n">lsi_enabled_port_mask</span> <span class="o">&amp;</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">portid</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">continue</span><span class="p">;</span>
+
+    <span class="cm">/* save the destination port id */</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">nb_ports_in_mask</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">lsi_dst_ports</span><span class="p">[</span><span class="n">portid</span><span class="p">]</span> <span class="o">=</span> <span class="n">portid_last</span><span class="p">;</span>
+        <span class="n">lsi_dst_ports</span><span class="p">[</span><span class="n">portid_last</span><span class="p">]</span> <span class="o">=</span> <span class="n">portid</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+        <span class="n">portid_last</span> <span class="o">=</span> <span class="n">portid</span><span class="p">;</span>
+
+    <span class="n">nb_ports_in_mask</span><span class="o">++</span><span class="p">;</span>
+
+    <span class="n">rte_eth_dev_info_get</span><span class="p">((</span><span class="kt">uint8_t</span><span class="p">)</span> <span class="n">portid</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">dev_info</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Observe that:</p>
+<ul class="simple">
+<li>rte_eal_pci_probe()  parses the devices on the PCI bus and initializes recognized devices.</li>
+</ul>
+<p>The next step is to configure the RX and TX queues.
+For each port, there is only one RX queue (only one lcore is able to poll a given port).
+The number of TX queues depends on the number of available lcores.
+The rte_eth_dev_configure() function is used to configure the number of queues for a port:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="n">ret</span> <span class="o">=</span> <span class="n">rte_eth_dev_configure</span><span class="p">((</span><span class="kt">uint8_t</span><span class="p">)</span> <span class="n">portid</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">port_conf</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">rte_exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">,</span> <span class="s">&quot;Cannot configure device: err=%d, port=%u</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">ret</span><span class="p">,</span> <span class="n">portid</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The global configuration is stored in a static structure:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">rte_eth_conf</span> <span class="n">port_conf</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">.</span><span class="n">rxmode</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">.</span><span class="n">split_hdr_size</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">header_split</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>   <span class="cm">/**&lt; Header Split disabled */</span>
+        <span class="p">.</span><span class="n">hw_ip_checksum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="cm">/**&lt; IP checksum offload disabled */</span>
+        <span class="p">.</span><span class="n">hw_vlan_filter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="cm">/**&lt; VLAN filtering disabled */</span>
+        <span class="p">.</span><span class="n">hw_strip_crc</span><span class="o">=</span> <span class="mi">0</span><span class="p">,</span>    <span class="cm">/**&lt; CRC stripped by hardware */</span>
+    <span class="p">},</span>
+    <span class="p">.</span><span class="n">txmode</span> <span class="o">=</span> <span class="p">{},</span>
+    <span class="p">.</span><span class="n">intr_conf</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">.</span><span class="n">lsc</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="cm">/**&lt; link status interrupt feature enabled */</span>
+    <span class="p">},</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>Configuring lsc to 0 (the default) disables the generation of any link status change interrupts in kernel space
+and no user space interrupt event is received.
+The public interface rte_eth_link_get() accesses the NIC registers directly to update the link status.
+Configuring lsc to non-zero enables the generation of link status change interrupts in kernel space
+when a link status change is present and calls the user space callbacks registered by the application.
+The public interface rte_eth_link_get() just reads the link status in a global structure
+that would be updated in the interrupt host thread only.</p>
+</div>
+<div class="section" id="interrupt-callback-registration">
+<h3>21.4.4. Interrupt Callback Registration</h3>
+<p>The application can register one or more callbacks to a specific port and interrupt event.
+An example callback function that has been written as indicated below.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">void</span>
+<span class="nf">lsi_event_callback</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="n">port_id</span><span class="p">,</span> <span class="k">enum</span> <span class="n">rte_eth_event_type</span> <span class="n">type</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">param</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">struct</span> <span class="n">rte_eth_link</span> <span class="n">link</span><span class="p">;</span>
+
+    <span class="n">RTE_SET_USED</span><span class="p">(</span><span class="n">param</span><span class="p">);</span>
+
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n\n</span><span class="s">In registered callback...</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Event type: %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">type</span> <span class="o">==</span> <span class="n">RTE_ETH_EVENT_INTR_LSC</span> <span class="o">?</span> <span class="s">&quot;LSC interrupt&quot;</span> <span class="o">:</span> <span class="s">&quot;unknown event&quot;</span><span class="p">);</span>
+
+    <span class="n">rte_eth_link_get_nowait</span><span class="p">(</span><span class="n">port_id</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">link</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">link</span><span class="p">.</span><span class="n">link_status</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Port %d Link Up - speed %u Mbps - %s</span><span class="se">\n\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">port_id</span><span class="p">,</span> <span class="p">(</span><span class="kt">unsigned</span><span class="p">)</span><span class="n">link</span><span class="p">.</span><span class="n">link_speed</span><span class="p">,</span>
+              <span class="p">(</span><span class="n">link</span><span class="p">.</span><span class="n">link_duplex</span> <span class="o">==</span> <span class="n">ETH_LINK_FULL_DUPLEX</span><span class="p">)</span> <span class="o">?</span> <span class="p">(</span><span class="s">&quot;full-duplex&quot;</span><span class="p">)</span> <span class="o">:</span> <span class="p">(</span><span class="s">&quot;half-duplex&quot;</span><span class="p">));</span>
+    <span class="p">}</span> <span class="k">else</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Port %d Link Down</span><span class="se">\n\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">port_id</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This function is called when a link status interrupt is present for the right port.
+The port_id indicates which port the interrupt applies to.
+The type parameter identifies the interrupt event type,
+which currently can be RTE_ETH_EVENT_INTR_LSC only, but other types can be added in the future.
+The param parameter is the address of the parameter for the callback.
+This function should be implemented with care since it will be called in the interrupt host thread,
+which is different from the main thread of its caller.</p>
+<p>The application registers the lsi_event_callback and a NULL parameter to the link status interrupt event on each port:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="n">rte_eth_dev_callback_register</span><span class="p">((</span><span class="kt">uint8_t</span><span class="p">)</span><span class="n">portid</span><span class="p">,</span> <span class="n">RTE_ETH_EVENT_INTR_LSC</span><span class="p">,</span> <span class="n">lsi_event_callback</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>This registration can be done only after calling the rte_eth_dev_configure() function and before calling any other function.
+If lsc is initialized with 0, the callback is never called since no interrupt event would ever be present.</p>
+</div>
+<div class="section" id="rx-queue-initialization">
+<h3>21.4.5. RX Queue Initialization</h3>
+<p>The application uses one lcore to poll one or several ports, depending on the -q option,
+which specifies the number of queues per lcore.</p>
+<p>For example, if the user specifies -q 4, the application is able to poll four ports with one lcore.
+If there are 16 ports on the target (and if the portmask argument is -p ffff),
+the application will need four lcores to poll all the ports.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="n">ret</span> <span class="o">=</span> <span class="n">rte_eth_rx_queue_setup</span><span class="p">((</span><span class="kt">uint8_t</span><span class="p">)</span> <span class="n">portid</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">nb_rxd</span><span class="p">,</span> <span class="n">SOCKET0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rx_conf</span><span class="p">,</span> <span class="n">lsi_pktmbuf_pool</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">rte_exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">,</span> <span class="s">&quot;rte_eth_rx_queue_setup: err=%d, port=%u</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">ret</span><span class="p">,</span> <span class="n">portid</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The list of queues that must be polled for a given lcore is stored in a private structure called struct lcore_queue_conf.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">lcore_queue_conf</span> <span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="n">n_rx_port</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="n">rx_port_list</span><span class="p">[</span><span class="n">MAX_RX_QUEUE_PER_LCORE</span><span class="p">];</span> <span class="kt">unsigned</span> <span class="n">tx_queue_id</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">mbuf_table</span> <span class="n">tx_mbufs</span><span class="p">[</span><span class="n">LSI_MAX_PORTS</span><span class="p">];</span>
+<span class="p">}</span> <span class="n">rte_cache_aligned</span><span class="p">;</span>
+
+<span class="k">struct</span> <span class="n">lcore_queue_conf</span> <span class="n">lcore_queue_conf</span><span class="p">[</span><span class="n">RTE_MAX_LCORE</span><span class="p">];</span>
+</pre></div>
+</div>
+<p>The n_rx_port and rx_port_list[] fields are used in the main packet processing loop
+(see <a class="reference internal" href="#receive-process-and-transmit-packets">Receive, Process and Transmit Packets</a>).</p>
+<p>The global configuration for the RX queues is stored in a static structure:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">rte_eth_rxconf</span> <span class="n">rx_conf</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">.</span><span class="n">rx_thresh</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">.</span><span class="n">pthresh</span> <span class="o">=</span> <span class="n">RX_PTHRESH</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">hthresh</span> <span class="o">=</span> <span class="n">RX_HTHRESH</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">wthresh</span> <span class="o">=</span> <span class="n">RX_WTHRESH</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="tx-queue-initialization">
+<h3>21.4.6. TX Queue Initialization</h3>
+<p>Each lcore should be able to transmit on any port.
+For every port, a single TX queue is initialized.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/* init one TX queue logical core on each port */</span>
+
+<span class="n">fflush</span><span class="p">(</span><span class="n">stdout</span><span class="p">);</span>
+
+<span class="n">ret</span> <span class="o">=</span> <span class="n">rte_eth_tx_queue_setup</span><span class="p">(</span><span class="n">portid</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">nb_txd</span><span class="p">,</span> <span class="n">rte_eth_dev_socket_id</span><span class="p">(</span><span class="n">portid</span><span class="p">),</span> <span class="o">&amp;</span><span class="n">tx_conf</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">rte_exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">,</span> <span class="s">&quot;rte_eth_tx_queue_setup: err=%d,port=%u</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">ret</span><span class="p">,</span> <span class="p">(</span><span class="kt">unsigned</span><span class="p">)</span> <span class="n">portid</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The global configuration for TX queues is stored in a static structure:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">rte_eth_txconf</span> <span class="n">tx_conf</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">.</span><span class="n">tx_thresh</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">.</span><span class="n">pthresh</span> <span class="o">=</span> <span class="n">TX_PTHRESH</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">hthresh</span> <span class="o">=</span> <span class="n">TX_HTHRESH</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">wthresh</span> <span class="o">=</span> <span class="n">TX_WTHRESH</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="p">.</span><span class="n">tx_free_thresh</span> <span class="o">=</span> <span class="n">RTE_TEST_TX_DESC_DEFAULT</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="cm">/* disable feature */</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="receive-process-and-transmit-packets">
+<h3>21.4.7. Receive, Process and Transmit Packets</h3>
+<p>In the lsi_main_loop() function, the main task is to read ingress packets from the RX queues.
+This is done using the following code:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm"> *   Read packet from RX queues</span>
+<span class="cm"> */</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">qconf</span><span class="o">-&gt;</span><span class="n">n_rx_port</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">portid</span> <span class="o">=</span> <span class="n">qconf</span><span class="o">-&gt;</span><span class="n">rx_port_list</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+    <span class="n">nb_rx</span> <span class="o">=</span> <span class="n">rte_eth_rx_burst</span><span class="p">((</span><span class="kt">uint8_t</span><span class="p">)</span> <span class="n">portid</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">pkts_burst</span><span class="p">,</span> <span class="n">MAX_PKT_BURST</span><span class="p">);</span>
+    <span class="n">port_statistics</span><span class="p">[</span><span class="n">portid</span><span class="p">].</span><span class="n">rx</span> <span class="o">+=</span> <span class="n">nb_rx</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">nb_rx</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">pkts_burst</span><span class="p">[</span><span class="n">j</span><span class="p">];</span>
+        <span class="n">rte_prefetch0</span><span class="p">(</span><span class="n">rte_pktmbuf_mtod</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="p">));</span>
+        <span class="n">lsi_simple_forward</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">portid</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Packets are read in a burst of size MAX_PKT_BURST.
+The rte_eth_rx_burst() function writes the mbuf pointers in a local table and returns the number of available mbufs in the table.</p>
+<p>Then, each mbuf in the table is processed by the lsi_simple_forward() function.
+The processing is very simple: processes the TX port from the RX port and then replaces the source and destination MAC addresses.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In the following code, the two lines for calculating the output port require some explanation.
+If portId is even, the first line does nothing (as portid &amp; 1 will be 0), and the second line adds 1.
+If portId is odd, the first line subtracts one and the second line does nothing.
+Therefore, 0 goes to 1, and 1 to 0, 2 goes to 3 and 3 to 2, and so on.</p>
+</div>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">void</span>
+<span class="nf">lsi_simple_forward</span><span class="p">(</span><span class="k">struct</span> <span class="n">rte_mbuf</span> <span class="o">*</span><span class="n">m</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="n">portid</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">struct</span> <span class="n">ether_hdr</span> <span class="o">*</span><span class="n">eth</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="o">*</span><span class="n">tmp</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="n">dst_port</span> <span class="o">=</span> <span class="n">lsi_dst_ports</span><span class="p">[</span><span class="n">portid</span><span class="p">];</span>
+
+    <span class="n">eth</span> <span class="o">=</span> <span class="n">rte_pktmbuf_mtod</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="k">struct</span> <span class="n">ether_hdr</span> <span class="o">*</span><span class="p">);</span>
+
+    <span class="cm">/* 02:00:00:00:00:xx */</span>
+
+    <span class="n">tmp</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">eth</span><span class="o">-&gt;</span><span class="n">d_addr</span><span class="p">.</span><span class="n">addr_bytes</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+
+    <span class="o">*</span><span class="p">((</span><span class="kt">uint64_t</span> <span class="o">*</span><span class="p">)</span><span class="n">tmp</span><span class="p">)</span> <span class="o">=</span> <span class="mh">0x000000000002</span> <span class="o">+</span> <span class="p">(</span><span class="n">dst_port</span> <span class="o">&lt;&lt;</span> <span class="mi">40</span><span class="p">);</span>
+
+    <span class="cm">/* src addr */</span>
+    <span class="n">ether_addr_copy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lsi_ports_eth_addr</span><span class="p">[</span><span class="n">dst_port</span><span class="p">],</span> <span class="o">&amp;</span><span class="n">eth</span><span class="o">-&gt;</span><span class="n">s_addr</span><span class="p">);</span>
+
+    <span class="n">lsi_send_packet</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">dst_port</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Then, the packet is sent using the lsi_send_packet(m, dst_port) function.
+For this test application, the processing is exactly the same for all packets arriving on the same RX port.
+Therefore, it would have been possible to call the lsi_send_burst() function directly from the main loop
+to send all the received packets on the same TX port using
+the burst-oriented send function, which is more efficient.</p>
+<p>However, in real-life applications (such as, L3 routing),
+packet N is not necessarily forwarded on the same port as packet N-1.
+The application is implemented to illustrate that so the same approach can be reused in a more complex application.</p>
+<p>The lsi_send_packet() function stores the packet in a per-lcore and per-txport table.
+If the table is full, the whole packets table is transmitted using the lsi_send_burst() function:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/* Send the packet on an output interface */</span>
+
+<span class="k">static</span> <span class="kt">int</span>
+<span class="nf">lsi_send_packet</span><span class="p">(</span><span class="k">struct</span> <span class="n">rte_mbuf</span> <span class="o">*</span><span class="n">m</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">port</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="n">lcore_id</span><span class="p">,</span> <span class="n">len</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">lcore_queue_conf</span> <span class="o">*</span><span class="n">qconf</span><span class="p">;</span>
+
+    <span class="n">lcore_id</span> <span class="o">=</span> <span class="n">rte_lcore_id</span><span class="p">();</span>
+    <span class="n">qconf</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">lcore_queue_conf</span><span class="p">[</span><span class="n">lcore_id</span><span class="p">];</span>
+    <span class="n">len</span> <span class="o">=</span> <span class="n">qconf</span><span class="o">-&gt;</span><span class="n">tx_mbufs</span><span class="p">[</span><span class="n">port</span><span class="p">].</span><span class="n">len</span><span class="p">;</span>
+    <span class="n">qconf</span><span class="o">-&gt;</span><span class="n">tx_mbufs</span><span class="p">[</span><span class="n">port</span><span class="p">].</span><span class="n">m_table</span><span class="p">[</span><span class="n">len</span><span class="p">]</span> <span class="o">=</span> <span class="n">m</span><span class="p">;</span>
+    <span class="n">len</span><span class="o">++</span><span class="p">;</span>
+
+    <span class="cm">/* enough pkts to be sent */</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">unlikely</span><span class="p">(</span><span class="n">len</span> <span class="o">==</span> <span class="n">MAX_PKT_BURST</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">lsi_send_burst</span><span class="p">(</span><span class="n">qconf</span><span class="p">,</span> <span class="n">MAX_PKT_BURST</span><span class="p">,</span> <span class="n">port</span><span class="p">);</span>
+        <span class="n">len</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">qconf</span><span class="o">-&gt;</span><span class="n">tx_mbufs</span><span class="p">[</span><span class="n">port</span><span class="p">].</span><span class="n">len</span> <span class="o">=</span> <span class="n">len</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>To ensure that no packets remain in the tables, each lcore does a draining of the TX queue in its main loop.
+This technique introduces some latency when there are not many packets to send.
+However, it improves performance:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span> <span class="n">cur_tsc</span> <span class="o">=</span> <span class="n">rte_rdtsc</span><span class="p">();</span>
+
+ <span class="cm">/*</span>
+<span class="cm">  *    TX burst queue drain</span>
+<span class="cm">  */</span>
+
+ <span class="n">diff_tsc</span> <span class="o">=</span> <span class="n">cur_tsc</span> <span class="o">-</span> <span class="n">prev_tsc</span><span class="p">;</span>
+
+ <span class="k">if</span> <span class="p">(</span><span class="n">unlikely</span><span class="p">(</span><span class="n">diff_tsc</span> <span class="o">&gt;</span> <span class="n">drain_tsc</span><span class="p">))</span> <span class="p">{</span>
+     <span class="cm">/* this could be optimized (use queueid instead of * portid), but it is not called so often */</span>
+
+     <span class="k">for</span> <span class="p">(</span><span class="n">portid</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">portid</span> <span class="o">&lt;</span> <span class="n">RTE_MAX_ETHPORTS</span><span class="p">;</span> <span class="n">portid</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+         <span class="k">if</span> <span class="p">(</span><span class="n">qconf</span><span class="o">-&gt;</span><span class="n">tx_mbufs</span><span class="p">[</span><span class="n">portid</span><span class="p">].</span><span class="n">len</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+             <span class="k">continue</span><span class="p">;</span>
+
+         <span class="n">lsi_send_burst</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lcore_queue_conf</span><span class="p">[</span><span class="n">lcore_id</span><span class="p">],</span>
+         <span class="n">qconf</span><span class="o">-&gt;</span><span class="n">tx_mbufs</span><span class="p">[</span><span class="n">portid</span><span class="p">].</span><span class="n">len</span><span class="p">,</span> <span class="p">(</span><span class="kt">uint8_t</span><span class="p">)</span> <span class="n">portid</span><span class="p">);</span>
+         <span class="n">qconf</span><span class="o">-&gt;</span><span class="n">tx_mbufs</span><span class="p">[</span><span class="n">portid</span><span class="p">].</span><span class="n">len</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+     <span class="p">}</span>
+
+     <span class="cm">/* if timer is enabled */</span>
+
+     <span class="k">if</span> <span class="p">(</span><span class="n">timer_period</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+         <span class="cm">/* advance the timer */</span>
+
+         <span class="n">timer_tsc</span> <span class="o">+=</span> <span class="n">diff_tsc</span><span class="p">;</span>
+
+         <span class="cm">/* if timer has reached its timeout */</span>
+
+         <span class="k">if</span> <span class="p">(</span><span class="n">unlikely</span><span class="p">(</span><span class="n">timer_tsc</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="kt">uint64_t</span><span class="p">)</span> <span class="n">timer_period</span><span class="p">))</span> <span class="p">{</span>
+             <span class="cm">/* do this only on master core */</span>
+
+             <span class="k">if</span> <span class="p">(</span><span class="n">lcore_id</span> <span class="o">==</span> <span class="n">rte_get_master_lcore</span><span class="p">())</span> <span class="p">{</span>
+                 <span class="n">print_stats</span><span class="p">();</span>
+
+                 <span class="cm">/* reset the timer */</span>
+                 <span class="n">timer_tsc</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+             <span class="p">}</span>
+         <span class="p">}</span>
+     <span class="p">}</span>
+     <span class="n">prev_tsc</span> <span class="o">=</span> <span class="n">cur_tsc</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="load_balancer.html" class="btn btn-neutral float-right" title="22. Load Balancer Sample Application" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="l3_forward_virtual.html" class="btn btn-neutral" title="20. L3 Forwarding in a Virtualization Environment Sample Application" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

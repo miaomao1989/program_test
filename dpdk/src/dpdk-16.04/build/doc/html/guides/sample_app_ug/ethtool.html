@@ -1,0 +1,385 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>3. Ethtool Sample Application &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Sample Applications User Guide" href="index.html"/>
+        <link rel="next" title="4. Exception Path Sample Application" href="exception_path.html"/>
+        <link rel="prev" title="2. Command Line Sample Application" href="cmd_line.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Sample Applications User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmd_line.html">2. Command Line Sample Application</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3. Ethtool Sample Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#compiling-the-application">3.1. Compiling the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-application">3.2. Running the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-the-application">3.3. Using the application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#explanation">3.4. Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#packet-reflector">3.4.1. Packet Reflector</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ethtool-shell">3.4.2. Ethtool Shell</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#ethtool-interface">3.5. Ethtool interface</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="exception_path.html">4. Exception Path Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello_world.html">5. Hello World Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skeleton.html">6. Basic Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rxtx_callbacks.html">7. RX/TX Callbacks Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_frag.html">8. IP Fragmentation Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipv4_multicast.html">9. IPv4 Multicast Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_reassembly.html">10. IP Reassembly Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">11. Kernel NIC Interface Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keep_alive.html">12. Keep Alive Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_crypto.html">13. L2 Forwarding with Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_job_stats.html">14. L2 Forwarding Sample Application (in Real and Virtualized Environments) with core load statistics.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_real_virtual.html">15. L2 Forwarding Sample Application (in Real and Virtualized Environments)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_cat.html">16. L2 Forwarding Sample Application with Cache Allocation Technology (CAT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward.html">17. L3 Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_power_man.html">18. L3 Forwarding with Power Management Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_access_ctrl.html">19. L3 Forwarding with Access Control Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_virtual.html">20. L3 Forwarding in a Virtualization Environment Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_status_intr.html">21. Link Status Interrupt Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="load_balancer.html">22. Load Balancer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_process.html">23. Multi-process Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_metering.html">24. QoS Metering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_scheduler.html">25. QoS Scheduler Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intel_quickassist.html">26. Intel® QuickAssist Technology Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quota_watermark.html">27. Quota and Watermark Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer.html">28. Timer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_ordering.html">29. Packet Ordering Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_dcb_forwarding.html">30. VMDQ and DCB Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">31. Vhost Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="netmap_compatibility.html">32. Netmap Compatibility Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_pipeline.html">33. Internet Protocol (IP) Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_pipeline.html">34. Test Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dist_app.html">35. Distributor Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vm_power_management.html">36. VM Power Management Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tep_termination.html">37. TEP termination Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="proc_info.html">38. dpdk_proc_info Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ptpclient.html">39. PTP Client Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance_thread.html">40. Performance Thread Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_secgw.html">41. IPsec Security Gateway Sample Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Sample Applications User Guide</a> &raquo;</li>
+      
+    <li>3. Ethtool Sample Application</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/sample_app_ug/ethtool.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="ethtool-sample-application">
+<h1>3. Ethtool Sample Application</h1>
+<p>The Ethtool sample application shows an implementation of an
+ethtool-like API and provides a console environment that allows
+its use to query and change Ethernet card parameters. The sample
+is based upon a simple L2 frame reflector.</p>
+<div class="section" id="compiling-the-application">
+<h2>3.1. Compiling the Application</h2>
+<p>To compile the application:</p>
+<ol class="arabic">
+<li><p class="first">Go to the sample application directory:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export RTE_SDK=/path/to/rte_sdk</span>
+<span class="go">cd ${RTE_SD}/examples/ethtool</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Set the target (a default target is used if not specified). For example:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export RTE_TARGET=x86_64-native-linuxapp-gcc</span>
+</pre></div>
+</div>
+<p>See the <em>DPDK Getting Started Guide</em> for possible RTE_TARGET values.</p>
+</li>
+<li><p class="first">Build the application:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">make</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="running-the-application">
+<h2>3.2. Running the Application</h2>
+<p>The application requires an available core for each port, plus one.
+The only available options are the standard ones for the EAL:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./ethtool-app/ethtool-app/${RTE_TARGET}/ethtool [EAL options]</span>
+</pre></div>
+</div>
+<p>Refer to the <em>DPDK Getting Started Guide</em> for general information on
+running applications and the Environment Abstraction Layer (EAL)
+options.</p>
+</div>
+<div class="section" id="using-the-application">
+<h2>3.3. Using the application</h2>
+<p>The application is console-driven using the cmdline DPDK interface:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">EthApp&gt;</span>
+</pre></div>
+</div>
+<p>From this interface the available commands and descriptions of what
+they do as as follows:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">drvinfo</span></code>: Print driver info</li>
+<li><code class="docutils literal"><span class="pre">eeprom</span></code>: Dump EEPROM to file</li>
+<li><code class="docutils literal"><span class="pre">link</span></code>: Print port link states</li>
+<li><code class="docutils literal"><span class="pre">macaddr</span></code>: Gets/sets MAC address</li>
+<li><code class="docutils literal"><span class="pre">mtu</span></code>: Set NIC MTU</li>
+<li><code class="docutils literal"><span class="pre">open</span></code>: Open port</li>
+<li><code class="docutils literal"><span class="pre">pause</span></code>: Get/set port pause state</li>
+<li><code class="docutils literal"><span class="pre">portstats</span></code>: Print port statistics</li>
+<li><code class="docutils literal"><span class="pre">regs</span></code>: Dump port register(s) to file</li>
+<li><code class="docutils literal"><span class="pre">ringparam</span></code>: Get/set ring parameters</li>
+<li><code class="docutils literal"><span class="pre">rxmode</span></code>: Toggle port Rx mode</li>
+<li><code class="docutils literal"><span class="pre">stop</span></code>: Stop port</li>
+<li><code class="docutils literal"><span class="pre">validate</span></code>: Check that given MAC address is valid unicast address</li>
+<li><code class="docutils literal"><span class="pre">vlan</span></code>: Add/remove VLAN id</li>
+<li><code class="docutils literal"><span class="pre">quit</span></code>: Exit program</li>
+</ul>
+</div>
+<div class="section" id="explanation">
+<h2>3.4. Explanation</h2>
+<p>The sample program has two parts: A background <a class="reference internal" href="#packet-reflector">packet reflector</a>
+that runs on a slave core, and a foreground <a class="reference internal" href="#ethtool-shell">Ethtool Shell</a> that
+runs on the master core. These are described below.</p>
+<div class="section" id="packet-reflector">
+<h3>3.4.1. Packet Reflector</h3>
+<p>The background packet reflector is intended to demonstrate basic
+packet processing on NIC ports controlled by the Ethtool shim.
+Each incoming MAC frame is rewritten so that it is returned to
+the sender, using the port in question&#8217;s own MAC address as the
+source address, and is then sent out on the same port.</p>
+</div>
+<div class="section" id="ethtool-shell">
+<h3>3.4.2. Ethtool Shell</h3>
+<p>The foreground part of the Ethtool sample is a console-based
+interface that accepts commands as described in <a class="reference internal" href="#using-the-application">using the
+application</a>. Individual call-back functions handle the detail
+associated with each command, which make use of the functions
+defined in the <a class="reference internal" href="#ethtool-interface">Ethtool interface</a> to the DPDK functions.</p>
+</div>
+</div>
+<div class="section" id="ethtool-interface">
+<h2>3.5. Ethtool interface</h2>
+<p>The Ethtool interface is built as a separate library, and implements
+the following functions:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">rte_ethtool_get_drvinfo()</span></code></li>
+<li><code class="docutils literal"><span class="pre">rte_ethtool_get_regs_len()</span></code></li>
+<li><code class="docutils literal"><span class="pre">rte_ethtool_get_regs()</span></code></li>
+<li><code class="docutils literal"><span class="pre">rte_ethtool_get_link()</span></code></li>
+<li><code class="docutils literal"><span class="pre">rte_ethtool_get_eeprom_len()</span></code></li>
+<li><code class="docutils literal"><span class="pre">rte_ethtool_get_eeprom()</span></code></li>
+<li><code class="docutils literal"><span class="pre">rte_ethtool_set_eeprom()</span></code></li>
+<li><code class="docutils literal"><span class="pre">rte_ethtool_get_pauseparam()</span></code></li>
+<li><code class="docutils literal"><span class="pre">rte_ethtool_set_pauseparam()</span></code></li>
+<li><code class="docutils literal"><span class="pre">rte_ethtool_net_open()</span></code></li>
+<li><code class="docutils literal"><span class="pre">rte_ethtool_net_stop()</span></code></li>
+<li><code class="docutils literal"><span class="pre">rte_ethtool_net_get_mac_addr()</span></code></li>
+<li><code class="docutils literal"><span class="pre">rte_ethtool_net_set_mac_addr()</span></code></li>
+<li><code class="docutils literal"><span class="pre">rte_ethtool_net_validate_addr()</span></code></li>
+<li><code class="docutils literal"><span class="pre">rte_ethtool_net_change_mtu()</span></code></li>
+<li><code class="docutils literal"><span class="pre">rte_ethtool_net_get_stats64()</span></code></li>
+<li><code class="docutils literal"><span class="pre">rte_ethtool_net_vlan_rx_add_vid()</span></code></li>
+<li><code class="docutils literal"><span class="pre">rte_ethtool_net_vlan_rx_kill_vid()</span></code></li>
+<li><code class="docutils literal"><span class="pre">rte_ethtool_net_set_rx_mode()</span></code></li>
+<li><code class="docutils literal"><span class="pre">rte_ethtool_get_ringparam()</span></code></li>
+<li><code class="docutils literal"><span class="pre">rte_ethtool_set_ringparam()</span></code></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="exception_path.html" class="btn btn-neutral float-right" title="4. Exception Path Sample Application" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="cmd_line.html" class="btn btn-neutral" title="2. Command Line Sample Application" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

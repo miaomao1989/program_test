@@ -1,0 +1,529 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>4. Exception Path Sample Application &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Sample Applications User Guide" href="index.html"/>
+        <link rel="next" title="5. Hello World Sample Application" href="hello_world.html"/>
+        <link rel="prev" title="3. Ethtool Sample Application" href="ethtool.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Sample Applications User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmd_line.html">2. Command Line Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethtool.html">3. Ethtool Sample Application</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4. Exception Path Sample Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">4.1. Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compiling-the-application">4.2. Compiling the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-application">4.3. Running the Application</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#getting-statistics">4.3.1. Getting Statistics</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#explanation">4.4. Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#initialization">4.4.1. Initialization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#packet-forwarding">4.4.2. Packet Forwarding</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#managing-tap-interfaces-and-bridges">4.4.3. Managing TAP Interfaces and Bridges</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="hello_world.html">5. Hello World Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skeleton.html">6. Basic Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rxtx_callbacks.html">7. RX/TX Callbacks Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_frag.html">8. IP Fragmentation Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipv4_multicast.html">9. IPv4 Multicast Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_reassembly.html">10. IP Reassembly Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">11. Kernel NIC Interface Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keep_alive.html">12. Keep Alive Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_crypto.html">13. L2 Forwarding with Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_job_stats.html">14. L2 Forwarding Sample Application (in Real and Virtualized Environments) with core load statistics.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_real_virtual.html">15. L2 Forwarding Sample Application (in Real and Virtualized Environments)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_cat.html">16. L2 Forwarding Sample Application with Cache Allocation Technology (CAT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward.html">17. L3 Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_power_man.html">18. L3 Forwarding with Power Management Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_access_ctrl.html">19. L3 Forwarding with Access Control Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_virtual.html">20. L3 Forwarding in a Virtualization Environment Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_status_intr.html">21. Link Status Interrupt Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="load_balancer.html">22. Load Balancer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_process.html">23. Multi-process Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_metering.html">24. QoS Metering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_scheduler.html">25. QoS Scheduler Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intel_quickassist.html">26. Intel® QuickAssist Technology Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quota_watermark.html">27. Quota and Watermark Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer.html">28. Timer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_ordering.html">29. Packet Ordering Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_dcb_forwarding.html">30. VMDQ and DCB Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">31. Vhost Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="netmap_compatibility.html">32. Netmap Compatibility Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_pipeline.html">33. Internet Protocol (IP) Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_pipeline.html">34. Test Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dist_app.html">35. Distributor Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vm_power_management.html">36. VM Power Management Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tep_termination.html">37. TEP termination Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="proc_info.html">38. dpdk_proc_info Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ptpclient.html">39. PTP Client Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance_thread.html">40. Performance Thread Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_secgw.html">41. IPsec Security Gateway Sample Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Sample Applications User Guide</a> &raquo;</li>
+      
+    <li>4. Exception Path Sample Application</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/sample_app_ug/exception_path.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="exception-path-sample-application">
+<h1>4. Exception Path Sample Application</h1>
+<p>The Exception Path sample application is a simple example that demonstrates the use of the DPDK
+to set up an exception path for packets to go through the Linux* kernel.
+This is done by using virtual TAP network interfaces.
+These can be read from and written to by the DPDK application and
+appear to the kernel as a standard network interface.</p>
+<div class="section" id="overview">
+<h2>4.1. Overview</h2>
+<p>The application creates two threads for each NIC port being used.
+One thread reads from the port and writes the data unmodified to a thread-specific TAP interface.
+The second thread reads from a TAP interface and writes the data unmodified to the NIC port.</p>
+<p>The packet flow through the exception path application is as shown in the following figure.</p>
+<div class="figure" id="id1">
+<span id="figure-exception-path-example"></span><img src="../_images/exception_path_example.svg" /><p class="caption"><span class="caption-number">Fig. 4.15 </span><span class="caption-text">Packet Flow</span></p>
+</div>
+<p>To make throughput measurements, kernel bridges must be setup to forward data between the bridges appropriately.</p>
+</div>
+<div class="section" id="compiling-the-application">
+<h2>4.2. Compiling the Application</h2>
+<ol class="arabic">
+<li><p class="first">Go to example directory:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export RTE_SDK=/path/to/rte_sdk</span>
+<span class="go">cd ${RTE_SDK}/examples/exception_path</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Set the target (a default target will be used if not specified).
+For example:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">export RTE_TARGET=x86_64-native-linuxapp-gcc</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>This application is intended as a linuxapp only.
+See the <em>DPDK Getting Started Guide</em> for possible RTE_TARGET values.</p>
+<ol class="arabic">
+<li><p class="first">Build the application:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">make</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="running-the-application">
+<h2>4.3. Running the Application</h2>
+<p>The application requires a number of command line options:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">.build/exception_path [EAL options] -- -p PORTMASK -i IN_CORES -o OUT_CORES</span>
+</pre></div>
+</div>
+<p>where:</p>
+<ul class="simple">
+<li>-p PORTMASK: A hex bitmask of ports to use</li>
+<li>-i IN_CORES: A hex bitmask of cores which read from NIC</li>
+<li>-o OUT_CORES: A hex bitmask of cores which write to NIC</li>
+</ul>
+<p>Refer to the <em>DPDK Getting Started Guide</em> for general information on running applications
+and the Environment Abstraction Layer (EAL) options.</p>
+<p>The number of bits set in each bitmask must be the same.
+The coremask -c parameter of the EAL options should include IN_CORES and OUT_CORES.
+The same bit must not be set in IN_CORES and OUT_CORES.
+The affinities between ports and cores are set beginning with the least significant bit of each mask, that is,
+the port represented by the lowest bit in PORTMASK is read from by the core represented by the lowest bit in IN_CORES,
+and written to by the core represented by the lowest bit in OUT_CORES.</p>
+<p>For example to run the application with two ports and four cores:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">./build/exception_path -c f -n 4 -- -p 3 -i 3 -o c</span>
+</pre></div>
+</div>
+<div class="section" id="getting-statistics">
+<h3>4.3.1. Getting Statistics</h3>
+<p>While the application is running, statistics on packets sent and
+received can be displayed by sending the SIGUSR1 signal to the application from another terminal:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">killall -USR1 exception_path</span>
+</pre></div>
+</div>
+<p>The statistics can be reset by sending a SIGUSR2 signal in a similar way.</p>
+</div>
+</div>
+<div class="section" id="explanation">
+<h2>4.4. Explanation</h2>
+<p>The following sections provide some explanation of the code.</p>
+<div class="section" id="initialization">
+<h3>4.4.1. Initialization</h3>
+<p>Setup of the mbuf pool, driver and queues is similar to the setup done in the <a class="reference internal" href="l2_forward_real_virtual.html#l2-fwd-app-real-and-virtual"><span class="std std-ref">L2 Forwarding Sample Application (in Real and Virtualized Environments)</span></a>.
+In addition, the TAP interfaces must also be created.
+A TAP interface is created for each lcore that is being used.
+The code for creating the TAP interface is as follows:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm"> *   Create a tap network interface, or use existing one with same name.</span>
+<span class="cm"> *   If name[0]=&#39;\0&#39; then a name is automatically assigned and returned in name.</span>
+<span class="cm"> */</span>
+
+<span class="k">static</span> <span class="kt">int</span> <span class="nf">tap_create</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">struct</span> <span class="n">ifreq</span> <span class="n">ifr</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="n">ret</span><span class="p">;</span>
+
+    <span class="n">fd</span> <span class="o">=</span> <span class="n">open</span><span class="p">(</span><span class="s">&quot;/dev/net/tun&quot;</span><span class="p">,</span> <span class="n">O_RDWR</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">fd</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fd</span><span class="p">;</span>
+
+    <span class="n">memset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ifr</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">ifr</span><span class="p">));</span>
+
+    <span class="cm">/* TAP device without packet information */</span>
+
+    <span class="n">ifr</span><span class="p">.</span><span class="n">ifr_flags</span> <span class="o">=</span> <span class="n">IFF_TAP</span> <span class="o">|</span> <span class="n">IFF_NO_PI</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">name</span> <span class="o">&amp;&amp;</span> <span class="o">*</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">rte_snprinf</span><span class="p">(</span><span class="n">ifr</span><span class="p">.</span><span class="n">ifr_name</span><span class="p">,</span> <span class="n">IFNAMSIZ</span><span class="p">,</span> <span class="n">name</span><span class="p">);</span>
+
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">ioctl</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">TUNSETIFF</span><span class="p">,</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span> <span class="o">&amp;</span><span class="n">ifr</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">snprintf</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">IFNAMSIZ</span><span class="p">,</span> <span class="n">ifr</span><span class="p">.</span><span class="n">ifr_name</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">fd</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The other step in the initialization process that is unique to this sample application
+is the association of each port with two cores:</p>
+<ul class="simple">
+<li>One core to read from the port and write to a TAP interface</li>
+<li>A second core to read from a TAP interface and write to the port</li>
+</ul>
+<p>This is done using an array called port_ids[], which is indexed by the lcore IDs.
+The population of this array is shown below:</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span> <span class="n">tx_port</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ <span class="n">rx_port</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+ <span class="n">RTE_LCORE_FOREACH</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+     <span class="k">if</span> <span class="p">(</span><span class="n">input_cores_mask</span> <span class="o">&amp;</span> <span class="p">(</span><span class="mi">1ULL</span> <span class="o">&lt;&lt;</span> <span class="n">i</span><span class="p">))</span> <span class="p">{</span>
+         <span class="cm">/* Skip ports that are not enabled */</span>
+         <span class="k">while</span> <span class="p">((</span><span class="n">ports_mask</span> <span class="o">&amp;</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">rx_port</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+             <span class="n">rx_port</span><span class="o">++</span><span class="p">;</span>
+             <span class="k">if</span> <span class="p">(</span><span class="n">rx_port</span> <span class="o">&gt;</span> <span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">ports_mask</span><span class="p">)</span> <span class="o">*</span> <span class="mi">8</span><span class="p">))</span>
+                 <span class="k">goto</span> <span class="n">fail</span><span class="p">;</span> <span class="cm">/* not enough ports */</span>
+         <span class="p">}</span>
+         <span class="n">port_ids</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">rx_port</span><span class="o">++</span><span class="p">;</span>
+     <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">output_cores_mask</span> <span class="o">&amp;</span> <span class="p">(</span><span class="mi">1ULL</span> <span class="o">&lt;&lt;</span> <span class="n">i</span><span class="p">))</span> <span class="p">{</span>
+         <span class="cm">/* Skip ports that are not enabled */</span>
+         <span class="k">while</span> <span class="p">((</span><span class="n">ports_mask</span> <span class="o">&amp;</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">tx_port</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+             <span class="n">tx_port</span><span class="o">++</span><span class="p">;</span>
+             <span class="k">if</span> <span class="p">(</span><span class="n">tx_port</span> <span class="o">&gt;</span> <span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">ports_mask</span><span class="p">)</span> <span class="o">*</span> <span class="mi">8</span><span class="p">))</span>
+                <span class="k">goto</span> <span class="n">fail</span><span class="p">;</span> <span class="cm">/* not enough ports */</span>
+         <span class="p">}</span>
+         <span class="n">port_ids</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">tx_port</span><span class="o">++</span><span class="p">;</span>
+     <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="packet-forwarding">
+<h3>4.4.2. Packet Forwarding</h3>
+<p>After the initialization steps are complete, the main_loop() function is run on each lcore.
+This function first checks the lcore_id against the user provided input_cores_mask and output_cores_mask to see
+if this core is reading from or writing to a TAP interface.</p>
+<p>For the case that reads from a NIC port, the packet reception is the same as in the L2 Forwarding sample application
+(see <a class="reference internal" href="l2_forward_real_virtual.html#l2-fwd-app-rx-tx-packets"><span class="std std-ref">Receive, Process and Transmit Packets</span></a>).
+The packet transmission is done by calling write() with the file descriptor of the appropriate TAP interface
+and then explicitly freeing the mbuf back to the pool.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/* Loop forever reading from NIC and writing to tap */</span>
+
+<span class="k">for</span> <span class="p">(;;)</span> <span class="p">{</span>
+    <span class="k">struct</span> <span class="n">rte_mbuf</span> <span class="o">*</span><span class="n">pkts_burst</span><span class="p">[</span><span class="n">PKT_BURST_SZ</span><span class="p">];</span>
+    <span class="kt">unsigned</span> <span class="n">i</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="kt">unsigned</span> <span class="n">nb_rx</span> <span class="o">=</span> <span class="n">rte_eth_rx_burst</span><span class="p">(</span><span class="n">port_ids</span><span class="p">[</span><span class="n">lcore_id</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="n">pkts_burst</span><span class="p">,</span> <span class="n">PKT_BURST_SZ</span><span class="p">);</span>
+
+    <span class="n">lcore_stats</span><span class="p">[</span><span class="n">lcore_id</span><span class="p">].</span><span class="n">rx</span> <span class="o">+=</span> <span class="n">nb_rx</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">likely</span><span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">nb_rx</span><span class="p">);</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">struct</span> <span class="n">rte_mbuf</span> <span class="o">*</span><span class="n">m</span> <span class="o">=</span> <span class="n">pkts_burst</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+        <span class="kt">int</span> <span class="n">ret</span> <span class="o">=</span> <span class="n">write</span><span class="p">(</span><span class="n">tap_fd</span><span class="p">,</span> <span class="n">rte_pktmbuf_mtod</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="kt">void</span><span class="o">*</span><span class="p">),</span>
+
+        <span class="n">rte_pktmbuf_data_len</span><span class="p">(</span><span class="n">m</span><span class="p">));</span>
+        <span class="n">rte_pktmbuf_free</span><span class="p">(</span><span class="n">m</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">unlikely</span><span class="p">(</span><span class="n">ret</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">))</span>
+            <span class="n">lcore_stats</span><span class="p">[</span><span class="n">lcore_id</span><span class="p">].</span><span class="n">dropped</span><span class="o">++</span><span class="p">;</span>
+        <span class="k">else</span>
+            <span class="n">lcore_stats</span><span class="p">[</span><span class="n">lcore_id</span><span class="p">].</span><span class="n">tx</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>For the other case that reads from a TAP interface and writes to a NIC port,
+packets are retrieved by doing a read() from the file descriptor of the appropriate TAP interface.
+This fills in the data into the mbuf, then other fields are set manually.
+The packet can then be transmitted as normal.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="cm">/* Loop forever reading from tap and writing to NIC */</span>
+
+<span class="k">for</span> <span class="p">(;;)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">ret</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">rte_mbuf</span> <span class="o">*</span><span class="n">m</span> <span class="o">=</span> <span class="n">rte_pktmbuf_alloc</span><span class="p">(</span><span class="n">pktmbuf_pool</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">m</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+        <span class="k">continue</span><span class="p">;</span>
+
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="n">tap_fd</span><span class="p">,</span> <span class="n">m</span><span class="o">-&gt;</span><span class="n">pkt</span><span class="p">.</span><span class="n">data</span><span class="p">,</span> <span class="n">MAX_PACKET_SZ</span><span class="p">);</span> <span class="n">lcore_stats</span><span class="p">[</span><span class="n">lcore_id</span><span class="p">].</span><span class="n">rx</span><span class="o">++</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">unlikely</span><span class="p">(</span><span class="n">ret</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">FATAL_ERROR</span><span class="p">(</span><span class="s">&quot;Reading from %s interface failed&quot;</span><span class="p">,</span> <span class="n">tap_name</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">m</span><span class="o">-&gt;</span><span class="n">pkt</span><span class="p">.</span><span class="n">nb_segs</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="n">m</span><span class="o">-&gt;</span><span class="n">pkt</span><span class="p">.</span><span class="n">next</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+    <span class="n">m</span><span class="o">-&gt;</span><span class="n">pkt</span><span class="p">.</span><span class="n">data_len</span> <span class="o">=</span> <span class="p">(</span><span class="kt">uint16_t</span><span class="p">)</span><span class="n">ret</span><span class="p">;</span>
+
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">rte_eth_tx_burst</span><span class="p">(</span><span class="n">port_ids</span><span class="p">[</span><span class="n">lcore_id</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">m</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">unlikely</span><span class="p">(</span><span class="n">ret</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">rte_pktmuf_free</span><span class="p">(</span><span class="n">m</span><span class="p">);</span>
+        <span class="n">lcore_stats</span><span class="p">[</span><span class="n">lcore_id</span><span class="p">].</span><span class="n">dropped</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="p">{</span>
+        <span class="n">lcore_stats</span><span class="p">[</span><span class="n">lcore_id</span><span class="p">].</span><span class="n">tx</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>To set up loops for measuring throughput, TAP interfaces can be connected using bridging.
+The steps to do this are described in the section that follows.</p>
+</div>
+<div class="section" id="managing-tap-interfaces-and-bridges">
+<h3>4.4.3. Managing TAP Interfaces and Bridges</h3>
+<p>The Exception Path sample application creates TAP interfaces with names of the format tap_dpdk_nn,
+where nn is the lcore ID. These TAP interfaces need to be configured for use:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">ifconfig tap_dpdk_00 up</span>
+</pre></div>
+</div>
+<p>To set up a bridge between two interfaces so that packets sent to one interface can be read from another,
+use the brctl tool:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">brctl addbr &quot;br0&quot;</span>
+<span class="go">brctl addif br0 tap_dpdk_00</span>
+<span class="go">brctl addif br0 tap_dpdk_03</span>
+<span class="go">ifconfig br0 up</span>
+</pre></div>
+</div>
+<p>The TAP interfaces created by this application exist only when the application is running,
+so the steps above need to be repeated each time the application is run.
+To avoid this, persistent TAP interfaces can be created using openvpn:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">openvpn --mktun --dev tap_dpdk_00</span>
+</pre></div>
+</div>
+<p>If this method is used, then the steps above have to be done only once and
+the same TAP interfaces can be reused each time the application is run.
+To remove bridges and persistent TAP interfaces, the following commands are used:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">ifconfig br0 down</span>
+<span class="go">brctl delbr br0</span>
+<span class="go">openvpn --rmtun --dev tap_dpdk_00</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="hello_world.html" class="btn btn-neutral float-right" title="5. Hello World Sample Application" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ethtool.html" class="btn btn-neutral" title="3. Ethtool Sample Application" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

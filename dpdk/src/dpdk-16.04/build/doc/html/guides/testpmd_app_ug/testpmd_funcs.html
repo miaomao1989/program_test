@@ -1,0 +1,2105 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>4. Testpmd Runtime Functions &mdash; Data Plane Development Kit 16.04.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Data Plane Development Kit 16.04.0 documentation" href="../index.html"/>
+        <link rel="up" title="Testpmd Application User Guide" href="index.html"/>
+        <link rel="next" title="FAQ" href="../faq/index.html"/>
+        <link rel="prev" title="3. Running the Application" href="run_app.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                16.04.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../xen/index.html">Xen Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Testpmd Application User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_app.html">2. Compiling the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="run_app.html">3. Running the Application</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4. Testpmd Runtime Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#help-functions">4.1. Help Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#control-functions">4.2. Control Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#start">4.2.1. start</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#start-tx-first">4.2.2. start tx_first</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#stop">4.2.3. stop</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#quit">4.2.4. quit</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#display-functions">4.3. Display Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#show-port">4.3.1. show port</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#show-port-rss-reta">4.3.2. show port rss reta</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#show-port-rss-hash">4.3.3. show port rss-hash</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#clear-port">4.3.4. clear port</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#show-rxq-txq">4.3.5. show (rxq|txq)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#show-config">4.3.6. show config</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-fwd">4.3.7. set fwd</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#read-rxd">4.3.8. read rxd</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#read-txd">4.3.9. read txd</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration-functions">4.4. Configuration Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#set-default">4.4.1. set default</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-verbose">4.4.2. set verbose</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-nbport">4.4.3. set nbport</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-nbcore">4.4.4. set nbcore</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-coremask">4.4.5. set coremask</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-portmask">4.4.6. set portmask</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-burst">4.4.7. set burst</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-txpkts">4.4.8. set txpkts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-txsplit">4.4.9. set txsplit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-corelist">4.4.10. set corelist</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-portlist">4.4.11. set portlist</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vlan-set-strip">4.4.12. vlan set strip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vlan-set-stripq">4.4.13. vlan set stripq</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vlan-set-filter">4.4.14. vlan set filter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vlan-set-qinq">4.4.15. vlan set qinq</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vlan-set-tpid">4.4.16. vlan set tpid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rx-vlan-add">4.4.17. rx_vlan add</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rx-vlan-rm">4.4.18. rx_vlan rm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rx-vlan-add-for-vf">4.4.19. rx_vlan add (for VF)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rx-vlan-rm-for-vf">4.4.20. rx_vlan rm (for VF)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tunnel-filter-add">4.4.21. tunnel_filter add</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tunnel-filter-remove">4.4.22. tunnel_filter remove</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rx-vxlan-port-add">4.4.23. rx_vxlan_port add</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rx-vxlan-port-remove">4.4.24. rx_vxlan_port remove</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tx-vlan-set">4.4.25. tx_vlan set</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tx-vlan-set-pvid">4.4.26. tx_vlan set pvid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tx-vlan-reset">4.4.27. tx_vlan reset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#csum-set">4.4.28. csum set</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#csum-parse-tunnel">4.4.29. csum parse-tunnel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#csum-show">4.4.30. csum show</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tso-set">4.4.31. tso set</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tso-show">4.4.32. tso show</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mac-addr-add">4.4.33. mac_addr add</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mac-addr-remove">4.4.34. mac_addr remove</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mac-addr-add-for-vf">4.4.35. mac_addr add(for VF)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-port-uta">4.4.36. set port-uta</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-promisc">4.4.37. set promisc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-allmulti">4.4.38. set allmulti</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-flow-ctrl-rx">4.4.39. set flow_ctrl rx</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-pfc-ctrl-rx">4.4.40. set pfc_ctrl rx</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-stat-qmap">4.4.41. set stat_qmap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-port-rx-tx-for-vf">4.4.42. set port - rx/tx (for VF)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-port-mac-address-filter-for-vf">4.4.43. set port - mac address filter (for VF)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-port-rx-mode-for-vf">4.4.44. set port - rx mode(for VF)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-port-tx-rate-for-queue">4.4.45. set port - tx_rate (for Queue)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-port-tx-rate-for-vf">4.4.46. set port - tx_rate (for VF)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-port-mirror-rule">4.4.47. set port - mirror rule</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reset-port-mirror-rule">4.4.48. reset port - mirror rule</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-flush-rx">4.4.49. set flush_rx</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-bypass-mode">4.4.50. set bypass mode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-bypass-event">4.4.51. set bypass event</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-bypass-timeout">4.4.52. set bypass timeout</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#show-bypass-config">4.4.53. show bypass config</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-link-up">4.4.54. set link up</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-link-down">4.4.55. set link down</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#e-tag-set">4.4.56. E-tag set</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#port-functions">4.5. Port Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#port-attach">4.5.1. port attach</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#port-detach">4.5.2. port detach</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#port-start">4.5.3. port start</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#port-stop">4.5.4. port stop</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#port-close">4.5.5. port close</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#port-start-stop-queue">4.5.6. port start/stop queue</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#port-config-speed">4.5.7. port config - speed</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#port-config-queues-descriptors">4.5.8. port config - queues/descriptors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#port-config-max-pkt-len">4.5.9. port config - max-pkt-len</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#port-config-crc-strip">4.5.10. port config - CRC Strip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#port-config-rx-checksum">4.5.11. port config - RX Checksum</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#port-config-vlan">4.5.12. port config - VLAN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#port-config-vlan-filter">4.5.13. port config - VLAN filter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#port-config-vlan-strip">4.5.14. port config - VLAN strip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#port-config-vlan-extend">4.5.15. port config - VLAN extend</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#port-config-drop-packets">4.5.16. port config - Drop Packets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#port-config-rss">4.5.17. port config - RSS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#port-config-rss-reta">4.5.18. port config - RSS Reta</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#port-config-dcb">4.5.19. port config - DCB</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#port-config-burst">4.5.20. port config - Burst</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#port-config-threshold">4.5.21. port config - Threshold</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#port-config-e-tag">4.5.22. port config - E-tag</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#link-bonding-functions">4.6. Link Bonding Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#create-bonded-device">4.6.1. create bonded device</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#add-bonding-slave">4.6.2. add bonding slave</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#remove-bonding-slave">4.6.3. remove bonding slave</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-bonding-mode">4.6.4. set bonding mode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-bonding-primary">4.6.5. set bonding primary</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-bonding-mac">4.6.6. set bonding mac</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-bonding-xmit-balance-policy">4.6.7. set bonding xmit_balance_policy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-bonding-mon-period">4.6.8. set bonding mon_period</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#show-bonding-config">4.6.9. show bonding config</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#register-functions">4.7. Register Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#read-reg">4.7.1. read reg</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#read-regfield">4.7.2. read regfield</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#read-regbit">4.7.3. read regbit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#write-reg">4.7.4. write reg</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#write-regfield">4.7.5. write regfield</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#write-regbit">4.7.6. write regbit</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#filter-functions">4.8. Filter Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ethertype-filter">4.8.1. ethertype_filter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tuple-filter">4.8.2. 2tuple_filter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">4.8.3. 5tuple_filter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#syn-filter">4.8.4. syn_filter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flex-filter">4.8.5. flex_filter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow-director-filter">4.8.6. flow_director_filter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flush-flow-director">4.8.7. flush_flow_director</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow-director-mask">4.8.8. flow_director_mask</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow-director-flex-mask">4.8.9. flow_director_flex_mask</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow-director-flex-payload">4.8.10. flow_director_flex_payload</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#get-sym-hash-ena-per-port">4.8.11. get_sym_hash_ena_per_port</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-sym-hash-ena-per-port">4.8.12. set_sym_hash_ena_per_port</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#get-hash-global-config">4.8.13. get_hash_global_config</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-hash-global-config">4.8.14. set_hash_global_config</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-hash-input-set">4.8.15. set_hash_input_set</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-fdir-input-set">4.8.16. set_fdir_input_set</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#global-config">4.8.17. global_config</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor&#8217;s Guidelines</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Data Plane Development Kit</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Testpmd Application User Guide</a> &raquo;</li>
+      
+    <li>4. Testpmd Runtime Functions</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/testpmd_app_ug/testpmd_funcs.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="testpmd-runtime-functions">
+<span id="testpmd-runtime"></span><h1>4. Testpmd Runtime Functions</h1>
+<p>Where the testpmd application is started in interactive mode, (<code class="docutils literal"><span class="pre">-i|--interactive</span></code>),
+it displays a prompt that can be used to start and stop forwarding,
+configure the application, display statistics, set the Flow Director and other tasks:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt;
+</pre></div>
+</div>
+<p>The testpmd prompt has some, limited, readline support.
+Common bash command-line functions such as <code class="docutils literal"><span class="pre">Ctrl+a</span></code> and <code class="docutils literal"><span class="pre">Ctrl+e</span></code> to go to the start and end of the prompt line are supported
+as well as access to the command history via the up-arrow.</p>
+<p>There is also support for tab completion.
+If you type a partial command and hit <code class="docutils literal"><span class="pre">&lt;TAB&gt;</span></code> you get a list of the available completions:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">testpmd&gt; show port &lt;TAB&gt;</span>
+
+<span class="go">    info [Mul-choice STRING]: show|clear port info|stats|fdir|stat_qmap|dcb_tc X</span>
+<span class="go">    info [Mul-choice STRING]: show|clear port info|stats|fdir|stat_qmap|dcb_tc all</span>
+<span class="go">    stats [Mul-choice STRING]: show|clear port info|stats|fdir|stat_qmap|dcb_tc X</span>
+<span class="go">    stats [Mul-choice STRING]: show|clear port info|stats|fdir|stat_qmap|dcb_tc all</span>
+<span class="go">    ...</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Some examples in this document are too long to fit on one line are are shown wrapped at <cite>&#8220;\&#8221;</cite> for display purposes:</p>
+<div class="last highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set flow_ctrl rx (on|off) tx (on|off) (high_water) (low_water) \
+         (pause_time) (send_xon) (port_id)
+</pre></div>
+</div>
+</div>
+<p>In the real <code class="docutils literal"><span class="pre">testpmd&gt;</span></code> prompt these commands should be on a single line.</p>
+<div class="section" id="help-functions">
+<h2>4.1. Help Functions</h2>
+<p>The testpmd has on-line help for the functions that are available at runtime.
+These are divided into sections and can be accessed using help, help section or help all:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">testpmd&gt; help</span>
+
+<span class="go">    help control    : Start and stop forwarding.</span>
+<span class="go">    help display    : Displaying port, stats and config information.</span>
+<span class="go">    help config     : Configuration information.</span>
+<span class="go">    help ports      : Configuring ports.</span>
+<span class="go">    help registers  : Reading and setting port registers.</span>
+<span class="go">    help filters    : Filters configuration help.</span>
+<span class="go">    help all        : All of the above sections.</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="control-functions">
+<h2>4.2. Control Functions</h2>
+<div class="section" id="start">
+<h3>4.2.1. start</h3>
+<p>Start packet forwarding with current configuration:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; start
+</pre></div>
+</div>
+</div>
+<div class="section" id="start-tx-first">
+<h3>4.2.2. start tx_first</h3>
+<p>Start packet forwarding with current configuration after sending one burst of packets:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; start tx_first
+</pre></div>
+</div>
+</div>
+<div class="section" id="stop">
+<h3>4.2.3. stop</h3>
+<p>Stop packet forwarding, and display accumulated statistics:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; stop
+</pre></div>
+</div>
+</div>
+<div class="section" id="quit">
+<h3>4.2.4. quit</h3>
+<p>Quit to prompt:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; quit
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="display-functions">
+<h2>4.3. Display Functions</h2>
+<p>The functions in the following sections are used to display information about the
+testpmd configuration or the NIC status.</p>
+<div class="section" id="show-port">
+<h3>4.3.1. show port</h3>
+<p>Display information for a given port or all ports:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; show port (info|stats|fdir|stat_qmap|dcb_tc) (port_id|all)
+</pre></div>
+</div>
+<p>The available information categories are:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">info</span></code>: General port information such as MAC address.</li>
+<li><code class="docutils literal"><span class="pre">stats</span></code>: RX/TX statistics.</li>
+<li><code class="docutils literal"><span class="pre">fdir</span></code>: Flow Director information and statistics.</li>
+<li><code class="docutils literal"><span class="pre">stat_qmap</span></code>: Queue statistics mapping.</li>
+<li><code class="docutils literal"><span class="pre">dcb_tc</span></code>: DCB information such as TC mapping.</li>
+</ul>
+<p>For example:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">testpmd&gt; show port info 0</span>
+
+<span class="go">********************* Infos for port 0 *********************</span>
+
+<span class="go">MAC address: XX:XX:XX:XX:XX:XX</span>
+<span class="go">Connect to socket: 0</span>
+<span class="go">memory allocation on the socket: 0</span>
+<span class="go">Link status: up</span>
+<span class="go">Link speed: 40000 Mbps</span>
+<span class="go">Link duplex: full-duplex</span>
+<span class="go">Promiscuous mode: enabled</span>
+<span class="go">Allmulticast mode: disabled</span>
+<span class="go">Maximum number of MAC addresses: 64</span>
+<span class="go">Maximum number of MAC addresses of hash filtering: 0</span>
+<span class="go">VLAN offload:</span>
+<span class="go">    strip on</span>
+<span class="go">    filter on</span>
+<span class="go">    qinq(extend) off</span>
+<span class="go">Redirection table size: 512</span>
+<span class="go">Supported flow types:</span>
+<span class="go">  ipv4-frag</span>
+<span class="go">  ipv4-tcp</span>
+<span class="go">  ipv4-udp</span>
+<span class="go">  ipv4-sctp</span>
+<span class="go">  ipv4-other</span>
+<span class="go">  ipv6-frag</span>
+<span class="go">  ipv6-tcp</span>
+<span class="go">  ipv6-udp</span>
+<span class="go">  ipv6-sctp</span>
+<span class="go">  ipv6-other</span>
+<span class="go">  l2_payload</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="show-port-rss-reta">
+<h3>4.3.2. show port rss reta</h3>
+<p>Display the rss redirection table entry indicated by masks on port X:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; show port (port_id) rss reta (size) (mask0, mask1...)
+</pre></div>
+</div>
+<p>size is used to indicate the hardware supported reta size</p>
+</div>
+<div class="section" id="show-port-rss-hash">
+<h3>4.3.3. show port rss-hash</h3>
+<p>Display the RSS hash functions and RSS hash key of a port:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; show port (port_id) rss-hash ipv4|ipv4-frag|ipv4-tcp|ipv4-udp|ipv4-sctp|ipv4-other|ipv6|ipv6-frag|ipv6-tcp|ipv6-udp|ipv6-sctp|ipv6-other|l2-payload|ipv6-ex|ipv6-tcp-ex|ipv6-udp-ex [key]
+</pre></div>
+</div>
+</div>
+<div class="section" id="clear-port">
+<h3>4.3.4. clear port</h3>
+<p>Clear the port statistics for a given port or for all ports:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; clear port (info|stats|fdir|stat_qmap) (port_id|all)
+</pre></div>
+</div>
+<p>For example:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; clear port stats all
+</pre></div>
+</div>
+</div>
+<div class="section" id="show-rxq-txq">
+<h3>4.3.5. show (rxq|txq)</h3>
+<p>Display information for a given port&#8217;s RX/TX queue:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; show (rxq|txq) info (port_id) (queue_id)
+</pre></div>
+</div>
+</div>
+<div class="section" id="show-config">
+<h3>4.3.6. show config</h3>
+<p>Displays the configuration of the application.
+The configuration comes from the command-line, the runtime or the application defaults:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; show config (rxtx|cores|fwd|txpkts)
+</pre></div>
+</div>
+<p>The available information categories are:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">rxtx</span></code>: RX/TX configuration items.</li>
+<li><code class="docutils literal"><span class="pre">cores</span></code>: List of forwarding cores.</li>
+<li><code class="docutils literal"><span class="pre">fwd</span></code>: Packet forwarding configuration.</li>
+<li><code class="docutils literal"><span class="pre">txpkts</span></code>: Packets to TX configuration.</li>
+</ul>
+<p>For example:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">testpmd&gt; show config rxtx</span>
+
+<span class="go">io packet forwarding - CRC stripping disabled - packets/burst=16</span>
+<span class="go">nb forwarding cores=2 - nb forwarding ports=1</span>
+<span class="go">RX queues=1 - RX desc=128 - RX free threshold=0</span>
+<span class="go">RX threshold registers: pthresh=8 hthresh=8 wthresh=4</span>
+<span class="go">TX queues=1 - TX desc=512 - TX free threshold=0</span>
+<span class="go">TX threshold registers: pthresh=36 hthresh=0 wthresh=0</span>
+<span class="go">TX RS bit threshold=0 - TXQ flags=0x0</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="set-fwd">
+<h3>4.3.7. set fwd</h3>
+<p>Set the packet forwarding mode:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set fwd (io|mac|mac_retry|macswap|flowgen| \
+                  rxonly|txonly|csum|icmpecho)
+</pre></div>
+</div>
+<p>The available information categories are:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">io</span></code>: Forwards packets &#8220;as-is&#8221; in I/O mode.
+This is the fastest possible forwarding operation as it does not access packets data.
+This is the default mode.</li>
+<li><code class="docutils literal"><span class="pre">mac</span></code>: Changes the source and the destination Ethernet addresses of packets before forwarding them.</li>
+<li><code class="docutils literal"><span class="pre">mac_retry</span></code>: Same as &#8220;mac&#8221; forwarding mode, but includes retries if the destination queue is full.</li>
+<li><code class="docutils literal"><span class="pre">macswap</span></code>: MAC swap forwarding mode.
+Swaps the source and the destination Ethernet addresses of packets before forwarding them.</li>
+<li><code class="docutils literal"><span class="pre">flowgen</span></code>: Multi-flow generation mode.
+Originates a number of flows (with varying destination IP addresses), and terminate receive traffic.</li>
+<li><code class="docutils literal"><span class="pre">rxonly</span></code>: Receives packets but doesn&#8217;t transmit them.</li>
+<li><code class="docutils literal"><span class="pre">txonly</span></code>: Generates and transmits packets without receiving any.</li>
+<li><code class="docutils literal"><span class="pre">csum</span></code>: Changes the checksum field with hardware or software methods depending on the offload flags on the packet.</li>
+<li><code class="docutils literal"><span class="pre">icmpecho</span></code>: Receives a burst of packets, lookup for IMCP echo requests and, if any, send back ICMP echo replies.</li>
+<li><code class="docutils literal"><span class="pre">ieee1588</span></code>: Demonstrate L2 IEEE1588 V2 PTP timestamping for RX and TX. Requires <code class="docutils literal"><span class="pre">CONFIG_RTE_LIBRTE_IEEE1588=y</span></code>.</li>
+</ul>
+<p>Note: TX timestamping is only available in the &#8220;Full Featured&#8221; TX path. To force <code class="docutils literal"><span class="pre">testpmd</span></code> into this mode set <code class="docutils literal"><span class="pre">--txqflags=0</span></code>.</p>
+<p>Example:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set fwd rxonly
+
+Set rxonly packet forwarding mode
+</pre></div>
+</div>
+</div>
+<div class="section" id="read-rxd">
+<h3>4.3.8. read rxd</h3>
+<p>Display an RX descriptor for a port RX queue:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; read rxd (port_id) (queue_id) (rxd_id)
+</pre></div>
+</div>
+<p>For example:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; read rxd 0 0 4
+     0x0000000B - 0x001D0180 / 0x0000000B - 0x001D0180
+</pre></div>
+</div>
+</div>
+<div class="section" id="read-txd">
+<h3>4.3.9. read txd</h3>
+<p>Display a TX descriptor for a port TX queue:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; read txd (port_id) (queue_id) (txd_id)
+</pre></div>
+</div>
+<p>For example:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; read txd 0 0 4
+     0x00000001 - 0x24C3C440 / 0x000F0000 - 0x2330003C
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="configuration-functions">
+<h2>4.4. Configuration Functions</h2>
+<p>The testpmd application can be configured from the runtime as well as from the command-line.</p>
+<p>This section details the available configuration functions that are available.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Configuration changes only become active when forwarding is started/restarted.</p>
+</div>
+<div class="section" id="set-default">
+<h3>4.4.1. set default</h3>
+<p>Reset forwarding to the default configuration:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set default
+</pre></div>
+</div>
+</div>
+<div class="section" id="set-verbose">
+<h3>4.4.2. set verbose</h3>
+<p>Set the debug verbosity level:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set verbose (level)
+</pre></div>
+</div>
+<p>Currently the only available levels are 0 (silent except for error) and 1 (fully verbose).</p>
+</div>
+<div class="section" id="set-nbport">
+<h3>4.4.3. set nbport</h3>
+<p>Set the number of ports used by the application:</p>
+<p>set nbport (num)</p>
+<p>This is equivalent to the <code class="docutils literal"><span class="pre">--nb-ports</span></code> command-line option.</p>
+</div>
+<div class="section" id="set-nbcore">
+<h3>4.4.4. set nbcore</h3>
+<p>Set the number of cores used by the application:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set nbcore (num)
+</pre></div>
+</div>
+<p>This is equivalent to the <code class="docutils literal"><span class="pre">--nb-cores</span></code> command-line option.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The number of cores used must not be greater than number of ports used multiplied by the number of queues per port.</p>
+</div>
+</div>
+<div class="section" id="set-coremask">
+<h3>4.4.5. set coremask</h3>
+<p>Set the forwarding cores hexadecimal mask:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set coremask (mask)
+</pre></div>
+</div>
+<p>This is equivalent to the <code class="docutils literal"><span class="pre">--coremask</span></code> command-line option.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The master lcore is reserved for command line parsing only and cannot be masked on for packet forwarding.</p>
+</div>
+</div>
+<div class="section" id="set-portmask">
+<h3>4.4.6. set portmask</h3>
+<p>Set the forwarding ports hexadecimal mask:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set portmask (mask)
+</pre></div>
+</div>
+<p>This is equivalent to the <code class="docutils literal"><span class="pre">--portmask</span></code> command-line option.</p>
+</div>
+<div class="section" id="set-burst">
+<h3>4.4.7. set burst</h3>
+<p>Set number of packets per burst:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set burst (num)
+</pre></div>
+</div>
+<p>This is equivalent to the <code class="docutils literal"><span class="pre">--burst</span> <span class="pre">command-line</span></code> option.</p>
+<p>In <code class="docutils literal"><span class="pre">mac_retry</span></code> forwarding mode, the transmit delay time and number of retries can also be set:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set burst tx delay (micrseconds) retry (num)
+</pre></div>
+</div>
+</div>
+<div class="section" id="set-txpkts">
+<h3>4.4.8. set txpkts</h3>
+<p>Set the length of each segment of the TX-ONLY packets:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set txpkts (x[,y]*)
+</pre></div>
+</div>
+<p>Where x[,y]* represents a CSV list of values, without white space.</p>
+</div>
+<div class="section" id="set-txsplit">
+<h3>4.4.9. set txsplit</h3>
+<p>Set the split policy for the TX packets, applicable for TX-ONLY and CSUM forwarding modes:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set txsplit (off|on|rand)
+</pre></div>
+</div>
+<p>Where:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">off</span></code> disable packet copy &amp; split for CSUM mode.</li>
+<li><code class="docutils literal"><span class="pre">on</span></code> split outgoing packet into multiple segments. Size of each segment
+and number of segments per packet is determined by <code class="docutils literal"><span class="pre">set</span> <span class="pre">txpkts</span></code> command
+(see above).</li>
+<li><code class="docutils literal"><span class="pre">rand</span></code> same as &#8216;on&#8217;, but number of segments per each packet is a random value between 1 and total number of segments.</li>
+</ul>
+</div>
+<div class="section" id="set-corelist">
+<h3>4.4.10. set corelist</h3>
+<p>Set the list of forwarding cores:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set corelist (x[,y]*)
+</pre></div>
+</div>
+<p>For example, to change the forwarding cores:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">testpmd&gt; set corelist 3,1</span>
+<span class="go">testpmd&gt; show config fwd</span>
+
+<span class="go">io packet forwarding - ports=2 - cores=2 - streams=2 - NUMA support disabled</span>
+<span class="go">Logical Core 3 (socket 0) forwards packets on 1 streams:</span>
+<span class="go">RX P=0/Q=0 (socket 0) -&gt; TX P=1/Q=0 (socket 0) peer=02:00:00:00:00:01</span>
+<span class="go">Logical Core 1 (socket 0) forwards packets on 1 streams:</span>
+<span class="go">RX P=1/Q=0 (socket 0) -&gt; TX P=0/Q=0 (socket 0) peer=02:00:00:00:00:00</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The cores are used in the same order as specified on the command line.</p>
+</div>
+</div>
+<div class="section" id="set-portlist">
+<h3>4.4.11. set portlist</h3>
+<p>Set the list of forwarding ports:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set portlist (x[,y]*)
+</pre></div>
+</div>
+<p>For example, to change the port forwarding:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">testpmd&gt; set portlist 0,2,1,3</span>
+<span class="go">testpmd&gt; show config fwd</span>
+
+<span class="go">io packet forwarding - ports=4 - cores=1 - streams=4</span>
+<span class="go">Logical Core 3 (socket 0) forwards packets on 4 streams:</span>
+<span class="go">RX P=0/Q=0 (socket 0) -&gt; TX P=2/Q=0 (socket 0) peer=02:00:00:00:00:01</span>
+<span class="go">RX P=2/Q=0 (socket 0) -&gt; TX P=0/Q=0 (socket 0) peer=02:00:00:00:00:00</span>
+<span class="go">RX P=1/Q=0 (socket 0) -&gt; TX P=3/Q=0 (socket 0) peer=02:00:00:00:00:03</span>
+<span class="go">RX P=3/Q=0 (socket 0) -&gt; TX P=1/Q=0 (socket 0) peer=02:00:00:00:00:02</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="vlan-set-strip">
+<h3>4.4.12. vlan set strip</h3>
+<p>Set the VLAN strip on a port:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; vlan set strip (on|off) (port_id)
+</pre></div>
+</div>
+</div>
+<div class="section" id="vlan-set-stripq">
+<h3>4.4.13. vlan set stripq</h3>
+<p>Set the VLAN strip for a queue on a port:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; vlan set stripq (on|off) (port_id,queue_id)
+</pre></div>
+</div>
+</div>
+<div class="section" id="vlan-set-filter">
+<h3>4.4.14. vlan set filter</h3>
+<p>Set the VLAN filter on a port:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; vlan set filter (on|off) (port_id)
+</pre></div>
+</div>
+</div>
+<div class="section" id="vlan-set-qinq">
+<h3>4.4.15. vlan set qinq</h3>
+<p>Set the VLAN QinQ (extended queue in queue) on for a port:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; vlan set qinq (on|off) (port_id)
+</pre></div>
+</div>
+</div>
+<div class="section" id="vlan-set-tpid">
+<h3>4.4.16. vlan set tpid</h3>
+<p>Set the inner or outer VLAN TPID for packet filtering on a port:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; vlan set (inner|outer) tpid (value) (port_id)
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">TPID value must be a 16-bit number (value &lt;= 65536).</p>
+</div>
+</div>
+<div class="section" id="rx-vlan-add">
+<h3>4.4.17. rx_vlan add</h3>
+<p>Add a VLAN ID, or all identifiers, to the set of VLAN identifiers filtered by port ID:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; rx_vlan add (vlan_id|all) (port_id)
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">VLAN filter must be set on that port. VLAN ID &lt; 4096.
+Depending on the NIC used, number of vlan_ids may be limited to the maximum entries
+in VFTA table. This is important if enabling all vlan_ids.</p>
+</div>
+</div>
+<div class="section" id="rx-vlan-rm">
+<h3>4.4.18. rx_vlan rm</h3>
+<p>Remove a VLAN ID, or all identifiers, from the set of VLAN identifiers filtered by port ID:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; rx_vlan rm (vlan_id|all) (port_id)
+</pre></div>
+</div>
+</div>
+<div class="section" id="rx-vlan-add-for-vf">
+<h3>4.4.19. rx_vlan add (for VF)</h3>
+<p>Add a VLAN ID, to the set of VLAN identifiers filtered for VF(s) for port ID:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; rx_vlan add (vlan_id) port (port_id) vf (vf_mask)
+</pre></div>
+</div>
+</div>
+<div class="section" id="rx-vlan-rm-for-vf">
+<h3>4.4.20. rx_vlan rm (for VF)</h3>
+<p>Remove a VLAN ID, from the set of VLAN identifiers filtered for VF(s) for port ID:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; rx_vlan rm (vlan_id) port (port_id) vf (vf_mask)
+</pre></div>
+</div>
+</div>
+<div class="section" id="tunnel-filter-add">
+<h3>4.4.21. tunnel_filter add</h3>
+<p>Add a tunnel filter on a port:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; tunnel_filter add (port_id) (outer_mac) (inner_mac) (ip_addr) \
+         (inner_vlan) (vxlan|nvgre|ipingre) (imac-ivlan|imac-ivlan-tenid|\
+         imac-tenid|imac|omac-imac-tenid|oip|iip) (tenant_id) (queue_id)
+</pre></div>
+</div>
+<p>The available information categories are:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">vxlan</span></code>: Set tunnel type as VXLAN.</li>
+<li><code class="docutils literal"><span class="pre">nvgre</span></code>: Set tunnel type as NVGRE.</li>
+<li><code class="docutils literal"><span class="pre">ipingre</span></code>: Set tunnel type as IP-in-GRE.</li>
+<li><code class="docutils literal"><span class="pre">imac-ivlan</span></code>: Set filter type as Inner MAC and VLAN.</li>
+<li><code class="docutils literal"><span class="pre">imac-ivlan-tenid</span></code>: Set filter type as Inner MAC, VLAN and tenant ID.</li>
+<li><code class="docutils literal"><span class="pre">imac-tenid</span></code>: Set filter type as Inner MAC and tenant ID.</li>
+<li><code class="docutils literal"><span class="pre">imac</span></code>: Set filter type as Inner MAC.</li>
+<li><code class="docutils literal"><span class="pre">omac-imac-tenid</span></code>: Set filter type as Outer MAC, Inner MAC and tenant ID.</li>
+<li><code class="docutils literal"><span class="pre">oip</span></code>: Set filter type as Outer IP.</li>
+<li><code class="docutils literal"><span class="pre">iip</span></code>: Set filter type as Inner IP.</li>
+</ul>
+<p>Example:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; tunnel_filter add 0 68:05:CA:28:09:82 00:00:00:00:00:00 \
+         192.168.2.2 0 ipingre oip 1 1
+
+Set an IP-in-GRE tunnel on port 0, and the filter type is Outer IP.
+</pre></div>
+</div>
+</div>
+<div class="section" id="tunnel-filter-remove">
+<h3>4.4.22. tunnel_filter remove</h3>
+<p>Remove a tunnel filter on a port:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; tunnel_filter rm (port_id) (outer_mac) (inner_mac) (ip_addr) \
+         (inner_vlan) (vxlan|nvgre|ipingre) (imac-ivlan|imac-ivlan-tenid|\
+         imac-tenid|imac|omac-imac-tenid|oip|iip) (tenant_id) (queue_id)
+</pre></div>
+</div>
+</div>
+<div class="section" id="rx-vxlan-port-add">
+<h3>4.4.23. rx_vxlan_port add</h3>
+<p>Add an UDP port for VXLAN packet filter on a port:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; rx_vxlan_port add (udp_port) (port_id)
+</pre></div>
+</div>
+</div>
+<div class="section" id="rx-vxlan-port-remove">
+<h3>4.4.24. rx_vxlan_port remove</h3>
+<p>Remove an UDP port for VXLAN packet filter on a port:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; rx_vxlan_port rm (udp_port) (port_id)
+</pre></div>
+</div>
+</div>
+<div class="section" id="tx-vlan-set">
+<h3>4.4.25. tx_vlan set</h3>
+<p>Set hardware insertion of VLAN IDs in packets sent on a port:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; tx_vlan set (port_id) vlan_id[, vlan_id_outer]
+</pre></div>
+</div>
+<p>For example, set a single VLAN ID (5) insertion on port 0:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>tx_vlan set 0 5
+</pre></div>
+</div>
+<p>Or, set double VLAN ID (inner: 2, outer: 3) insertion on port 1:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>tx_vlan set 1 2 3
+</pre></div>
+</div>
+</div>
+<div class="section" id="tx-vlan-set-pvid">
+<h3>4.4.26. tx_vlan set pvid</h3>
+<p>Set port based hardware insertion of VLAN ID in packets sent on a port:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; tx_vlan set pvid (port_id) (vlan_id) (on|off)
+</pre></div>
+</div>
+</div>
+<div class="section" id="tx-vlan-reset">
+<h3>4.4.27. tx_vlan reset</h3>
+<p>Disable hardware insertion of a VLAN header in packets sent on a port:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; tx_vlan reset (port_id)
+</pre></div>
+</div>
+</div>
+<div class="section" id="csum-set">
+<h3>4.4.28. csum set</h3>
+<p>Select hardware or software calculation of the checksum when
+transmitting a packet using the <code class="docutils literal"><span class="pre">csum</span></code> forwarding engine:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; csum set (ip|udp|tcp|sctp|outer-ip) (hw|sw) (port_id)
+</pre></div>
+</div>
+<p>Where:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">ip|udp|tcp|sctp</span></code> always relate to  the inner layer.</li>
+<li><code class="docutils literal"><span class="pre">outer-ip</span></code> relates to the outer IP layer (only for IPv4) in the case where the packet is recognized
+as a tunnel packet by the forwarding engine (vxlan, gre and ipip are
+supported). See also the <code class="docutils literal"><span class="pre">csum</span> <span class="pre">parse-tunnel</span></code> command.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Check the NIC Datasheet for hardware limits.</p>
+</div>
+</div>
+<div class="section" id="csum-parse-tunnel">
+<h3>4.4.29. csum parse-tunnel</h3>
+<p>Define how tunneled packets should be handled by the csum forward
+engine:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; csum parse-tunnel (on|off) (tx_port_id)
+</pre></div>
+</div>
+<p>If enabled, the csum forward engine will try to recognize supported
+tunnel headers (vxlan, gre, ipip).</p>
+<p>If disabled, treat tunnel packets as non-tunneled packets (a inner
+header is handled as a packet payload).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The port argument is the TX port like in the <code class="docutils literal"><span class="pre">csum</span> <span class="pre">set</span></code> command.</p>
+</div>
+<p>Example:</p>
+<p>Consider a packet in packet like the following:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>eth_out/ipv4_out/udp_out/vxlan/eth_in/ipv4_in/tcp_in
+</pre></div>
+</div>
+<ul>
+<li><p class="first">If parse-tunnel is enabled, the <code class="docutils literal"><span class="pre">ip|udp|tcp|sctp</span></code> parameters of <code class="docutils literal"><span class="pre">csum</span> <span class="pre">set</span></code>
+command relate to the inner headers (here <code class="docutils literal"><span class="pre">ipv4_in</span></code> and <code class="docutils literal"><span class="pre">tcp_in</span></code>), and the
+<code class="docutils literal"><span class="pre">outer-ip</span> <span class="pre">parameter</span></code> relates to the outer headers (here <code class="docutils literal"><span class="pre">ipv4_out</span></code>).</p>
+</li>
+<li><dl class="first docutils">
+<dt>If parse-tunnel is disabled, the <code class="docutils literal"><span class="pre">ip|udp|tcp|sctp</span></code> parameters of <code class="docutils literal"><span class="pre">csum</span>&nbsp; <span class="pre">set</span></code></dt>
+<dd><p class="first last">command relate to the outer headers, here <code class="docutils literal"><span class="pre">ipv4_out</span></code> and <code class="docutils literal"><span class="pre">udp_out</span></code>.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="csum-show">
+<h3>4.4.30. csum show</h3>
+<p>Display tx checksum offload configuration:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; csum show (port_id)
+</pre></div>
+</div>
+</div>
+<div class="section" id="tso-set">
+<h3>4.4.31. tso set</h3>
+<p>Enable TCP Segmentation Offload (TSO) in the <code class="docutils literal"><span class="pre">csum</span></code> forwarding engine:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; tso set (segsize) (port_id)
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Check the NIC datasheet for hardware limits.</p>
+</div>
+</div>
+<div class="section" id="tso-show">
+<h3>4.4.32. tso show</h3>
+<p>Display the status of TCP Segmentation Offload:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; tso show (port_id)
+</pre></div>
+</div>
+</div>
+<div class="section" id="mac-addr-add">
+<h3>4.4.33. mac_addr add</h3>
+<p>Add an alternative MAC address to a port:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; mac_addr add (port_id) (XX:XX:XX:XX:XX:XX)
+</pre></div>
+</div>
+</div>
+<div class="section" id="mac-addr-remove">
+<h3>4.4.34. mac_addr remove</h3>
+<p>Remove a MAC address from a port:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; mac_addr remove (port_id) (XX:XX:XX:XX:XX:XX)
+</pre></div>
+</div>
+</div>
+<div class="section" id="mac-addr-add-for-vf">
+<h3>4.4.35. mac_addr add(for VF)</h3>
+<p>Add an alternative MAC address for a VF to a port:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; mac_add add port (port_id) vf (vf_id) (XX:XX:XX:XX:XX:XX)
+</pre></div>
+</div>
+</div>
+<div class="section" id="set-port-uta">
+<h3>4.4.36. set port-uta</h3>
+<p>Set the unicast hash filter(s) on/off for a port:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set port (port_id) uta (XX:XX:XX:XX:XX:XX|all) (on|off)
+</pre></div>
+</div>
+</div>
+<div class="section" id="set-promisc">
+<h3>4.4.37. set promisc</h3>
+<p>Set the promiscuous mode on for a port or for all ports.
+In promiscuous mode packets are not dropped if they aren&#8217;t for the specified MAC address:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set promisc (port_id|all) (on|off)
+</pre></div>
+</div>
+</div>
+<div class="section" id="set-allmulti">
+<h3>4.4.38. set allmulti</h3>
+<p>Set the allmulti mode for a port or for all ports:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set allmulti (port_id|all) (on|off)
+</pre></div>
+</div>
+<p>Same as the ifconfig (8) option. Controls how multicast packets are handled.</p>
+</div>
+<div class="section" id="set-flow-ctrl-rx">
+<h3>4.4.39. set flow_ctrl rx</h3>
+<p>Set the link flow control parameter on a port:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set flow_ctrl rx (on|off) tx (on|off) (high_water) (low_water) \
+         (pause_time) (send_xon) mac_ctrl_frame_fwd (on|off) \
+         autoneg (on|off) (port_id)
+</pre></div>
+</div>
+<p>Where:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">high_water</span></code> (integer): High threshold value to trigger XOFF.</li>
+<li><code class="docutils literal"><span class="pre">low_water</span></code> (integer): Low threshold value to trigger XON.</li>
+<li><code class="docutils literal"><span class="pre">pause_time</span></code> (integer): Pause quota in the Pause frame.</li>
+<li><code class="docutils literal"><span class="pre">send_xon</span></code> (0/1): Send XON frame.</li>
+<li><code class="docutils literal"><span class="pre">mac_ctrl_frame_fwd</span></code>: Enable receiving MAC control frames.</li>
+<li><code class="docutils literal"><span class="pre">autoneg</span></code>: Change the auto-negotiation para mete.</li>
+</ul>
+</div>
+<div class="section" id="set-pfc-ctrl-rx">
+<h3>4.4.40. set pfc_ctrl rx</h3>
+<p>Set the priority flow control parameter on a port:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set pfc_ctrl rx (on|off) tx (on|off) (high_water) (low_water) \
+         (pause_time) (priority) (port_id)
+</pre></div>
+</div>
+<p>Where:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">high_water</span></code> (integer): High threshold value.</li>
+<li><code class="docutils literal"><span class="pre">low_water</span></code> (integer): Low threshold value.</li>
+<li><code class="docutils literal"><span class="pre">pause_time</span></code> (integer): Pause quota in the Pause frame.</li>
+<li><code class="docutils literal"><span class="pre">priority</span></code> (0-7): VLAN User Priority.</li>
+</ul>
+</div>
+<div class="section" id="set-stat-qmap">
+<h3>4.4.41. set stat_qmap</h3>
+<p>Set statistics mapping (qmapping 0..15) for RX/TX queue on port:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set stat_qmap (tx|rx) (port_id) (queue_id) (qmapping)
+</pre></div>
+</div>
+<p>For example, to set rx queue 2 on port 0 to mapping 5:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt;set stat_qmap rx 0 2 5
+</pre></div>
+</div>
+</div>
+<div class="section" id="set-port-rx-tx-for-vf">
+<h3>4.4.42. set port - rx/tx (for VF)</h3>
+<p>Set VF receive/transmit from a port:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set port (port_id) vf (vf_id) (rx|tx) (on|off)
+</pre></div>
+</div>
+</div>
+<div class="section" id="set-port-mac-address-filter-for-vf">
+<h3>4.4.43. set port - mac address filter (for VF)</h3>
+<p>Add/Remove unicast or multicast MAC addr filter for a VF:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set port (port_id) vf (vf_id) (mac_addr) \
+         (exact-mac|exact-mac-vlan|hashmac|hashmac-vlan) (on|off)
+</pre></div>
+</div>
+</div>
+<div class="section" id="set-port-rx-mode-for-vf">
+<h3>4.4.44. set port - rx mode(for VF)</h3>
+<p>Set the VF receive mode of a port:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set port (port_id) vf (vf_id) \
+         rxmode (AUPE|ROPE|BAM|MPE) (on|off)
+</pre></div>
+</div>
+<p>The available receive modes are:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">AUPE</span></code>: Accepts untagged VLAN.</li>
+<li><code class="docutils literal"><span class="pre">ROPE</span></code>: Accepts unicast hash.</li>
+<li><code class="docutils literal"><span class="pre">BAM</span></code>: Accepts broadcast packets.</li>
+<li><code class="docutils literal"><span class="pre">MPE</span></code>: Accepts all multicast packets.</li>
+</ul>
+</div>
+<div class="section" id="set-port-tx-rate-for-queue">
+<h3>4.4.45. set port - tx_rate (for Queue)</h3>
+<p>Set TX rate limitation for a queue on a port:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set port (port_id) queue (queue_id) rate (rate_value)
+</pre></div>
+</div>
+</div>
+<div class="section" id="set-port-tx-rate-for-vf">
+<h3>4.4.46. set port - tx_rate (for VF)</h3>
+<p>Set TX rate limitation for queues in VF on a port:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set port (port_id) vf (vf_id) rate (rate_value) queue_mask (queue_mask)
+</pre></div>
+</div>
+</div>
+<div class="section" id="set-port-mirror-rule">
+<h3>4.4.47. set port - mirror rule</h3>
+<p>Set pool or vlan type mirror rule for a port:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set port (port_id) mirror-rule (rule_id) \
+         (pool-mirror-up|pool-mirror-down|vlan-mirror) \
+         (poolmask|vlanid[,vlanid]*) dst-pool (pool_id) (on|off)
+</pre></div>
+</div>
+<p>Set link mirror rule for a port:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set port (port_id) mirror-rule (rule_id) \
+        (uplink-mirror|downlink-mirror) dst-pool (pool_id) (on|off)
+</pre></div>
+</div>
+<p>For example to enable mirror traffic with vlan 0,1 to pool 0:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>set port 0 mirror-rule 0 vlan-mirror 0,1 dst-pool 0 on
+</pre></div>
+</div>
+</div>
+<div class="section" id="reset-port-mirror-rule">
+<h3>4.4.48. reset port - mirror rule</h3>
+<p>Reset a mirror rule for a port:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; reset port (port_id) mirror-rule (rule_id)
+</pre></div>
+</div>
+</div>
+<div class="section" id="set-flush-rx">
+<h3>4.4.49. set flush_rx</h3>
+<p>Set the flush on RX streams before forwarding.
+The default is flush <code class="docutils literal"><span class="pre">on</span></code>.
+Mainly used with PCAP drivers to turn off the default behavior of flushing the first 512 packets on RX streams:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set flush_rx off
+</pre></div>
+</div>
+</div>
+<div class="section" id="set-bypass-mode">
+<h3>4.4.50. set bypass mode</h3>
+<p>Set the bypass mode for the lowest port on bypass enabled NIC:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set bypass mode (normal|bypass|isolate) (port_id)
+</pre></div>
+</div>
+</div>
+<div class="section" id="set-bypass-event">
+<h3>4.4.51. set bypass event</h3>
+<p>Set the event required to initiate specified bypass mode for the lowest port on a bypass enabled:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set bypass event (timeout|os_on|os_off|power_on|power_off) \
+         mode (normal|bypass|isolate) (port_id)
+</pre></div>
+</div>
+<p>Where:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">timeout</span></code>: Enable bypass after watchdog timeout.</li>
+<li><code class="docutils literal"><span class="pre">os_on</span></code>: Enable bypass when OS/board is powered on.</li>
+<li><code class="docutils literal"><span class="pre">os_off</span></code>: Enable bypass when OS/board is powered off.</li>
+<li><code class="docutils literal"><span class="pre">power_on</span></code>: Enable bypass when power supply is turned on.</li>
+<li><code class="docutils literal"><span class="pre">power_off</span></code>: Enable bypass when power supply is turned off.</li>
+</ul>
+</div>
+<div class="section" id="set-bypass-timeout">
+<h3>4.4.52. set bypass timeout</h3>
+<p>Set the bypass watchdog timeout to <code class="docutils literal"><span class="pre">n</span></code> seconds where 0 = instant:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set bypass timeout (0|1.5|2|3|4|8|16|32)
+</pre></div>
+</div>
+</div>
+<div class="section" id="show-bypass-config">
+<h3>4.4.53. show bypass config</h3>
+<p>Show the bypass configuration for a bypass enabled NIC using the lowest port on the NIC:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; show bypass config (port_id)
+</pre></div>
+</div>
+</div>
+<div class="section" id="set-link-up">
+<h3>4.4.54. set link up</h3>
+<p>Set link up for a port:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set link-up port (port id)
+</pre></div>
+</div>
+</div>
+<div class="section" id="set-link-down">
+<h3>4.4.55. set link down</h3>
+<p>Set link down for a port:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set link-down port (port id)
+</pre></div>
+</div>
+</div>
+<div class="section" id="e-tag-set">
+<h3>4.4.56. E-tag set</h3>
+<p>Enable E-tag insertion for a VF on a port:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; E-tag set insertion on port-tag-id (value) port (port_id) vf (vf_id)
+</pre></div>
+</div>
+<p>Disable E-tag insertion for a VF on a port:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; E-tag set insertion off port (port_id) vf (vf_id)
+</pre></div>
+</div>
+<p>Enable/disable E-tag stripping on a port:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; E-tag set stripping (on|off) port (port_id)
+</pre></div>
+</div>
+<p>Enable/disable E-tag based forwarding on a port:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; E-tag set forwarding (on|off) port (port_id)
+</pre></div>
+</div>
+<p>Add an E-tag forwarding filter on a port:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; E-tag set filter add e-tag-id (value) dst-pool (pool_id) port (port_id)
+</pre></div>
+</div>
+<dl class="docutils">
+<dt>Delete an E-tag forwarding filter on a port::</dt>
+<dd>testpmd&gt; E-tag set filter del e-tag-id (value) port (port_id)</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="port-functions">
+<h2>4.5. Port Functions</h2>
+<p>The following sections show functions for configuring ports.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Port configuration changes only become active when forwarding is started/restarted.</p>
+</div>
+<div class="section" id="port-attach">
+<h3>4.5.1. port attach</h3>
+<p>Attach a port specified by pci address or virtual device args.</p>
+<p>To attach a new pci device, the device should be recognized by kernel first.
+Then it should be moved under DPDK management.
+Finally the port can be attached to testpmd.</p>
+<p>For example, to move a pci device using ixgbe under DPDK management:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">#</span> Check the status of the available devices.
+<span class="go">./tools/dpdk_nic_bind.py --status</span>
+
+<span class="go">Network devices using DPDK-compatible driver</span>
+<span class="go">============================================</span>
+<span class="go">&lt;none&gt;</span>
+
+<span class="go">Network devices using kernel driver</span>
+<span class="go">===================================</span>
+<span class="go">0000:0a:00.0 &#39;82599ES 10-Gigabit&#39; if=eth2 drv=ixgbe unused=</span>
+
+
+<span class="gp">#</span> Bind the device to igb_uio.
+<span class="go">sudo ./tools/dpdk_nic_bind.py -b igb_uio 0000:0a:00.0</span>
+
+
+<span class="gp">#</span> Recheck the status of the devices.
+<span class="go">./tools/dpdk_nic_bind.py --status</span>
+<span class="go">Network devices using DPDK-compatible driver</span>
+<span class="go">============================================</span>
+<span class="go">0000:0a:00.0 &#39;82599ES 10-Gigabit&#39; drv=igb_uio unused=</span>
+</pre></div>
+</div>
+<p>To attach a port created by virtual device, above steps are not needed.</p>
+<p>port attach (identifier)</p>
+<p>For example, to attach a port whose pci address is 0000:0a:00.0.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">testpmd&gt; port attach 0000:0a:00.0</span>
+<span class="go">Attaching a new port...</span>
+<span class="go">EAL: PCI device 0000:0a:00.0 on NUMA socket -1</span>
+<span class="go">EAL:   probe driver: 8086:10fb rte_ixgbe_pmd</span>
+<span class="go">EAL:   PCI memory mapped at 0x7f83bfa00000</span>
+<span class="go">EAL:   PCI memory mapped at 0x7f83bfa80000</span>
+<span class="go">PMD: eth_ixgbe_dev_init(): MAC: 2, PHY: 18, SFP+: 5</span>
+<span class="go">PMD: eth_ixgbe_dev_init(): port 0 vendorID=0x8086 deviceID=0x10fb</span>
+<span class="go">Port 0 is attached. Now total ports is 1</span>
+<span class="go">Done</span>
+</pre></div>
+</div>
+<p>For example, to attach a port created by pcap PMD.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">testpmd&gt; port attach eth_pcap0</span>
+<span class="go">Attaching a new port...</span>
+<span class="go">PMD: Initializing pmd_pcap for eth_pcap0</span>
+<span class="go">PMD: Creating pcap-backed ethdev on numa socket 0</span>
+<span class="go">Port 0 is attached. Now total ports is 1</span>
+<span class="go">Done</span>
+</pre></div>
+</div>
+<p>In this case, identifier is <code class="docutils literal"><span class="pre">eth_pcap0</span></code>.
+This identifier format is the same as <code class="docutils literal"><span class="pre">--vdev</span></code> format of DPDK applications.</p>
+<p>For example, to re-attach a bonded port which has been previously detached,
+the mode and slave parameters must be given.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">testpmd&gt; port attach eth_bond_0,mode=0,slave=1</span>
+<span class="go">Attaching a new port...</span>
+<span class="go">EAL: Initializing pmd_bond for eth_bond_0</span>
+<span class="go">EAL: Create bonded device eth_bond_0 on port 0 in mode 0 on socket 0.</span>
+<span class="go">Port 0 is attached. Now total ports is 1</span>
+<span class="go">Done</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="port-detach">
+<h3>4.5.2. port detach</h3>
+<p>Detach a specific port.</p>
+<p>Before detaching a port, the port should be closed:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; port detach (port_id)
+</pre></div>
+</div>
+<p>For example, to detach a pci device port 0.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">testpmd&gt; port close 0</span>
+<span class="go">Closing ports...</span>
+<span class="go">Done</span>
+
+<span class="go">testpmd&gt; port detach 0</span>
+<span class="go">Detaching a port...</span>
+<span class="go">EAL: PCI device 0000:0a:00.0 on NUMA socket -1</span>
+<span class="go">EAL:   remove driver: 8086:10fb rte_ixgbe_pmd</span>
+<span class="go">EAL:   PCI memory unmapped at 0x7f83bfa00000</span>
+<span class="go">EAL:   PCI memory unmapped at 0x7f83bfa80000</span>
+<span class="go">Done</span>
+</pre></div>
+</div>
+<p>For example, to detach a virtual device port 0.</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">testpmd&gt; port close 0</span>
+<span class="go">Closing ports...</span>
+<span class="go">Done</span>
+
+<span class="go">testpmd&gt; port detach 0</span>
+<span class="go">Detaching a port...</span>
+<span class="go">PMD: Closing pcap ethdev on numa socket 0</span>
+<span class="go">Port &#39;eth_pcap0&#39; is detached. Now total ports is 0</span>
+<span class="go">Done</span>
+</pre></div>
+</div>
+<p>To remove a pci device completely from the system, first detach the port from testpmd.
+Then the device should be moved under kernel management.
+Finally the device can be removed using kernel pci hotplug functionality.</p>
+<p>For example, to move a pci device under kernel management:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">sudo ./tools/dpdk_nic_bind.py -b ixgbe 0000:0a:00.0</span>
+
+<span class="go">./tools/dpdk_nic_bind.py --status</span>
+
+<span class="go">Network devices using DPDK-compatible driver</span>
+<span class="go">============================================</span>
+<span class="go">&lt;none&gt;</span>
+
+<span class="go">Network devices using kernel driver</span>
+<span class="go">===================================</span>
+<span class="go">0000:0a:00.0 &#39;82599ES 10-Gigabit&#39; if=eth2 drv=ixgbe unused=igb_uio</span>
+</pre></div>
+</div>
+<p>To remove a port created by a virtual device, above steps are not needed.</p>
+</div>
+<div class="section" id="port-start">
+<h3>4.5.3. port start</h3>
+<p>Start all ports or a specific port:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; port start (port_id|all)
+</pre></div>
+</div>
+</div>
+<div class="section" id="port-stop">
+<h3>4.5.4. port stop</h3>
+<p>Stop all ports or a specific port:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; port stop (port_id|all)
+</pre></div>
+</div>
+</div>
+<div class="section" id="port-close">
+<h3>4.5.5. port close</h3>
+<p>Close all ports or a specific port:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; port close (port_id|all)
+</pre></div>
+</div>
+</div>
+<div class="section" id="port-start-stop-queue">
+<h3>4.5.6. port start/stop queue</h3>
+<p>Start/stop a rx/tx queue on a specific port:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; port (port_id) (rxq|txq) (queue_id) (start|stop)
+</pre></div>
+</div>
+<p>Only take effect when port is started.</p>
+</div>
+<div class="section" id="port-config-speed">
+<h3>4.5.7. port config - speed</h3>
+<p>Set the speed and duplex mode for all ports or a specific port:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; port config (port_id|all) speed (10|100|1000|10000|40000|100000|auto) \
+         duplex (half|full|auto)
+</pre></div>
+</div>
+</div>
+<div class="section" id="port-config-queues-descriptors">
+<h3>4.5.8. port config - queues/descriptors</h3>
+<p>Set number of queues/descriptors for rxq, txq, rxd and txd:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; port config all (rxq|txq|rxd|txd) (value)
+</pre></div>
+</div>
+<p>This is equivalent to the <code class="docutils literal"><span class="pre">--rxq</span></code>, <code class="docutils literal"><span class="pre">--txq</span></code>, <code class="docutils literal"><span class="pre">--rxd</span></code> and <code class="docutils literal"><span class="pre">--txd</span></code> command-line options.</p>
+</div>
+<div class="section" id="port-config-max-pkt-len">
+<h3>4.5.9. port config - max-pkt-len</h3>
+<p>Set the maximum packet length:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; port config all max-pkt-len (value)
+</pre></div>
+</div>
+<p>This is equivalent to the <code class="docutils literal"><span class="pre">--max-pkt-len</span></code> command-line option.</p>
+</div>
+<div class="section" id="port-config-crc-strip">
+<h3>4.5.10. port config - CRC Strip</h3>
+<p>Set hardware CRC stripping on or off for all ports:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; port config all crc-strip (on|off)
+</pre></div>
+</div>
+<p>CRC stripping is off by default.</p>
+<p>The <code class="docutils literal"><span class="pre">on</span></code> option is equivalent to the <code class="docutils literal"><span class="pre">--crc-strip</span></code> command-line option.</p>
+</div>
+<div class="section" id="port-config-rx-checksum">
+<h3>4.5.11. port config - RX Checksum</h3>
+<p>Set hardware RX checksum offload to on or off for all ports:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; port config all rx-cksum (on|off)
+</pre></div>
+</div>
+<p>Checksum offload is off by default.</p>
+<p>The <code class="docutils literal"><span class="pre">on</span></code> option is equivalent to the <code class="docutils literal"><span class="pre">--enable-rx-cksum</span></code> command-line option.</p>
+</div>
+<div class="section" id="port-config-vlan">
+<h3>4.5.12. port config - VLAN</h3>
+<p>Set hardware VLAN on or off for all ports:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; port config all hw-vlan (on|off)
+</pre></div>
+</div>
+<p>Hardware VLAN is on by default.</p>
+<p>The <code class="docutils literal"><span class="pre">off</span></code> option is equivalent to the <code class="docutils literal"><span class="pre">--disable-hw-vlan</span></code> command-line option.</p>
+</div>
+<div class="section" id="port-config-vlan-filter">
+<h3>4.5.13. port config - VLAN filter</h3>
+<p>Set hardware VLAN filter on or off for all ports:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; port config all hw-vlan-filter (on|off)
+</pre></div>
+</div>
+<p>Hardware VLAN filter is on by default.</p>
+<p>The <code class="docutils literal"><span class="pre">off</span></code> option is equivalent to the <code class="docutils literal"><span class="pre">--disable-hw-vlan-filter</span></code> command-line option.</p>
+</div>
+<div class="section" id="port-config-vlan-strip">
+<h3>4.5.14. port config - VLAN strip</h3>
+<p>Set hardware VLAN strip on or off for all ports:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; port config all hw-vlan-strip (on|off)
+</pre></div>
+</div>
+<p>Hardware VLAN strip is on by default.</p>
+<p>The <code class="docutils literal"><span class="pre">off</span></code> option is equivalent to the <code class="docutils literal"><span class="pre">--disable-hw-vlan-strip</span></code> command-line option.</p>
+</div>
+<div class="section" id="port-config-vlan-extend">
+<h3>4.5.15. port config - VLAN extend</h3>
+<p>Set hardware VLAN extend on or off for all ports:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; port config all hw-vlan-extend (on|off)
+</pre></div>
+</div>
+<p>Hardware VLAN extend is off by default.</p>
+<p>The <code class="docutils literal"><span class="pre">off</span></code> option is equivalent to the <code class="docutils literal"><span class="pre">--disable-hw-vlan-extend</span></code> command-line option.</p>
+</div>
+<div class="section" id="port-config-drop-packets">
+<h3>4.5.16. port config - Drop Packets</h3>
+<p>Set packet drop for packets with no descriptors on or off for all ports:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; port config all drop-en (on|off)
+</pre></div>
+</div>
+<p>Packet dropping for packets with no descriptors is off by default.</p>
+<p>The <code class="docutils literal"><span class="pre">on</span></code> option is equivalent to the <code class="docutils literal"><span class="pre">--enable-drop-en</span></code> command-line option.</p>
+</div>
+<div class="section" id="port-config-rss">
+<h3>4.5.17. port config - RSS</h3>
+<p>Set the RSS (Receive Side Scaling) mode on or off:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; port config all rss (all|ip|tcp|udp|sctp|ether|none)
+</pre></div>
+</div>
+<p>RSS is on by default.</p>
+<p>The <code class="docutils literal"><span class="pre">none</span></code> option is equivalent to the <code class="docutils literal"><span class="pre">--disable-rss</span></code> command-line option.</p>
+</div>
+<div class="section" id="port-config-rss-reta">
+<h3>4.5.18. port config - RSS Reta</h3>
+<p>Set the RSS (Receive Side Scaling) redirection table:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; port config all rss reta (hash,queue)[,(hash,queue)]
+</pre></div>
+</div>
+</div>
+<div class="section" id="port-config-dcb">
+<h3>4.5.19. port config - DCB</h3>
+<p>Set the DCB mode for an individual port:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; port config (port_id) dcb vt (on|off) (traffic_class) pfc (on|off)
+</pre></div>
+</div>
+<p>The traffic class should be 4 or 8.</p>
+</div>
+<div class="section" id="port-config-burst">
+<h3>4.5.20. port config - Burst</h3>
+<p>Set the number of packets per burst:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; port config all burst (value)
+</pre></div>
+</div>
+<p>This is equivalent to the <code class="docutils literal"><span class="pre">--burst</span></code> command-line option.</p>
+</div>
+<div class="section" id="port-config-threshold">
+<h3>4.5.21. port config - Threshold</h3>
+<p>Set thresholds for TX/RX queues:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; port config all (threshold) (value)
+</pre></div>
+</div>
+<p>Where the threshold type can be:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">txpt:</span></code> Set the prefetch threshold register of the TX rings, 0 &lt;= value &lt;= 255.</li>
+<li><code class="docutils literal"><span class="pre">txht:</span></code> Set the host threshold register of the TX rings, 0 &lt;= value &lt;= 255.</li>
+<li><code class="docutils literal"><span class="pre">txwt:</span></code> Set the write-back threshold register of the TX rings, 0 &lt;= value &lt;= 255.</li>
+<li><code class="docutils literal"><span class="pre">rxpt:</span></code> Set the prefetch threshold register of the RX rings, 0 &lt;= value &lt;= 255.</li>
+<li><code class="docutils literal"><span class="pre">rxht:</span></code> Set the host threshold register of the RX rings, 0 &lt;= value &lt;= 255.</li>
+<li><code class="docutils literal"><span class="pre">rxwt:</span></code> Set the write-back threshold register of the RX rings, 0 &lt;= value &lt;= 255.</li>
+<li><code class="docutils literal"><span class="pre">txfreet:</span></code> Set the transmit free threshold of the TX rings, 0 &lt;= value &lt;= txd.</li>
+<li><code class="docutils literal"><span class="pre">rxfreet:</span></code> Set the transmit free threshold of the RX rings, 0 &lt;= value &lt;= rxd.</li>
+<li><code class="docutils literal"><span class="pre">txrst:</span></code> Set the transmit RS bit threshold of TX rings, 0 &lt;= value &lt;= txd.</li>
+</ul>
+<p>These threshold options are also available from the command-line.</p>
+</div>
+<div class="section" id="port-config-e-tag">
+<h3>4.5.22. port config - E-tag</h3>
+<p>Set the value of ether-type for E-tag:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; port config (port_id|all) l2-tunnel E-tag ether-type (value)
+</pre></div>
+</div>
+<p>Enable/disable the E-tag support:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; port config (port_id|all) l2-tunnel E-tag (enable|disable)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="link-bonding-functions">
+<h2>4.6. Link Bonding Functions</h2>
+<p>The Link Bonding functions make it possible to dynamically create and
+manage link bonding devices from within testpmd interactive prompt.</p>
+<div class="section" id="create-bonded-device">
+<h3>4.6.1. create bonded device</h3>
+<p>Create a new bonding device:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; create bonded device (mode) (socket)
+</pre></div>
+</div>
+<p>For example, to create a bonded device in mode 1 on socket 0:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; create bonded 1 0
+created new bonded device (port X)
+</pre></div>
+</div>
+</div>
+<div class="section" id="add-bonding-slave">
+<h3>4.6.2. add bonding slave</h3>
+<p>Adds Ethernet device to a Link Bonding device:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; add bonding slave (slave id) (port id)
+</pre></div>
+</div>
+<p>For example, to add Ethernet device (port 6) to a Link Bonding device (port 10):</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; add bonding slave 6 10
+</pre></div>
+</div>
+</div>
+<div class="section" id="remove-bonding-slave">
+<h3>4.6.3. remove bonding slave</h3>
+<p>Removes an Ethernet slave device from a Link Bonding device:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; remove bonding slave (slave id) (port id)
+</pre></div>
+</div>
+<p>For example, to remove Ethernet slave device (port 6) to a Link Bonding device (port 10):</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; remove bonding slave 6 10
+</pre></div>
+</div>
+</div>
+<div class="section" id="set-bonding-mode">
+<h3>4.6.4. set bonding mode</h3>
+<p>Set the Link Bonding mode of a Link Bonding device:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set bonding mode (value) (port id)
+</pre></div>
+</div>
+<p>For example, to set the bonding mode of a Link Bonding device (port 10) to broadcast (mode 3):</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set bonding mode 3 10
+</pre></div>
+</div>
+</div>
+<div class="section" id="set-bonding-primary">
+<h3>4.6.5. set bonding primary</h3>
+<p>Set an Ethernet slave device as the primary device on a Link Bonding device:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set bonding primary (slave id) (port id)
+</pre></div>
+</div>
+<p>For example, to set the Ethernet slave device (port 6) as the primary port of a Link Bonding device (port 10):</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set bonding primary 6 10
+</pre></div>
+</div>
+</div>
+<div class="section" id="set-bonding-mac">
+<h3>4.6.6. set bonding mac</h3>
+<p>Set the MAC address of a Link Bonding device:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set bonding mac (port id) (mac)
+</pre></div>
+</div>
+<p>For example, to set the MAC address of a Link Bonding device (port 10) to 00:00:00:00:00:01:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set bonding mac 10 00:00:00:00:00:01
+</pre></div>
+</div>
+</div>
+<div class="section" id="set-bonding-xmit-balance-policy">
+<h3>4.6.7. set bonding xmit_balance_policy</h3>
+<p>Set the transmission policy for a Link Bonding device when it is in Balance XOR mode:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set bonding xmit_balance_policy (port_id) (l2|l23|l34)
+</pre></div>
+</div>
+<p>For example, set a Link Bonding device (port 10) to use a balance policy of layer 3+4 (IP addresses &amp; UDP ports):</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set bonding xmit_balance_policy 10 l34
+</pre></div>
+</div>
+</div>
+<div class="section" id="set-bonding-mon-period">
+<h3>4.6.8. set bonding mon_period</h3>
+<p>Set the link status monitoring polling period in milliseconds for a bonding device.</p>
+<p>This adds support for PMD slave devices which do not support link status interrupts.
+When the mon_period is set to a value greater than 0 then all PMD&#8217;s which do not support
+link status ISR will be queried every polling interval to check if their link status has changed:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set bonding mon_period (port_id) (value)
+</pre></div>
+</div>
+<p>For example, to set the link status monitoring polling period of bonded device (port 5) to 150ms:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set bonding mon_period 5 150
+</pre></div>
+</div>
+</div>
+<div class="section" id="show-bonding-config">
+<h3>4.6.9. show bonding config</h3>
+<p>Show the current configuration of a Link Bonding device:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; show bonding config (port id)
+</pre></div>
+</div>
+<p>For example,
+to show the configuration a Link Bonding device (port 9) with 3 slave devices (1, 3, 4)
+in balance mode with a transmission policy of layer 2+3:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; show bonding config 9
+     Bonding mode: 2
+     Balance Xmit Policy: BALANCE_XMIT_POLICY_LAYER23
+     Slaves (3): [1 3 4]
+     Active Slaves (3): [1 3 4]
+     Primary: [3]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="register-functions">
+<h2>4.7. Register Functions</h2>
+<p>The Register Functions can be used to read from and write to registers on the network card referenced by a port number.
+This is mainly useful for debugging purposes.
+Reference should be made to the appropriate datasheet for the network card for details on the register addresses
+and fields that can be accessed.</p>
+<div class="section" id="read-reg">
+<h3>4.7.1. read reg</h3>
+<p>Display the value of a port register:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; read reg (port_id) (address)
+</pre></div>
+</div>
+<p>For example, to examine the Flow Director control register (FDIRCTL, 0x0000EE000) on an Intel 82599 10 GbE Controller:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; read reg 0 0xEE00
+port 0 PCI register at offset 0xEE00: 0x4A060029 (1241907241)
+</pre></div>
+</div>
+</div>
+<div class="section" id="read-regfield">
+<h3>4.7.2. read regfield</h3>
+<p>Display a port register bit field:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; read regfield (port_id) (address) (bit_x) (bit_y)
+</pre></div>
+</div>
+<p>For example, reading the lowest two bits from the register in the example above:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; read regfield 0 0xEE00 0 1
+port 0 PCI register at offset 0xEE00: bits[0, 1]=0x1 (1)
+</pre></div>
+</div>
+</div>
+<div class="section" id="read-regbit">
+<h3>4.7.3. read regbit</h3>
+<p>Display a single port register bit:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; read regbit (port_id) (address) (bit_x)
+</pre></div>
+</div>
+<p>For example, reading the lowest bit from the register in the example above:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; read regbit 0 0xEE00 0
+port 0 PCI register at offset 0xEE00: bit 0=1
+</pre></div>
+</div>
+</div>
+<div class="section" id="write-reg">
+<h3>4.7.4. write reg</h3>
+<p>Set the value of a port register:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; write reg (port_id) (address) (value)
+</pre></div>
+</div>
+<p>For example, to clear a register:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; write reg 0 0xEE00 0x0
+port 0 PCI register at offset 0xEE00: 0x00000000 (0)
+</pre></div>
+</div>
+</div>
+<div class="section" id="write-regfield">
+<h3>4.7.5. write regfield</h3>
+<p>Set bit field of a port register:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; write regfield (port_id) (address) (bit_x) (bit_y) (value)
+</pre></div>
+</div>
+<p>For example, writing to the register cleared in the example above:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; write regfield 0 0xEE00 0 1 2
+port 0 PCI register at offset 0xEE00: 0x00000002 (2)
+</pre></div>
+</div>
+</div>
+<div class="section" id="write-regbit">
+<h3>4.7.6. write regbit</h3>
+<p>Set single bit value of a port register:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; write regbit (port_id) (address) (bit_x) (value)
+</pre></div>
+</div>
+<p>For example, to set the high bit in the register from the example above:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; write regbit 0 0xEE00 31 1
+port 0 PCI register at offset 0xEE00: 0x8000000A (2147483658)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="filter-functions">
+<h2>4.8. Filter Functions</h2>
+<p>This section details the available filter functions that are available.</p>
+<div class="section" id="ethertype-filter">
+<h3>4.8.1. ethertype_filter</h3>
+<p>Add or delete a L2 Ethertype filter, which identify packets by their L2 Ethertype mainly assign them to a receive queue:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>ethertype_filter (port_id) (add|del) (mac_addr|mac_ignr) (mac_address) \
+                 ethertype (ether_type) (drop|fwd) queue (queue_id)
+</pre></div>
+</div>
+<p>The available information parameters are:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">port_id</span></code>: The port which the Ethertype filter assigned on.</li>
+<li><code class="docutils literal"><span class="pre">mac_addr</span></code>: Compare destination mac address.</li>
+<li><code class="docutils literal"><span class="pre">mac_ignr</span></code>: Ignore destination mac address match.</li>
+<li><code class="docutils literal"><span class="pre">mac_address</span></code>: Destination mac address to match.</li>
+<li><code class="docutils literal"><span class="pre">ether_type</span></code>: The EtherType value want to match,
+for example 0x0806 for ARP packet. 0x0800 (IPv4) and 0x86DD (IPv6) are invalid.</li>
+<li><code class="docutils literal"><span class="pre">queue_id</span></code>: The receive queue associated with this EtherType filter.
+It is meaningless when deleting or dropping.</li>
+</ul>
+<p>Example, to add/remove an ethertype filter rule:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; ethertype_filter 0 add mac_ignr 00:11:22:33:44:55 \
+                          ethertype 0x0806 fwd queue 3
+
+testpmd&gt; ethertype_filter 0 del mac_ignr 00:11:22:33:44:55 \
+                          ethertype 0x0806 fwd queue 3
+</pre></div>
+</div>
+</div>
+<div class="section" id="tuple-filter">
+<h3>4.8.2. 2tuple_filter</h3>
+<p>Add or delete a 2-tuple filter,
+which identifies packets by specific protocol and destination TCP/UDP port
+and forwards packets into one of the receive queues:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>2tuple_filter (port_id) (add|del) dst_port (dst_port_value) \
+              protocol (protocol_value) mask (mask_value) \
+              tcp_flags (tcp_flags_value) priority (prio_value) \
+              queue (queue_id)
+</pre></div>
+</div>
+<p>The available information parameters are:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">port_id</span></code>: The port which the 2-tuple filter assigned on.</li>
+<li><code class="docutils literal"><span class="pre">dst_port_value</span></code>: Destination port in L4.</li>
+<li><code class="docutils literal"><span class="pre">protocol_value</span></code>: IP L4 protocol.</li>
+<li><code class="docutils literal"><span class="pre">mask_value</span></code>: Participates in the match or not by bit for field above, 1b means participate.</li>
+<li><code class="docutils literal"><span class="pre">tcp_flags_value</span></code>: TCP control bits. The non-zero value is invalid, when the pro_value is not set to 0x06 (TCP).</li>
+<li><code class="docutils literal"><span class="pre">prio_value</span></code>: Priority of this filter.</li>
+<li><code class="docutils literal"><span class="pre">queue_id</span></code>: The receive queue associated with this 2-tuple filter.</li>
+</ul>
+<p>Example, to add/remove an 2tuple filter rule:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; 2tuple_filter 0 add dst_port 32 protocol 0x06 mask 0x03 \
+                       tcp_flags 0x02 priority 3 queue 3
+
+testpmd&gt; 2tuple_filter 0 del dst_port 32 protocol 0x06 mask 0x03 \
+                       tcp_flags 0x02 priority 3 queue 3
+</pre></div>
+</div>
+</div>
+<div class="section" id="id1">
+<h3>4.8.3. 5tuple_filter</h3>
+<p>Add or delete a 5-tuple filter,
+which consists of a 5-tuple (protocol, source and destination IP addresses, source and destination TCP/UDP/SCTP port)
+and routes packets into one of the receive queues:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>5tuple_filter (port_id) (add|del) dst_ip (dst_address) src_ip \
+              (src_address) dst_port (dst_port_value) \
+              src_port (src_port_value) protocol (protocol_value) \
+              mask (mask_value) tcp_flags (tcp_flags_value) \
+              priority (prio_value) queue (queue_id)
+</pre></div>
+</div>
+<p>The available information parameters are:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">port_id</span></code>: The port which the 5-tuple filter assigned on.</li>
+<li><code class="docutils literal"><span class="pre">dst_address</span></code>: Destination IP address.</li>
+<li><code class="docutils literal"><span class="pre">src_address</span></code>: Source IP address.</li>
+<li><code class="docutils literal"><span class="pre">dst_port_value</span></code>: TCP/UDP destination port.</li>
+<li><code class="docutils literal"><span class="pre">src_port_value</span></code>: TCP/UDP source port.</li>
+<li><code class="docutils literal"><span class="pre">protocol_value</span></code>: L4 protocol.</li>
+<li><code class="docutils literal"><span class="pre">mask_value</span></code>: Participates in the match or not by bit for field above, 1b means participate</li>
+<li><code class="docutils literal"><span class="pre">tcp_flags_value</span></code>: TCP control bits. The non-zero value is invalid, when the protocol_value is not set to 0x06 (TCP).</li>
+<li><code class="docutils literal"><span class="pre">prio_value</span></code>: The priority of this filter.</li>
+<li><code class="docutils literal"><span class="pre">queue_id</span></code>: The receive queue associated with this 5-tuple filter.</li>
+</ul>
+<p>Example, to add/remove an 5tuple filter rule:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; 5tuple_filter 0 add dst_ip 2.2.2.5 src_ip 2.2.2.4 \
+         dst_port 64 src_port 32 protocol 0x06 mask 0x1F \
+         flags 0x0 priority 3 queue 3
+
+testpmd&gt; 5tuple_filter 0 del dst_ip 2.2.2.5 src_ip 2.2.2.4 \
+         dst_port 64 src_port 32 protocol 0x06 mask 0x1F \
+         flags 0x0 priority 3 queue 3
+</pre></div>
+</div>
+</div>
+<div class="section" id="syn-filter">
+<h3>4.8.4. syn_filter</h3>
+<p>Using the  SYN filter, TCP packets whose <em>SYN</em> flag is set can be forwarded to a separate queue:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>syn_filter (port_id) (add|del) priority (high|low) queue (queue_id)
+</pre></div>
+</div>
+<p>The available information parameters are:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">port_id</span></code>: The port which the SYN filter assigned on.</li>
+<li><code class="docutils literal"><span class="pre">high</span></code>: This SYN filter has higher priority than other filters.</li>
+<li><code class="docutils literal"><span class="pre">low</span></code>: This SYN filter has lower priority than other filters.</li>
+<li><code class="docutils literal"><span class="pre">queue_id</span></code>: The receive queue associated with this SYN filter</li>
+</ul>
+<p>Example:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; syn_filter 0 add priority high queue 3
+</pre></div>
+</div>
+</div>
+<div class="section" id="flex-filter">
+<h3>4.8.5. flex_filter</h3>
+<p>With flex filter, packets can be recognized by any arbitrary pattern within the first 128 bytes of the packet
+and routed into one of the receive queues:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>flex_filter (port_id) (add|del) len (len_value) bytes (bytes_value) \
+            mask (mask_value) priority (prio_value) queue (queue_id)
+</pre></div>
+</div>
+<p>The available information parameters are:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">port_id</span></code>: The port which the Flex filter is assigned on.</li>
+<li><code class="docutils literal"><span class="pre">len_value</span></code>: Filter length in bytes, no greater than 128.</li>
+<li><code class="docutils literal"><span class="pre">bytes_value</span></code>: A string in hexadecimal, means the value the flex filter needs to match.</li>
+<li><code class="docutils literal"><span class="pre">mask_value</span></code>: A string in hexadecimal, bit 1 means corresponding byte participates in the match.</li>
+<li><code class="docutils literal"><span class="pre">prio_value</span></code>: The priority of this filter.</li>
+<li><code class="docutils literal"><span class="pre">queue_id</span></code>: The receive queue associated with this Flex filter.</li>
+</ul>
+<p>Example:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; flex_filter 0 add len 16 bytes 0x00000000000000000000000008060000 \
+                       mask 000C priority 3 queue 3
+
+testpmd&gt; flex_filter 0 del len 16 bytes 0x00000000000000000000000008060000 \
+                       mask 000C priority 3 queue 3
+</pre></div>
+</div>
+</div>
+<div class="section" id="flow-director-filter">
+<span id="testpmd-flow-director"></span><h3>4.8.6. flow_director_filter</h3>
+<p>The Flow Director works in receive mode to identify specific flows or sets of flows and route them to specific queues.</p>
+<p>Four types of filtering are supported which are referred to as Perfect Match, Signature, Perfect-mac-vlan and
+Perfect-tunnel filters, the match mode is set by the <code class="docutils literal"><span class="pre">--pkt-filter-mode</span></code> command-line parameter:</p>
+<ul class="simple">
+<li>Perfect match filters.
+The hardware checks a match between the masked fields of the received packets and the programmed filters.
+The masked fields are for IP flow.</li>
+<li>Signature filters.
+The hardware checks a match between a hash-based signature of the masked fields of the received packet.</li>
+<li>Perfect-mac-vlan match filters.
+The hardware checks a match between the masked fields of the received packets and the programmed filters.
+The masked fields are for MAC VLAN flow.</li>
+<li>Perfect-tunnel match filters.
+The hardware checks a match between the masked fields of the received packets and the programmed filters.
+The masked fields are for tunnel flow.</li>
+</ul>
+<p>The Flow Director filters can match the different fields for different type of packet: flow type, specific input set
+per flow type and the flexible payload.</p>
+<p>The Flow Director can also mask out parts of all of these fields so that filters
+are only applied to certain fields or parts of the fields.</p>
+<p>Different NICs may have different capabilities, command show port fdir (port_id) can be used to acquire the information.</p>
+<p># Commands to add flow director filters of different flow types:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>flow_director_filter (port_id) mode IP (add|del|update) \
+                     flow (ipv4-other|ipv4-frag|ipv6-other|ipv6-frag) \
+                     src (src_ip_address) dst (dst_ip_address) \
+                     tos (tos_value) proto (proto_value) ttl (ttl_value) \
+                     vlan (vlan_value) flexbytes (flexbytes_value) \
+                     (drop|fwd) pf|vf(vf_id) queue (queue_id) \
+                     fd_id (fd_id_value)
+
+flow_director_filter (port_id) mode IP (add|del|update) \
+                     flow (ipv4-tcp|ipv4-udp|ipv6-tcp|ipv6-udp) \
+                     src (src_ip_address) (src_port) \
+                     dst (dst_ip_address) (dst_port) \
+                     tos (tos_value) ttl (ttl_value) \
+                     vlan (vlan_value) flexbytes (flexbytes_value) \
+                     (drop|fwd) queue pf|vf(vf_id) (queue_id) \
+                     fd_id (fd_id_value)
+
+flow_director_filter (port_id) mode IP (add|del|update) \
+                     flow (ipv4-sctp|ipv6-sctp) \
+                     src (src_ip_address) (src_port) \
+                     dst (dst_ip_address) (dst_port) \
+                     tos (tos_value) ttl (ttl_value) \
+                     tag (verification_tag) vlan (vlan_value) \
+                     flexbytes (flexbytes_value) (drop|fwd) \
+                     pf|vf(vf_id) queue (queue_id) fd_id (fd_id_value)
+
+flow_director_filter (port_id) mode IP (add|del|update) flow l2_payload \
+                     ether (ethertype) flexbytes (flexbytes_value) \
+                     (drop|fwd) pf|vf(vf_id) queue (queue_id)
+                     fd_id (fd_id_value)
+
+flow_director_filter (port_id) mode MAC-VLAN (add|del|update) \
+                     mac (mac_address) vlan (vlan_value) \
+                     flexbytes (flexbytes_value) (drop|fwd) \
+                     queue (queue_id) fd_id (fd_id_value)
+
+flow_director_filter (port_id) mode Tunnel (add|del|update) \
+                     mac (mac_address) vlan (vlan_value) \
+                     tunnel (NVGRE|VxLAN) tunnel-id (tunnel_id_value) \
+                     flexbytes (flexbytes_value) (drop|fwd) \
+                     queue (queue_id) fd_id (fd_id_value)
+</pre></div>
+</div>
+<p>For example, to add an ipv4-udp flow type filter:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; flow_director_filter 0 add flow ipv4-udp src 2.2.2.3 32 \
+         dst 2.2.2.5 33 tos 2 ttl 40 vlan 0x1 flexbytes (0x88,0x48) \
+         fwd pf queue 1 fd_id 1
+</pre></div>
+</div>
+<p>For example, add an ipv4-other flow type filter:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; flow_director_filter 0 add flow ipv4-other src 2.2.2.3 \
+          dst 2.2.2.5 tos 2 proto 20 ttl 40 vlan 0x1 \
+          flexbytes (0x88,0x48) fwd pf queue 1 fd_id 1
+</pre></div>
+</div>
+</div>
+<div class="section" id="flush-flow-director">
+<h3>4.8.7. flush_flow_director</h3>
+<p>Flush all flow director filters on a device:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; flush_flow_director (port_id)
+</pre></div>
+</div>
+<p>Example, to flush all flow director filter on port 0:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; flush_flow_director 0
+</pre></div>
+</div>
+</div>
+<div class="section" id="flow-director-mask">
+<h3>4.8.8. flow_director_mask</h3>
+<p>Set flow director&#8217;s input masks:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>flow_director_mask (port_id) mode IP vlan (vlan_value) \
+                   src_mask (ipv4_src) (ipv6_src) (src_port) \
+                   dst_mask (ipv4_dst) (ipv6_dst) (dst_port)
+
+flow_director_mask (port_id) mode MAC-VLAN vlan (vlan_value) \
+                   mac (mac_value)
+
+flow_director_mask (port_id) mode Tunnel vlan (vlan_value) \
+                   mac (mac_value) tunnel-type (tunnel_type_value) \
+                   tunnel-id (tunnel_id_value)
+</pre></div>
+</div>
+<p>Example, to set flow director mask on port 0:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; flow_director_mask 0 vlan 0xefff \
+         src_mask 255.255.255.255 \
+             FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF 0xFFFF \
+         dst_mask 255.255.255.255 \
+             FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF 0xFFFF
+</pre></div>
+</div>
+</div>
+<div class="section" id="flow-director-flex-mask">
+<h3>4.8.9. flow_director_flex_mask</h3>
+<p>set masks of flow director&#8217;s flexible payload based on certain flow type:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; flow_director_flex_mask (port_id) \
+         flow (none|ipv4-other|ipv4-frag|ipv4-tcp|ipv4-udp|ipv4-sctp| \
+               ipv6-other|ipv6-frag|ipv6-tcp|ipv6-udp|ipv6-sctp| \
+               l2_payload|all) (mask)
+</pre></div>
+</div>
+<p>Example, to set flow director&#8217;s flex mask for all flow type on port 0:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; flow_director_flex_mask 0 flow all \
+         (0xff,0xff,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
+</pre></div>
+</div>
+</div>
+<div class="section" id="flow-director-flex-payload">
+<h3>4.8.10. flow_director_flex_payload</h3>
+<p>Configure flexible payload selection:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>flow_director_flex_payload (port_id) (raw|l2|l3|l4) (config)
+</pre></div>
+</div>
+<p>For example, to select the first 16 bytes from the offset 4 (bytes) of packet&#8217;s payload as flexible payload:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; flow_director_flex_payload 0 l4 \
+         (4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19)
+</pre></div>
+</div>
+</div>
+<div class="section" id="get-sym-hash-ena-per-port">
+<h3>4.8.11. get_sym_hash_ena_per_port</h3>
+<p>Get symmetric hash enable configuration per port:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>get_sym_hash_ena_per_port (port_id)
+</pre></div>
+</div>
+<p>For example, to get symmetric hash enable configuration of port 1:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; get_sym_hash_ena_per_port 1
+</pre></div>
+</div>
+</div>
+<div class="section" id="set-sym-hash-ena-per-port">
+<h3>4.8.12. set_sym_hash_ena_per_port</h3>
+<p>Set symmetric hash enable configuration per port to enable or disable:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>set_sym_hash_ena_per_port (port_id) (enable|disable)
+</pre></div>
+</div>
+<p>For example, to set symmetric hash enable configuration of port 1 to enable:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set_sym_hash_ena_per_port 1 enable
+</pre></div>
+</div>
+</div>
+<div class="section" id="get-hash-global-config">
+<h3>4.8.13. get_hash_global_config</h3>
+<p>Get the global configurations of hash filters:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>get_hash_global_config (port_id)
+</pre></div>
+</div>
+<p>For example, to get the global configurations of hash filters of port 1:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; get_hash_global_config 1
+</pre></div>
+</div>
+</div>
+<div class="section" id="set-hash-global-config">
+<h3>4.8.14. set_hash_global_config</h3>
+<p>Set the global configurations of hash filters:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>set_hash_global_config (port_id) (toeplitz|simple_xor|default) \
+(ipv4|ipv4-frag|ipv4-tcp|ipv4-udp|ipv4-sctp|ipv4-other|ipv6|ipv6-frag| \
+ipv6-tcp|ipv6-udp|ipv6-sctp|ipv6-other|l2_payload) \
+(enable|disable)
+</pre></div>
+</div>
+<p>For example, to enable simple_xor for flow type of ipv6 on port 2:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set_hash_global_config 2 simple_xor ipv6 enable
+</pre></div>
+</div>
+</div>
+<div class="section" id="set-hash-input-set">
+<h3>4.8.15. set_hash_input_set</h3>
+<p>Set the input set for hash:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>set_hash_input_set (port_id) (ipv4-frag|ipv4-tcp|ipv4-udp|ipv4-sctp| \
+ipv4-other|ipv6-frag|ipv6-tcp|ipv6-udp|ipv6-sctp|ipv6-other| \
+l2_payload) (ovlan|ivlan|src-ipv4|dst-ipv4|src-ipv6|dst-ipv6|ipv4-tos| \
+ipv4-proto|ipv6-tc|ipv6-next-header|udp-src-port|udp-dst-port| \
+tcp-src-port|tcp-dst-port|sctp-src-port|sctp-dst-port|sctp-veri-tag| \
+udp-key|gre-key|fld-1st|fld-2nd|fld-3rd|fld-4th|fld-5th|fld-6th|fld-7th| \
+fld-8th|none) (select|add)
+</pre></div>
+</div>
+<p>For example, to add source IP to hash input set for flow type of ipv4-udp on port 0:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set_hash_input_set 0 ipv4-udp src-ipv4 add
+</pre></div>
+</div>
+</div>
+<div class="section" id="set-fdir-input-set">
+<h3>4.8.16. set_fdir_input_set</h3>
+<p>The Flow Director filters can match the different fields for different type of packet, i.e. specific input set
+on per flow type and the flexible payload. This command can be used to change input set for each flow type.</p>
+<p>Set the input set for flow director:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>set_fdir_input_set (port_id) (ipv4-frag|ipv4-tcp|ipv4-udp|ipv4-sctp| \
+ipv4-other|ipv6|ipv6-frag|ipv6-tcp|ipv6-udp|ipv6-sctp|ipv6-other| \
+l2_payload) (ivlan|ethertype|src-ipv4|dst-ipv4|src-ipv6|dst-ipv6|ipv4-tos| \
+ipv4-proto|ipv4-ttl|ipv6-tc|ipv6-next-header|ipv6-hop-limits| \
+tudp-src-port|udp-dst-port|cp-src-port|tcp-dst-port|sctp-src-port| \
+sctp-dst-port|sctp-veri-tag|none) (select|add)
+</pre></div>
+</div>
+<p>For example to add source IP to FD input set for flow type of ipv4-udp on port 0:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; set_fdir_input_set 0 ipv4-udp src-ipv4 add
+</pre></div>
+</div>
+</div>
+<div class="section" id="global-config">
+<h3>4.8.17. global_config</h3>
+<p>Set different GRE key length for input set:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>global_config (port_id) gre-key-len (number in bytes)
+</pre></div>
+</div>
+<p>For example to set GRE key length for input set to 4 bytes on port 0:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>testpmd&gt; global_config 0 gre-key-len 4
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../faq/index.html" class="btn btn-neutral float-right" title="FAQ" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="run_app.html" class="btn btn-neutral" title="3. Running the Application" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'16.04.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
